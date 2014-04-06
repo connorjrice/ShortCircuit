@@ -24,7 +24,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Panel;
-import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
@@ -55,13 +54,18 @@ public class GameGUI extends AbstractAppState {
     public ButtonAdapter Score;
     public ButtonAdapter Level;
     private float updateTimer;
+    private float frillsTimer;
     private ButtonAdapter Menu;
     private ScheduledThreadPoolExecutor ex;
     private int leftButtons = 10;
     private int rightButtons = 1605;
     private int height;
     private int width;
-    private Window GameOverWindow;
+    private int internalSelected = -1;
+    private int internalHealth;
+    private int internalBudget;
+    private int internalScore;
+    private int internalLevel;
 
     public GameGUI(TowerDefenseMain _game) {
         this.game = _game;
@@ -89,7 +93,7 @@ public class GameGUI extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        if (updateTimer > .25) {
+        if (updateTimer > .15) {
             if (gs.getPlrHealth() <= 0) {
                 game.gameover();
             }
@@ -98,7 +102,14 @@ public class GameGUI extends AbstractAppState {
         } else {
             updateTimer += tpf;
         }
-        
+        if (frillsTimer > .25) {
+            updateFrills();
+            frillsTimer = 0;
+        }
+        else {
+            frillsTimer += tpf;
+        }
+
 
     }
     /**
@@ -125,26 +136,47 @@ public class GameGUI extends AbstractAppState {
 
     private void updateText() {
         updatePlrInfo();
-        updateHealthColor();
         updateTowerInfo();
     }
     
-    private void updatePlrInfo() {
-        Health.setText("Health: " + gs.getPlrHealth());
-        Budget.setText("Budget: " + gs.getPlrBudget());
-        Score.setText("Score: " + gs.getPlrScore());
-        Level.setText("Level: " + gs.getPlrLvl());
+    private void updateFrills() {
+        updateChargeFrill();
+        updateHealthColor();
+        updateTowerFrills();
     }
-    
-    private void updateHealthColor() {
-        if (gs.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
-            Health.setFontColor(ColorRGBA.Green);
-        } else if (gs.getPlrHealth() <= 50 && gs.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
-            Health.setFontColor(ColorRGBA.Yellow);
-        } else if (gs.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
-            Health.setFontColor(ColorRGBA.Red);
+
+    private void updatePlrInfo() {
+        if (gs.getPlrHealth() != internalHealth) {
+            Health.setText("Health: " + gs.getPlrHealth());
+            internalHealth = gs.getPlrHealth();
+        }
+        if (gs.getPlrBudget() != internalBudget) {
+            Budget.setText("Budget: " + gs.getPlrBudget());
+            internalBudget = gs.getPlrBudget();
+        }
+        if (gs.getPlrScore() != internalScore) {
+            Score.setText("Score: " + gs.getPlrScore());            
+            internalScore = gs.getPlrScore();
+        }
+        if (gs.getPlrLvl() != internalLevel) {
+            Level.setText("Level: " + gs.getPlrLvl());
+            internalLevel = gs.getPlrLvl();
         }
     }
+
+    private void updateHealthColor() {
+        if (gs.getPlrHealth() != internalHealth) {
+            if (gs.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
+                Health.setFontColor(ColorRGBA.Green);
+            } else if (gs.getPlrHealth() <= 50 && gs.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
+                Health.setFontColor(ColorRGBA.Yellow);
+            } else if (gs.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
+                Health.setFontColor(ColorRGBA.Red);
+            }
+            internalHealth = gs.getPlrHealth();
+        }
+    }
+
     /**
      * Updates the build/upgrade price of the tower that is currently selected.
      * The selected tower number comes from GameState.
@@ -154,22 +186,36 @@ public class GameGUI extends AbstractAppState {
             if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("unbuilt")) {
                 Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
             } else {
-                Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
-
+                Modify.setText("Upgrade: " +gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+            }
+        }
+    }
+    
+    private void updateChargeFrill() {
+        if (gs.getPlrBudget() >= 10 && Charge.getFontColor() != ColorRGBA.Green) {
+            Charge.setFontColor(ColorRGBA.Green);
+        }
+        else if (gs.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
+            Charge.setFontColor(ColorRGBA.Red);
+        }
+    }
+    
+    private void updateTowerFrills() {
+        if (gs.getSelected() != -1) {
+            if (gs.getPlrBudget() >= Integer.parseInt(gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")))) {
+                Modify.setFontColor(ColorRGBA.Green);
+            } else {
+                Modify.setFontColor(ColorRGBA.Red);
             }
         }
     }
 
-
-            /**
-             * Handles collisions. TODO: Update this process of selecting
-             * objects
-             *
-             * @param click2d
-             * @param click3d
-             */
-    
-
+    /**
+     * Handles collisions. TODO: Update this process of selecting objects
+     *
+     * @param click2d
+     * @param click3d
+     */
     private void selectPlrObject(Vector2f click2d, Vector3f click3d) {
         CollisionResults results = new CollisionResults();
         Vector3f dir = cam.getWorldCoordinates(
@@ -240,8 +286,10 @@ public class GameGUI extends AbstractAppState {
                 TowerState.upgradeTower();
             }
         };
+        Modify.setButtonHoverInfo(null, null);
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
+        Modify.setFontColor(ColorRGBA.Red);
         screen.addElement(Modify);
 
     }
@@ -302,6 +350,7 @@ public class GameGUI extends AbstractAppState {
         };
         Health.setLocalScale(3f, 2f, 1f);
         Health.setText("Health");
+        internalHealth = gs.getPlrHealth();
         screen.addElement(Health);
     }
 
@@ -329,12 +378,10 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(Level);
     }
 
-
     @Override
     public void stateAttached(AppStateManager stateManager) {
-
     }
-    
+
     @Override
     public void stateDetached(AppStateManager stateManager) {
         inputManager.removeListener(actionListener);
@@ -356,6 +403,6 @@ public class GameGUI extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         guiNode.removeControl(screen);
-        
+
     }
 }

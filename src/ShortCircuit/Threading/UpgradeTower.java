@@ -59,7 +59,7 @@ public class UpgradeTower implements Runnable {
      * Checks to see if selected is actually a tower, also makes sure the tower
      * is upgradeable.
      * Mostly uses methods from GameState.
-     * URGENT: Make other threadable classes as beautiful as this one
+     * URGENT: Make this actually threadable
      */
     public void run() {
         if (gs.getSelected() != -1) {

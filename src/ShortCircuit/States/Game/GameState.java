@@ -1,6 +1,5 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.Threading.FindBombVictims;
 import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.FloorFactory;
 import ShortCircuit.Controls.BaseControl;
@@ -252,6 +251,10 @@ public class GameState extends AbstractAppState {
     
     public int getSelected() {
         return TowerState.getSelectedNum();
+    }
+    
+    public int getBuildCost() {
+        return 100;
     }
 
     public void setPlrBombs(int bombs) {
