@@ -51,7 +51,7 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args 
      */
     public static void main(String[] args) {
-        //Logger.getLogger("").setLevel(Level.OFF);
+        Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         app.start();
     }
