@@ -1,0 +1,10 @@
+Material Floor 0 : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : Flip Textures/floor0.jpg
+        VertexColor : false
+        SeparateTexCoord : false
+        HardwareShadows : false
+     }
+    AdditionalRenderState {
+    }
+}
