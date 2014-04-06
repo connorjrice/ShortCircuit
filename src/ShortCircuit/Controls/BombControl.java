@@ -43,10 +43,10 @@ public class BombControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (bombTimer < .3 && gs.isEnabled()) {
             
-            bombSize += 0.03f;
+            bombSize += 0.05f;
             spatial.setLocalScale(bombSize);
             bombTimer += tpf;
-            if (collideTimer > .1f) {
+            if (collideTimer > .03f) {
                 collideWithCreeps();
                 reachable = null;
                 searchForVictims();

@@ -43,8 +43,8 @@ public class StartGUI extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
-        width = app.getContext().getSettings().getWidth();
-        height = app.getContext().getSettings().getHeight();
+        width = game.getWidth();
+        height = game.getHeight();
         initScreen();
     }
 

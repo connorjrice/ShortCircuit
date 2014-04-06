@@ -5,6 +5,7 @@ import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.GUI.GameGUI;
+import ShortCircuit.States.GUI.GameOverGUI;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.BombState;
 import ShortCircuit.States.Game.LevelState;
@@ -33,8 +34,13 @@ public class TowerDefenseMain extends SimpleApplication {
     private BombState BombState;
     private StartGUI StartGUI;
     private GameGUI GameGUI;
+    private GameOverGUI GameOverGUI;
     private boolean isPaused = false;
+    private boolean isPauseAllowed = true;
     
+    
+    public int width;
+    public int height;
 
     /**
      * For interpreting single touches as mouse clicks.
@@ -51,10 +57,12 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args 
      */
     public static void main(String[] args) {
-        //Logger.getLogger("").setLevel(Level.OFF);
+        Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         app.start();
     }
+
+
 
 
 
@@ -69,6 +77,8 @@ public class TowerDefenseMain extends SimpleApplication {
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
 
+        width = getContext().getSettings().getWidth();
+        height = getContext().getSettings().getHeight();
         setDisplayFps(false);
         setDisplayStatView(false);
         
@@ -79,9 +89,13 @@ public class TowerDefenseMain extends SimpleApplication {
     
     
     public void showTGStart() {
-        inputManager.setCursorVisible(true);
         StartGUI = new StartGUI(this);
         stateManager.attach(StartGUI);
+    }
+    
+    public void backToTGStart() {
+        stateManager.detach(GameOverGUI);
+        showTGStart();
     }
     
     /**
@@ -96,6 +110,7 @@ public class TowerDefenseMain extends SimpleApplication {
     public void startGame(boolean debug, String levelName) {
         StartGUI.toggle();
         isPaused = false;
+        isPauseAllowed = true;
         GameState = new GameState();
         GameGUI = new GameGUI(this);
         BombState = new BombState();
@@ -103,6 +118,7 @@ public class TowerDefenseMain extends SimpleApplication {
         CreepState = new CreepState();
         TowerState = new TowerState();
         LevelState = new LevelState(debug, levelName);
+        GameOverGUI = new GameOverGUI(this);
         attachGameStates();
     }
     
@@ -140,22 +156,27 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called by TGGamePlay
      */
     public void pause() {
-        if (isPaused) {
-            enableStates();
-            isPaused = false;
-        }
-        else {
-            disableStates();
-            isPaused = true;
+        if (isPauseAllowed) {
+            if (isPaused) {
+                enableStates();
+                isPaused = false;
+            }
+            else {
+                disableStates();
+                isPaused = true;
+            }
         }
     }
+        
     
     /**
      * Ends game and detaches the states so they cannot be retrieved.
      * TODO: Integrate with TGGamePlay
      */
     public void gameover() {
-       disableStates();
+        isPauseAllowed = false;
+        detachGameStates();
+        stateManager.attach(GameOverGUI);  
     }
     
     /**
@@ -165,6 +186,7 @@ public class TowerDefenseMain extends SimpleApplication {
         GameState.setEnabled(false);
         LevelState.setEnabled(false);
         BeamState.setEnabled(false);
+        BombState.setEnabled(false);
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
     }
@@ -176,6 +198,7 @@ public class TowerDefenseMain extends SimpleApplication {
         CreepState.setEnabled(true);
         LevelState.setEnabled(true);
         BeamState.setEnabled(true);
+        BombState.setEnabled(true);
         TowerState.setEnabled(true);
     }
     
@@ -186,6 +209,14 @@ public class TowerDefenseMain extends SimpleApplication {
     public void goToMainMenu() {
         pause();
         StartGUI.toggle();
+    }
+    
+    public int getWidth() {
+        return width;
+    }
+    
+    public int getHeight() {
+        return height;
     }
     
     @Override

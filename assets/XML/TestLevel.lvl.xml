@@ -2,12 +2,12 @@
 <level>
     <levelparams>
         <param id = "levelParams">
-            <numCreeps>3</numCreeps>
-            <creepMod>2</creepMod>
+            <numCreeps>30</numCreeps>
+            <creepMod>4</creepMod>
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
-            <plrBudget>100</plrBudget>
+            <plrBudget>100000</plrBudget>
             <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>

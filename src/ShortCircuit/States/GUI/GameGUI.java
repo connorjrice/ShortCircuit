@@ -24,6 +24,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Panel;
+import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
@@ -58,6 +59,9 @@ public class GameGUI extends AbstractAppState {
     private ScheduledThreadPoolExecutor ex;
     private int leftButtons = 10;
     private int rightButtons = 1605;
+    private int height;
+    private int width;
+    private Window GameOverWindow;
 
     public GameGUI(TowerDefenseMain _game) {
         this.game = _game;
@@ -74,6 +78,8 @@ public class GameGUI extends AbstractAppState {
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.ex = this.gs.getEx();
+        width = game.getWidth();
+        height = game.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
         cam.setLocation(new Vector3f(0, 0, 20f));
         initScreen();
@@ -84,11 +90,15 @@ public class GameGUI extends AbstractAppState {
     @Override
     public void update(float tpf) {
         if (updateTimer > .25) {
+            if (gs.getPlrHealth() <= 0) {
+                game.gameover();
+            }
             updateText();
             updateTimer = 0;
         } else {
             updateTimer += tpf;
         }
+        
 
     }
     /**
@@ -319,6 +329,7 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(Level);
     }
 
+
     @Override
     public void stateAttached(AppStateManager stateManager) {
 
@@ -335,6 +346,7 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Menu);
         screen.removeElement(Modify);
         screen.removeElement(Score);
+        screen.removeElement(Pause);
         screen.removeElement(leftPanel);
         screen.removeElement(rightPanel);
         guiNode.removeControl(screen);
