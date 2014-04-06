@@ -81,7 +81,6 @@ public class GUIAppState extends AbstractAppState {
         this.inputManager = this.app.getInputManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
         inputManager.addListener(actionListener, new String[]{MAPPING_ACTIVATE});
         app.getRenderer().applyRenderState(RenderState.DEFAULT);
 
@@ -213,18 +212,17 @@ public class GUIAppState extends AbstractAppState {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (isEnabled()) {
                 if (keyPressed) {
-                    if (name.equals(MAPPING_ACTIVATE)) {
-                        Vector2f click2d = inputManager.getCursorPosition();
-                        Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
-                                click2d.getX(), click2d.getY()), 0f);
-
-                        //debugTCoords(click2d.getX(), click2d.getY());
-
-                        if (GameState.isEnabled()) {
-                            selectPlrObject(click2d, click3d);
-                        }
-                        opHandle(click2d.getX(), click2d.getY());
+                    Vector2f click2d = inputManager.getCursorPosition();
+                    Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
+                            click2d.getX(), click2d.getY()), 0f);
+                    
+                    //debugTCoords(click2d.getX(), click2d.getY());
+                    
+                    if (GameState.isEnabled()) {
+                        selectPlrObject(click2d, click3d);
                     }
+                    opHandle(click2d.getX(), click2d.getY());
+                
                 }
             }
         }

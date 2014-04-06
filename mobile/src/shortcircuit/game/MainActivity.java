@@ -29,8 +29,9 @@ public class MainActivity extends AndroidHarness{
         screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         // Enable MouseEvents being generated from TouchEvents (default = true)
         mouseEventsEnabled = true;
+        splashPicID = R.drawable.loading;
         // Set the default logging level (default=Level.INFO, Level.ALL=All Debug Info)
-        LogManager.getLogManager().getLogger("").setLevel(Level.INFO);
+        LogManager.getLogManager().getLogger("").setLevel(Level.OFF);
     }
  
 }

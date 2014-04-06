@@ -8,6 +8,7 @@ import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.GUI.GUIAppState;
+import ShortCircuit.States.GUI.TGGamePlay;
 import ShortCircuit.States.GUI.TGStart;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
@@ -39,6 +40,8 @@ public class TowerDefenseMain extends SimpleApplication {
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
+    private TGStart TGStart;
+    private TGGamePlay TGGamePlay;
     
 
     /**
@@ -56,11 +59,11 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args 
      */
     public static void main(String[] args) {
-        Logger.getLogger("").setLevel(Level.OFF);
+        //Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         app.start();
     }
-    private TGStart TGStart;
+
 
 
     /**
@@ -92,7 +95,7 @@ public class TowerDefenseMain extends SimpleApplication {
     }
     
     public void showTGMenu() {
-        TGStart = new TGStart();
+        TGStart = new TGStart(this);
         stateManager.attach(TGStart);
     }
     
@@ -106,10 +109,12 @@ public class TowerDefenseMain extends SimpleApplication {
      * assets/XML; the file extension is .lvl.xml
      */
     public void startGame(boolean debug, String levelName) {
-        stateManager.detach(StartMenu);
+        //stateManager.detach(StartMenu);
+        stateManager.detach(TGStart);
         GameState = new GameState();
         LevelState = new LevelState(debug, levelName);
-        GuiState = new GUIAppState(this);
+        //GuiState = new GUIAppState(this);
+        TGGamePlay = new TGGamePlay(this);
         PauseState = new PauseState(GuiState);
         GameOverAppState = new GameOverAppState(this);
         BeamState = new BeamState();
@@ -127,7 +132,8 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called by startGame().
      */
     private void attachGameStates() {
-        stateManager.attach(GuiState);
+        //stateManager.attach(GuiState);
+        stateManager.attach(TGGamePlay);
         stateManager.attach(GameState);
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
@@ -142,7 +148,8 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called when starting/continuing from the Start menu.
      */
     public void detachGameStates() {
-        stateManager.detach(GuiState);
+        //stateManager.detach(GuiState);
+        stateManager.detach(TGGamePlay);
         stateManager.detach(GameState);
         stateManager.detach(TowerState);
         stateManager.detach(CreepState);
@@ -199,7 +206,7 @@ public class TowerDefenseMain extends SimpleApplication {
         BeamState.setEnabled(false);
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
-        GuiState.setEnabled(false);
+        TGGamePlay.setEnabled(false);
     }
     /** 
      * These are the states that are enabled on unpause.
@@ -210,7 +217,7 @@ public class TowerDefenseMain extends SimpleApplication {
         LevelState.setEnabled(true);
         BeamState.setEnabled(true);
         TowerState.setEnabled(true);
-        GuiState.setEnabled(true);
+        TGGamePlay.setEnabled(true);
     }
     
     /**
@@ -221,10 +228,10 @@ public class TowerDefenseMain extends SimpleApplication {
         if (!isLost) {
             disableStates();
         }
-        stateManager.detach(GuiState);
-        stateManager.attach(StartMenu);
+        stateManager.detach(TGGamePlay);
+        stateManager.attach(TGStart);
         if (!isLost) {
-            StartMenu.attachContinueButton();
+            TGStart.attachContinueButton();
             PauseState.disable();
             PauseState.setEnabled(false);
         }
@@ -238,8 +245,8 @@ public class TowerDefenseMain extends SimpleApplication {
     
     public void continueFromPaused() {
         enableStates();
-        stateManager.attach(GuiState);
-        stateManager.detach(StartMenu);
+        stateManager.attach(TGGamePlay);
+        stateManager.detach(TGStart);
     }
     
     @Override

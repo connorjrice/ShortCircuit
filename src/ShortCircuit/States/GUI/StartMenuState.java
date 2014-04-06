@@ -117,10 +117,7 @@ public class StartMenuState extends AbstractAppState {
             titleText();
         }
 
-        public void attachContinueButton() {
-            cont = true;
-            continueButton();
-        }
+
 
         public void onStart() {
             cont = false;
