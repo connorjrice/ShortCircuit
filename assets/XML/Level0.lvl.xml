@@ -4,8 +4,8 @@
         <param id = "levelParams">
             <numCreeps>3</numCreeps>
             <creepMod>2</creepMod>
-            <levelCap>10</levelCap>
-            <levelMod>2</levelMod>
+            <levelCap>50</levelCap>
+            <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
             <plrBudget>100</plrBudget>
             <plrLevel>0</plrLevel>

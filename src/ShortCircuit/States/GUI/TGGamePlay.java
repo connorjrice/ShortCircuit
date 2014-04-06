@@ -53,6 +53,7 @@ public class TGGamePlay extends AbstractAppState {
     private ButtonAdapter Score;
     private ButtonAdapter Level;
     private float updateTimer;
+    private ButtonAdapter Menu;
 
     public TGGamePlay(TowerDefenseMain _game) {
         this.game = _game;
@@ -140,6 +141,7 @@ public class TGGamePlay extends AbstractAppState {
         budgetButton();
         scoreButton();
         levelButton();
+        menuButton();
     }
 
     private void initScreen() {
@@ -173,7 +175,7 @@ public class TGGamePlay extends AbstractAppState {
             }
         };
         Charge.setLocalScale(3f, 2f, 1f);
-        Charge.setText("Charge");
+        Charge.setText("Charge: 10");
         leftPanel.addChild(Charge);
 
     }
@@ -222,12 +224,24 @@ public class TGGamePlay extends AbstractAppState {
         Pause = new ButtonAdapter(screen, "Pause", new Vector2f(10, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                game.pause();
+                //game.pause();
             }
         };
         Pause.setLocalScale(3f, 2f, 1f);
-        Pause.setText("Pause");
+        Pause.setText("nOTHING");
         leftPanel.addChild(Pause);
+    }
+    
+    private void menuButton() {
+        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(10, 900)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                game.goToMainMenu();
+            }
+        };
+        Menu.setLocalScale(3f, 2f, 1f);
+        Menu.setText("Menu");
+        leftPanel.addChild(Menu);
     }
 
     private void healthButton() {

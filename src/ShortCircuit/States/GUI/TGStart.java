@@ -15,6 +15,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
@@ -29,7 +30,10 @@ public class TGStart extends AbstractAppState {
     private Screen screen;
     private Button Level1;
     private Button Level0;
-    private boolean cont;
+    private boolean cont = true;
+    private Menu MainMenu;
+    private Window MainWindow;
+    private ButtonAdapter Continue;
     
     public TGStart(TowerDefenseMain _game) {
         game = _game;
@@ -50,53 +54,84 @@ public class TGStart extends AbstractAppState {
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
         initButtons();
+        //        initMenu();
+        initWindow();
+    }
+    
+    private void initWindow() {
+        MainWindow = new Window(screen, "mainwindow", new Vector2f(app.getContext().getSettings().getWidth()/4, app.getContext().getSettings().getHeight()/4 ), new Vector2f(app.getContext().getSettings().getWidth()/2, app.getContext().getSettings().getHeight()/2));
+        MainWindow.setWindowTitle("ShortCircuit");
+        MainWindow.setWindowIsMovable(false);
+        MainWindow.setIsResizable(false);
+        MainWindow.addChild(Level1);
+        MainWindow.addChild(Level0);
+        screen.addElement(MainWindow);
+    }
+    
+    private void initMenu() {
+        MainMenu = new Menu(screen, new Vector2f(0,0), false) {
+            @Override
+            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
+                
+            }
+            
+        };
+        MainMenu.setLocalScale(5f,5f,1f);
+        //MainMenu.addMenuItem("Level1", Level1, null);
+        MainMenu.showMenu(null, 350,340);
+        screen.addElement(MainMenu);
     }
     
     private void initButtons() {
-        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(500,500)) {
-
+        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(300,450)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onStartLevel1();
-            }
-
-        };
-        Level0 = new ButtonAdapter(screen, "level0", new Vector2f(500,200)) {
-
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onStartLevel0();
+                onStart("Level1");
             }
         };
         Level1.setText("Level1");
-        Level1.setLocalScale(5f,5f,1f);
+        Level1.setLocalScale(2f,2f,1f);
+        Level0 = new ButtonAdapter(screen, "level0", new Vector2f(10,450)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                onStart("Level0");
+            }
+        };
+
         Level0.setText("Level0");
-        Level0.setLocalScale(5f, 5f, 1f);
-        screen.addElement(Level0);
-        screen.addElement(Level1);
-        guiNode.addControl(screen);
+        Level0.setLocalScale(2f, 2f, 1f);
     }
     
     private void continueButton() {
-        
+       Continue = new ButtonAdapter(screen, "level1", new Vector2f(10,200)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                game.continueFromPaused();
+            }
+        };
+       Continue.setLocalScale(2f,2f,1f);
     }
-    
-    public void attachContinueButton() {
-        cont = true;
-        continueButton();
-    }
+
     
     
-    public void onStartLevel0() {
-        cont = false;
+    public void onStart(String level) {
         game.detachGameStates();
-        game.startGame(false, "Level0");
+        game.startGame(false, level);
     }
     
-    public void onStartLevel1() {
-        cont = false;
-        game.detachGameStates();
-        game.startGame(false, "Level1");
+    public void toggle() {
+        if (cont) {
+            MainWindow.hide();
+            cont = false;
+        }
+        else {
+            MainWindow.show();
+            cont = true;
+        }
+    }
+    
+    public boolean mainWindowShown() {
+        return cont;
     }
 
     
@@ -108,8 +143,7 @@ public class TGStart extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-        screen.removeElement(Level0);
-        screen.removeElement(Level1);
+        screen.removeElement(MainWindow);
         guiNode.removeControl(screen);
     }
 

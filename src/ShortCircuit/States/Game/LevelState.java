@@ -1,6 +1,5 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.States.GUI.GameOverAppState;
 import ShortCircuit.MapXML.MapGenerator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -29,7 +28,6 @@ public class LevelState extends AbstractAppState {
     private boolean isDebug;
     protected boolean gameOver = false;
     private final String levelName;
-    private GameOverAppState gpas;
     
     public LevelState(boolean _isDebug, String _levelName) {
         isDebug = _isDebug;
@@ -44,7 +42,6 @@ public class LevelState extends AbstractAppState {
         this.TowerState = this.GameState.getTowerState();
         this.BeamState = this.GameState.getBeamState();
         this.CreepState = this.GameState.getCreepState();
-        this.gpas = this.app.getStateManager().getState(GameOverAppState.class);
         this.worldNode = this.GameState.getWorldNode();
         this.rootNode = this.app.getRootNode();
         begin();
@@ -62,9 +59,7 @@ public class LevelState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         if (GameState.getPlrHealth() <= 0) {
-            gpas.setEnabled(true);
-            gpas.enable();
-            gpas.endGame();
+
         }
     }
     

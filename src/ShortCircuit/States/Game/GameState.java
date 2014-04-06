@@ -69,7 +69,7 @@ public class GameState extends AbstractAppState {
             if (updateTimer > .1) {
                 if (getPlrScore() > levelCap) {
                     incPlrLvl();
-                    setLevelCap(levelCap + levelMod);
+                    levelCap *= 2;
                     incPlrHealth();
                 }
                 if (debugMode) {

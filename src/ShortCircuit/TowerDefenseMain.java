@@ -1,13 +1,9 @@
 package ShortCircuit;
 
-import ShortCircuit.States.GUI.GameOverAppState;
-import ShortCircuit.States.GUI.StartMenuState;
-import ShortCircuit.States.GUI.PauseState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
-import ShortCircuit.States.GUI.GUIAppState;
 import ShortCircuit.States.GUI.TGGamePlay;
 import ShortCircuit.States.GUI.TGStart;
 import ShortCircuit.States.Game.LevelState;
@@ -18,7 +14,6 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.renderer.ViewPort;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tonegod.gui.core.Screen;
 
 /**
  * Tower Defense
@@ -32,16 +27,13 @@ public class TowerDefenseMain extends SimpleApplication {
      * Glorious AppStates.
      */
     private GameState GameState;
-    private GameOverAppState GameOverAppState;
-    private StartMenuState StartMenu;
-    private GUIAppState GuiState;
-    private PauseState PauseState;
     private BeamState BeamState;
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
     private TGStart TGStart;
     private TGGamePlay TGGamePlay;
+    private boolean isPaused = false;
     
 
     /**
@@ -66,6 +58,7 @@ public class TowerDefenseMain extends SimpleApplication {
 
 
 
+
     /**
      * Initialize camera, add input mapping, bring up start menu.
      * Also adjust statview/fps
@@ -86,13 +79,6 @@ public class TowerDefenseMain extends SimpleApplication {
         showTGMenu();
     }
     
-    /**
-     * Instantiates and attaches Start Menu.
-     */
-    public void showStartMenu() {
-        StartMenu = new StartMenuState(this);
-        stateManager.attach(StartMenu);
-    }
     
     public void showTGMenu() {
         TGStart = new TGStart(this);
@@ -109,19 +95,14 @@ public class TowerDefenseMain extends SimpleApplication {
      * assets/XML; the file extension is .lvl.xml
      */
     public void startGame(boolean debug, String levelName) {
-        //stateManager.detach(StartMenu);
-        stateManager.detach(TGStart);
+        TGStart.toggle();
         GameState = new GameState();
         LevelState = new LevelState(debug, levelName);
         //GuiState = new GUIAppState(this);
         TGGamePlay = new TGGamePlay(this);
-        PauseState = new PauseState(GuiState);
-        GameOverAppState = new GameOverAppState(this);
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-        PauseState.setEnabled(false);
-        GameOverAppState.setEnabled(false);
         inputManager.setCursorVisible(true);
         attachGameStates();
     }
@@ -132,15 +113,12 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called by startGame().
      */
     private void attachGameStates() {
-        //stateManager.attach(GuiState);
         stateManager.attach(TGGamePlay);
         stateManager.attach(GameState);
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
         stateManager.attach(BeamState);
         stateManager.attach(LevelState);
-        stateManager.attach(PauseState);
-        stateManager.attach(GameOverAppState); 
     }
     
     /**
@@ -148,15 +126,12 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called when starting/continuing from the Start menu.
      */
     public void detachGameStates() {
-        //stateManager.detach(GuiState);
         stateManager.detach(TGGamePlay);
         stateManager.detach(GameState);
         stateManager.detach(TowerState);
         stateManager.detach(CreepState);
         stateManager.detach(BeamState);
         stateManager.detach(LevelState);
-        stateManager.detach(PauseState);
-        stateManager.detach(GameOverAppState);
     }
     
     /**
@@ -173,19 +148,14 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called by GUI state.
      */
     public void pause() {
-        disableStates();
-        PauseState.setEnabled(true);
-        PauseState.enable();
-    }
-    
-    /**
-     * Unpauses the game.
-     * Called by the  Pause state.
-     */
-    public void unpause() {
-        enableStates();
-        PauseState.disable();
-        PauseState.setEnabled(false);
+        if (isPaused) {
+            enableStates();
+            isPaused = false;
+        }
+        else {
+            disableStates();
+            isPaused = true;
+        }
     }
     
     /**
@@ -206,7 +176,6 @@ public class TowerDefenseMain extends SimpleApplication {
         BeamState.setEnabled(false);
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
-        TGGamePlay.setEnabled(false);
     }
     /** 
      * These are the states that are enabled on unpause.
@@ -217,29 +186,15 @@ public class TowerDefenseMain extends SimpleApplication {
         LevelState.setEnabled(true);
         BeamState.setEnabled(true);
         TowerState.setEnabled(true);
-        TGGamePlay.setEnabled(true);
     }
     
     /**
      * This is called from the pause menu to get back to the main menu.  False
      * Alternatively, it is called from the GameOver state, with boolean True
      */
-    public void goToMainMenu(boolean isLost) {
-        if (!isLost) {
-            disableStates();
-        }
-        stateManager.detach(TGGamePlay);
-        stateManager.attach(TGStart);
-        if (!isLost) {
-            TGStart.attachContinueButton();
-            PauseState.disable();
-            PauseState.setEnabled(false);
-        }
-        else {
-            GameOverAppState.disable();
-            GameOverAppState.setEnabled(false);
-        }
-        
+    public void goToMainMenu() {
+        pause();
+        TGStart.toggle();
     }
     
     
