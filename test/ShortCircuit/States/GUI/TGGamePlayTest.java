@@ -46,7 +46,7 @@ public class TGGamePlayTest {
         System.out.println("initialize");
         AppStateManager stateManager = null;
         Application app = null;
-        TGGamePlay instance = null;
+        GameGUI instance = null;
         instance.initialize(stateManager, app);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -59,7 +59,7 @@ public class TGGamePlayTest {
     public void testUpdate() {
         System.out.println("update");
         float tpf = 0.0F;
-        TGGamePlay instance = null;
+        GameGUI instance = null;
         instance.update(tpf);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -71,7 +71,7 @@ public class TGGamePlayTest {
     @Test
     public void testCleanup() {
         System.out.println("cleanup");
-        TGGamePlay instance = null;
+        GameGUI instance = null;
         instance.cleanup();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

@@ -332,7 +332,7 @@ public class GameState extends AbstractAppState {
     public void cleanup() {
         rootNode.detachAllChildren();
     }
-   
+    
 
     public ScheduledThreadPoolExecutor getEx() {
         return ex;

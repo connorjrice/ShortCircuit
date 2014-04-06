@@ -126,6 +126,6 @@ public class BeamState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-
+        beamNode.detachAllChildren();
     }
 }

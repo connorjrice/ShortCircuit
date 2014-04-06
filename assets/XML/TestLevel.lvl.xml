@@ -8,7 +8,7 @@
             <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
             <plrBudget>100</plrBudget>
-            <plrLevel>0</plrLevel>
+            <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
         </param>

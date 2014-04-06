@@ -85,6 +85,7 @@ public class LevelState extends AbstractAppState {
     public void debugGame() {
         initMG("TestLevel");
         GameState.createLight();
+        GameState.setLevelParams(mg.getLevelParams());
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
         GameState.createBase("Base", mg.getBaseVec(), mg.getBaseScale());
         TowerState.buildUnbuiltTowers(mg.getUnbuiltTowerVecs());
@@ -147,6 +148,7 @@ public class LevelState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+        rootNode.detachAllChildren();
     }
 
 }

@@ -68,7 +68,7 @@ public class TowerDefenseMainTest {
     public void testShowTGMenu() {
         System.out.println("showTGMenu");
         TowerDefenseMain instance = new TowerDefenseMain();
-        instance.showTGMenu();
+        instance.showTGStart();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -99,19 +99,6 @@ public class TowerDefenseMainTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getGUIViewport method, of class TowerDefenseMain.
-     */
-    @Test
-    public void testGetGUIViewport() {
-        System.out.println("getGUIViewport");
-        TowerDefenseMain instance = new TowerDefenseMain();
-        ViewPort expResult = null;
-        ViewPort result = instance.getGUIViewport();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of pause method, of class TowerDefenseMain.
@@ -169,18 +156,6 @@ public class TowerDefenseMainTest {
         System.out.println("goToMainMenu");
         TowerDefenseMain instance = new TowerDefenseMain();
         instance.goToMainMenu();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of continueFromPaused method, of class TowerDefenseMain.
-     */
-    @Test
-    public void testContinueFromPaused() {
-        System.out.println("continueFromPaused");
-        TowerDefenseMain instance = new TowerDefenseMain();
-        instance.continueFromPaused();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

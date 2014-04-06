@@ -197,9 +197,21 @@ public class TowerState extends AbstractAppState {
     public Vector3f getBuiltTowerSize() {
         return builtTowerSize;
     }
+    
+    @Override
+    public void stateAttached(AppStateManager stateManager) {
+        
+    }
+    
+    @Override
+    public void stateDetached(AppStateManager stateManager) {
+        towerNode.detachAllChildren();
+    }
+
 
     @Override
     public void cleanup() {
         super.cleanup();
+        towerNode.detachAllChildren();
     }
 }

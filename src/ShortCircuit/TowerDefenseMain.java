@@ -4,20 +4,18 @@ import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
-import ShortCircuit.States.GUI.TGGamePlay;
-import ShortCircuit.States.GUI.TGStart;
+import ShortCircuit.States.GUI.GameGUI;
+import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.controls.Trigger;
-import com.jme3.renderer.ViewPort;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Tower Defense
- *
+ * ShortCircuit: A tower defense game
  * @author Connor Rice
  */
 
@@ -31,8 +29,8 @@ public class TowerDefenseMain extends SimpleApplication {
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
-    private TGStart TGStart;
-    private TGGamePlay TGGamePlay;
+    private StartGUI StartGUI;
+    private GameGUI GameGUI;
     private boolean isPaused = false;
     
 
@@ -51,7 +49,7 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args 
      */
     public static void main(String[] args) {
-        Logger.getLogger("").setLevel(Level.OFF);
+        //Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         app.start();
     }
@@ -69,20 +67,19 @@ public class TowerDefenseMain extends SimpleApplication {
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
 
-        //setDisplayFps(false);
+        setDisplayFps(false);
         setDisplayStatView(false);
         
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
-
-        //showStartMenu();
-        showTGMenu();
+        showTGStart();
     }
     
     
-    public void showTGMenu() {
-        TGStart = new TGStart(this);
-        stateManager.attach(TGStart);
+    public void showTGStart() {
+        inputManager.setCursorVisible(true);
+        StartGUI = new StartGUI(this);
+        stateManager.attach(StartGUI);
     }
     
     /**
@@ -95,25 +92,23 @@ public class TowerDefenseMain extends SimpleApplication {
      * assets/XML; the file extension is .lvl.xml
      */
     public void startGame(boolean debug, String levelName) {
-        TGStart.toggle();
+        StartGUI.toggle();
+        isPaused = false;
         GameState = new GameState();
-        LevelState = new LevelState(debug, levelName);
-        //GuiState = new GUIAppState(this);
-        TGGamePlay = new TGGamePlay(this);
+        GameGUI = new GameGUI(this);
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-        inputManager.setCursorVisible(true);
+        LevelState = new LevelState(debug, levelName);
         attachGameStates();
     }
-    
     
     /**
      * Attaches all of the states necessary for playing a level.
      * Called by startGame().
      */
     private void attachGameStates() {
-        stateManager.attach(TGGamePlay);
+        stateManager.attach(GameGUI);
         stateManager.attach(GameState);
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
@@ -126,7 +121,7 @@ public class TowerDefenseMain extends SimpleApplication {
      * Called when starting/continuing from the Start menu.
      */
     public void detachGameStates() {
-        stateManager.detach(TGGamePlay);
+        stateManager.detach(GameGUI);
         stateManager.detach(GameState);
         stateManager.detach(TowerState);
         stateManager.detach(CreepState);
@@ -134,18 +129,10 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.detach(LevelState);
     }
     
-    /**
-     * Returns the GUI Viewport
-     * @return guiViewPort
-     * Called by GUI and Start states.
-     */
-    public ViewPort getGUIViewport() {
-        return guiViewPort;
-    }
     
     /**
      * Pauses the game.
-     * Called by GUI state.
+     * Called by TGGamePlay
      */
     public void pause() {
         if (isPaused) {
@@ -160,8 +147,7 @@ public class TowerDefenseMain extends SimpleApplication {
     
     /**
      * Ends game and detaches the states so they cannot be retrieved.
-     * This is handled by the GameOverAppState through a call from LevelState.
-     * TODO: Implement high scores state/list
+     * TODO: Integrate with TGGamePlay
      */
     public void gameover() {
        disableStates();
@@ -194,14 +180,7 @@ public class TowerDefenseMain extends SimpleApplication {
      */
     public void goToMainMenu() {
         pause();
-        TGStart.toggle();
-    }
-    
-    
-    public void continueFromPaused() {
-        enableStates();
-        stateManager.attach(TGGamePlay);
-        stateManager.detach(TGStart);
+        StartGUI.toggle();
     }
     
     @Override

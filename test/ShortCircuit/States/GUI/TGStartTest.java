@@ -46,7 +46,7 @@ public class TGStartTest {
         System.out.println("initialize");
         AppStateManager stateManager = null;
         Application app = null;
-        TGStart instance = null;
+        StartGUI instance = null;
         instance.initialize(stateManager, app);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -59,7 +59,7 @@ public class TGStartTest {
     public void testOnStart() {
         System.out.println("onStart");
         String level = "";
-        TGStart instance = null;
+        StartGUI instance = null;
         instance.onStart(level);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -71,7 +71,7 @@ public class TGStartTest {
     @Test
     public void testToggle() {
         System.out.println("toggle");
-        TGStart instance = null;
+        StartGUI instance = null;
         instance.toggle();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -83,7 +83,7 @@ public class TGStartTest {
     @Test
     public void testMainWindowShown() {
         System.out.println("mainWindowShown");
-        TGStart instance = null;
+        StartGUI instance = null;
         boolean expResult = false;
         boolean result = instance.mainWindowShown();
         assertEquals(expResult, result);
@@ -98,7 +98,7 @@ public class TGStartTest {
     public void testUpdate() {
         System.out.println("update");
         float tpf = 0.0F;
-        TGStart instance = null;
+        StartGUI instance = null;
         instance.update(tpf);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -110,7 +110,7 @@ public class TGStartTest {
     @Test
     public void testCleanup() {
         System.out.println("cleanup");
-        TGStart instance = null;
+        StartGUI instance = null;
         instance.cleanup();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

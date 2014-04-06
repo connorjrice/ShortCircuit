@@ -20,6 +20,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Panel;
@@ -29,33 +30,36 @@ import tonegod.gui.core.Screen;
  *
  * @author Connor
  */
-public class TGGamePlay extends AbstractAppState {
+public class GameGUI extends AbstractAppState {
 
     private TowerDefenseMain game;
     private SimpleApplication app;
     private AssetManager assetManager;
     private Camera cam;
     private InputManager inputManager;
-    private GameState GameState;
+    private GameState gs;
     private TowerState TowerState;
     private Button Level0;
     private Button Charge;
     private Screen screen;
     private Node guiNode;
-    private Button Modify;
+    public Button Modify;
     private ButtonAdapter Camera;
     private Panel leftPanel;
     private Panel rightPanel;
     private ButtonAdapter Pause;
     private int camlocation = 0;
-    private ButtonAdapter Health;
-    private ButtonAdapter Budget;
-    private ButtonAdapter Score;
-    private ButtonAdapter Level;
+    public ButtonAdapter Health;
+    public ButtonAdapter Budget;
+    public ButtonAdapter Score;
+    public ButtonAdapter Level;
     private float updateTimer;
     private ButtonAdapter Menu;
+    private ScheduledThreadPoolExecutor ex;
+    private int leftButtons = 10;
+    private int rightButtons = 1605;
 
-    public TGGamePlay(TowerDefenseMain _game) {
+    public GameGUI(TowerDefenseMain _game) {
         this.game = _game;
     }
 
@@ -67,27 +71,25 @@ public class TGGamePlay extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.cam = this.app.getCamera();
         this.inputManager = this.app.getInputManager();
-        this.GameState = this.app.getStateManager().getState(GameState.class);
+        this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        initScreen();
+        this.ex = this.gs.getEx();
         inputManager.addListener(actionListener, new String[]{"Touch"});
         cam.setLocation(new Vector3f(0, 0, 20f));
+        initScreen();
+
         setupGUI();
     }
 
     @Override
     public void update(float tpf) {
-        if (updateTimer > .1) {
-            Health.setText("Health: " + GameState.getPlrHealth());
-            Budget.setText("Budget: " + GameState.getPlrBudget());
-            Score.setText("Score: " + GameState.getPlrScore());
-            Level.setText("Level: " + GameState.getPlrLvl());
-            changeHealthColorCheck();
-            updateTowerInfo();
-        }
-        else {
+        if (updateTimer > .25) {
+            updateText();
+            updateTimer = 0;
+        } else {
             updateTimer += tpf;
         }
+
     }
     /**
      * Handles touch events. in a poor manner if you ask me. selectPlrObject is
@@ -103,7 +105,7 @@ public class TGGamePlay extends AbstractAppState {
 
                     //debugTCoords(click2d.getX(), click2d.getY());
 
-                    if (GameState.isEnabled()) {
+                    if (gs.isEnabled()) {
                         selectPlrObject(click2d, click3d);
                     }
                 }
@@ -111,12 +113,53 @@ public class TGGamePlay extends AbstractAppState {
         }
     };
 
+    private void updateText() {
+        updatePlrInfo();
+        updateHealthColor();
+        updateTowerInfo();
+    }
+    
+    private void updatePlrInfo() {
+        Health.setText("Health: " + gs.getPlrHealth());
+        Budget.setText("Budget: " + gs.getPlrBudget());
+        Score.setText("Score: " + gs.getPlrScore());
+        Level.setText("Level: " + gs.getPlrLvl());
+    }
+    
+    private void updateHealthColor() {
+        if (gs.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
+            Health.setFontColor(ColorRGBA.Green);
+        } else if (gs.getPlrHealth() <= 50 && gs.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
+            Health.setFontColor(ColorRGBA.Yellow);
+        } else if (gs.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
+            Health.setFontColor(ColorRGBA.Red);
+        }
+    }
     /**
-     * Handles collisions. TODO: Update this process of selecting objects
-     *
-     * @param click2d
-     * @param click3d
+     * Updates the build/upgrade price of the tower that is currently selected.
+     * The selected tower number comes from GameState.
      */
+    private void updateTowerInfo() {
+        if (gs.getSelected() != -1) {
+            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("unbuilt")) {
+                Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+            } else {
+                Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+
+            }
+        }
+    }
+
+
+            /**
+             * Handles collisions. TODO: Update this process of selecting
+             * objects
+             *
+             * @param click2d
+             * @param click3d
+             */
+    
+
     private void selectPlrObject(Vector2f click2d, Vector3f click3d) {
         CollisionResults results = new CollisionResults();
         Vector3f dir = cam.getWorldCoordinates(
@@ -126,7 +169,7 @@ public class TGGamePlay extends AbstractAppState {
         if (results.size() > 0) {
             Vector3f trans = results.getCollision(0).getContactPoint();
             Spatial target = results.getCollision(0).getGeometry();
-            GameState.touchHandle(trans, target); // Target
+            gs.touchHandle(trans, target); // Target
         }
     }
 
@@ -168,7 +211,7 @@ public class TGGamePlay extends AbstractAppState {
     }
 
     private void chargeButton() {
-        Charge = new ButtonAdapter(screen, "charge", new Vector2f(10, 100)) {
+        Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, 100)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 TowerState.chargeTower();
@@ -176,12 +219,12 @@ public class TGGamePlay extends AbstractAppState {
         };
         Charge.setLocalScale(3f, 2f, 1f);
         Charge.setText("Charge: 10");
-        leftPanel.addChild(Charge);
+        screen.addElement(Charge);
 
     }
 
     private void modifyButton() {
-        Modify = new ButtonAdapter(screen, "modify", new Vector2f(10, 200)) {
+        Modify = new ButtonAdapter(screen, "modify", new Vector2f(leftButtons, 200)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 TowerState.upgradeTower();
@@ -189,12 +232,12 @@ public class TGGamePlay extends AbstractAppState {
         };
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
-        leftPanel.addChild(Modify);
+        screen.addElement(Modify);
 
     }
 
     private void cameraButton() {
-        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(10, 300)) {
+        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(leftButtons, 300)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 doCamera();
@@ -202,7 +245,7 @@ public class TGGamePlay extends AbstractAppState {
         };
         Camera.setLocalScale(3f, 2f, 1f);
         Camera.setText("Camera");
-        leftPanel.addChild(Camera);
+        screen.addElement(Camera);
 
     }
 
@@ -221,7 +264,7 @@ public class TGGamePlay extends AbstractAppState {
     }
 
     private void pauseButton() {
-        Pause = new ButtonAdapter(screen, "Pause", new Vector2f(10, 800)) {
+        Pause = new ButtonAdapter(screen, "Pause", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 //game.pause();
@@ -229,11 +272,11 @@ public class TGGamePlay extends AbstractAppState {
         };
         Pause.setLocalScale(3f, 2f, 1f);
         Pause.setText("nOTHING");
-        leftPanel.addChild(Pause);
+        screen.addElement(Pause);
     }
-    
+
     private void menuButton() {
-        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(10, 900)) {
+        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, 900)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 game.goToMainMenu();
@@ -241,71 +284,66 @@ public class TGGamePlay extends AbstractAppState {
         };
         Menu.setLocalScale(3f, 2f, 1f);
         Menu.setText("Menu");
-        leftPanel.addChild(Menu);
+        screen.addElement(Menu);
     }
 
     private void healthButton() {
-        Health = new ButtonAdapter(screen, "health", new Vector2f(10, 100)) {
+        Health = new ButtonAdapter(screen, "health", new Vector2f(rightButtons, 100)) {
         };
         Health.setLocalScale(3f, 2f, 1f);
         Health.setText("Health");
-        rightPanel.addChild(Health);
+        screen.addElement(Health);
     }
 
     private void budgetButton() {
-        Budget = new ButtonAdapter(screen, "Budget", new Vector2f(10, 200)) {
+        Budget = new ButtonAdapter(screen, "Budget", new Vector2f(rightButtons, 200)) {
         };
         Budget.setLocalScale(3f, 2f, 1f);
         Budget.setText("Budget: ");
-        rightPanel.addChild(Budget);
+        screen.addElement(Budget);
     }
 
     private void scoreButton() {
-        Score = new ButtonAdapter(screen, "Score", new Vector2f(10, 300)) {
+        Score = new ButtonAdapter(screen, "Score", new Vector2f(rightButtons, 300)) {
         };
         Score.setLocalScale(3f, 2f, 1f);
         Score.setText("Score: ");
-        rightPanel.addChild(Score);
+        screen.addElement(Score);
     }
 
     private void levelButton() {
-        Level = new ButtonAdapter(screen, "Level", new Vector2f(10, 400)) {
+        Level = new ButtonAdapter(screen, "Level", new Vector2f(rightButtons, 400)) {
         };
         Level.setLocalScale(3f, 2f, 1f);
         Level.setText("Level: ");
-        rightPanel.addChild(Level);
+        screen.addElement(Level);
     }
 
-    private void changeHealthColorCheck() {
-        if (GameState.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
-            Health.setFontColor(ColorRGBA.Green);
-        } else if (GameState.getPlrHealth() <= 50 && GameState.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
-            Health.setFontColor(ColorRGBA.Yellow);
-        } else if (GameState.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
-            Health.setFontColor(ColorRGBA.Red);
-        }
-    }
-
-    /**
-     * Updates the build/upgrade price of the tower that is currently selected.
-     * The selected tower number comes from GameState.
-     */
-    private void updateTowerInfo() {
-        if (GameState.getSelected() != -1) {
-            if (GameState.getTowerList().get(GameState.getSelected()).getUserData("Type").equals("unbuilt")) {
-                Modify.setText("Build: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
-            } else {
-                Modify.setText("Upgrade: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
-            }
-        }
-
-
-    }
     @Override
-        public void cleanup() {
+    public void stateAttached(AppStateManager stateManager) {
+
+    }
+    
+    @Override
+    public void stateDetached(AppStateManager stateManager) {
+        inputManager.removeListener(actionListener);
+        screen.removeElement(Budget);
+        screen.removeElement(Camera);
+        screen.removeElement(Charge);
+        screen.removeElement(Health);
+        screen.removeElement(Level);
+        screen.removeElement(Menu);
+        screen.removeElement(Modify);
+        screen.removeElement(Score);
+        screen.removeElement(leftPanel);
+        screen.removeElement(rightPanel);
+        guiNode.removeControl(screen);
+    }
+
+    @Override
+    public void cleanup() {
         super.cleanup();
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        //this is called on the OpenGL thread after the AppState has been detached
+        guiNode.removeControl(screen);
+        
     }
 }
