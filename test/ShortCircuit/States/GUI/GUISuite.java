@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author Connor
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ShortCircuit.States.GUI.TGStartTest.class, ShortCircuit.States.GUI.TGGamePlayTest.class})
+@Suite.SuiteClasses({GameGUITest.class, StartGUITest.class})
 public class GUISuite {
 
     @BeforeClass

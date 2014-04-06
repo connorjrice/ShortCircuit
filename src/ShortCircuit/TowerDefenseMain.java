@@ -6,6 +6,7 @@ import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.GUI.GameGUI;
 import ShortCircuit.States.GUI.StartGUI;
+import ShortCircuit.States.Game.BombState;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
@@ -29,6 +30,7 @@ public class TowerDefenseMain extends SimpleApplication {
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
+    private BombState BombState;
     private StartGUI StartGUI;
     private GameGUI GameGUI;
     private boolean isPaused = false;
@@ -96,6 +98,7 @@ public class TowerDefenseMain extends SimpleApplication {
         isPaused = false;
         GameState = new GameState();
         GameGUI = new GameGUI(this);
+        BombState = new BombState();
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
@@ -113,6 +116,7 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
         stateManager.attach(BeamState);
+        stateManager.attach(BombState);
         stateManager.attach(LevelState);
     }
     
@@ -126,6 +130,7 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.detach(TowerState);
         stateManager.detach(CreepState);
         stateManager.detach(BeamState);
+        stateManager.detach(BombState);
         stateManager.detach(LevelState);
     }
     

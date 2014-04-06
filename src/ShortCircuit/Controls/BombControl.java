@@ -1,6 +1,7 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.GameState;
+import ShortCircuit.Threading.FindBombVictims;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -11,6 +12,10 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * TODO: Documentation
@@ -22,21 +27,29 @@ public class BombControl extends AbstractControl {
     private float bombTimer = 0f;
     private float collideTimer = 0f;
     private float bombSize;
-    private GameState GameState;
+    private int bombDMG = 200;
+    private ArrayList<Spatial> reachable;
+    private Future future;
+    private GameState gs;
+    private ScheduledThreadPoolExecutor ex;
     
     public BombControl(float size, GameState _gstate) {
         bombSize = size;
-        GameState = _gstate;
+        gs = _gstate;
+        this.ex = gs.getEx();
     }
     
     @Override
     protected void controlUpdate(float tpf) {
-        if (bombTimer < .3 && GameState.isEnabled()) {
+        if (bombTimer < .3 && gs.isEnabled()) {
+            
             bombSize += 0.03f;
             spatial.setLocalScale(bombSize);
             bombTimer += tpf;
             if (collideTimer > .1f) {
                 collideWithCreeps();
+                reachable = null;
+                searchForVictims();
                 collideTimer = 0;
             }
             else {
@@ -49,19 +62,59 @@ public class BombControl extends AbstractControl {
         }
     }
     
+    private void searchForVictims() {
+        try {
+            if (reachable == null && future == null) {
+                future = ex.submit(callableFindVics);
+            } else if (future != null) {
+                if (future.isDone()) {
+                    FindBombVictims find = (FindBombVictims) future.get();
+                    reachable = find.getCreepVictims();
+                    future = null;
+                } else if (future.isCancelled()) {
+                    future = null;
+                }
+            }
+        } catch (Exception excpt) {
+            System.out.println("copout");
+        }
+    }
+    
+    
+    private Callable<FindBombVictims> callableFindVics = new Callable<FindBombVictims>() {
+        public FindBombVictims call() throws Exception {
+            ArrayList<Spatial> reach = new ArrayList<Spatial>();
+            ArrayList<Spatial> creepClone = gs.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
+                public ArrayList<Spatial> call() throws Exception {
+                    return (ArrayList<Spatial>) gs.getCreepList().clone();
+                }
+            }).get();
+
+            for (int i = 0; i < creepClone.size(); i++) {
+                if (spatial.getWorldBound().intersects(creepClone.get(i).getWorldBound())) {
+                    reach.add(creepClone.get(i));
+                }
+            }
+            return new FindBombVictims(reach);
+
+        }
+    };
     /**
      * This method collides with all of the creeps currently.
      * Test method: collide with creepNode instead
      */
     protected void collideWithCreeps() {
-        for (int i = 0; i < GameState.getCreepList().size(); i++) {
-            if (spatial.getWorldBound().intersects(GameState.getCreepList().get(i).getWorldBound())) {
-                CreepControl creep = GameState.getCreepList().get(i).getControl(CreepControl.class);
-                creep.decCreepHealth(50);
+        if (reachable != null) {
+            for (int i = 0; i < reachable.size(); i++) {
+                if (reachable.get(i).getControl(CreepControl.class) != null) {
+                    reachable.get(i).getControl(CreepControl.class).decCreepHealth(bombDMG);
+                }
+                reachable.remove(i);
             }
         }
     }
     
+
     
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
@@ -71,7 +124,7 @@ public class BombControl extends AbstractControl {
     
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        BombControl control = new BombControl(.1f, GameState);
+        BombControl control = new BombControl(.1f, gs);
         control.setSpatial(spatial);
         return control;
     }

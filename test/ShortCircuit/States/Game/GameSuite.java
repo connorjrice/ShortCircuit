@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author Connor
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ShortCircuit.States.Game.CreepStateTest.class, ShortCircuit.States.Game.TowerStateTest.class, ShortCircuit.States.Game.BeamStateTest.class, ShortCircuit.States.Game.LevelStateTest.class, ShortCircuit.States.Game.GameStateTest.class})
+@Suite.SuiteClasses({CreepStateTest.class, BombStateTest.class, TowerStateTest.class, BeamStateTest.class, LevelStateTest.class, GameStateTest.class})
 public class GameSuite {
 
     @BeforeClass

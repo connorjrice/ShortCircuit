@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * TODO: Documentation
+ * TODO: Speed up
  * @author Connor Rice
  */
 public class BeamState extends AbstractAppState {

@@ -1,6 +1,6 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.Threading.DropBomb;
+import ShortCircuit.Threading.FindBombVictims;
 import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.FloorFactory;
 import ShortCircuit.Controls.BaseControl;
@@ -28,6 +28,7 @@ public class GameState extends AbstractAppState {
     private CreepState CreepState;
     private TowerState TowerState;
     private BeamState BeamState;
+    private BombState BombState;
 
     
     private SimpleApplication app;
@@ -51,6 +52,7 @@ public class GameState extends AbstractAppState {
     protected int creepMod;
 
     public ScheduledThreadPoolExecutor ex = new ScheduledThreadPoolExecutor(4);
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -58,6 +60,7 @@ public class GameState extends AbstractAppState {
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.BeamState = this.app.getStateManager().getState(BeamState.class);
+        this.BombState = this.app.getStateManager().getState(BombState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
     }
@@ -146,8 +149,7 @@ public class GameState extends AbstractAppState {
     }
 
     public void dropBomb(Vector3f trans) {
-        DropBomb db = new DropBomb(trans, this);
-        db.run();
+        BombState.drawBomb(trans);
     }
 
     /**
@@ -176,6 +178,10 @@ public class GameState extends AbstractAppState {
     public void createBase(String texloc, Vector3f basevec, Vector3f basescale) {
         BaseFactory bf = new BaseFactory(texloc, basevec, basescale, assetManager, this);
         worldNode.attachChild(bf.getBase());
+    }
+    
+    public SimpleApplication getApp() {
+        return this.app;
     }
     
     public BeamState getBeamState() {

@@ -356,4 +356,30 @@ public class CreepStateTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of stateAttached method, of class CreepState.
+     */
+    @Test
+    public void testStateAttached() {
+        System.out.println("stateAttached");
+        AppStateManager stateManager = null;
+        CreepState instance = new CreepState();
+        instance.stateAttached(stateManager);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of stateDetached method, of class CreepState.
+     */
+    @Test
+    public void testStateDetached() {
+        System.out.println("stateDetached");
+        AppStateManager stateManager = null;
+        CreepState instance = new CreepState();
+        instance.stateDetached(stateManager);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }

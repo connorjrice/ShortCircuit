@@ -295,4 +295,30 @@ public class TowerStateTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of stateAttached method, of class TowerState.
+     */
+    @Test
+    public void testStateAttached() {
+        System.out.println("stateAttached");
+        AppStateManager stateManager = null;
+        TowerState instance = new TowerState();
+        instance.stateAttached(stateManager);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of stateDetached method, of class TowerState.
+     */
+    @Test
+    public void testStateDetached() {
+        System.out.println("stateDetached");
+        AppStateManager stateManager = null;
+        TowerState instance = new TowerState();
+        instance.stateDetached(stateManager);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }

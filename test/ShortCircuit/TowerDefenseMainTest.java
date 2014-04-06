@@ -171,4 +171,16 @@ public class TowerDefenseMainTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of showTGStart method, of class TowerDefenseMain.
+     */
+    @Test
+    public void testShowTGStart() {
+        System.out.println("showTGStart");
+        TowerDefenseMain instance = new TowerDefenseMain();
+        instance.showTGStart();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }

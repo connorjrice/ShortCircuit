@@ -6,6 +6,7 @@ import ShortCircuit.States.Game.CreepState;
 /**
  * Currently, this class moves creeps based upon a Vector3f called direction.
  * Eventually, this will be used to do pathfinding!
+ * TODO: This isn't actually threaded. Make it so.
  * @author clarence
  */
 public class MoveCreep {

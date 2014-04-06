@@ -1,6 +1,6 @@
 package ShortCircuit.Cheats;
 
-import ShortCircuit.Threading.DropBomb;
+import ShortCircuit.Threading.FindBombVictims;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.Game.GameState;
@@ -79,8 +79,7 @@ public class CheatState extends AbstractAppState {
         Vector3f potato = Vector3f.ZERO;
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {
-                DropBomb db = new DropBomb(potato, GameState);
-                db.run();
+                //dropbomb
                 potato.add(0f,j*.001f,0f);
             }
             potato.add(i*.001f, 0f,0f);

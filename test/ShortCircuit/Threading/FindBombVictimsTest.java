@@ -4,6 +4,7 @@
  */
 package ShortCircuit.Threading;
 
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Connor
  */
-public class DropBombTest {
+public class FindBombVictimsTest {
     
-    public DropBombTest() {
+    public FindBombVictimsTest() {
     }
     
     @BeforeClass
@@ -37,13 +38,15 @@ public class DropBombTest {
     }
 
     /**
-     * Test of run method, of class DropBomb.
+     * Test of getCreepVictims method, of class FindBombVictims.
      */
     @Test
-    public void testRun() {
-        System.out.println("run");
-        DropBomb instance = null;
-        instance.run();
+    public void testGetCreepVictims() {
+        System.out.println("getCreepVictims");
+        FindBombVictims instance = null;
+        ArrayList expResult = null;
+        ArrayList result = instance.getCreepVictims();
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

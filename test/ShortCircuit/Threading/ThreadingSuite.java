@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author Connor
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ShortCircuit.Threading.MoveCreepTest.class, ShortCircuit.Threading.FindReachableSpawnersTest.class, ShortCircuit.Threading.FindCreepsTest.class, ShortCircuit.Threading.DropBombTest.class, ShortCircuit.Threading.SpawnCreepTest.class, ShortCircuit.Threading.UpgradeTowerTest.class})
+@Suite.SuiteClasses({ShortCircuit.Threading.MoveCreepTest.class, ShortCircuit.Threading.FindReachableSpawnersTest.class, ShortCircuit.Threading.FindCreepsTest.class, ShortCircuit.Threading.SpawnCreepTest.class, ShortCircuit.Threading.UpgradeTowerTest.class, ShortCircuit.Threading.FindBombVictimsTest.class})
 public class ThreadingSuite {
 
     @BeforeClass

@@ -6,6 +6,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Objects.LevelParams;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
@@ -686,6 +687,20 @@ public class GameStateTest {
         GameState instance = new GameState();
         ScheduledThreadPoolExecutor expResult = null;
         ScheduledThreadPoolExecutor result = instance.getEx();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getApp method, of class GameState.
+     */
+    @Test
+    public void testGetApp() {
+        System.out.println("getApp");
+        GameState instance = new GameState();
+        SimpleApplication expResult = null;
+        SimpleApplication result = instance.getApp();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
