@@ -32,9 +32,8 @@ public class BeamState extends AbstractAppState {
     private ColorRGBA colorPurple = new ColorRGBA(2.0f, 0.0f, 2.0f, 0);
     private float updateTimer = 0.0f;
     private SimpleApplication app;
-    private Node rootNode;
     private AssetManager assetManager;
-    private float beamwidth = 2.0f;
+    private float beamwidth = 6.0f;
     private Node worldNode;
 
     @Override
@@ -63,14 +62,10 @@ public class BeamState extends AbstractAppState {
      * Builds all of the different beams.
      */
     public void initAssets() {
-        beam_matRed = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        beam_matRed.setColor("Color", ColorRGBA.Red);
-        beam_matPink = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        beam_matPink.setColor("Color", ColorRGBA.Pink);
-        beam_matGreen = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        beam_matGreen.setColor("Color", ColorRGBA.Green);
-        beam_matPurple = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        beam_matPurple.setColor("Color", colorPurple);
+        beam_matRed = assetManager.loadMaterial("Materials/redBeam.j3m");
+        beam_matPink = assetManager.loadMaterial("Materials/orangeBeam.j3m");
+        beam_matGreen = assetManager.loadMaterial("Materials/greenBeam.j3m");
+        beam_matPurple = assetManager.loadMaterial("Materials/purpleBeam.j3m");
     }
 
     public void attachBeamNode() {
@@ -93,6 +88,7 @@ public class BeamState extends AbstractAppState {
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(beam_matRed);
+
             beamNode.attachChild(beamg);
         } else if (type.equals("pinkLaser")) {
             beaml = new Line(origin, target);

@@ -10,6 +10,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.buttons.CheckBox;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -33,6 +34,7 @@ public class StartGUI extends AbstractAppState {
     private int height;
     private int width;
     private Vector2f buttonSize = new Vector2f(200, 100);
+    private ButtonAdapter frills;
 
     public StartGUI(TowerDefenseMain _game) {
         game = _game;
@@ -58,6 +60,7 @@ public class StartGUI extends AbstractAppState {
         newGame();
         level1();
         debugButton();
+        isFrillsCheck();
     }
 
     private void initWindow() {
@@ -118,6 +121,19 @@ public class StartGUI extends AbstractAppState {
         debug.setFont("Interface/Fonts/DejaVuSans.fnt");
         screen.addElement(debug);
     }
+    
+    private void isFrillsCheck() {
+        frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                game.toggleFrills();
+            }
+        };
+        frills.setIsToggleButton(true);
+        frills.setText("Disable Frills");
+        screen.addElement(frills);
+    }
+        
 
     public void onStart(String level) {
         game.detachGameStates();
@@ -134,6 +150,7 @@ public class StartGUI extends AbstractAppState {
         newGame.hide();
         Level1.hide();
         debug.hide();
+        frills.hide();
     }
 
     private void showAll() {
@@ -141,6 +158,7 @@ public class StartGUI extends AbstractAppState {
         newGame.show();
         Level1.show();
         debug.show();
+        frills.show();
     }
 
     public void toggle() {

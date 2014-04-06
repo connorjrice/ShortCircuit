@@ -7,7 +7,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
@@ -34,7 +33,6 @@ public class GameGUI extends AbstractAppState {
 
     private TowerDefenseMain game;
     private SimpleApplication app;
-    private AssetManager assetManager;
     private Camera cam;
     private InputManager inputManager;
     private GameState gs;
@@ -53,6 +51,7 @@ public class GameGUI extends AbstractAppState {
     public ButtonAdapter Budget;
     public ButtonAdapter Score;
     public ButtonAdapter Level;
+    private boolean isFrills = true;
     private float updateTimer;
     private float frillsTimer;
     private ButtonAdapter Menu;
@@ -76,7 +75,6 @@ public class GameGUI extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
-        this.assetManager = this.app.getAssetManager();
         this.cam = this.app.getCamera();
         this.inputManager = this.app.getInputManager();
         this.gs = this.app.getStateManager().getState(GameState.class);
@@ -102,7 +100,7 @@ public class GameGUI extends AbstractAppState {
         } else {
             updateTimer += tpf;
         }
-        if (frillsTimer > .25) {
+        if (frillsTimer > .25 && isFrills) {
             updateFrills();
             frillsTimer = 0;
         }
@@ -289,7 +287,6 @@ public class GameGUI extends AbstractAppState {
         Modify.setButtonHoverInfo(null, null);
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
-        Modify.setFontColor(ColorRGBA.Red);
         screen.addElement(Modify);
 
     }
@@ -350,6 +347,8 @@ public class GameGUI extends AbstractAppState {
         };
         Health.setLocalScale(3f, 2f, 1f);
         Health.setText("Health");
+        Health.setIgnoreMouse(true);
+        Health.setFontColor(ColorRGBA.Green);
         internalHealth = gs.getPlrHealth();
         screen.addElement(Health);
     }
@@ -359,6 +358,7 @@ public class GameGUI extends AbstractAppState {
         };
         Budget.setLocalScale(3f, 2f, 1f);
         Budget.setText("Budget: ");
+        Budget.setIgnoreMouse(true);
         screen.addElement(Budget);
     }
 
@@ -367,6 +367,7 @@ public class GameGUI extends AbstractAppState {
         };
         Score.setLocalScale(3f, 2f, 1f);
         Score.setText("Score: ");
+        Score.setIgnoreMouse(true);
         screen.addElement(Score);
     }
 
@@ -375,6 +376,7 @@ public class GameGUI extends AbstractAppState {
         };
         Level.setLocalScale(3f, 2f, 1f);
         Level.setText("Level: ");
+        Level.setIgnoreMouse(true);
         screen.addElement(Level);
     }
 
@@ -397,6 +399,15 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(leftPanel);
         screen.removeElement(rightPanel);
         guiNode.removeControl(screen);
+    }
+    
+    public void toggleFrills() {
+        if (isFrills) {
+            Health.setFontColor(ColorRGBA.White);
+            Charge.setFontColor(ColorRGBA.White);
+            Modify.setFontColor(ColorRGBA.White);
+        }
+        isFrills = !isFrills;
     }
 
     @Override

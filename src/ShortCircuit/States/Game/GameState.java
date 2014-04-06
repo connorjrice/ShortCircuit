@@ -10,8 +10,11 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.BloomFilter;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
@@ -156,8 +159,10 @@ public class GameState extends AbstractAppState {
      */
     public void createLight() {
         AmbientLight ambient = new AmbientLight();
-        ambient.setColor(ColorRGBA.White.mult(5f));
+        ambient.setColor(ColorRGBA.White.mult(3f));
         worldNode.addLight(ambient);
+
+
     }
 
     /**

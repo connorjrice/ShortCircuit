@@ -3,6 +3,9 @@ package ShortCircuit.Factories;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.Game.GameState;
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.PointLight;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -27,6 +30,10 @@ public class TowerFactory {
         tower_geom.setLocalScale(unbuiltTowerSize);
         tower_geom.setMaterial(assetManager.loadMaterial("Materials/UnbuiltTower.j3m"));
         tower_geom.setLocalTranslation(towervec);
+        //AmbientLight light = new AmbientLight();
+        //light.setColor(ColorRGBA.White.mult(100f));
+        
+        //tower_geom.addLight(light);
         tower = tower_geom;
         tower.setUserData("Location", towervec);
         tower.setUserData("Type", type);

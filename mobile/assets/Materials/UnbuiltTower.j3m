@@ -1,6 +1,7 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
         ColorMap : Flip Textures/unbuilttower.jpg
+        GlowColor : 0.6 0.0 0.0 0.5
      }
     AdditionalRenderState {
     }

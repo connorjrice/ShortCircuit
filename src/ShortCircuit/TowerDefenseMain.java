@@ -13,6 +13,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.controls.Trigger;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.BloomFilter;
+import com.jme3.post.filters.BloomFilter.GlowMode;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +40,7 @@ public class TowerDefenseMain extends SimpleApplication {
     private GameOverGUI GameOverGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
-    
+    private boolean inGame = false;
     
     public int width;
     public int height;
@@ -84,7 +87,16 @@ public class TowerDefenseMain extends SimpleApplication {
         
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        BloomFilter bloom = new BloomFilter(GlowMode.Objects);
+        bloom.setDownSamplingFactor(2.0f);
+        //exp 5, blur 2
+
+        fpp.addFilter(bloom);
+        viewPort.addProcessor(fpp);
+        
         showTGStart();
+
     }
     
     
@@ -111,6 +123,7 @@ public class TowerDefenseMain extends SimpleApplication {
         StartGUI.toggle();
         isPaused = false;
         isPauseAllowed = true;
+        inGame = true;
         GameState = new GameState();
         GameGUI = new GameGUI(this);
         BombState = new BombState();
@@ -176,7 +189,8 @@ public class TowerDefenseMain extends SimpleApplication {
     public void gameover() {
         isPauseAllowed = false;
         detachGameStates();
-        stateManager.attach(GameOverGUI);  
+        stateManager.attach(GameOverGUI); 
+        inGame = false;
     }
     
     /**
@@ -217,6 +231,12 @@ public class TowerDefenseMain extends SimpleApplication {
     
     public int getHeight() {
         return height;
+    }
+    
+    public void toggleFrills() {
+        if (inGame) {
+            GameGUI.toggleFrills();
+        }
     }
     
     @Override
