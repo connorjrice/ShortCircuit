@@ -19,7 +19,7 @@ public class MainActivity extends AndroidHarness{
         // Set the application class to run
         appClass = "ShortCircuit.TowerDefenseMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
-        eglConfigType = ConfigType.FASTEST;
+        eglConfigType = ConfigType.BEST;
         // Exit Dialog title & message
         exitDialogTitle = "Exit?";
         exitDialogMessage = "Press Yes";

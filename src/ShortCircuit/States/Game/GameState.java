@@ -158,7 +158,7 @@ public class GameState extends AbstractAppState {
      */
     public void createLight() {
         AmbientLight ambient = new AmbientLight();
-        ambient.setColor(ColorRGBA.White.mult(3f));
+        ambient.setColor(ColorRGBA.White.mult(128f));
         worldNode.addLight(ambient);
 
 

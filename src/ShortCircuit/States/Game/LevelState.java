@@ -87,7 +87,7 @@ public class LevelState extends AbstractAppState {
         GameState.createLight();
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
-        GameState.createBase("Base", mg.getBaseVec(), mg.getBaseScale());
+        GameState.createBase("/Base", mg.getBaseVec(), mg.getBaseScale());
         TowerState.buildUnbuiltTowers(mg.getUnbuiltTowerVecs());
         TowerState.buildStarterTowers(mg.getStarterTowers());
         TowerState.attachTowerNode();

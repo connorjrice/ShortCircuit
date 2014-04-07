@@ -16,6 +16,7 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.BloomFilter.GlowMode;
+import com.jme3.system.AppSettings;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +63,9 @@ public class TowerDefenseMain extends SimpleApplication {
     public static void main(String[] args) {
         Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
+        AppSettings sets = new AppSettings(true);
+        sets.setRenderer(AppSettings.LWJGL_OPENGL3);
+        app.setSettings(sets);
         app.start();
     }
 
@@ -90,6 +94,8 @@ public class TowerDefenseMain extends SimpleApplication {
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         BloomFilter bloom = new BloomFilter(GlowMode.Objects);
         bloom.setDownSamplingFactor(2.0f);
+        bloom.setBlurScale(3.0f);
+        bloom.setExposurePower(7f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
         
@@ -129,7 +135,7 @@ public class TowerDefenseMain extends SimpleApplication {
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-          GameOverGUI = new GameOverGUI(this);
+        GameOverGUI = new GameOverGUI(this);
         attachGameStates();
     }
     
