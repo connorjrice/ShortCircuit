@@ -25,7 +25,7 @@ public class TowerFactory {
             String type,  AssetManager assetManager, GameState gs) {
         Geometry tower_geom = new Geometry("Tower", new Box(1,1,1));
         tower_geom.setLocalScale(unbuiltTowerSize);
-        tower_geom.setMaterial(assetManager.loadMaterial("Materials/UnbuiltTower.j3m"));
+        tower_geom.setMaterial(assetManager.loadMaterial("Materials/"+gs.getMatDir()+"/UnbuiltTower.j3m"));
         tower_geom.setLocalTranslation(towervec);
         tower = tower_geom;
         tower.setUserData("Location", towervec);

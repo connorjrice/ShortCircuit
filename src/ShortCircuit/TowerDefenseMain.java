@@ -123,13 +123,13 @@ public class TowerDefenseMain extends SimpleApplication {
         isPauseAllowed = true;
         inGame = true;
         GameState = new GameState();
+        LevelState = new LevelState(debug, levelName);
         GameGUI = new GameGUI(this);
         BombState = new BombState();
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-        LevelState = new LevelState(debug, levelName);
-        GameOverGUI = new GameOverGUI(this);
+          GameOverGUI = new GameOverGUI(this);
         attachGameStates();
     }
     

@@ -10,11 +10,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.filters.BloomFilter;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
@@ -54,6 +51,7 @@ public class GameState extends AbstractAppState {
     protected int creepMod;
 
     public ScheduledThreadPoolExecutor ex = new ScheduledThreadPoolExecutor(4);
+    public String matDir;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -103,6 +101,7 @@ public class GameState extends AbstractAppState {
         setPlrLvl(lp.getPlrLevel());
         setPlrScore(lp.getPlrScore());
         setDebug(lp.getDebug());
+        setMatDir(lp.getMatDir());
     }
 
     
@@ -238,6 +237,14 @@ public class GameState extends AbstractAppState {
     
     protected int getCreepMod() {
         return creepMod;
+    }
+    
+    public String getMatDir() {
+        return matDir;
+    }
+    
+    public void setMatDir(String _matDir) {
+        matDir = _matDir;
     }
     
 

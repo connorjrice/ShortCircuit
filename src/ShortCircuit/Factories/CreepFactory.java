@@ -22,7 +22,7 @@ public class CreepFactory {
     private void createCreep(CreepTraits ct, 
             AssetManager assetManager, CreepState cs) {
         Geometry creep_geom = new Geometry("Creep", cs.getUnivBox());
-        creep_geom.setMaterial(assetManager.loadMaterial("Materials/"+ct.getType()+"Creep.j3m"));
+        creep_geom.setMaterial(assetManager.loadMaterial(ct.getMaterialLocation()));
         creep_geom.setLocalScale(ct.getSize());
         creep_geom.setLocalTranslation(ct.getSpawnPoint());
         creep = creep_geom;

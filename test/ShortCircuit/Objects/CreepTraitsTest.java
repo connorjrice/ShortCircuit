@@ -157,7 +157,7 @@ public class CreepTraitsTest {
         System.out.println("getTextureLocation");
         CreepTraits instance = null;
         String expResult = "";
-        String result = instance.getTextureLocation();
+        String result = instance.getMaterialLocation();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

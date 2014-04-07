@@ -112,6 +112,7 @@ public class MapGenerator {
         }
         return starterTowers;
     }
+    
 
     public LevelParams getLevelParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
@@ -123,13 +124,15 @@ public class MapGenerator {
         int plrBudget = Integer.parseInt(eElement.getElementsByTagName("plrBudget").item(0).getTextContent());
         int plrLevel = Integer.parseInt(eElement.getElementsByTagName("plrLevel").item(0).getTextContent());
         int plrScore = Integer.parseInt(eElement.getElementsByTagName("plrScore").item(0).getTextContent());
-        String debugs = eElement.getElementsByTagName("numCreeps").item(0).getTextContent();
+        String debugs = eElement.getElementsByTagName("debug").item(0).getTextContent();
+        String matdir = eElement.getElementsByTagName("matdir").item(0).getTextContent();
+        System.out.println(matdir);
         boolean debug;
         if (debugs.equals("true")) {
             debug = true;
         } else {
             debug = false;
         }
-        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug);
+        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir);
     }
 }

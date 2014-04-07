@@ -26,7 +26,7 @@ public class BaseFactory {
     private void createBase(String baseName, Vector3f basevec, Vector3f basescale,
             AssetManager assetManager, GameState gs) {
         base_geom = new Geometry("Base", new Box(1,1,1));
-        base_geom.setMaterial(assetManager.loadMaterial("Materials/"+baseName+".j3m"));
+        base_geom.setMaterial(assetManager.loadMaterial("Materials/"+gs.getMatDir()+baseName+".j3m"));
         base_geom.setLocalScale(basescale);
         base_geom.setLocalTranslation(basevec);
         base_geom.addControl(new BaseControl(gs, basevec));

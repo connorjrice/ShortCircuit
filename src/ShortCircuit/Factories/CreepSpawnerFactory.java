@@ -24,7 +24,7 @@ public class CreepSpawnerFactory {
     private void createCreepSpawner(int index, String creepSpawnerMat, Vector3f spawnervec, String direction,
             AssetManager assetManager, CreepState cs) {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1,1,1));
-        spawner_geom.setMaterial(assetManager.loadMaterial("Materials/"+creepSpawnerMat+".j3m"));
+        spawner_geom.setMaterial(assetManager.loadMaterial("Materials/"+cs.getMatDir()+"/"+creepSpawnerMat+".j3m"));
         if (spawnervec.getY() == 0) {
             spawner_geom.setLocalScale(0.5f, 1.0f, 0.25f);
         } 

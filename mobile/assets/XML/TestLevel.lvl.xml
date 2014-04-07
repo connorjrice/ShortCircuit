@@ -11,6 +11,7 @@
             <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
+            <matdir>Circuit</matdir>
         </param>
     </levelparams>
     <floor>

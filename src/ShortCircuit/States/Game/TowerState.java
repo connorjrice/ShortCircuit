@@ -30,12 +30,12 @@ public class TowerState extends AbstractAppState {
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
     
-    public String tow1MatLoc = "Materials/Tower1.j3m";
-    public String tow2MatLoc = "Materials/Tower2.j3m";
-    public String tow3MatLoc = "Materials/Tower3.j3m";
-    public String tow4MatLoc = "Materials/Tower4.j3m";
-    public String towUnMatLoc = "Materials/UnbuiltTower.j3m";
-    public String towEmMatLoc = "Materials/EmptyTower.j3m";
+    public String tow1MatLoc;
+    public String tow2MatLoc;
+    public String tow3MatLoc;
+    public String tow4MatLoc;
+    public String towUnMatLoc;
+    public String towEmMatLoc;
                  
     public int selectedTower = -1;
     private GameState GameState;
@@ -51,10 +51,13 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+
+
     }
 
 
     public void attachTowerNode() {
+
         worldNode.attachChild(towerNode);
     }
 
@@ -145,6 +148,12 @@ public class TowerState extends AbstractAppState {
     }
 
     public void buildStarterTowers(ArrayList<Integer> starterTowerIn) {
+        tow1MatLoc = "Materials/" + GameState.getMatDir() + "/Tower1.j3m";
+        tow2MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower2.j3m";
+        tow3MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower3.j3m";
+        tow4MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower4.j3m";
+        towUnMatLoc = "Materials/" + GameState.getMatDir()+ "/UnbuiltTower.j3m";
+        towEmMatLoc = "Materials/" + GameState.getMatDir()+ "/EmptyTower.j3m";
         for (int i = 0; i < starterTowerIn.size(); i++) {
             TowerControl tower = towerList.get(i).getControl(TowerControl.class);
             tower.charges.add(new Charges("redLaser"));

@@ -1,0 +1,10 @@
+Material Floor 0 : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        SeparateTexCoord : false
+        HardwareShadows : false
+        GlowColor : 0.0 0.0 0.0 1.0
+        ColorMap : Textures/Neon/floor.png
+     }
+    AdditionalRenderState {
+    }
+}

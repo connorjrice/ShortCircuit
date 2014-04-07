@@ -5,8 +5,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -25,11 +23,6 @@ public class BeamState extends AbstractAppState {
     private Geometry beamg;
     public Node beamNode = new Node("Beams");
     public ArrayList<Spatial> beamList = new ArrayList<Spatial>();
-    private Material beam_matGreen;
-    private Material beam_matPurple;
-    private Material beam_matRed;
-    private Material beam_matPink;
-    private ColorRGBA colorPurple = new ColorRGBA(2.0f, 0.0f, 2.0f, 0);
     private float updateTimer = 0.0f;
     private SimpleApplication app;
     private AssetManager assetManager;
@@ -84,26 +77,26 @@ public class BeamState extends AbstractAppState {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
-            beamg.setMaterial(assetManager.loadMaterial("Materials/redBeam.j3m"));
+            beamg.setMaterial(assetManager.loadMaterial("Materials/beam1.j3m"));
             beamNode.attachChild(beamg);
         } else if (type.equals("pinkLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
-            beamg.setMaterial(assetManager.loadMaterial("Materials/orangeBeam.j3m"));
+            beamg.setMaterial(assetManager.loadMaterial("Materials/beam2.j3m"));
             beamNode.attachChild(beamg);
         } else if (type.equals("greenLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
-            beamg.setMaterial(assetManager.loadMaterial("Materials/greenBeam.j3m"));
+            beamg.setMaterial(assetManager.loadMaterial("Materials/beam3.j3m"));
             beamNode.attachChild(beamg);
 
         } else if (type.equals("purpleLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
-            beamg.setMaterial(assetManager.loadMaterial("Materials/purpleBeam.j3m"));
+            beamg.setMaterial(assetManager.loadMaterial("Materials/beam4.j3m"));
             beamNode.attachChild(beamg);
         }
         shot = true;

@@ -40,9 +40,9 @@ public class CreepState extends AbstractAppState {
     private static final float SM_CREEP_SPEED = 0.03f;
     private static final float MD_CREEP_SPEED = 0.02f;
     private static final float LG_CREEP_SPEED = 0.01f;
-    private static final String SM_CREEP_TEXLOC = "Textures/smallcreep.jpg";
-    private static final String MD_CREEP_TEXLOC = "Textures/mediumcreep.jpg";
-    private static final String LG_CREEP_TEXLOC = "Textures/largecreep.jpg";
+    private String smCreepMatloc;
+    private String mdCreepMatloc; 
+    private String lgCreepMatloc;
     public Random creepXGen = new Random();
     
     private SimpleApplication app;
@@ -77,6 +77,9 @@ public class CreepState extends AbstractAppState {
     }
 
     public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs, ArrayList<String> _creepSpawnerDirs) {
+        smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
+        mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
+        lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
         creepSpawnerVecs = _creepSpawnerVecs;
         creepSpawnerDirs = _creepSpawnerDirs;
         for (int i = 0; i < creepSpawnerVecs.size(); i++) {
@@ -89,7 +92,7 @@ public class CreepState extends AbstractAppState {
      * @param ct, object containing traits of the creep
      */
     public void createCreep(CreepTraits ct) {
-        sc = new SpawnCreep(creepList,creepNode, ct,assetManager,this);
+        sc = new SpawnCreep(creepList, creepNode, ct,assetManager,this);
         sc.run();
     }
 
@@ -121,6 +124,10 @@ public class CreepState extends AbstractAppState {
     public String getCreepSpawnerDir(int index) {
         return creepSpawnerDirs.get(index);
     }
+    
+    public String getMatDir() {
+        return GameState.getMatDir();
+    }
         
     
 
@@ -144,30 +151,30 @@ public class CreepState extends AbstractAppState {
     private void createSmallCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", SM_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", SM_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
     private void createMediumCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", MD_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", MD_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
     private void createLargeCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", LG_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", LG_CREEP_TEXLOC, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
     

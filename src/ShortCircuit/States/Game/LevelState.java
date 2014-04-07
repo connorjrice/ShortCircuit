@@ -72,7 +72,7 @@ public class LevelState extends AbstractAppState {
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createLight();
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
-        GameState.createBase("Base", mg.getBaseVec(), mg.getBaseScale());
+        GameState.createBase("/Base", mg.getBaseVec(), mg.getBaseScale());
         TowerState.buildUnbuiltTowers(mg.getUnbuiltTowerVecs());
         TowerState.buildStarterTowers(mg.getStarterTowers());
         TowerState.attachTowerNode();
@@ -118,7 +118,7 @@ public class LevelState extends AbstractAppState {
     }
     
     public String getFloorMatLoc() {
-        return "Materials/Floor0.j3m";
+        return "Materials/"+GameState.getMatDir()+"/Floor.j3m";
     }
     
     public MapGenerator getMG() {

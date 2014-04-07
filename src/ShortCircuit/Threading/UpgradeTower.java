@@ -33,22 +33,22 @@ public class UpgradeTower implements Runnable {
         if (type.equals("unbuilt")) {
             cost = 100;
             type = "redLaser";
-            matLoc = "Materials/Tower1.j3m";
+            matLoc = "Materials/" +gs.getMatDir()+ "/Tower1.j3m";
         }
         else if (type.equals("redLaser")) {
             cost = 50;
             type = "pinkLaser";
-            matLoc = "Materials/Tower2.j3m";
+            matLoc = "Materials/" +gs.getMatDir()+ "/Tower2.j3m";
         }
         else if (type.equals("pinkLaser")) {
             cost = 100;
             type = "greenLaser";
-            matLoc = "Materials/Tower3.j3m";
+            matLoc = "Materials/" +gs.getMatDir()+ "/Tower3.j3m";
         }
         else if (type.equals("greenLaser")) {
             cost = 500;
             type = "purpleLaser";
-            matLoc = "Materials/Tower4.j3m";
+            matLoc = "Materials/" +gs.getMatDir()+ "/Tower4.j3m";
         }
         else if (type.equals("purpleLaser")) {
             type = "ANGRYMONSTER";

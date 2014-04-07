@@ -16,8 +16,10 @@ public class LevelParams {
     private int plrLevel;
     private int plrScore;
     private boolean debug;
+    private String matdir;
+    
     public LevelParams(int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug) {
+            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir) {
         numCreeps = _numCreeps;
         creepMod = _creepMod;
         levelCap = _levelCap;
@@ -27,6 +29,7 @@ public class LevelParams {
         plrLevel = _plrLevel;
         plrScore = _plrScore;
         debug = _debug;
+        matdir = _matdir;
     }
     
     public int getNumCreeps() {
@@ -58,6 +61,8 @@ public class LevelParams {
     public boolean getDebug() {
         return debug;
     }
-    
+    public String getMatDir() {
+        return matdir;
+    }
     
 }
