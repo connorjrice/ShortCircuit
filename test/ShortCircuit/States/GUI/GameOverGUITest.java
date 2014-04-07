@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  *
  * @author Connor
  */
-public class GameGUITest {
+public class GameOverGUITest {
     
-    public GameGUITest() {
+    public GameOverGUITest() {
     }
     
     @BeforeClass
@@ -39,78 +39,53 @@ public class GameGUITest {
     }
 
     /**
-     * Test of initialize method, of class GameGUI.
+     * Test of initialize method, of class GameOverGUI.
      */
     @Test
     public void testInitialize() {
         System.out.println("initialize");
         AppStateManager stateManager = null;
         Application app = null;
-        GameGUI instance = null;
+        GameOverGUI instance = null;
         instance.initialize(stateManager, app);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of update method, of class GameGUI.
+     * Test of update method, of class GameOverGUI.
      */
     @Test
     public void testUpdate() {
         System.out.println("update");
         float tpf = 0.0F;
-        GameGUI instance = null;
+        GameOverGUI instance = null;
         instance.update(tpf);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of stateAttached method, of class GameGUI.
-     */
-    @Test
-    public void testStateAttached() {
-        System.out.println("stateAttached");
-        AppStateManager stateManager = null;
-        GameGUI instance = null;
-        instance.stateAttached(stateManager);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of stateDetached method, of class GameGUI.
+     * Test of stateDetached method, of class GameOverGUI.
      */
     @Test
     public void testStateDetached() {
         System.out.println("stateDetached");
         AppStateManager stateManager = null;
-        GameGUI instance = null;
+        GameOverGUI instance = null;
         instance.stateDetached(stateManager);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of cleanup method, of class GameGUI.
+     * Test of cleanup method, of class GameOverGUI.
      */
     @Test
     public void testCleanup() {
         System.out.println("cleanup");
-        GameGUI instance = null;
+        GameOverGUI instance = null;
         instance.cleanup();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toggleFrills method, of class GameGUI.
-     */
-    @Test
-    public void testToggleFrills() {
-        System.out.println("toggleFrills");
-        GameGUI instance = null;
-        instance.toggleFrills();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

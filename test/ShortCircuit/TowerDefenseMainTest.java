@@ -183,4 +183,56 @@ public class TowerDefenseMainTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of backToTGStart method, of class TowerDefenseMain.
+     */
+    @Test
+    public void testBackToTGStart() {
+        System.out.println("backToTGStart");
+        TowerDefenseMain instance = new TowerDefenseMain();
+        instance.backToTGStart();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getWidth method, of class TowerDefenseMain.
+     */
+    @Test
+    public void testGetWidth() {
+        System.out.println("getWidth");
+        TowerDefenseMain instance = new TowerDefenseMain();
+        int expResult = 0;
+        int result = instance.getWidth();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getHeight method, of class TowerDefenseMain.
+     */
+    @Test
+    public void testGetHeight() {
+        System.out.println("getHeight");
+        TowerDefenseMain instance = new TowerDefenseMain();
+        int expResult = 0;
+        int result = instance.getHeight();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of toggleFrills method, of class TowerDefenseMain.
+     */
+    @Test
+    public void testToggleFrills() {
+        System.out.println("toggleFrills");
+        TowerDefenseMain instance = new TowerDefenseMain();
+        instance.toggleFrills();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }

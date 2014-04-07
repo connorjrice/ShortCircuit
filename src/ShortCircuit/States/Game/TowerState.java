@@ -149,6 +149,7 @@ public class TowerState extends AbstractAppState {
             TowerControl tower = towerList.get(i).getControl(TowerControl.class);
             tower.charges.add(new Charges("redLaser"));
             tower.setType("redLaser");
+            tower.setBuilt();
             changeTowerTexture(tow1MatLoc, tower);
             tower.setSize(builtTowerSize);
         }

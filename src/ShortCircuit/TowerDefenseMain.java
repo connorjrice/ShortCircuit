@@ -90,8 +90,6 @@ public class TowerDefenseMain extends SimpleApplication {
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         BloomFilter bloom = new BloomFilter(GlowMode.Objects);
         bloom.setDownSamplingFactor(2.0f);
-        //exp 5, blur 2
-
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
         

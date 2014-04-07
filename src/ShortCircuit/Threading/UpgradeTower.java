@@ -71,6 +71,9 @@ public class UpgradeTower implements Runnable {
                     tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
+                    if (type.equals("redLaser")) {
+                        tower.setBuilt();
+                    }
                 } 
             }
         }

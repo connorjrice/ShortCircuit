@@ -19,7 +19,6 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -39,26 +38,28 @@ public class TowerControl extends AbstractControl {
     private Vector3f towerloc;
     protected TowerState TowerState;
     private ScheduledThreadPoolExecutor ex;
+    private boolean isBuilt;
     private float shotTimer = 0;
-    private float shotDelay = .1f;
-    private float searchTimer = 0;
-    private float searchDelay = .2f;
+    private float shotDelay = .3f;
+    private float searchTimer = .3f;
+    private float searchDelay = .3f;
     private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
 
-    public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc) {
+    public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc, boolean enabled) {
         BeamState = _bstate;
         TowerState = _tstate;
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
+        isBuilt = enabled;
         this.ex = TowerState.getEx();
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (TowerState.isEnabled() && !getType().equals("unbuilt")) {
+        if (TowerState.isEnabled() && isBuilt) {
             if (!charges.isEmpty()){
                 if (searchTimer > searchDelay) {
                     reachable = null;
@@ -142,23 +143,6 @@ public class TowerControl extends AbstractControl {
 
         }
     };
-    
-    private Callable<FindReachableSpawners> callableReachableSpawners = new Callable<FindReachableSpawners>() {
-        public FindReachableSpawners call() throws Exception {
-            ArrayList<Spatial> towerClone = TowerState.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
-                public ArrayList<Spatial> call() throws Exception {
-                    return (ArrayList<Spatial>) TowerState.getCreepSpawnerList().clone();
-                }
-            }).get();
-            
-            for (int i = 0; i < towerClone.size(); i++) {
-                
-                
-            }
-           return new FindReachableSpawners(towerClone);
-        }
-        
-    };
 
     protected void decideShoot() {
         if (reachable != null) {
@@ -187,6 +171,10 @@ public class TowerControl extends AbstractControl {
         else {
             charges.remove(0);
         }
+    }
+    
+    public void setBuilt() {
+        isBuilt = true;
     }
 
     public void addInitialCharges() {

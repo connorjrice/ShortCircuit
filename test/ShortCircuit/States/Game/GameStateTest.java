@@ -705,4 +705,18 @@ public class GameStateTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of getBuildCost method, of class GameState.
+     */
+    @Test
+    public void testGetBuildCost() {
+        System.out.println("getBuildCost");
+        GameState instance = new GameState();
+        int expResult = 0;
+        int result = instance.getBuildCost();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }
