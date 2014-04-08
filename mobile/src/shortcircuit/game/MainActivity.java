@@ -19,7 +19,7 @@ public class MainActivity extends AndroidHarness{
         // Set the application class to run
         appClass = "ShortCircuit.TowerDefenseMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
-        eglConfigType = ConfigType.BEST;
+        eglConfigType = ConfigType.FASTEST;
         // Exit Dialog title & message
         exitDialogTitle = "Exit?";
         exitDialogMessage = "Press Yes";
@@ -27,9 +27,9 @@ public class MainActivity extends AndroidHarness{
         eglConfigVerboseLogging = false;
         // Choose screen orientation
         screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        splashPicID = R.drawable.loading;
         // Enable MouseEvents being generated from TouchEvents (default = true)
         mouseEventsEnabled = true;
-        splashPicID = R.drawable.loading;
         // Set the default logging level (default=Level.INFO, Level.ALL=All Debug Info)
         LogManager.getLogManager().getLogger("").setLevel(Level.OFF);
     }

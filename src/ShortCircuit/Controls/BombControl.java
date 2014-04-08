@@ -41,8 +41,7 @@ public class BombControl extends AbstractControl {
     
     @Override
     protected void controlUpdate(float tpf) {
-        if (bombTimer < .3 && gs.isEnabled()) {
-            
+        if (gs.isEnabled() && bombTimer < .5f) {
             bombSize += 0.05f;
             spatial.setLocalScale(bombSize);
             bombTimer += tpf;
@@ -57,6 +56,7 @@ public class BombControl extends AbstractControl {
             }
         }
         else {
+            System.out.println(bombSize);
             spatial.removeFromParent();
             spatial.removeControl(this);
         }

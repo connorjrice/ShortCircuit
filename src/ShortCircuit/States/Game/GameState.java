@@ -50,7 +50,7 @@ public class GameState extends AbstractAppState {
     protected int numCreeps;
     protected int creepMod;
 
-    public ScheduledThreadPoolExecutor ex = new ScheduledThreadPoolExecutor(4);
+    public ScheduledThreadPoolExecutor ex;
     public String matDir;
 
     @Override
@@ -63,6 +63,7 @@ public class GameState extends AbstractAppState {
         this.BombState = this.app.getStateManager().getState(BombState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        ex = new ScheduledThreadPoolExecutor(4);
     }
 
     @Override
@@ -351,7 +352,18 @@ public class GameState extends AbstractAppState {
 
     @Override
     public void cleanup() {
+        super.cleanup();
+        worldNode.detachAllChildren();
         rootNode.detachAllChildren();
+        ex.shutdown();
+    }
+    
+    @Override
+    public void stateDetached(AppStateManager stateManager) {
+        worldNode.detachAllChildren();
+        rootNode.detachAllChildren();
+        ex.shutdown();
+        
     }
     
 

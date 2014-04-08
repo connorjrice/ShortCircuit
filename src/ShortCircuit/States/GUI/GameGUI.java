@@ -413,6 +413,18 @@ public class GameGUI extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+        inputManager.removeListener(actionListener);
+        screen.removeElement(Budget);
+        screen.removeElement(Camera);
+        screen.removeElement(Charge);
+        screen.removeElement(Health);
+        screen.removeElement(Level);
+        screen.removeElement(Menu);
+        screen.removeElement(Modify);
+        screen.removeElement(Score);
+        screen.removeElement(Pause);
+        screen.removeElement(leftPanel);
+        screen.removeElement(rightPanel);
         guiNode.removeControl(screen);
 
     }

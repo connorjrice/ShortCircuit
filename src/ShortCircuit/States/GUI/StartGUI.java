@@ -10,7 +10,6 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
-import tonegod.gui.controls.buttons.CheckBox;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;

@@ -35,9 +35,9 @@ public class CreepControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (CreepState.isEnabled()) {
-            mc = new MoveCreep(CreepState, this);
-            mc.run();
+        if (CreepState.isEnabled()) { 
+                mc = new MoveCreep(CreepState, this);
+                mc.run();   
         }
     }
 

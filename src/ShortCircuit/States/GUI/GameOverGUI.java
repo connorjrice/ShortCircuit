@@ -91,8 +91,8 @@ public class GameOverGUI extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        //this is called on the OpenGL thread after the AppState has been detached
+        screen.removeElement(GameOverWindow);
+        screen.removeElement(startButton);
+        guiNode.removeControl(screen);
     }
 }

@@ -1,2 +1,2 @@
-C:\Users\Connor\Documents\TowerProfile\mobile\bin\AndroidManifest.xml : \
-C:\Users\Connor\Documents\TowerProfile\mobile\AndroidManifest.xml \
+C:\Users\Connor\Documents\ShortCircuit\mobile\bin\AndroidManifest.xml : \
+C:\Users\Connor\Documents\ShortCircuit\mobile\AndroidManifest.xml \
