@@ -16,6 +16,7 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.BloomFilter.GlowMode;
+import com.jme3.system.AppSettings;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +63,9 @@ public class TowerDefenseMain extends SimpleApplication {
     public static void main(String[] args) {
         Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
+        AppSettings sets = new AppSettings(true);
+        sets.setSettingsDialogImage("Interface/loading.png");
+        app.setSettings(sets);
         app.start();
     }
 
