@@ -48,13 +48,13 @@ public class BeamState extends AbstractAppState {
     }
     
     private void initAudio() {
-        tower1 = new AudioNode(assetManager, "Audio/tower1.ogg");
+        tower1 = new AudioNode(assetManager, "Audio/tower1.wav");
         tower1.setVolume(.4f);
-        tower2 = new AudioNode(assetManager, "Audio/tower2.ogg");
+        tower2 = new AudioNode(assetManager, "Audio/tower2.wav");
         tower2.setVolume(.4f);
-        tower3 = new AudioNode(assetManager, "Audio/tower3.ogg");
+        tower3 = new AudioNode(assetManager, "Audio/tower3.wav");
         tower3.setVolume(.4f);
-        tower4 = new AudioNode(assetManager, "Audio/tower4.ogg");
+        tower4 = new AudioNode(assetManager, "Audio/tower4.wav");
         tower4.setVolume(.4f);
 
     }

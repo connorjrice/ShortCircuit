@@ -107,7 +107,7 @@ public class TowerDefenseMain extends SimpleApplication {
 
     }
     private void themeSong() {
-        theme = new AudioNode(assetManager, "Audio/underpinning.ogg");
+        theme = new AudioNode(assetManager, "Audio/theme.wav");
         theme.setVolume(1.0f);
         theme.setLooping(true);
         theme.play();
