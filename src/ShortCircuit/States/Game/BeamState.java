@@ -100,6 +100,7 @@ public class BeamState extends AbstractAppState {
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam1.j3m"));
             beamNode.attachChild(beamg);
+            tower1.setLocalTranslation(origin);
             tower1.playInstance();
         } else if (type.equals("pinkLaser")) {
             beaml = new Line(origin, target);
@@ -107,6 +108,7 @@ public class BeamState extends AbstractAppState {
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam2.j3m"));
             beamNode.attachChild(beamg);
+            tower2.setLocalTranslation(origin);
             tower2.playInstance();
         } else if (type.equals("greenLaser")) {
             beaml = new Line(origin, target);
@@ -114,6 +116,7 @@ public class BeamState extends AbstractAppState {
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam3.j3m"));
             beamNode.attachChild(beamg);
+            tower3.setLocalTranslation(origin);
             tower3.playInstance();
         } else if (type.equals("purpleLaser")) {
             beaml = new Line(origin, target);
@@ -121,6 +124,7 @@ public class BeamState extends AbstractAppState {
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam4.j3m"));
             beamNode.attachChild(beamg);
+            tower4.setLocalTranslation(origin);
             tower4.playInstance();
         }
         shot = true;

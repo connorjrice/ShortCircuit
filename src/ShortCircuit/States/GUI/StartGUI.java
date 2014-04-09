@@ -61,22 +61,10 @@ public class StartGUI extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         width = game.getWidth();
         height = game.getHeight();
-        if (!isTheme) {
-            themeSong();
-        }
         initScreen();
     }
     
-    private void themeSong() {
-        theme = new AudioNode(assetManager, "Audio/theme.ogg", false);
-        theme.setVolume(1.0f);
-        theme.setLooping(true);
-        theme.play();
-        isTheme = true;
-        
-                
-        
-    }
+
 
    
 
@@ -235,7 +223,6 @@ public class StartGUI extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-        theme.stop();
         screen.removeElement(MainWindow);
         guiNode.removeControl(screen);
     }

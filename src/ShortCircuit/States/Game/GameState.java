@@ -12,6 +12,8 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -53,6 +55,7 @@ public class GameState extends AbstractAppState {
 
     public ScheduledThreadPoolExecutor ex;
     public String matDir;
+    private Vector3f basevec;
 
     public GameState() {}
     
@@ -107,6 +110,8 @@ public class GameState extends AbstractAppState {
         setDebug(lp.getDebug());
         setMatDir(lp.getMatDir());
     }
+    
+
 
     
     private void debugLoopAdditions() {
@@ -189,7 +194,8 @@ public class GameState extends AbstractAppState {
      * Creates a base at the base vector given by LevelState.
      * TODO:Should be updated to allow for multiple bases
      */
-    public void createBase(String texloc, Vector3f basevec, Vector3f basescale) {
+    public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
+        basevec = _basevec;
         BaseFactory bf = new BaseFactory(texloc, basevec, basescale, assetManager, this);
         worldNode.attachChild(bf.getBase());
     }
@@ -359,7 +365,7 @@ public class GameState extends AbstractAppState {
     public boolean getDebugMode() {
         return debugMode;
     }
-
+    
     @Override
     public void cleanup() {
         super.cleanup();

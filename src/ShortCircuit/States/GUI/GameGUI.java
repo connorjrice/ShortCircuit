@@ -12,6 +12,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -94,13 +95,15 @@ public class GameGUI extends AbstractAppState {
         height = game.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
         cam.setLocation(new Vector3f(0, 0, 20f));
+        this.app.getListener().setLocation(new Vector3f (0,0,5f));
+        this.app.getListener().setRotation(cam.getRotation());
         initScreen();
-
         setupGUI();
     }
 
     @Override
     public void update(float tpf) {
+
         if (updateTimer > .15) {
             if (gs.getPlrHealth() <= 0) {
                 game.gameover();
@@ -117,16 +120,21 @@ public class GameGUI extends AbstractAppState {
         else {
             frillsTimer += tpf;
         }
-
-
+        
     }
-    /**
+    public void setAudioListenerPosition(Vector3f trans) {
+        app.getListener().setLocation(trans);
+        app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI/2,   new Vector3f(0,0,1)));
+    }
+        /**
      * Handles touch events for GameState.
      */
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (isEnabled()) {
                 if (keyPressed) {
+                    
+
                     Vector2f click2d = inputManager.getCursorPosition();
                     Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
                             click2d.getX(), click2d.getY()), 0f);

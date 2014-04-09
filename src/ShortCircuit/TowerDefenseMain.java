@@ -71,6 +71,7 @@ public class TowerDefenseMain extends SimpleApplication {
         app.start();
     }
     private FilterPostProcessor fpp;
+    private AudioNode theme;
 
 
     /**
@@ -102,7 +103,18 @@ public class TowerDefenseMain extends SimpleApplication {
         viewPort.addProcessor(fpp);
                 
         showTGStart();
+        themeSong();
 
+    }
+    private void themeSong() {
+        theme = new AudioNode(assetManager, "Audio/underpinning.ogg");
+        theme.setVolume(1.0f);
+        theme.setLooping(true);
+        theme.play();
+
+        
+                
+        
     }
     
     public void toggleBloom() {
@@ -272,8 +284,9 @@ public class TowerDefenseMain extends SimpleApplication {
     @Override
     public void destroy() {
         super.destroy();
+        theme.stop();
+        rootNode.detachAllChildren();
         //GameState.ex.shutdown();
     }
-   
-
+    
 }
