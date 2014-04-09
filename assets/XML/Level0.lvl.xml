@@ -7,7 +7,7 @@
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
-            <plrBudget>100</plrBudget>
+            <plrBudget>20</plrBudget>
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
@@ -44,13 +44,13 @@
             <x>-2.25f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "2">
             <x>2.25f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "3">
             <x>-2.25f</x>

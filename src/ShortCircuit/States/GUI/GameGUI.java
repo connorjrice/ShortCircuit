@@ -22,6 +22,7 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Panel;
 import tonegod.gui.core.Screen;
 
@@ -51,6 +52,10 @@ public class GameGUI extends AbstractAppState {
     public ButtonAdapter Budget;
     public ButtonAdapter Score;
     public ButtonAdapter Level;
+    private ButtonAdapter frills;
+    private ButtonAdapter Loading;
+    private ButtonAdapter Bloom;
+    private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
     private float updateTimer;
     private float frillsTimer;
@@ -65,6 +70,7 @@ public class GameGUI extends AbstractAppState {
     private int internalBudget;
     private int internalScore;
     private int internalLevel;
+    private Menu MainMenu;
     
     public GameGUI() {}
 
@@ -113,8 +119,7 @@ public class GameGUI extends AbstractAppState {
 
     }
     /**
-     * Handles touch events. in a poor manner if you ask me. selectPlrObject is
-     * one of the culprits. TODO: Update this logic/process
+     * Handles touch events for GameState.
      */
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
@@ -133,6 +138,18 @@ public class GameGUI extends AbstractAppState {
             }
         }
     };
+    
+    private void initMenu() {
+        MainMenu = new Menu(screen, new Vector2f(0, 0), false) {
+            @Override
+            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
+            }
+        };
+        MainMenu.setLocalScale(5f, 5f, 1f);
+        //MainMenu.addMenuItem("Level1", Level1, null);
+        MainMenu.showMenu(null, 350, 340);
+        screen.addElement(MainMenu);
+    }
 
     private void updateText() {
         updatePlrInfo();
@@ -235,13 +252,40 @@ public class GameGUI extends AbstractAppState {
         chargeButton();
         modifyButton();
         cameraButton();
-        pauseButton();
+        settingsButton();
         healthButton();
         budgetButton();
         scoreButton();
         levelButton();
         menuButton();
+        frillsToggle();
+        bloomToggle();
     }
+    
+        private void frillsToggle() {
+        frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                game.toggleFrills();
+            }
+        };
+        frills.setIsToggleButton(true);
+        frills.setText("Disable Frills");
+    }
+    
+    
+    private void bloomToggle() {
+        Bloom = new ButtonAdapter(screen, "bloom", new Vector2f(width / 4 + 300, height/2 - 100), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                game.toggleBloom();
+            }
+        };
+        Bloom.setIsToggleButton(true);
+        Bloom.setText("Disable bloom");
+    }
+        
+
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
@@ -255,6 +299,7 @@ public class GameGUI extends AbstractAppState {
     private void leftPanel() {
         leftPanel = new Panel(screen, "leftPanel", new Vector2f(0, 0), new Vector2f(325, 1200));
         leftPanel.setIgnoreMouse(true);
+        leftPanel.setAsContainerOnly();
         screen.addElement(leftPanel);
 
     }
@@ -262,6 +307,7 @@ public class GameGUI extends AbstractAppState {
     private void rightPanel() {
         rightPanel = new Panel(screen, "rightPanel", new Vector2f(1595, 0), new Vector2f(325, 1200));
         rightPanel.setIgnoreMouse(true);
+        rightPanel.setAsContainerOnly();
         screen.addElement(rightPanel);
 
     }
@@ -275,7 +321,7 @@ public class GameGUI extends AbstractAppState {
         };
         Charge.setLocalScale(3f, 2f, 1f);
         Charge.setText("Charge: 10");
-        screen.addElement(Charge);
+        leftPanel.addChild(Charge);
 
     }
 
@@ -290,7 +336,7 @@ public class GameGUI extends AbstractAppState {
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
         Modify.setUseButtonPressedSound(true);
-        screen.addElement(Modify);
+        leftPanel.addChild(Modify);
 
     }
 
@@ -322,15 +368,15 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    private void pauseButton() {
-        Pause = new ButtonAdapter(screen, "Pause", new Vector2f(leftButtons, 800)) {
+    private void settingsButton() {
+        Pause = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 //game.pause();
             }
         };
         Pause.setLocalScale(3f, 2f, 1f);
-        Pause.setText("nOTHING");
+        Pause.setText("Settings");
         Pause.setUseButtonPressedSound(true);
         screen.addElement(Pause);
     }

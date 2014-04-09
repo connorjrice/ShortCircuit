@@ -65,6 +65,7 @@ public class GameState extends AbstractAppState {
         this.BeamState = this.app.getStateManager().getState(BeamState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
         ex = new ScheduledThreadPoolExecutor(4);
     }
 
@@ -367,15 +368,6 @@ public class GameState extends AbstractAppState {
         ex.shutdown();
     }
     
-    @Override
-    public void stateDetached(AppStateManager stateManager) {
-        worldNode.detachAllChildren();
-        rootNode.detachAllChildren();
-        ex.shutdown();
-        
-    }
-    
-
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
     }

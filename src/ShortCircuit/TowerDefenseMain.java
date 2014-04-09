@@ -6,7 +6,6 @@ import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.GUI.GameGUI;
 import ShortCircuit.States.GUI.GameOverGUI;
-import ShortCircuit.States.GUI.LoadingGUI;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
@@ -39,7 +38,6 @@ public class TowerDefenseMain extends SimpleApplication {
     private StartGUI StartGUI;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
-    private LoadingGUI LoadingGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
     private boolean inGame = false;
@@ -70,6 +68,7 @@ public class TowerDefenseMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
+    private FilterPostProcessor fpp;
 
 
     /**
@@ -90,24 +89,32 @@ public class TowerDefenseMain extends SimpleApplication {
         
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-        BloomFilter bloom = new BloomFilter(GlowMode.Objects);
+        fpp = new FilterPostProcessor(assetManager);
+        BloomFilter bloom = new BloomFilter(GlowMode.SceneAndObjects);
         bloom.setDownSamplingFactor(2.0f);
         bloom.setBlurScale(4.0f);
         bloom.setExposurePower(8f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
-        
+                
         showTGStart();
+
+    }
+    
+    public void toggleBloom() {
+        if (viewPort.getProcessors().contains(fpp)) {
+            viewPort.removeProcessor(fpp);
+        }
+        else {
+            viewPort.addProcessor(fpp);            
+        }
 
     }
     
     
     public void showTGStart() {
         StartGUI = new StartGUI(this);
-        LoadingGUI = new LoadingGUI(this);
         stateManager.attach(StartGUI);    
-        stateManager.attach(LoadingGUI);
         
     }
     

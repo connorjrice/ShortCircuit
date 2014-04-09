@@ -269,17 +269,6 @@ public class CreepState extends AbstractAppState {
     public SimpleApplication getApp() {
         return app;
     }
-    
-    @Override
-    public void stateAttached(AppStateManager stateManager) {
-        
-    }
-    
-    @Override
-    public void stateDetached(AppStateManager stateManager) {
-        creepNode.detachAllChildren();
-    }
-
 
    @Override
     public void cleanup() {

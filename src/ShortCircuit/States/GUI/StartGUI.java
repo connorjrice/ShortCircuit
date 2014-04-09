@@ -5,8 +5,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetEventListener;
-import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
@@ -16,7 +14,6 @@ import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
-import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -40,11 +37,11 @@ public class StartGUI extends AbstractAppState {
     private int height;
     private int width;
     private Vector2f buttonSize = new Vector2f(200, 100);
-    private ButtonAdapter frills;
-    private ButtonAdapter Loading;
+
     private ColorRGBA color;
     private AssetManager assetManager;
     private Indicator ind;
+
     
     public StartGUI() {}
 
@@ -74,7 +71,6 @@ public class StartGUI extends AbstractAppState {
         newGame();
         level1();
         debugButton();
-        isFrillsCheck();
         initLoadBar();
     }
     
@@ -108,17 +104,7 @@ public class StartGUI extends AbstractAppState {
         screen.addElement(MainWindow);
     }
 
-    private void initMenu() {
-        MainMenu = new Menu(screen, new Vector2f(0, 0), false) {
-            @Override
-            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
-            }
-        };
-        MainMenu.setLocalScale(5f, 5f, 1f);
-        //MainMenu.addMenuItem("Level1", Level1, null);
-        MainMenu.showMenu(null, 350, 340);
-        screen.addElement(MainMenu);
-    }
+
 
 
     private void level1() {
@@ -158,18 +144,6 @@ public class StartGUI extends AbstractAppState {
         screen.addElement(debug);
     }
     
-    private void isFrillsCheck() {
-        frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                game.toggleFrills();
-            }
-        };
-        frills.setIsToggleButton(true);
-        frills.setText("Disable Frills");
-        screen.addElement(frills);
-    }
-        
 
     public void onStart(String level) {
         game.detachGameStates();
@@ -186,7 +160,6 @@ public class StartGUI extends AbstractAppState {
         newGame.hide();
         Level1.hide();
         debug.hide();
-        frills.hide();
     }
 
     private void showAll() {
@@ -194,7 +167,7 @@ public class StartGUI extends AbstractAppState {
         newGame.show();
         Level1.show();
         debug.show();
-        frills.show();
+
     }
 
     public void toggle() {

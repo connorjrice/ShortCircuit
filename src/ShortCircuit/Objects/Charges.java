@@ -13,19 +13,19 @@ public class Charges {
     public Charges(String _type) {
         if (_type.equals("redLaser")) {
             damage = 100;
-            remBullets = 150;
+            remBullets = 10;
             type = _type;
         } else if (_type.equals("pinkLaser")) {
-            damage = 200;
-            remBullets = 150;
+            damage = 150;
+            remBullets = 20;
             type = _type;
         } else if (_type.equals("greenLaser")) {
-            damage = 400;
-            remBullets = 150;
+            damage = 250;
+            remBullets = 30;
             type = _type;
         } else if (_type.equals("purpleLaser")) {
-            damage = 800;
-            remBullets = 150;
+            damage = 400;
+            remBullets = 40;
             type = _type;
         } else if (_type.equals("baseLaser")) {
             damage = 1600;

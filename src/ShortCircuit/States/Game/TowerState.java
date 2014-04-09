@@ -157,7 +157,7 @@ public class TowerState extends AbstractAppState {
         towUnMatLoc = "Materials/" + GameState.getMatDir()+ "/UnbuiltTower.j3m";
         towEmMatLoc = "Materials/" + GameState.getMatDir()+ "/EmptyTower.j3m";
         for (int i = 0; i < starterTowerIn.size(); i++) {
-            TowerControl tower = towerList.get(i).getControl(TowerControl.class);
+            TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
             tower.charges.add(new Charges("redLaser"));
             tower.setType("redLaser");
             tower.setBuilt();
@@ -165,6 +165,7 @@ public class TowerState extends AbstractAppState {
             tower.setSize(builtTowerSize);
         }
     }
+    
 
     /**
      * Changes a tower at the given index to the given texture.
