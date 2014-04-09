@@ -24,6 +24,7 @@ import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Panel;
+import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
@@ -71,6 +72,7 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private Menu MainMenu;
+    private Window SetWindow;
     
     public GameGUI() {}
 
@@ -139,15 +141,64 @@ public class GameGUI extends AbstractAppState {
         }
     };
     
-    private void initMenu() {
+    private void setupGUI() {
+        leftPanel();
+        rightPanel();
+        settingsMenu();
+        chargeButton();
+        modifyButton();
+        cameraButton();
+        settingsButton();
+        healthButton();
+        budgetButton();
+        scoreButton();
+        levelButton();
+        menuButton();
+        frillsToggle();
+        bloomToggle();
+        settingsWindow();
+    }
+    
+    private void settingsWindow() {
+        SetWindow = new Window(screen, new Vector2f(400,800), new Vector2f(width/2, height/4) );
+        SetWindow.setIgnoreMouse(true);
+        SetWindow.setIsMovable(false);
+        screen.addElement(SetWindow);
+        SetWindow.hide();
+    }
+    
+    private void settingsButton() {
+        Pause = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (!game.isStartWindowShown())
+                    if (SetWindow.getIsVisible()) {
+                        SetWindow.hideWindow();
+                        Menu.setIgnoreMouse(false);
+                        game.pause();
+                    }
+                    else {
+                        SetWindow.showWindow();
+                        Menu.setIgnoreMouse(true);
+                        game.pause();
+                    }
+            }
+        };
+        Pause.setLocalScale(3f, 2f, 1f);
+        Pause.setText("Settings");
+        Pause.setUseButtonPressedSound(true);
+        screen.addElement(Pause);
+    }
+    
+    private void settingsMenu() {
         MainMenu = new Menu(screen, new Vector2f(0, 0), false) {
             @Override
             public void onMenuItemClicked(int index, Object value, boolean isToggled) {
             }
         };
-        MainMenu.setLocalScale(5f, 5f, 1f);
-        //MainMenu.addMenuItem("Level1", Level1, null);
-        MainMenu.showMenu(null, 350, 340);
+        MainMenu.addMenuItem("Caption", null, null);
+        MainMenu.addMenuItem("Caption1", null, null);
+        MainMenu.addMenuItem("Caption2", null, null);
         screen.addElement(MainMenu);
     }
 
@@ -246,21 +297,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    private void setupGUI() {
-        leftPanel();
-        rightPanel();
-        chargeButton();
-        modifyButton();
-        cameraButton();
-        settingsButton();
-        healthButton();
-        budgetButton();
-        scoreButton();
-        levelButton();
-        menuButton();
-        frillsToggle();
-        bloomToggle();
-    }
+
     
         private void frillsToggle() {
         frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
@@ -368,24 +405,20 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    private void settingsButton() {
-        Pause = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                //game.pause();
-            }
-        };
-        Pause.setLocalScale(3f, 2f, 1f);
-        Pause.setText("Settings");
-        Pause.setUseButtonPressedSound(true);
-        screen.addElement(Pause);
-    }
+
 
     private void menuButton() {
         Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, 900)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                game.goToMainMenu();
+                if (!SetWindow.getIsVisible()) {
+                    SetWindow.setIgnoreMouse(true);
+                    game.goToMainMenu();
+                }
+                else {
+                    game.goToMainMenu();
+                    SetWindow.setIgnoreMouse(false);
+                }
             }
         };
         Menu.setLocalScale(3f, 2f, 1f);
@@ -432,26 +465,6 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(Level);
     }
 
-    @Override
-    public void stateAttached(AppStateManager stateManager) {
-    }
-
-    @Override
-    public void stateDetached(AppStateManager stateManager) {
-        inputManager.removeListener(actionListener);
-        screen.removeElement(Budget);
-        screen.removeElement(Camera);
-        screen.removeElement(Charge);
-        screen.removeElement(Health);
-        screen.removeElement(Level);
-        screen.removeElement(Menu);
-        screen.removeElement(Modify);
-        screen.removeElement(Score);
-        screen.removeElement(Pause);
-        screen.removeElement(leftPanel);
-        screen.removeElement(rightPanel);
-        guiNode.removeControl(screen);
-    }
     
     public void toggleFrills() {
         if (isFrills) {

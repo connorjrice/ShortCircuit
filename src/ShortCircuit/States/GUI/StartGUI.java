@@ -6,6 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
@@ -41,6 +42,8 @@ public class StartGUI extends AbstractAppState {
     private ColorRGBA color;
     private AssetManager assetManager;
     private Indicator ind;
+    private AudioNode theme;
+    private boolean isTheme = false;
 
     
     public StartGUI() {}
@@ -57,7 +60,19 @@ public class StartGUI extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         width = game.getWidth();
         height = game.getHeight();
+        if (!isTheme) {
+            themeSong();
+        }
         initScreen();
+    }
+    
+    private void themeSong() {
+        theme = new AudioNode(assetManager, "Audio/theme.ogg");
+        theme.setPositional(false);
+        theme.setVolume(.5f);
+        theme.setLooping(true);
+        theme.play();
+        isTheme = true;
     }
 
     private void initScreen() {
@@ -67,7 +82,7 @@ public class StartGUI extends AbstractAppState {
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
 
-        initWindow();
+        settingsWindow();
         newGame();
         level1();
         debugButton();
@@ -94,13 +109,21 @@ public class StartGUI extends AbstractAppState {
         return ind;
     }
 
-    private void initWindow() {
+    /*private void initWindow() {
         MainWindow = new Window(screen, "mainwindow",
                 new Vector2f(width / 4, height / 4), new Vector2f(width / 2, height / 2));
         MainWindow.setWindowTitle("ShortCircuit");
         MainWindow.setWindowIsMovable(false);
         MainWindow.setIsResizable(false);
         MainWindow.setIgnoreMouse(true);
+        MainWindow.setAsContainerOnly();
+        screen.addElement(MainWindow);
+    }*/
+    
+    private void settingsWindow() {
+        MainWindow = new Window(screen, new Vector2f(400,800), new Vector2f(width/2, height/4) );
+        MainWindow.setIgnoreMouse(true);
+        MainWindow.setIsMovable(false);
         screen.addElement(MainWindow);
     }
 
@@ -108,7 +131,7 @@ public class StartGUI extends AbstractAppState {
 
 
     private void level1() {
-        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
+        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(40,100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level1");
@@ -116,11 +139,12 @@ public class StartGUI extends AbstractAppState {
         };
         Level1.setText("Level1");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(Level1);
+        //screen.addElement(Level1);
+        MainWindow.addChild(Level1);
     }
 
     private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(width / 4 + 100, height / 2 + 100), buttonSize) {
+        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(240,100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level0");
@@ -129,11 +153,11 @@ public class StartGUI extends AbstractAppState {
 
         newGame.setText("Level0");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(newGame);
+        MainWindow.addChild(newGame);
     }
 
     private void debugButton() {
-        debug = new ButtonAdapter(screen, "debug", new Vector2f(width / 4 + 500, height / 2 + 100), buttonSize) {
+        debug = new ButtonAdapter(screen, "debug", new Vector2f(440,100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onDebug();
@@ -141,7 +165,7 @@ public class StartGUI extends AbstractAppState {
         };
         debug.setText("Debug");
         debug.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(debug);
+        MainWindow.addChild(debug);
     }
     
 
@@ -155,7 +179,7 @@ public class StartGUI extends AbstractAppState {
         game.startGame(true, null);
     }
 
-    private void hideAll() {
+    /*private void hideAll() {
         MainWindow.hide();
         newGame.hide();
         Level1.hide();
@@ -168,9 +192,22 @@ public class StartGUI extends AbstractAppState {
         Level1.show();
         debug.show();
 
-    }
-
+    }*/
+    
     public void toggle() {
+        if (cont) {
+            MainWindow.hideWindow();
+            cont = false;
+        }
+        else {
+            MainWindow.showWindow();
+            cont = true;
+        }
+    }
+    
+    
+
+    /*public void toggle() {
         if (cont) {
             hideAll();
             cont = false;
@@ -178,7 +215,7 @@ public class StartGUI extends AbstractAppState {
             showAll();
             cont = true;
         }
-    }
+    }*/
 
     public boolean mainWindowShown() {
         return cont;
@@ -188,10 +225,12 @@ public class StartGUI extends AbstractAppState {
     public void update(float tpf) {
         //TODO: implement behavior during runtime
     }
+   
 
     @Override
     public void cleanup() {
         super.cleanup();
+        theme.stop();
         screen.removeElement(MainWindow);
         guiNode.removeControl(screen);
     }

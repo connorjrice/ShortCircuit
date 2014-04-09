@@ -9,6 +9,7 @@ import ShortCircuit.States.GUI.GameOverGUI;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.controls.Trigger;
@@ -19,6 +20,7 @@ import com.jme3.system.AppSettings;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tonegod.gui.controls.windows.Window;
 
 /**
  * ShortCircuit: A tower defense game
@@ -77,6 +79,8 @@ public class TowerDefenseMain extends SimpleApplication {
      */
     @Override
     public void simpleInitApp() {
+
+
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
@@ -93,7 +97,7 @@ public class TowerDefenseMain extends SimpleApplication {
         BloomFilter bloom = new BloomFilter(GlowMode.SceneAndObjects);
         bloom.setDownSamplingFactor(2.0f);
         bloom.setBlurScale(4.0f);
-        bloom.setExposurePower(8f);
+        bloom.setExposurePower(7f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
                 
@@ -120,7 +124,8 @@ public class TowerDefenseMain extends SimpleApplication {
     
     public void backToTGStart() {
         stateManager.detach(GameOverGUI);
-        showTGStart();
+        stateManager.attach(StartGUI);
+        StartGUI.toggle();
     }
     
     /**
@@ -234,8 +239,11 @@ public class TowerDefenseMain extends SimpleApplication {
         TowerState.setEnabled(true);
     }
     
-    /**
-     * This is called from the pause menu to get back to the main menu.  False
+    public boolean isStartWindowShown() {
+        return StartGUI.mainWindowShown();
+    }
+    
+     /* This is called from the pause menu to get back to the main menu.  False
      * Alternatively, it is called from the GameOver state, with boolean True
      */
     public void goToMainMenu() {
@@ -249,6 +257,10 @@ public class TowerDefenseMain extends SimpleApplication {
     
     public int getHeight() {
         return height;
+    }
+    
+    public boolean isPaused() {
+        return isPaused;
     }
     
     public void toggleFrills() {
