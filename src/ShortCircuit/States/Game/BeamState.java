@@ -49,13 +49,13 @@ public class BeamState extends AbstractAppState {
     
     private void initAudio() {
         tower1 = new AudioNode(assetManager, "Audio/tower1.ogg");
-        tower1.setVolume(.08f);
+        tower1.setVolume(.4f);
         tower2 = new AudioNode(assetManager, "Audio/tower2.ogg");
-        tower2.setVolume(.1f);
+        tower2.setVolume(.4f);
         tower3 = new AudioNode(assetManager, "Audio/tower3.ogg");
-        tower3.setVolume(.1f);
+        tower3.setVolume(.4f);
         tower4 = new AudioNode(assetManager, "Audio/tower4.ogg");
-        tower4.setVolume(.1f);
+        tower4.setVolume(.4f);
 
     }
 
@@ -100,55 +100,28 @@ public class BeamState extends AbstractAppState {
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam1.j3m"));
             beamNode.attachChild(beamg);
-            app.enqueue(new Callable() {
-                public Object call() {
-                    tower1.clone().play();
-                    return null;
-                }
-                
-            });
-
-
+            tower1.playInstance();
         } else if (type.equals("pinkLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam2.j3m"));
             beamNode.attachChild(beamg);
-            app.enqueue(new Callable() {
-                public Object call() {
-                    tower2.clone().play();
-                    return null;
-                }
-                
-            });
+            tower2.playInstance();
         } else if (type.equals("greenLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam3.j3m"));
             beamNode.attachChild(beamg);
-            app.enqueue(new Callable() {
-                public Object call() {
-                    tower3.clone().play();
-                    return null;
-                }
-                
-            });
-
+            tower3.playInstance();
         } else if (type.equals("purpleLaser")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam4.j3m"));
             beamNode.attachChild(beamg);
-            app.enqueue(new Callable() {
-                public Object call() {
-                    tower4.clone().play();
-                    return null;
-                }
-                
-            });
+            tower4.playInstance();
         }
         shot = true;
     }

@@ -12,6 +12,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
+import java.util.concurrent.Callable;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
@@ -67,13 +68,17 @@ public class StartGUI extends AbstractAppState {
     }
     
     private void themeSong() {
-        theme = new AudioNode(assetManager, "Audio/theme.ogg");
-        theme.setPositional(false);
-        theme.setVolume(.5f);
+        theme = new AudioNode(assetManager, "Audio/theme.ogg", false);
+        theme.setVolume(1.0f);
         theme.setLooping(true);
         theme.play();
         isTheme = true;
+        
+                
+        
     }
+
+   
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
