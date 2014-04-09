@@ -25,7 +25,6 @@ public class CreepControl extends AbstractControl {
     protected int creepNum;
     protected Vector3f direction;
     protected ScheduledThreadPoolExecutor ex;
-    private float moveTimer = 0;
     private MoveCreep mc;
 
     public CreepControl(CreepState _state) {
@@ -36,8 +35,8 @@ public class CreepControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (CreepState.isEnabled()) { 
-                mc = new MoveCreep(CreepState, this);
-                mc.run();   
+            mc = new MoveCreep(CreepState, this);
+            mc.run();   
         }
     }
 

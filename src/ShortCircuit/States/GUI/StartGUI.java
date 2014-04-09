@@ -5,11 +5,18 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetEventListener;
+import com.jme3.asset.AssetKey;
+import com.jme3.asset.AssetManager;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.extras.Indicator;
+import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -34,6 +41,12 @@ public class StartGUI extends AbstractAppState {
     private int width;
     private Vector2f buttonSize = new Vector2f(200, 100);
     private ButtonAdapter frills;
+    private ButtonAdapter Loading;
+    private ColorRGBA color;
+    private AssetManager assetManager;
+    private Indicator ind;
+    
+    public StartGUI() {}
 
     public StartGUI(TowerDefenseMain _game) {
         game = _game;
@@ -44,6 +57,7 @@ public class StartGUI extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
+        this.assetManager = this.app.getAssetManager();
         width = game.getWidth();
         height = game.getHeight();
         initScreen();
@@ -55,11 +69,33 @@ public class StartGUI extends AbstractAppState {
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
+
         initWindow();
         newGame();
         level1();
         debugButton();
         isFrillsCheck();
+        initLoadBar();
+    }
+    
+    
+    private void initLoadBar() {
+        color = ColorRGBA.randomColor();
+        ind = new Indicator(screen, "loadbar", new Vector2f(width/2, height/2-100), Indicator.Orientation.HORIZONTAL) {
+            @Override
+            public void onChange(float arg0, float arg1) {
+            }
+        };
+        ind.setBaseImage(screen.getStyle("Window").getString("defaultImg"));
+        ind.setIndicatorColor(ColorRGBA.randomColor());
+        ind.setAlphaMap(screen.getStyle("Indicator").getString("alphaImg"));
+        ind.setIndicatorPadding(new Vector4f(7,7,7,7));
+        ind.setMaxValue(100);
+        ind.setDisplayPercentage();
+    }
+    
+    public Indicator getInd() {
+        return ind;
     }
 
     private void initWindow() {
@@ -83,6 +119,7 @@ public class StartGUI extends AbstractAppState {
         MainMenu.showMenu(null, 350, 340);
         screen.addElement(MainMenu);
     }
+
 
     private void level1() {
         Level1 = new ButtonAdapter(screen, "level1", new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {

@@ -65,6 +65,8 @@ public class GameGUI extends AbstractAppState {
     private int internalBudget;
     private int internalScore;
     private int internalLevel;
+    
+    public GameGUI() {}
 
     public GameGUI(TowerDefenseMain _game) {
         this.game = _game;
@@ -287,6 +289,7 @@ public class GameGUI extends AbstractAppState {
         Modify.setButtonHoverInfo(null, null);
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
+        Modify.setUseButtonPressedSound(true);
         screen.addElement(Modify);
 
     }
@@ -300,6 +303,7 @@ public class GameGUI extends AbstractAppState {
         };
         Camera.setLocalScale(3f, 2f, 1f);
         Camera.setText("Camera");
+        Camera.setUseButtonPressedSound(true);
         screen.addElement(Camera);
 
     }
@@ -327,6 +331,7 @@ public class GameGUI extends AbstractAppState {
         };
         Pause.setLocalScale(3f, 2f, 1f);
         Pause.setText("nOTHING");
+        Pause.setUseButtonPressedSound(true);
         screen.addElement(Pause);
     }
 
@@ -339,6 +344,7 @@ public class GameGUI extends AbstractAppState {
         };
         Menu.setLocalScale(3f, 2f, 1f);
         Menu.setText("Menu");
+        Menu.setUseButtonPressedSound(true);
         screen.addElement(Menu);
     }
 

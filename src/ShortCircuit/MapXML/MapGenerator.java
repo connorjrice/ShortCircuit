@@ -126,7 +126,6 @@ public class MapGenerator {
         int plrScore = Integer.parseInt(eElement.getElementsByTagName("plrScore").item(0).getTextContent());
         String debugs = eElement.getElementsByTagName("debug").item(0).getTextContent();
         String matdir = eElement.getElementsByTagName("matdir").item(0).getTextContent();
-        System.out.println(matdir);
         boolean debug;
         if (debugs.equals("true")) {
             debug = true;

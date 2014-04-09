@@ -8,6 +8,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
  * LevelState calls the appropriate methods in its sibling states to create a 
@@ -29,10 +30,17 @@ public class LevelState extends AbstractAppState {
     protected boolean gameOver = false;
     private final String levelName;
     
+    public LevelState(){
+        isDebug = false;
+        levelName = "Level0";
+    }
+    
     public LevelState(boolean _isDebug, String _levelName) {
         isDebug = _isDebug;
         levelName = _levelName;
     }
+    
+    
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -58,9 +66,7 @@ public class LevelState extends AbstractAppState {
     
     @Override
     public void update(float tpf) {
-        if (GameState.getPlrHealth() <= 0) {
-
-        }
+        super.update(tpf);
     }
     
     /**
@@ -69,6 +75,7 @@ public class LevelState extends AbstractAppState {
      */
     public void newGame(String levelname) {
         initMG(levelname);
+
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createLight();
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
@@ -80,7 +87,10 @@ public class LevelState extends AbstractAppState {
         CreepState.attachCreepNode();
         BeamState.attachBeamNode();
         GameState.attachWorldNode();
+
+
     }
+    
     
     public void debugGame() {
         initMG("TestLevel");

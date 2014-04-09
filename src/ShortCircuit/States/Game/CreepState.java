@@ -37,9 +37,9 @@ public class CreepState extends AbstractAppState {
     private static final int SM_CREEP_HEALTH = 100;
     private static final int MD_CREEP_HEALTH = 200;
     private static final int LG_CREEP_HEALTH = 400;
-    private static final float SM_CREEP_SPEED = 0.03f;
-    private static final float MD_CREEP_SPEED = 0.02f;
-    private static final float LG_CREEP_SPEED = 0.01f;
+    private static final float SM_CREEP_SPEED = 0.045f;
+    private static final float MD_CREEP_SPEED = 0.035f;
+    private static final float LG_CREEP_SPEED = 0.025f;
     private String smCreepMatloc;
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
@@ -63,6 +63,11 @@ public class CreepState extends AbstractAppState {
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
         creepList = new ArrayList<Spatial>();
+    }
+    
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
     }
 
     public void attachCreepNode() {
@@ -259,6 +264,10 @@ public class CreepState extends AbstractAppState {
 
     public ScheduledThreadPoolExecutor getEx() {
         return GameState.getEx();
+    }
+    
+    public SimpleApplication getApp() {
+        return app;
     }
     
     @Override

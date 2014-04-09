@@ -43,6 +43,7 @@ public class TowerControl extends AbstractControl {
     private float shotDelay = .3f;
     private float searchTimer = .3f;
     private float searchDelay = .3f;
+    private float genDelay = 0;
     private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
@@ -60,39 +61,45 @@ public class TowerControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (TowerState.isEnabled() && isBuilt) {
-            if (!charges.isEmpty()){
-                if (searchTimer > searchDelay) {
-                    reachable = null;
-                    searchForCreeps();
-                    searchTimer = 0;
+            if (genDelay > .4f) {
+                if (!charges.isEmpty()) {
+                    if (searchTimer > searchDelay) {
+                        reachable = null;
+                        searchForCreeps();
+                        searchTimer = 0;
+                    } else {
+                        searchTimer += tpf;
+                    }
+                    if (shotTimer > shotDelay) {
+                        decideShoot();
+                        shotTimer = 0;
+                    } else {
+                        shotTimer += tpf;
+                    }
                 } else {
-                    searchTimer += tpf;
+                    emptyTower();
                 }
-                if (shotTimer > shotDelay) {
-                    decideShoot();
-                    shotTimer = 0;
-                }
-                else {
-                    shotTimer += tpf;
-                }
+
             }
             else {
-                emptyTower();
+                genDelay += tpf;
             }
 
         }
-
     }
     
+    
+
     private void excludeCreeps() {
         ArrayList<Spatial> creepSpawners = TowerState.getCreepSpawnerList();
         allowedSpawners = new int[creepSpawners.size()];
         for (int i = 0; i < creepSpawners.size(); i++) {
-            if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f)
+            if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
                 allowedSpawners[i] = creepSpawners.get(i).getUserData("Parent");
+            }
         }
     }
-    
+
     public int[] getAllowedSpawners() {
         return allowedSpawners;
     }
@@ -114,14 +121,13 @@ public class TowerControl extends AbstractControl {
             System.out.println("copout");
         }
     }
-    
     /**
      * Here we are cloning the entire list of creeps ultimately from GameState.
-     * Current goal is to parse this list in a way that fewer offerings are 
+     * Current goal is to parse this list in a way that fewer offerings are
      * being made.
-     * 
-     * Future goal would be to only build the relevant list of creeps in the first
-     * place.
+     *
+     * Future goal would be to only build the relevant list of creeps in the
+     * first place.
      */
     private Callable<FindCreeps> callableCreepFind = new Callable<FindCreeps>() {
         public FindCreeps call() throws Exception {
@@ -136,9 +142,9 @@ public class TowerControl extends AbstractControl {
                 if (creepClone.get(i).getLocalTranslation().distance(towerloc) < 5.0f) {
                     reach.offer(creepClone.get(i));
                 }
-                
+
             }
-            
+
             return new FindCreeps(reach);
 
         }
@@ -151,9 +157,9 @@ public class TowerControl extends AbstractControl {
             }
         }
     }
-    
+
     protected void emptyTower() {
-        TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);        
+        TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
     }
 
     protected void shootCreep() {
@@ -163,16 +169,14 @@ public class TowerControl extends AbstractControl {
                 if (reachable.peek().getControl(CreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
-            }
-            else {
+            } else {
                 reachable.remove();
             }
-        }
-        else {
+        } else {
             charges.remove(0);
         }
     }
-    
+
     public void setBuilt() {
         isBuilt = true;
     }

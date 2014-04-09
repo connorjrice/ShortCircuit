@@ -3,6 +3,7 @@ package ShortCircuit.States.Game;
 import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.FloorFactory;
 import ShortCircuit.Controls.BaseControl;
+import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Objects.LevelParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -12,6 +13,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
@@ -27,7 +29,6 @@ public class GameState extends AbstractAppState {
     private CreepState CreepState;
     private TowerState TowerState;
     private BeamState BeamState;
-    private BombState BombState;
 
     
     private SimpleApplication app;
@@ -53,6 +54,8 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor ex;
     public String matDir;
 
+    public GameState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -60,7 +63,6 @@ public class GameState extends AbstractAppState {
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.BeamState = this.app.getStateManager().getState(BeamState.class);
-        this.BombState = this.app.getStateManager().getState(BombState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         ex = new ScheduledThreadPoolExecutor(4);
@@ -150,9 +152,16 @@ public class GameState extends AbstractAppState {
         }
     }
 
-    public void dropBomb(Vector3f trans) {
-        BombState.drawBomb(trans);
+    public void dropBomb(Vector3f translation) {
+        Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
+        bomb_geom.setMaterial(assetManager.loadMaterial("Materials/Bomb.j3m"));
+        bomb_geom.setLocalScale(.1f);
+        bomb_geom.setLocalTranslation(translation);
+        bomb_geom.addControl(new BombControl(.1f, this));
+        worldNode.attachChild(bomb_geom);
     }
+    
+
 
     /**
      * Creates the light for the game world.

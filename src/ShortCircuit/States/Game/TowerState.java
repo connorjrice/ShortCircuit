@@ -44,6 +44,8 @@ public class TowerState extends AbstractAppState {
     private int buildCost = 100;
     private Node worldNode;
 
+    public TowerState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

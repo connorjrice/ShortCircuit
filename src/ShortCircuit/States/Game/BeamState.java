@@ -29,6 +29,8 @@ public class BeamState extends AbstractAppState {
     private float beamwidth = 6.0f;
     private Node worldNode;
     private boolean shot = false;
+    
+    public BeamState() {}
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {

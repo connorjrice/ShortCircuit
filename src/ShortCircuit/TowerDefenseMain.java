@@ -6,8 +6,8 @@ import ShortCircuit.States.Game.CreepState;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.GUI.GameGUI;
 import ShortCircuit.States.GUI.GameOverGUI;
+import ShortCircuit.States.GUI.LoadingGUI;
 import ShortCircuit.States.GUI.StartGUI;
-import ShortCircuit.States.Game.BombState;
 import ShortCircuit.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
@@ -17,6 +17,7 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import com.jme3.system.AppSettings;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,10 +36,10 @@ public class TowerDefenseMain extends SimpleApplication {
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
-    private BombState BombState;
     private StartGUI StartGUI;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
+    private LoadingGUI LoadingGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
     private boolean inGame = false;
@@ -61,17 +62,14 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args 
      */
     public static void main(String[] args) {
-        Logger.getLogger("").setLevel(Level.OFF);
+        //Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         AppSettings sets = new AppSettings(true);
         sets.setSettingsDialogImage("Interface/loading.png");
+        sets.setFrameRate(60);
         app.setSettings(sets);
         app.start();
     }
-
-
-
-
 
 
     /**
@@ -89,13 +87,14 @@ public class TowerDefenseMain extends SimpleApplication {
         setDisplayFps(false);
         setDisplayStatView(false);
         
+        
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         BloomFilter bloom = new BloomFilter(GlowMode.Objects);
         bloom.setDownSamplingFactor(2.0f);
-        bloom.setBlurScale(3.0f);
-        bloom.setExposurePower(7f);
+        bloom.setBlurScale(4.0f);
+        bloom.setExposurePower(8f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
         
@@ -106,7 +105,10 @@ public class TowerDefenseMain extends SimpleApplication {
     
     public void showTGStart() {
         StartGUI = new StartGUI(this);
-        stateManager.attach(StartGUI);
+        LoadingGUI = new LoadingGUI(this);
+        stateManager.attach(StartGUI);    
+        stateManager.attach(LoadingGUI);
+        
     }
     
     public void backToTGStart() {
@@ -124,6 +126,16 @@ public class TowerDefenseMain extends SimpleApplication {
      * assets/XML; the file extension is .lvl.xml
      */
     public void startGame(boolean debug, String levelName) {
+        this.enqueue(new Callable() {
+            public Object call() throws InterruptedException {
+                
+                //guiViewPort.attachScene(StartGUI.getInd());
+                //rootNode.updateGeometricState();
+                //guiNode.updateGeometricState();
+                return null;
+            }
+        });
+        
         StartGUI.toggle();
         isPaused = false;
         isPauseAllowed = true;
@@ -131,7 +143,6 @@ public class TowerDefenseMain extends SimpleApplication {
         GameState = new GameState();
         LevelState = new LevelState(debug, levelName);
         GameGUI = new GameGUI(this);
-        BombState = new BombState();
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
@@ -149,7 +160,6 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
         stateManager.attach(BeamState);
-        stateManager.attach(BombState);
         stateManager.attach(LevelState);
     }
     
@@ -163,7 +173,6 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.detach(TowerState);
         stateManager.detach(CreepState);
         stateManager.detach(BeamState);
-        stateManager.detach(BombState);
         stateManager.detach(LevelState);
     }
     
@@ -204,7 +213,6 @@ public class TowerDefenseMain extends SimpleApplication {
         GameState.setEnabled(false);
         LevelState.setEnabled(false);
         BeamState.setEnabled(false);
-        BombState.setEnabled(false);
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
     }
@@ -216,7 +224,6 @@ public class TowerDefenseMain extends SimpleApplication {
         CreepState.setEnabled(true);
         LevelState.setEnabled(true);
         BeamState.setEnabled(true);
-        BombState.setEnabled(true);
         TowerState.setEnabled(true);
     }
     
