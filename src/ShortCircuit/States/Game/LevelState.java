@@ -30,6 +30,8 @@ public class LevelState extends AbstractAppState {
     protected boolean gameOver = false;
     private final String levelName;
     
+
+    
     public LevelState(){
         isDebug = false;
         levelName = "Level0";

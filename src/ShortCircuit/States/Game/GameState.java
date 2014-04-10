@@ -59,6 +59,8 @@ public class GameState extends AbstractAppState {
     public AudioNode buildSound;
     
     public AudioNode levelUpSound;
+    
+
 
     public GameState() {}
     
@@ -72,6 +74,8 @@ public class GameState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
+        
+
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
         buildSound.setPositional(false);
         buildSound.setVolume(.3f);

@@ -20,7 +20,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.terrain.noise.Color;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
@@ -28,13 +27,12 @@ import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.AlertBox;
-import tonegod.gui.controls.windows.DialogBox;
 import tonegod.gui.controls.windows.Panel;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
- *
+ * Gameplay GUI for Tower Defense
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {
@@ -53,7 +51,7 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Camera;
     private Panel leftPanel;
     private Panel rightPanel;
-    private ButtonAdapter Pause;
+    private ButtonAdapter Settings;
     private int camlocation = 0;
     public ButtonAdapter Health;
     public ButtonAdapter Budget;
@@ -72,7 +70,6 @@ public class GameGUI extends AbstractAppState {
     private int rightButtons = 1605;
     private int height;
     private int width;
-    private int internalSelected = -1;
     private int internalHealth;
     private int internalBudget;
     private int internalScore;
@@ -83,7 +80,9 @@ public class GameGUI extends AbstractAppState {
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
     private ColorRGBA color = new ColorRGBA();
-    
+    private ButtonAdapter CheatsButton;
+    private ButtonAdapter CheatToggleButton;
+
     public GameGUI() {}
 
     public GameGUI(TowerDefenseMain _game) {
@@ -135,6 +134,66 @@ public class GameGUI extends AbstractAppState {
         }
         
     }
+    
+    private void initScreen() {
+        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
+        screen.setUseMultiTouch(false);
+        guiNode.addControl(screen);
+        //screen.setUseKeyboardIcons(true);
+
+    }
+    
+    /**
+     * This will be the button that, after cheats are activated, shows up
+     * and lets the user use dirty cheats.
+     */
+    private void cheatsButton() {
+       CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (!game.StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
+                    game.toggleCheatsWindow();
+                }
+            }
+        };
+       game.cheatsHandler();
+        CheatsButton.setLocalScale(3f, 2f, 1f);
+        CheatsButton.setText("Cheats");
+        CheatsButton.setUseButtonPressedSound(true);
+        screen.addElement(CheatsButton);
+        CheatsButton.hide();
+    }
+    
+    /**
+     * This button will appear in settings, as a toggle. Next to the textcolor
+     * button probably.
+     */
+    private void cheatToggleButton() {
+        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                toggleCheats();
+            }
+        };
+        CheatToggleButton.setIsToggleButton(true);
+        CheatToggleButton.setText("Cheats");
+        SetWindow.addChild(CheatToggleButton);
+    }
+    
+    /**
+     * This is the method for toggling the cheat menu button.
+     */
+    private void toggleCheats() {
+        if (CheatsButton.getIsVisible()) {
+            CheatsButton.hide();
+        }
+        else {
+            CheatsButton.show();
+        }
+        
+    }
+    
     public void setAudioListenerPosition(Vector3f trans) {
         app.getListener().setLocation(trans);
         app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI/2,   new Vector3f(0,0,1)));
@@ -168,6 +227,7 @@ public class GameGUI extends AbstractAppState {
         leftPanel();
         rightPanel();
         settingsWindow();
+        cheatToggleButton();
         internalMenu();
         progressIndicator();
         chargeButton();
@@ -182,6 +242,7 @@ public class GameGUI extends AbstractAppState {
         textColorToggleButton();
         bloomToggleButton();
         bloomLevelSlider();
+        cheatsButton();
 
     }
     
@@ -209,7 +270,7 @@ public class GameGUI extends AbstractAppState {
     }
     
     private void settingsButton() {
-        Pause = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
+        Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!game.StartGUI.MainWindow.getIsVisible()) {
@@ -226,10 +287,10 @@ public class GameGUI extends AbstractAppState {
                 }
             }
         };
-        Pause.setLocalScale(3f, 2f, 1f);
-        Pause.setText("Settings");
-        Pause.setUseButtonPressedSound(true);
-        screen.addElement(Pause);
+        Settings.setLocalScale(3f, 2f, 1f);
+        Settings.setText("Settings");
+        Settings.setUseButtonPressedSound(true);
+        screen.addElement(Settings);
     }
     
     private void progressIndicator() {
@@ -397,6 +458,8 @@ public class GameGUI extends AbstractAppState {
         SetWindow.addChild(BloomToggleButton);
     }
     
+
+    
     private void bloomLevelSlider() {
         BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60,70), Slider.Orientation.HORIZONTAL, true) {
             @Override
@@ -412,14 +475,7 @@ public class GameGUI extends AbstractAppState {
         
 
 
-    private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
-        screen.setUseMultiTouch(false);
-        guiNode.addControl(screen);
-        //screen.setUseKeyboardIcons(true);
 
-    }
 
     private void leftPanel() {
         leftPanel = new Panel(screen, "leftPanel", new Vector2f(0, 0), new Vector2f(325, 1200));
@@ -568,7 +624,7 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Menu);
         screen.removeElement(Modify);
         screen.removeElement(Score);
-        screen.removeElement(Pause);
+        screen.removeElement(Settings);
         screen.removeElement(leftPanel);
         screen.removeElement(rightPanel);
         guiNode.removeControl(screen);

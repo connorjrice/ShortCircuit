@@ -1,6 +1,5 @@
 package ShortCircuit.Cheats;
 
-import ShortCircuit.Threading.FindBombVictims;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.Game.GameState;
@@ -43,6 +42,7 @@ public class CheatState extends AbstractAppState {
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.LevelState = this.app.getStateManager().getState(LevelState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
+
     }
     
     /**

@@ -1,5 +1,7 @@
 package ShortCircuit;
 
+import ShortCircuit.Cheats.CheatGUI;
+import ShortCircuit.Cheats.CheatState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.States.Game.CreepState;
@@ -21,48 +23,40 @@ import java.util.concurrent.Callable;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tonegod.gui.controls.windows.Window;
 
 /**
  * ShortCircuit: A tower defense game
+ *
  * @author Connor Rice
  */
-
 public class TowerDefenseMain extends SimpleApplication {
 
-    /**
-     * Glorious AppStates.
-     */
     private GameState GameState;
     private BeamState BeamState;
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
+    private CheatState CheatState;
     public StartGUI StartGUI;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
+    private CheatGUI CheatGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
     private boolean inGame = false;
-    
     public int width;
     public int height;
-
-    /**
-     * For interpreting single touches as mouse clicks.
-     * Evenetually, implement multitouch
-     */
     private static final Trigger TRIGGER_ACTIVATE = new MouseButtonTrigger(
             MouseInput.BUTTON_LEFT);
-        private FilterPostProcessor fpp;
+    private FilterPostProcessor fpp;
     private AudioNode theme;
     private final static String MAPPING_ACTIVATE = "Touch";
-    
+    private BloomFilter bloom;
 
     /**
-     * Main Method
-     * The Big Cheese
-     * @param args 
+     * Main Method The Big Cheese
+     *
+     * @param args
      */
     public static void main(String[] args) {
         //Logger.getLogger("").setLevel(Level.OFF);
@@ -73,18 +67,15 @@ public class TowerDefenseMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
-    private BloomFilter bloom;
 
 
 
     /**
-     * Initialize camera, add input mapping, bring up start menu.
-     * Also adjust statview/fps
+     * Initialize camera, add input mapping, bring up start menu. Also adjust
+     * statview/fps
      */
     @Override
     public void simpleInitApp() {
-
-
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
@@ -93,10 +84,20 @@ public class TowerDefenseMain extends SimpleApplication {
         height = getContext().getSettings().getHeight();
         setDisplayFps(false);
         setDisplayStatView(false);
-        
-        
+
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
+        
+        initFilters();
+        showTGStart();
+        underPinning();
+
+    }
+    /**
+     * Sets up the FilterPostProcessor and Bloom filter used by the game.
+     * Called upon initialization of the game.
+     */
+    private void initFilters() {
         fpp = new FilterPostProcessor(assetManager);
         bloom = new BloomFilter(GlowMode.SceneAndObjects);
         bloom.setDownSamplingFactor(2.0f);
@@ -104,85 +105,119 @@ public class TowerDefenseMain extends SimpleApplication {
         bloom.setExposurePower(7f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
-                
-        showTGStart();
-        themeSong();
-
     }
-    private void themeSong() {
+
+    /**
+     * Initializes the theme that plays throughout the game.
+     * Sets volume, sets looping true, and begins playing.
+     */
+    private void underPinning() {
         theme = new AudioNode(assetManager, "Audio/theme.wav");
         theme.setVolume(1.0f);
         theme.setLooping(true);
         theme.play();
 
-        
-                
-        
     }
-    
+
+    /**
+     * Toggle the bloom filter.
+     */
     public void toggleBloom() {
         if (viewPort.getProcessors().contains(fpp)) {
             viewPort.removeProcessor(fpp);
-        }
-        else {
-            viewPort.addProcessor(fpp);            
+        } else {
+            viewPort.addProcessor(fpp);
         }
 
     }
-    
-    public void setBloomExposurePower(float exp) {
-        bloom.setExposurePower(exp);
+
+    /**
+     * Method for changing the bloom filter's exposure power.
+     * @param newVal - what it will be changed to
+     */
+    public void setBloomExposurePower(float newVal) {
+        bloom.setExposurePower(newVal);
     }
-    
-    public void setBloomBlurScape(float exp) {
-        bloom.setBlurScale(exp);
+
+    /**
+     * Method for changing the bloom filter's blur scape.
+     * @param newVal - what it will be changed to
+     */
+    public void setBloomBlurScape(float newVal) {
+        bloom.setBlurScale(newVal);
     }
-    
-    public void setBloomIntensity(float exp) {
-        bloom.setBloomIntensity(exp);
+
+    /**
+     * Method fo setting the bloom filter's intensity
+     * @param newVal - what it should be changed to.
+     */
+    public void setBloomIntensity(float newVal) {
+        bloom.setBloomIntensity(newVal);
     }
-    
-    public void incBloomIntensity(float exp) {
-        bloom.setBloomIntensity(bloom.getBloomIntensity()+exp);
+
+    /**
+     * Increments the bloom filter's intensity
+     * @param add - value to be added to the filter.
+     */
+    public void incBloomIntensity(float add) {
+        bloom.setBloomIntensity(bloom.getBloomIntensity() + add);
     }
-    
-    
+
+    /**
+     * Changes global volume.
+     * @param volume -New volume level.
+     * Not implemented yet.
+     */
     public void setVolume(int volume) {
-      
     }
-    
+
     public void showTGStart() {
         StartGUI = new StartGUI(this);
-        stateManager.attach(StartGUI);    
-        
+        stateManager.attach(StartGUI);
+
     }
-    
+
     public void backToTGStart() {
         stateManager.detach(GameOverGUI);
         stateManager.attach(StartGUI);
         StartGUI.toggle();
     }
     
+    public void toggleCheatsWindow() {
+        CheatGUI.toggleCheatWindow();
+    }
+    
+    public void cheatsHandler() {
+        if (CheatState == null) {
+            CheatState = new CheatState();
+            stateManager.attach(CheatState);
+        }
+        if (CheatGUI == null) {
+            CheatGUI = new CheatGUI();
+            stateManager.attach(CheatGUI);
+        }
+    }
+
     /**
-     * Instantiates all Game States, detaches Start Menu.
-     * Then, starts the game by attaching all of the states.
+     * Instantiates all Game States, detaches Start Menu. Then, starts the game
+     * by attaching all of the states.
+     *
      * @param debug - different method calls need to happen for debug games.
-     * @param levelName - Name of the level to be loaded by LevelState
-     * The levelName is given by the StartMenu state.
-     * The levelName corresponds to an XML file located in:
-     * assets/XML; the file extension is .lvl.xml
+     * @param levelName - Name of the level to be loaded by LevelState The
+     * levelName is given by the StartMenu state. The levelName corresponds to
+     * an XML file located in: assets/XML; the file extension is .lvl.xml
      */
     public void startGame(boolean debug, String levelName) {
         this.enqueue(new Callable() {
             public Object call() throws InterruptedException {
-                
+
                 //guiViewPort.attachScene(StartGUI.getInd());
                 //rootNode.updateGeometricState();
                 //guiNode.updateGeometricState();
                 return null;
             }
         });
-        
+
         StartGUI.toggle();
         isPaused = false;
         isPauseAllowed = true;
@@ -196,10 +231,10 @@ public class TowerDefenseMain extends SimpleApplication {
         GameOverGUI = new GameOverGUI(this);
         attachGameStates();
     }
-    
+
     /**
-     * Attaches all of the states necessary for playing a level.
-     * Called by startGame().
+     * Attaches all of the states necessary for playing a level. Called by
+     * startGame().
      */
     private void attachGameStates() {
         stateManager.attach(GameGUI);
@@ -209,10 +244,10 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.attach(BeamState);
         stateManager.attach(LevelState);
     }
-    
+
     /**
-     * Detaches all of the states necessary for playing a level.
-     * Called when starting/continuing from the Start menu.
+     * Detaches all of the states necessary for playing a level. Called when
+     * starting/continuing from the Start menu.
      */
     public void detachGameStates() {
         stateManager.detach(GameGUI);
@@ -222,37 +257,33 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.detach(BeamState);
         stateManager.detach(LevelState);
     }
-    
-    
+
     /**
-     * Pauses the game.
-     * Called by TGGamePlay
+     * Pauses the game. Called by TGGamePlay
      */
     public void pause() {
         if (isPauseAllowed) {
             if (isPaused) {
                 enableStates();
                 isPaused = false;
-            }
-            else {
+            } else {
                 disableStates();
                 isPaused = true;
             }
         }
     }
-        
-    
+
     /**
-     * Ends game and detaches the states so they cannot be retrieved.
-     * TODO: Integrate with TGGamePlay
+     * Ends game and detaches the states so they cannot be retrieved. TODO:
+     * Integrate with TGGamePlay
      */
     public void gameover() {
         isPauseAllowed = false;
         detachGameStates();
-        stateManager.attach(GameOverGUI); 
+        stateManager.attach(GameOverGUI);
         inGame = false;
     }
-    
+
     /**
      * These are the states that are disabled on pause.
      */
@@ -263,7 +294,8 @@ public class TowerDefenseMain extends SimpleApplication {
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
     }
-    /** 
+
+    /**
      * These are the states that are enabled on unpause.
      */
     public void enableStates() {
@@ -273,37 +305,37 @@ public class TowerDefenseMain extends SimpleApplication {
         BeamState.setEnabled(true);
         TowerState.setEnabled(true);
     }
-    
+
     public boolean isStartWindowShown() {
         return StartGUI.mainWindowShown();
     }
-    
-     /* This is called from the pause menu to get back to the main menu.  False
+
+    /* This is called from the pause menu to get back to the main menu.  False
      * Alternatively, it is called from the GameOver state, with boolean True
      */
     public void goToMainMenu() {
         pause();
         StartGUI.toggle();
     }
-    
+
     public int getWidth() {
         return width;
     }
-    
+
     public int getHeight() {
         return height;
     }
-    
+
     public boolean isPaused() {
         return isPaused;
     }
-    
+
     public void toggleFrills() {
         if (inGame) {
             GameGUI.toggleFrills();
         }
     }
-    
+
     @Override
     public void destroy() {
         super.destroy();
@@ -311,5 +343,4 @@ public class TowerDefenseMain extends SimpleApplication {
         rootNode.detachAllChildren();
         //GameState.ex.shutdown();
     }
-    
 }
