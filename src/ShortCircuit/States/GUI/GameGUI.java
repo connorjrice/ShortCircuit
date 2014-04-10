@@ -307,7 +307,7 @@ public class GameGUI extends AbstractAppState {
 
 
     
-        private void frillsToggle() {
+    private void frillsToggle() {
         frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {

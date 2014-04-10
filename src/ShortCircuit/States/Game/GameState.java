@@ -10,10 +10,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -56,6 +55,8 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor ex;
     public String matDir;
     private Vector3f basevec;
+    
+    public AudioNode buildSound;
 
     public GameState() {}
     
@@ -69,6 +70,9 @@ public class GameState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
+        buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
+        buildSound.setPositional(false);
+        buildSound.setVolume(.3f);
         ex = new ScheduledThreadPoolExecutor(4);
     }
 
@@ -364,6 +368,12 @@ public class GameState extends AbstractAppState {
     
     public boolean getDebugMode() {
         return debugMode;
+    }
+    
+    public void playBuildSound(float pitch) {
+        buildSound.setPitch(pitch);
+        buildSound.playInstance();
+        buildSound.setPitch(1f);
     }
     
     @Override

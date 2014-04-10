@@ -1,7 +1,9 @@
 package shortcircuit.game;
  
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import com.jme3.app.AndroidHarness;
+import com.jme3.system.AppSettings;
 import com.jme3.system.android.AndroidConfigChooser.ConfigType;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -20,7 +22,14 @@ public class MainActivity extends AndroidHarness{
         appClass = "ShortCircuit.TowerDefenseMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
         eglConfigType = ConfigType.FASTEST;
-        // Exit Dialog title & message
+        if (Build.VERSION.SDK_INT >= 9){
+            logger.log(Level.INFO, "Enabling OpenAL Soft Audio (Android 2.3 or higher)");
+            audioRendererType = AppSettings.ANDROID_OPENAL_SOFT;
+        } else {
+            logger.log(Level.INFO, "Enabling Android MediaPlayer/SoundPool Audio (Android 2.2)");
+            audioRendererType = AppSettings.ANDROID_MEDIAPLAYER;
+        }
+         // Exit Dialog title & message
         exitDialogTitle = "Exit?";
         exitDialogMessage = "Press Yes";
         // Enable verbose logging

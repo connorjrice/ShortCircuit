@@ -7,6 +7,7 @@ import ShortCircuit.DataStructures.STCCreepCompare;
 import ShortCircuit.States.Game.TowerState;
 import ShortCircuit.States.Game.BeamState;
 import ShortCircuit.Objects.Charges;
+import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -47,6 +48,7 @@ public class TowerControl extends AbstractControl {
     private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
+    private AudioNode emptySound;
 
     public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc, boolean enabled) {
         BeamState = _bstate;
@@ -56,6 +58,7 @@ public class TowerControl extends AbstractControl {
         reachable = new STC<Spatial>(cc);
         isBuilt = enabled;
         this.ex = TowerState.getEx();
+        emptySound = new AudioNode(TowerState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
 
     @Override
@@ -159,6 +162,7 @@ public class TowerControl extends AbstractControl {
     }
 
     protected void emptyTower() {
+        emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
     }
 

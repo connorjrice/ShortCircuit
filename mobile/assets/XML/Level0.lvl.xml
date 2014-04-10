@@ -7,7 +7,7 @@
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
-            <plrBudget>3000</plrBudget>
+            <plrBudget>20</plrBudget>
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>

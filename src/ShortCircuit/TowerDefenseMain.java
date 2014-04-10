@@ -18,6 +18,7 @@ import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import com.jme3.system.AppSettings;
 import java.util.concurrent.Callable;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tonegod.gui.controls.windows.Window;
@@ -53,6 +54,8 @@ public class TowerDefenseMain extends SimpleApplication {
      */
     private static final Trigger TRIGGER_ACTIVATE = new MouseButtonTrigger(
             MouseInput.BUTTON_LEFT);
+        private FilterPostProcessor fpp;
+    private AudioNode theme;
     private final static String MAPPING_ACTIVATE = "Touch";
     
 
@@ -70,8 +73,7 @@ public class TowerDefenseMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
-    private FilterPostProcessor fpp;
-    private AudioNode theme;
+
 
 
     /**

@@ -2,6 +2,7 @@ package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.Threading.FindBombVictims;
+import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -32,11 +33,14 @@ public class BombControl extends AbstractControl {
     private Future future;
     private GameState gs;
     private ScheduledThreadPoolExecutor ex;
+    private AudioNode bombsound;
     
     public BombControl(float size, GameState _gstate) {
         bombSize = size;
         gs = _gstate;
         this.ex = gs.getEx();
+        bombsound = new AudioNode(gs.getAssetManager(), "Audio/bomb.wav");
+        playSound();
     }
     
     @Override
@@ -57,9 +61,18 @@ public class BombControl extends AbstractControl {
         }
         else {
             System.out.println(bombSize);
+            stopSound();
             spatial.removeFromParent();
             spatial.removeControl(this);
         }
+    }
+    
+    public void playSound() {
+        bombsound.play();
+    }
+    
+    public void stopSound() {
+        bombsound.stop();
     }
     
     private void searchForVictims() {

@@ -16,6 +16,7 @@ public class UpgradeTower implements Runnable {
     private int cost;
     private String type;
     private String matLoc;
+    private float pitch;
 
     public UpgradeTower(GameState _gs, Object _type) {
         gs = _gs;
@@ -34,24 +35,29 @@ public class UpgradeTower implements Runnable {
             cost = 100;
             type = "redLaser";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower1.j3m";
+            pitch = 0.6f;
         }
         else if (type.equals("redLaser")) {
             cost = 50;
             type = "pinkLaser";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower2.j3m";
+            pitch = 0.8f;
         }
         else if (type.equals("pinkLaser")) {
             cost = 100;
             type = "greenLaser";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower3.j3m";
+            pitch = 0.9f;
         }
         else if (type.equals("greenLaser")) {
             cost = 500;
             type = "purpleLaser";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower4.j3m";
+            pitch = 1.0f;
         }
         else if (type.equals("purpleLaser")) {
             type = "ANGRYMONSTER";
+            pitch = 1f;
         }
     }
     
@@ -71,6 +77,7 @@ public class UpgradeTower implements Runnable {
                     tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
+                    gs.playBuildSound(pitch);
                     if (type.equals("redLaser")) {
                         tower.setBuilt();
                     }

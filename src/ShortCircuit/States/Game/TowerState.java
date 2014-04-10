@@ -9,6 +9,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -43,6 +44,7 @@ public class TowerState extends AbstractAppState {
     private int chargeCost = 10;
     private int buildCost = 100;
     private Node worldNode;
+    public AudioNode charge;
 
     public TowerState() {}
     
@@ -53,6 +55,9 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+        charge = new AudioNode(assetManager, "Audio/chargegam.wav");
+        charge.setPositional(false);
+        charge.setVolume(.8f);
 
 
     }
@@ -76,6 +81,10 @@ public class TowerState extends AbstractAppState {
             selTower.setLocalScale(builtTowerSelected);
         }
         selectedTower = tindex;
+    }
+    
+    public void playChargeSound() {
+        charge.playInstance();
     }
 
     /**
@@ -118,6 +127,7 @@ public class TowerState extends AbstractAppState {
                     tower.charges.add(new Charges("purpleLaser"));
                     GameState.decPlrBudget(chargeCost);
                 }
+                playChargeSound();
             }
         }
     }
