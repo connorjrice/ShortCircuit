@@ -57,6 +57,8 @@ public class GameState extends AbstractAppState {
     private Vector3f basevec;
     
     public AudioNode buildSound;
+    
+    public AudioNode levelUpSound;
 
     public GameState() {}
     
@@ -73,6 +75,9 @@ public class GameState extends AbstractAppState {
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
         buildSound.setPositional(false);
         buildSound.setVolume(.3f);
+        levelUpSound = new AudioNode(assetManager, "Audio/levelup.wav");
+        levelUpSound.setPositional(false);
+        levelUpSound.setVolume(.6f);
         ex = new ScheduledThreadPoolExecutor(4);
     }
 
@@ -83,6 +88,7 @@ public class GameState extends AbstractAppState {
             if (updateTimer > .1) {
                 if (getPlrScore() > levelCap) {
                     incPlrLvl();
+                    playLevelUpSound();
                     levelCap *= 2;
                     incPlrHealth();
                 }
@@ -374,6 +380,10 @@ public class GameState extends AbstractAppState {
         buildSound.setPitch(pitch);
         buildSound.playInstance();
         buildSound.setPitch(1f);
+    }
+    
+    public void playLevelUpSound() {
+        levelUpSound.playInstance();
     }
     
     @Override

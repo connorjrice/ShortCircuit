@@ -7,23 +7,24 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
+import com.jme3.font.BitmapFont;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
-import java.util.concurrent.Callable;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
-
+import tonegod.gui.controls.windows.DialogBox;
 /**
  * Start menu
  * @author Connor Rice
  */
+
 public class StartGUI extends AbstractAppState {
 
     private SimpleApplication app;
@@ -33,8 +34,8 @@ public class StartGUI extends AbstractAppState {
     private Button Level1;
     private Button newGame;
     private boolean cont = true;
-    private Menu MainMenu;
-    private Window MainWindow;
+    public Menu MainMenu;
+    public Window MainWindow;
     private ButtonAdapter debug;
     private int height;
     private int width;
@@ -45,6 +46,8 @@ public class StartGUI extends AbstractAppState {
     private Indicator ind;
     private AudioNode theme;
     private boolean isTheme = false;
+    private ButtonAdapter ExitButton;
+    private DialogBox ReallyExitPopup;
 
     
     public StartGUI() {}
@@ -80,6 +83,7 @@ public class StartGUI extends AbstractAppState {
         level1();
         debugButton();
         initLoadBar();
+       exitButton();
     }
     
     
@@ -114,9 +118,11 @@ public class StartGUI extends AbstractAppState {
     }*/
     
     private void settingsWindow() {
-        MainWindow = new Window(screen, new Vector2f(400,800), new Vector2f(width/2, height/4) );
+        MainWindow = new Window(screen, new Vector2f(width/4, height/2-height/4), new Vector2f(width/2, height/2) );
         MainWindow.setIgnoreMouse(true);
         MainWindow.setIsMovable(false);
+        MainWindow.setText("ShortCircuit");
+        MainWindow.setTextAlign(BitmapFont.Align.Center);
         screen.addElement(MainWindow);
     }
 
@@ -124,7 +130,7 @@ public class StartGUI extends AbstractAppState {
 
 
     private void level1() {
-        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(40,100), buttonSize) {
+        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(40,height/3), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level1");
@@ -137,7 +143,7 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(240,100), buttonSize) {
+        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(240,height/3), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level0");
@@ -150,7 +156,7 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void debugButton() {
-        debug = new ButtonAdapter(screen, "debug", new Vector2f(440,100), buttonSize) {
+        debug = new ButtonAdapter(screen, "debug", new Vector2f(440,height/3), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onDebug();
@@ -171,6 +177,36 @@ public class StartGUI extends AbstractAppState {
         game.detachGameStates();
         game.startGame(true, null);
     }
+    
+    public void exitButton() {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(640,height/3), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                reallyExitDialog();
+            }
+        };
+        ExitButton.setText("Exit");
+        ExitButton.setFont("Interface/Fonts/DejaVuSans.fnt");
+        MainWindow.addChild(ExitButton);
+    }
+    
+    public void reallyExitDialog() {
+        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(width/2, height/2)) {
+
+            @Override
+            public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
+                screen.removeElement(ReallyExitPopup);
+            }
+
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+                game.stop();
+            }
+        };
+        ReallyExitPopup.setText("Exit");
+        ReallyExitPopup.setMsg("Are you sure?");
+        screen.addElement(ReallyExitPopup);
+    }
 
     /*private void hideAll() {
         MainWindow.hide();
@@ -188,13 +224,11 @@ public class StartGUI extends AbstractAppState {
     }*/
     
     public void toggle() {
-        if (cont) {
-            MainWindow.hideWindow();
-            cont = false;
+        if (MainWindow.getIsVisible()) {
+            MainWindow.hide();
         }
         else {
-            MainWindow.showWindow();
-            cont = true;
+            MainWindow.show();
         }
     }
     

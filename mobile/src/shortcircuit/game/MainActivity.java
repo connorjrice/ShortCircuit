@@ -29,9 +29,6 @@ public class MainActivity extends AndroidHarness{
             logger.log(Level.INFO, "Enabling Android MediaPlayer/SoundPool Audio (Android 2.2)");
             audioRendererType = AppSettings.ANDROID_MEDIAPLAYER;
         }
-         // Exit Dialog title & message
-        exitDialogTitle = "Exit?";
-        exitDialogMessage = "Press Yes";
         // Enable verbose logging
         eglConfigVerboseLogging = false;
         // Choose screen orientation

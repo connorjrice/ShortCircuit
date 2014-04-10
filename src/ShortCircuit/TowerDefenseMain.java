@@ -38,7 +38,7 @@ public class TowerDefenseMain extends SimpleApplication {
     private CreepState CreepState;
     private TowerState TowerState;
     private LevelState LevelState;
-    private StartGUI StartGUI;
+    public StartGUI StartGUI;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
     private boolean isPaused = false;
@@ -73,6 +73,7 @@ public class TowerDefenseMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
+    private BloomFilter bloom;
 
 
 
@@ -97,7 +98,7 @@ public class TowerDefenseMain extends SimpleApplication {
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
         fpp = new FilterPostProcessor(assetManager);
-        BloomFilter bloom = new BloomFilter(GlowMode.SceneAndObjects);
+        bloom = new BloomFilter(GlowMode.SceneAndObjects);
         bloom.setDownSamplingFactor(2.0f);
         bloom.setBlurScale(4.0f);
         bloom.setExposurePower(7f);
@@ -129,6 +130,22 @@ public class TowerDefenseMain extends SimpleApplication {
 
     }
     
+    public void setBloomExposurePower(float exp) {
+        bloom.setExposurePower(exp);
+    }
+    
+    public void setBloomBlurScape(float exp) {
+        bloom.setBlurScale(exp);
+    }
+    
+    public void setBloomIntensity(float exp) {
+        bloom.setBloomIntensity(exp);
+    }
+    
+    
+    public void setVolume(int volume) {
+      
+    }
     
     public void showTGStart() {
         StartGUI = new StartGUI(this);

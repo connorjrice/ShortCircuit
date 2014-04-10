@@ -23,7 +23,10 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
+import tonegod.gui.controls.windows.AlertBox;
+import tonegod.gui.controls.windows.DialogBox;
 import tonegod.gui.controls.windows.Panel;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -54,9 +57,9 @@ public class GameGUI extends AbstractAppState {
     public ButtonAdapter Budget;
     public ButtonAdapter Score;
     public ButtonAdapter Level;
-    private ButtonAdapter frills;
+    private ButtonAdapter TextColorButton;
     private ButtonAdapter Loading;
-    private ButtonAdapter Bloom;
+    private ButtonAdapter BloomToggleButton;
     private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
     private float updateTimer;
@@ -72,8 +75,10 @@ public class GameGUI extends AbstractAppState {
     private int internalBudget;
     private int internalScore;
     private int internalLevel;
-    private Menu MainMenu;
+    private Menu internalMenu;
     private Window SetWindow;
+    private Slider BloomSlider;
+    private AlertBox ObjectivePopup;
     
     public GameGUI() {}
 
@@ -150,9 +155,11 @@ public class GameGUI extends AbstractAppState {
     };
     
     private void setupGUI() {
+        objectivePopup();
         leftPanel();
         rightPanel();
-        settingsMenu();
+        settingsWindow();
+        internalMenu();
         chargeButton();
         modifyButton();
         cameraButton();
@@ -162,9 +169,25 @@ public class GameGUI extends AbstractAppState {
         scoreButton();
         levelButton();
         menuButton();
-        frillsToggle();
-        bloomToggle();
-        settingsWindow();
+        textColorToggleButton();
+        bloomToggleButton();
+        bloomLevelSlider();
+
+    }
+    
+    private void objectivePopup() {
+        ObjectivePopup = new AlertBox(screen, "objective", new Vector2f(width/2-200, height/2-175), new Vector2f(400,300)) {
+
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+                game.pause();
+                screen.removeElement(ObjectivePopup);
+            }
+        };
+        game.pause();
+        ObjectivePopup.setText("Objective");
+        ObjectivePopup.setMsg("Objective: Build 4 purple towers.");
+        screen.addElement(ObjectivePopup);
     }
     
     private void settingsWindow() {
@@ -179,7 +202,7 @@ public class GameGUI extends AbstractAppState {
         Pause = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!game.isStartWindowShown())
+                if (!game.StartGUI.MainWindow.getIsVisible()) {
                     if (SetWindow.getIsVisible()) {
                         SetWindow.hideWindow();
                         Menu.setIgnoreMouse(false);
@@ -190,6 +213,7 @@ public class GameGUI extends AbstractAppState {
                         Menu.setIgnoreMouse(true);
                         game.pause();
                     }
+                }
             }
         };
         Pause.setLocalScale(3f, 2f, 1f);
@@ -198,16 +222,16 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(Pause);
     }
     
-    private void settingsMenu() {
-        MainMenu = new Menu(screen, new Vector2f(0, 0), false) {
+    private void internalMenu() {
+        internalMenu = new Menu(screen, new Vector2f(0, 0), false) {
             @Override
             public void onMenuItemClicked(int index, Object value, boolean isToggled) {
             }
         };
-        MainMenu.addMenuItem("Caption", null, null);
-        MainMenu.addMenuItem("Caption1", null, null);
-        MainMenu.addMenuItem("Caption2", null, null);
-        screen.addElement(MainMenu);
+        internalMenu.addMenuItem("Caption", null, null);
+        internalMenu.addMenuItem("Caption1", null, null);
+        internalMenu.addMenuItem("Caption2", null, null);
+        screen.addElement(internalMenu);
     }
 
     private void updateText() {
@@ -307,27 +331,42 @@ public class GameGUI extends AbstractAppState {
 
 
     
-    private void frillsToggle() {
-        frills = new ButtonAdapter(screen, "isFrills", new Vector2f(width / 4 + 100, height/2 - 100), buttonSize) {
+    private void textColorToggleButton() {
+        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240,100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 game.toggleFrills();
             }
         };
-        frills.setIsToggleButton(true);
-        frills.setText("Disable Frills");
+        TextColorButton.setIsToggleButton(true);
+        TextColorButton.setText("Disable Text Colors");
+        SetWindow.addChild(TextColorButton);
     }
     
     
-    private void bloomToggle() {
-        Bloom = new ButtonAdapter(screen, "bloom", new Vector2f(width / 4 + 300, height/2 - 100), buttonSize) {
+    private void bloomToggleButton() {
+        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40,100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 game.toggleBloom();
             }
         };
-        Bloom.setIsToggleButton(true);
-        Bloom.setText("Disable bloom");
+        BloomToggleButton.setIsToggleButton(true);
+        BloomToggleButton.setText("Disable bloom");
+        SetWindow.addChild(BloomToggleButton);
+    }
+    
+    private void bloomLevelSlider() {
+        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60,70), Slider.Orientation.HORIZONTAL, true) {
+            @Override
+            public void onChange(int selectedIndex, Object value) {
+                game.setBloomIntensity(selectedIndex);
+            }
+        };
+        BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
+        BloomSlider.setSelectedByValue(2.0f);
+        game.setBloomIntensity(2.0f);
+        SetWindow.addChild(BloomSlider);
     }
         
 
