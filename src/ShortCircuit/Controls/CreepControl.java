@@ -12,7 +12,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import java.io.IOException;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * TODO: Document CreepControl
@@ -24,26 +23,24 @@ public class CreepControl extends AbstractControl {
     protected CreepState CreepState;
     protected int creepNum;
     protected Vector3f direction;
-    protected ScheduledThreadPoolExecutor ex;
     private MoveCreep mc;
 
     public CreepControl(CreepState _state) {
         CreepState = _state;
-        ex = CreepState.getEx();
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (CreepState.isEnabled()) { 
+        if (CreepState.isEnabled()) {
             mc = new MoveCreep(CreepState, this);
-            mc.run();   
+            mc.run();
         }
     }
 
     public Vector3f getDirection() {
         return spatial.getUserData("Direction");
     }
-    
+
     private float getCreepSpeed() {
         return spatial.getUserData("Speed");
     }
@@ -69,6 +66,8 @@ public class CreepControl extends AbstractControl {
             return 2;
         } else if (getCreepType().equals("Large")) {
             return 3;
+        } else if (getCreepType().equals("XL")) {
+            return 5;
         } else {
             return -1;
         }
@@ -77,7 +76,6 @@ public class CreepControl extends AbstractControl {
     public Vector3f getCreepLocation() {
         return spatial.getLocalTranslation();
     }
-
 
     public void removeCreep() {
         CreepState.creepList.remove(spatial);

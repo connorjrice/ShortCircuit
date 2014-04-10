@@ -1,7 +1,7 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
         ColorMap : Textures/Circuit/smallcreep.jpg
-        GlowColor : 0.0 0.0 0 0
+        GlowColor : 0.0 0.0 0.7 0.7
      }
     AdditionalRenderState {
     }

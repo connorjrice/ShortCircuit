@@ -30,7 +30,7 @@ public class CreepSpawnerControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (CreepState.getNextSpawner() == getIndex()) {
             if (CreepState.getCreepListSize() < CreepState.getNumCreepsByLevel()) {
-                CreepState.creepBuilder(spatial.getLocalTranslation(), getIndex());
+                CreepState.stdCreepBuilder(spatial.getLocalTranslation(), getIndex());
                 CreepState.goToNextSpawner();
             }
         }

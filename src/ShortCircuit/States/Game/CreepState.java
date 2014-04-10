@@ -1,6 +1,6 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.Threading.SpawnCreep;
+import ShortCircuit.Threading.SpawnSTDCreep;
 import ShortCircuit.Objects.CreepTraits;
 import ShortCircuit.Factories.CreepSpawnerFactory;
 import com.jme3.app.Application;
@@ -34,15 +34,20 @@ public class CreepState extends AbstractAppState {
             new Vector3f(0.25f, 0.25f, 0.40f);
     private static final Vector3f LG_CREEP_SIZE =
             new Vector3f(0.4f, 0.4f, 0.60f);
+    private static final Vector3f XL_CREEP_SIZE =
+                new Vector3f(0.6f, 0.6f, 0.8f);
     private static final int SM_CREEP_HEALTH = 100;
     private static final int MD_CREEP_HEALTH = 200;
     private static final int LG_CREEP_HEALTH = 400;
+    private static final int XL_CREEP_HEALTH = 800;
     private static final float SM_CREEP_SPEED = 0.045f;
     private static final float MD_CREEP_SPEED = 0.035f;
     private static final float LG_CREEP_SPEED = 0.025f;
+    private static final float XL_CREEP_SPEED = 0.030f;
     private String smCreepMatloc;
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
+    private String xlCreepMatloc;
     public Random creepXGen = new Random();
     
     private SimpleApplication app;
@@ -53,7 +58,8 @@ public class CreepState extends AbstractAppState {
     private ArrayList<Spatial> creepSpawners = new ArrayList<Spatial>();
     private int nextspawner;
     private Node worldNode;
-    private SpawnCreep sc;
+    private SpawnSTDCreep sc;
+
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -85,6 +91,7 @@ public class CreepState extends AbstractAppState {
         smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
         mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
         lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
+        xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
         creepSpawnerVecs = _creepSpawnerVecs;
         creepSpawnerDirs = _creepSpawnerDirs;
         for (int i = 0; i < creepSpawnerVecs.size(); i++) {
@@ -96,33 +103,38 @@ public class CreepState extends AbstractAppState {
      * Creates a creep based upon the input from creepBuilder.
      * @param ct, object containing traits of the creep
      */
-    public void createCreep(CreepTraits ct) {
-        sc = new SpawnCreep(creepList, creepNode, ct,assetManager,this);
+    public void createSTDCreep(CreepTraits ct) {
+        sc = new SpawnSTDCreep(creepList, creepNode, ct,assetManager,this);
         sc.run();
     }
 
     /**
      * Builds a creep from a random number generator, calls createCreep.
      */
-    public void creepBuilder(Vector3f spawnerVec, int spawnIndex) {
-        int size = creepXGen.nextInt(12);
+    public void stdCreepBuilder(Vector3f spawnerVec, int spawnIndex) {
+        int size = creepXGen.nextInt(15);
         if (spawnerVec.getY() == 0) {
             if (size < 8) {
-                createSmallCreep(spawnerVec, spawnIndex, true);
+                createSmallSTDCreep(spawnerVec, spawnIndex, true);
             } else if (8 <= size && size < 11) {
-                createMediumCreep(spawnerVec, spawnIndex, true);
-            } else if (size == 11) {
-                createLargeCreep(spawnerVec, spawnIndex, true);
+                createMediumSTDCreep(spawnerVec, spawnIndex, true);
+            } else if (size >= 11 && size <= 13) {
+                createLargeSTDCreep(spawnerVec, spawnIndex, true);
+            } else if (size == 14) {
+                createGiantSTDCreep(spawnerVec, spawnIndex, true);
             }
 
         } else {
             if (size < 8) {
-                createSmallCreep(spawnerVec, spawnIndex, false);
+                createSmallSTDCreep(spawnerVec, spawnIndex, false);
             } else if (8 <= size && size < 11) {
-                createMediumCreep(spawnerVec, spawnIndex, false);
-            } else if (size == 11) {
-                createLargeCreep(spawnerVec, spawnIndex, false);
+                createMediumSTDCreep(spawnerVec, spawnIndex, false);
+            } else if (size >= 11 && size <= 13) {
+                createLargeSTDCreep(spawnerVec, spawnIndex, false);
+            } else if (size == 14) {
+                createGiantSTDCreep(spawnerVec, spawnIndex, false);
             }
+            
         }
     }
     
@@ -153,33 +165,43 @@ public class CreepState extends AbstractAppState {
         }
     }
 
-    private void createSmallCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void createSmallSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
-            createCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
-            createCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
                     SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
-    private void createMediumCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void createMediumSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
-            createCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
-            createCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
                     MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
-    private void createLargeCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void createLargeSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
-            createCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
-            createCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
+            createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
                     LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
+        }
+    }
+    
+    private void createGiantSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+        if (vertical) {
+            createSTDCreep(new CreepTraits("Creep", XL_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, "Large", xlCreepMatloc, getCreepDirection(spawnIndex)));
+        } else {
+            createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, "Large", xlCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
     
