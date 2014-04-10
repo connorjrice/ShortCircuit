@@ -60,7 +60,6 @@ public class BombControl extends AbstractControl {
             }
         }
         else {
-            System.out.println(bombSize);
             stopSound();
             spatial.removeFromParent();
             spatial.removeControl(this);

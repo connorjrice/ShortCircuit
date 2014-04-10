@@ -91,6 +91,7 @@ public class GameState extends AbstractAppState {
                     playLevelUpSound();
                     levelCap *= 2;
                     incPlrHealth();
+
                 }
                 if (debugMode) {
                     debugLoopAdditions();
@@ -166,6 +167,10 @@ public class GameState extends AbstractAppState {
         } else {
             dropBomb(trans);
         }
+    }
+    
+    public float getCurrentProgress() {
+        return TowerState.towerList.size();
     }
 
     public void dropBomb(Vector3f translation) {

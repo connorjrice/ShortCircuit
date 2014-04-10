@@ -142,6 +142,10 @@ public class TowerDefenseMain extends SimpleApplication {
         bloom.setBloomIntensity(exp);
     }
     
+    public void incBloomIntensity(float exp) {
+        bloom.setBloomIntensity(bloom.getBloomIntensity()+exp);
+    }
+    
     
     public void setVolume(int volume) {
       

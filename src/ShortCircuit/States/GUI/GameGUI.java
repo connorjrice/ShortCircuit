@@ -20,9 +20,11 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.terrain.noise.Color;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.AlertBox;
@@ -79,6 +81,8 @@ public class GameGUI extends AbstractAppState {
     private Window SetWindow;
     private Slider BloomSlider;
     private AlertBox ObjectivePopup;
+    private Indicator ProgressIndicator;
+    private ColorRGBA color = new ColorRGBA();
     
     public GameGUI() {}
 
@@ -119,6 +123,10 @@ public class GameGUI extends AbstractAppState {
             updateTimer += tpf;
         }
         if (frillsTimer > .25 && isFrills) {
+            if (gs.getPlrLvl() != internalLevel){
+                game.incBloomIntensity(.2f);
+                internalLevel = gs.getPlrLvl();
+            }
             updateFrills();
             frillsTimer = 0;
         }
@@ -156,10 +164,12 @@ public class GameGUI extends AbstractAppState {
     
     private void setupGUI() {
         objectivePopup();
+
         leftPanel();
         rightPanel();
         settingsWindow();
         internalMenu();
+        progressIndicator();
         chargeButton();
         modifyButton();
         cameraButton();
@@ -222,6 +232,46 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(Pause);
     }
     
+    private void progressIndicator() {
+        ProgressIndicator = new Indicator(screen, "Progress", new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {
+            @Override
+            public void onChange(float arg0, float arg1) {
+            }
+            
+        };
+        ProgressIndicator.setMaxValue(100f);
+        screen.addElement(ProgressIndicator);
+        
+    }
+    
+    public void modifyProgress() {
+        float blend = ProgressIndicator.getCurrentValue()*0.01f;
+        color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f,0.0f,0.2f,0.4f), blend);
+        ProgressIndicator.setIndicatorColor(color);
+        ProgressIndicator.setCurrentValue(gs.getCurrentProgress());
+    }
+    private void updateText() {
+        updatePlrInfo();
+        updateTowerInfo();
+    }
+    
+    private void updateFrills() {
+        updateChargeFrill();
+        updateHealthColor();
+        updateTowerFrills();
+        modifyProgress();
+    }
+    
+    public void toggleFrills() {
+        if (isFrills) {
+            Health.setFontColor(ColorRGBA.White);
+            Charge.setFontColor(ColorRGBA.White);
+            Modify.setFontColor(ColorRGBA.White);
+            internalHealth += 1; // So that it gets updated
+        }
+        isFrills = !isFrills;
+    }
+    
     private void internalMenu() {
         internalMenu = new Menu(screen, new Vector2f(0, 0), false) {
             @Override
@@ -234,16 +284,7 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(internalMenu);
     }
 
-    private void updateText() {
-        updatePlrInfo();
-        updateTowerInfo();
-    }
-    
-    private void updateFrills() {
-        updateChargeFrill();
-        updateHealthColor();
-        updateTowerFrills();
-    }
+
 
     private void updatePlrInfo() {
         if (gs.getPlrHealth() != internalHealth) {
@@ -513,14 +554,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     
-    public void toggleFrills() {
-        if (isFrills) {
-            Health.setFontColor(ColorRGBA.White);
-            Charge.setFontColor(ColorRGBA.White);
-            Modify.setFontColor(ColorRGBA.White);
-        }
-        isFrills = !isFrills;
-    }
+
 
     @Override
     public void cleanup() {
