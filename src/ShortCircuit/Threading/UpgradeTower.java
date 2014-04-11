@@ -28,7 +28,7 @@ public class UpgradeTower implements Runnable {
     /**
      * Determines the cost, name, and location of the texture of the next
      * available tower upgrade. ANGRYMONSTER ensures that you cannot go beyond
-     * a purple tower.
+     * 4 modifications
      */
     private void getUpgradeType() {
         if (type.equals("unbuilt")) {

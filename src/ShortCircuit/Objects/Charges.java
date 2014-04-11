@@ -15,6 +15,7 @@ public class Charges {
             damage = 100;
             remBullets = 10;
             type = _type;
+        } else if (_type.equals("tower2")) {
             damage = 150;
             remBullets = 20;
             type = _type;

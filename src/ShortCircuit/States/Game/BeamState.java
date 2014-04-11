@@ -30,10 +30,10 @@ public class BeamState extends AbstractAppState {
     private float beamwidth = 6.0f;
     private Node worldNode;
     private boolean shot = false;
-    private AudioNode tower1;
-    private AudioNode tower2;
-    private AudioNode tower3;
-    private AudioNode tower4;
+    private AudioNode tower1audio;
+    private AudioNode tower2audio;
+    private AudioNode tower3audio;
+    private AudioNode tower4audio;
     
     public BeamState() {}
 
@@ -47,14 +47,14 @@ public class BeamState extends AbstractAppState {
     }
     
     private void initAudio() {
-        tower1 = new AudioNode(assetManager, "Audio/tower1.wav");
-        tower1.setVolume(.4f);
-        tower2 = new AudioNode(assetManager, "Audio/tower2.wav");
-        tower2.setVolume(.4f);
-        tower3 = new AudioNode(assetManager, "Audio/tower3.wav");
-        tower3.setVolume(.4f);
-        tower4 = new AudioNode(assetManager, "Audio/tower4.wav");
-        tower4.setVolume(.4f);
+        tower1audio = new AudioNode(assetManager, "Audio/tower1.wav");
+        tower1audio.setVolume(.4f);
+        tower2audio = new AudioNode(assetManager, "Audio/tower2.wav");
+        tower2audio.setVolume(.4f);
+        tower3audio = new AudioNode(assetManager, "Audio/tower3.wav");
+        tower3audio.setVolume(.4f);
+        tower4audio = new AudioNode(assetManager, "Audio/tower4.wav");
+        tower4audio.setVolume(.4f);
 
     }
 
@@ -74,10 +74,6 @@ public class BeamState extends AbstractAppState {
         }
     }
     
-    /**
-     * Builds all of the different beams.
-     */
-
     public void attachBeamNode() {
         worldNode.attachChild(beamNode);
     }
@@ -93,41 +89,31 @@ public class BeamState extends AbstractAppState {
      * @param target
      */
     public void makeLaserBeam(Vector3f origin, Vector3f target, String type) {
+        beaml = new Line(origin, target);
+        beaml.setLineWidth(beamwidth);
+        beamg = new Geometry("Beam", beaml);
         if (type.equals("tower1")) {
-            beaml = new Line(origin, target);
-            beaml.setLineWidth(beamwidth);
-            beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam1.j3m"));
-            beamNode.attachChild(beamg);
-            tower1.setLocalTranslation(origin);
-            tower1.playInstance();
+            tower1audio.setLocalTranslation(origin);
+            tower1audio.playInstance();
         } else if (type.equals("tower2")) {
-            beaml = new Line(origin, target);
-            beaml.setLineWidth(beamwidth);
-            beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam2.j3m"));
-            beamNode.attachChild(beamg);
-            tower2.setLocalTranslation(origin);
-            tower2.playInstance();
+            tower2audio.setLocalTranslation(origin);
+            tower2audio.playInstance();
         } else if (type.equals("tower3")) {
-            beaml = new Line(origin, target);
-            beaml.setLineWidth(beamwidth);
-            beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam3.j3m"));
-            beamNode.attachChild(beamg);
-            tower3.setLocalTranslation(origin);
-            tower3.playInstance();
+            tower3audio.setLocalTranslation(origin);
+            tower3audio.playInstance();
         } else if (type.equals("tower4")) {
-            beaml = new Line(origin, target);
-            beaml.setLineWidth(beamwidth);
-            beamg = new Geometry("Beam", beaml);
             beamg.setMaterial(assetManager.loadMaterial("Materials/beam4.j3m"));
-            beamNode.attachChild(beamg);
-            tower4.setLocalTranslation(origin);
-            tower4.playInstance();
+            tower4audio.setLocalTranslation(origin);
+            tower4audio.playInstance();
         }
+        beamNode.attachChild(beamg);
         shot = true;
     }
+    
+    
 
 
 
