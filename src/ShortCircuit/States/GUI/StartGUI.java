@@ -121,6 +121,9 @@ public class StartGUI extends AbstractAppState {
         MainWindow = new Window(screen, new Vector2f(width/4, height/2-height/4), new Vector2f(width/2, height/2) );
         MainWindow.setIgnoreMouse(true);
         MainWindow.setIsMovable(false);
+        MainWindow.setAsContainerOnly();
+        MainWindow.setWindowIsMovable(false);
+        MainWindow.setIsResizable(false);
         MainWindow.setText("ShortCircuit");
         MainWindow.setTextAlign(BitmapFont.Align.Center);
         screen.addElement(MainWindow);
@@ -130,7 +133,7 @@ public class StartGUI extends AbstractAppState {
 
 
     private void level1() {
-        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(40,height/3), buttonSize) {
+        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(540,height/2+100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level1");
@@ -138,12 +141,11 @@ public class StartGUI extends AbstractAppState {
         };
         Level1.setText("Level1");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        //screen.addElement(Level1);
-        MainWindow.addChild(Level1);
+        screen.addElement(Level1);
     }
 
     private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(240,height/3), buttonSize) {
+        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(740,height/2+100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level0");
@@ -152,11 +154,11 @@ public class StartGUI extends AbstractAppState {
 
         newGame.setText("Level0");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        MainWindow.addChild(newGame);
+        screen.addElement(newGame);
     }
 
     private void debugButton() {
-        debug = new ButtonAdapter(screen, "debug", new Vector2f(440,height/3), buttonSize) {
+        debug = new ButtonAdapter(screen, "debug", new Vector2f(940,height/2+100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onDebug();
@@ -164,7 +166,7 @@ public class StartGUI extends AbstractAppState {
         };
         debug.setText("Debug");
         debug.setFont("Interface/Fonts/DejaVuSans.fnt");
-        MainWindow.addChild(debug);
+        screen.addElement(debug);
     }
     
 
@@ -179,7 +181,7 @@ public class StartGUI extends AbstractAppState {
     }
     
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(640,height/3), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(1140,height/2+100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();
@@ -187,7 +189,7 @@ public class StartGUI extends AbstractAppState {
         };
         ExitButton.setText("Exit");
         ExitButton.setFont("Interface/Fonts/DejaVuSans.fnt");
-        MainWindow.addChild(ExitButton);
+        screen.addElement(ExitButton);
     }
     
     public void reallyExitDialog() {
