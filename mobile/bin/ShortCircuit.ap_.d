@@ -19,7 +19,6 @@ C:\Users\Connor\Documents\ShortCircuit\mobile\bin\res\drawable-xhdpi\ic_launcher
 C:\Users\Connor\Documents\ShortCircuit\mobile\bin\res\drawable-xhdpi\loading.png \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Interface \
-C:\Users\Connor\Documents\ShortCircuit\mobile\assets\LoadingScene.j3o \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Materials \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\META-INF \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Textures \

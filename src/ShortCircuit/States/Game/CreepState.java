@@ -98,7 +98,7 @@ public class CreepState extends AbstractAppState {
     }
     
     private void getNextRandomSpecialEnemyInt() {
-        nextrandom = random.nextInt(5);
+        nextrandom = random.nextInt(60);
     }
     
     private void spawnRandomEnemy() {

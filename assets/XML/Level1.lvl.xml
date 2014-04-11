@@ -35,14 +35,62 @@
     </base>
     <unbuilttowers>
         <tower id = "0" >
-            <x>-3.0f</x>
+            <x>-4.5f</x>
             <y>-4.0f</y>
+            <z>0.1</z>
+            <isStarter>true</isStarter>
+        </tower>
+        <tower id = "1" >
+            <x>4.5f</x>
+            <y>-4.0f</y>
+            <z>0.1</z>
+            <isStarter>true</isStarter>
+        </tower>
+        <tower id = "2" >
+            <x>-4.5f</x>
+            <y>-2.0f</y>
             <z>0.1</z>
             <isStarter>false</isStarter>
         </tower>
-        <tower id = "1" >
-            <x>3.0f</x>
-            <y>-4.0f</y>
+        <tower id = "3" >
+            <x>4.5f</x>
+            <y>-2.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "4" >
+            <x>-4.5f</x>
+            <y>0.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "5" >
+            <x>4.5f</x>
+            <y>0.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "6" >
+            <x>-4.5f</x>
+            <y>2.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "7" >
+            <x>4.5f</x>
+            <y>2.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "8" >
+            <x>-4.5f</x>
+            <y>4.0f</y>
+            <z>0.1</z>
+            <isStarter>false</isStarter>
+        </tower>
+        <tower id = "9" >
+            <x>4.5f</x>
+            <y>4.0f</y>
             <z>0.1</z>
             <isStarter>false</isStarter>
         </tower>
