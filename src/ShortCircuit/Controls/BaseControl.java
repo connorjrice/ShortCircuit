@@ -54,7 +54,7 @@ public class BaseControl extends AbstractControl {
             Spatial current = GameState.getCreepList().get(i);
             if (current != null) {
                 Vector3f local = current.getLocalTranslation();
-                current.getControl(CreepControl.class);
+                current.getControl(STDCreepControl.class);
                 if (local.distance(baseloc) < 8.5f
                         && !reachable.contains(current)) {
                     reachable.add(current);
@@ -73,11 +73,11 @@ public class BaseControl extends AbstractControl {
             if (charges.get(0).remBullets > 0) {
                 boolean hasShot = false;
                 while (!hasShot && reachable.size() > 0) {
-                    if (reachable.get(0).getControl(CreepControl.class) != null) {
+                    if (reachable.get(0).getControl(STDCreepControl.class) != null) {
                         GameState.getBeamState().makeLaserBeam(baseloc, 
-                                reachable.get(0).getControl(CreepControl.class)
+                                reachable.get(0).getControl(STDCreepControl.class)
                                 .getCreepLocation(), "baseLaser");
-                        if (reachable.get(0).getControl(CreepControl.class)
+                        if (reachable.get(0).getControl(STDCreepControl.class)
                                 .decCreepHealth(charges.get(0).shoot()) <= 0) {
                             reachable.remove(0);
                         }

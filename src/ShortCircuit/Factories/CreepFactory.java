@@ -1,6 +1,6 @@
 package ShortCircuit.Factories;
 
-import ShortCircuit.Controls.CreepControl;
+import ShortCircuit.Controls.STDCreepControl;
 import ShortCircuit.Objects.CreepTraits;
 import ShortCircuit.States.Game.CreepState;
 import com.jme3.asset.AssetManager;
@@ -43,7 +43,7 @@ public class CreepFactory {
             creep.setUserData("Direction", new Vector3f(0f,0f,ct.getSpeed()));
         }
         
-        creep.addControl(new CreepControl(cs));
+        creep.addControl(new STDCreepControl(cs));
     }
     
     public Spatial getCreep() {

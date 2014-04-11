@@ -4,6 +4,7 @@ import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.FloorFactory;
 import ShortCircuit.Controls.BaseControl;
 import ShortCircuit.Controls.BombControl;
+import ShortCircuit.Controls.GlobControl;
 import ShortCircuit.Objects.LevelParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -175,7 +176,9 @@ public class GameState extends AbstractAppState {
             TowerState.shortenTowers();
             int towerIndex = target.getUserData("Index");
             TowerState.towerSelected(towerIndex);
-        } else {
+        } else if (target.getName().equals("Glob")) {
+            target.getControl(GlobControl.class).decGlobHealth();
+        }else {
             dropBomb(trans);
         }
     }

@@ -214,6 +214,25 @@ public class GameGUI extends AbstractAppState {
             }
         }
     };
+    
+        /**
+     * Handles collisions. TODO: Update this process of selecting objects
+     *
+     * @param click2d
+     * @param click3d
+     */
+    private void selectPlrObject(Vector2f click2d, Vector3f click3d) {
+        CollisionResults results = new CollisionResults();
+        Vector3f dir = cam.getWorldCoordinates(
+                new Vector2f(click2d.getX(), click2d.getY()), 1f);
+        Ray ray = new Ray(click3d, dir);
+        game.getRootNode().collideWith(ray, results);
+        if (results.size() > 0) {
+            Vector3f trans = results.getCollision(0).getContactPoint();
+            Spatial target = results.getCollision(0).getGeometry();
+            gs.touchHandle(trans, target); // Target
+        }
+    }
 
     private void setupGUI() {
         objectivePopup();
@@ -400,24 +419,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    /**
-     * Handles collisions. TODO: Update this process of selecting objects
-     *
-     * @param click2d
-     * @param click3d
-     */
-    private void selectPlrObject(Vector2f click2d, Vector3f click3d) {
-        CollisionResults results = new CollisionResults();
-        Vector3f dir = cam.getWorldCoordinates(
-                new Vector2f(click2d.getX(), click2d.getY()), 1f);
-        Ray ray = new Ray(click3d, dir);
-        game.getRootNode().collideWith(ray, results);
-        if (results.size() > 0) {
-            Vector3f trans = results.getCollision(0).getContactPoint();
-            Spatial target = results.getCollision(0).getGeometry();
-            gs.touchHandle(trans, target); // Target
-        }
-    }
+
 
     private void textColorToggleButton() {
         TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize) {

@@ -1,6 +1,6 @@
 package ShortCircuit.Factories;
 
-import ShortCircuit.Controls.CreepSpawnerControl;
+import ShortCircuit.Controls.STDSpawnerControl;
 import ShortCircuit.States.Game.CreepState;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
@@ -34,7 +34,7 @@ public class CreepSpawnerFactory {
         spawner_geom.setLocalTranslation(spawnervec);
 
         spawner = spawner_geom;
-        spawner.addControl(new CreepSpawnerControl(cs));
+        spawner.addControl(new STDSpawnerControl(cs));
         spawner.setUserData("Index", index);
         spawner.setUserData("Direction", direction);
     }

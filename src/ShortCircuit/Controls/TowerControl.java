@@ -38,7 +38,7 @@ public class TowerControl extends AbstractControl {
     private Vector3f towerloc;
     protected TowerState TowerState;
     private ScheduledThreadPoolExecutor ex;
-    private boolean isBuilt;
+    private boolean isActive;
     private float shotTimer = 0;
     private float shotDelay = .3f;
     private float searchTimer = .3f;
@@ -55,14 +55,14 @@ public class TowerControl extends AbstractControl {
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
-        isBuilt = enabled;
+        isActive = enabled;
         this.ex = TowerState.getEx();
         emptySound = new AudioNode(TowerState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (TowerState.isEnabled() && isBuilt) {
+        if (TowerState.isEnabled() && isActive) {
             if (genDelay > .4f) {
                 if (!charges.isEmpty()) {
                     if (searchTimer > searchDelay) {
@@ -81,12 +81,21 @@ public class TowerControl extends AbstractControl {
                 } else {
                     emptyTower();
                 }
-
             }
             else {
                 genDelay += tpf;
             }
 
+        }
+    }
+    
+    public void disableTower() {
+        isActive = false;
+    }
+    
+    public void enableTower() {
+        if (!spatial.getUserData("Type").equals("unbuilt")) {
+            isActive = true;
         }
     }
     
@@ -167,9 +176,9 @@ public class TowerControl extends AbstractControl {
 
     protected void shootCreep() {
         if (charges.get(0).getRemBullets() > 0) {
-            if (reachable.peek().getControl(CreepControl.class) != null) {
+            if (reachable.peek().getControl(STDCreepControl.class) != null) {
                 BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getType());
-                if (reachable.peek().getControl(CreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
+                if (reachable.peek().getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
             } else {
@@ -181,7 +190,7 @@ public class TowerControl extends AbstractControl {
     }
 
     public void setBuilt() {
-        isBuilt = true;
+        isActive = true;
     }
 
     public void addInitialCharges() {

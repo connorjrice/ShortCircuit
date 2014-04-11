@@ -1,8 +1,10 @@
 package ShortCircuit.States.Game;
 
+import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Threading.SpawnSTDCreep;
 import ShortCircuit.Objects.CreepTraits;
 import ShortCircuit.Factories.CreepSpawnerFactory;
+import ShortCircuit.Factories.GlobFactory;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -20,6 +22,12 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * URGENT: Fix offering process to only offer towers the creeps that are in
  * the relevant range!
+ * 
+ * TODO: New Enemies: 
+ * 1. Descendant (working on)
+ * 2. Digger
+ * 3. Lone Ranger
+ * 4. Portable spawner
  *
  * @author Connor Rice
  */
@@ -48,7 +56,7 @@ public class CreepState extends AbstractAppState {
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
     private String xlCreepMatloc;
-    public Random creepXGen = new Random();
+    public Random random = new Random();
     
     private SimpleApplication app;
     private AssetManager assetManager;
@@ -57,6 +65,8 @@ public class CreepState extends AbstractAppState {
     private ArrayList<String> creepSpawnerDirs;
     private ArrayList<Spatial> creepSpawners = new ArrayList<Spatial>();
     private int nextspawner;
+    private int nextrandom;
+    private float randomCheck = 0;
     private Node worldNode;
     private SpawnSTDCreep sc;
 
@@ -74,6 +84,34 @@ public class CreepState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
+        if (isEnabled()) {
+            if (randomCheck > nextrandom) {
+                spawnRandomEnemy();
+                getNextRandomSpecialEnemyInt();
+                randomCheck = 0;
+            }
+            else {
+                randomCheck += tpf;
+            }
+        }
+
+    }
+    
+    private void getNextRandomSpecialEnemyInt() {
+        nextrandom = random.nextInt(5);
+    }
+    
+    private void spawnRandomEnemy() {
+        spawnGlob();
+    }
+    
+    private void spawnGlob() {
+        int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
+        Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+        GlobFactory gF = new GlobFactory(towerVictimLocation, towerVictimIndex, assetManager, this);
+        Spatial glob = gF.getGlob();
+        GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).disableTower();
+        creepNode.attachChild(glob);
     }
 
     public void attachCreepNode() {
@@ -99,73 +137,52 @@ public class CreepState extends AbstractAppState {
         }
     }
 
-    /**
-     * Creates a creep based upon the input from creepBuilder.
-     * @param ct, object containing traits of the creep
-     */
-    public void createSTDCreep(CreepTraits ct) {
-        sc = new SpawnSTDCreep(creepList, creepNode, ct,assetManager,this);
-        sc.run();
-    }
 
     /**
-     * Builds a creep from a random number generator, calls createCreep.
+     * This is where the process of building a standard creep begins.
+     * The flow of creep is:
+     * 1. startSTDCreep, which is called by a CreepSpawner. The true/false
+     * boolean determines whether or not the creep is moving vertically
+     * (along the Y-axis) or horizontally (along the X-axis). The random
+     * numbers are there to determine the type (sm, md, etc).
+     * 
+     * 2. Into prepare Sm/Md  STD     Creep()
+     *         prepare(type)(standard)creep
+     * 2a. At this state, the CreepTraits object is created.
+     * 
+     * 3. Into createSTDCreep, which takes care of spawning the creep.
      */
-    public void stdCreepBuilder(Vector3f spawnerVec, int spawnIndex) {
-        int size = creepXGen.nextInt(15);
+    public void startSTDCreep(Vector3f spawnerVec, int spawnIndex) {
+        int size = random.nextInt(15);
         if (spawnerVec.getY() == 0) {
             if (size < 8) {
-                createSmallSTDCreep(spawnerVec, spawnIndex, true);
+                prepareSmSTDCreep(spawnerVec, spawnIndex, true);
             } else if (8 <= size && size < 11) {
-                createMediumSTDCreep(spawnerVec, spawnIndex, true);
+                prepareMdSTDCreep(spawnerVec, spawnIndex, true);
             } else if (size >= 11 && size <= 13) {
-                createLargeSTDCreep(spawnerVec, spawnIndex, true);
+                prepareLgSTDCreep(spawnerVec, spawnIndex, true);
             } else if (size == 14) {
-                createGiantSTDCreep(spawnerVec, spawnIndex, true);
+                prepareXlSTDCreep(spawnerVec, spawnIndex, true);
             }
 
         } else {
             if (size < 8) {
-                createSmallSTDCreep(spawnerVec, spawnIndex, false);
+                prepareSmSTDCreep(spawnerVec, spawnIndex, false);
             } else if (8 <= size && size < 11) {
-                createMediumSTDCreep(spawnerVec, spawnIndex, false);
+                prepareMdSTDCreep(spawnerVec, spawnIndex, false);
             } else if (size >= 11 && size <= 13) {
-                createLargeSTDCreep(spawnerVec, spawnIndex, false);
+                prepareLgSTDCreep(spawnerVec, spawnIndex, false);
             } else if (size == 14) {
-                createGiantSTDCreep(spawnerVec, spawnIndex, false);
+                prepareXlSTDCreep(spawnerVec, spawnIndex, false);
             }
             
         }
     }
     
-    public String getCreepSpawnerDir(int index) {
-        return creepSpawnerDirs.get(index);
-    }
-    
-    public String getMatDir() {
-        return GameState.getMatDir();
-    }
-        
-    
 
-    private Vector3f getCreepVecVert(Vector3f spawnervec) {
-        return new Vector3f(spawnervec.getX(), getCreepNextBound(), 0.2f);
-    }
 
-    private Vector3f getCreepVecHoriz(Vector3f spawnervec) {
-        return new Vector3f(getCreepNextBound(), spawnervec.getY(), 0.2f);
-    }
-    
-    private float getCreepNextBound() {
-        int n = creepXGen.nextInt(2);
-        if (n == 0) {
-            return creepXGen.nextFloat() * 1.2f;
-        } else {
-            return -creepXGen.nextFloat() * 1.2f;
-        }
-    }
 
-    private void createSmallSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void prepareSmSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
@@ -175,7 +192,7 @@ public class CreepState extends AbstractAppState {
         }
     }
 
-    private void createMediumSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void prepareMdSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
@@ -185,7 +202,7 @@ public class CreepState extends AbstractAppState {
         }
     }
 
-    private void createLargeSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void prepareLgSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
@@ -195,7 +212,7 @@ public class CreepState extends AbstractAppState {
         }
     }
     
-    private void createGiantSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
+    private void prepareXlSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", XL_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
                     XL_CREEP_SIZE, XL_CREEP_SPEED, "Large", xlCreepMatloc, getCreepDirection(spawnIndex)));
@@ -205,21 +222,57 @@ public class CreepState extends AbstractAppState {
         }
     }
     
+    /**
+     * Creates a creep based upon the input from creepBuilder.
+     * @param ct, object containing traits of the creep
+     */
+    private void createSTDCreep(CreepTraits ct) {
+        sc = new SpawnSTDCreep(creepList, creepNode, ct,assetManager,this);
+        sc.run();
+    }
+
+    public String getCreepSpawnerDir(int index) {
+        return creepSpawnerDirs.get(index);
+    }
+    
+    public String getMatDir() {
+        return GameState.getMatDir();
+    }
+    
     private String getCreepDirection(int spawnIndex) {
         return creepSpawnerDirs.get(spawnIndex);
     }
+    
+            
+    private Vector3f getCreepVecVert(Vector3f spawnervec) {
+        return new Vector3f(spawnervec.getX(), getCreepNextBound(), 0.2f);
+    }
+
+    private Vector3f getCreepVecHoriz(Vector3f spawnervec) {
+        return new Vector3f(getCreepNextBound(), spawnervec.getY(), 0.2f);
+    }
+    
+    private float getCreepNextBound() {
+        int n = random.nextInt(2);
+        if (n == 0) {
+            return random.nextFloat() * 1.2f;
+        } else {
+            return -random.nextFloat() * 1.2f;
+        }
+    }
+    
+    
+    
+    
 
     /**
      * Determines how many creeps should be on the map based upon the player's
      * level.
-     * TODO: Implment XML modification
+     * The numbers are determined by nodes in the level XML file.
+     * 
      */
     public int getNumCreepsByLevel() {
-        if (GameState.getPlrLvl() == 0) {
-            return GameState.getNumCreeps();
-        } else {
-            return GameState.getNumCreeps() * GameState.getCreepMod();
-        }
+        return GameState.getNumCreeps();
     }
 
 
@@ -252,6 +305,10 @@ public class CreepState extends AbstractAppState {
     
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+    
+    public ArrayList<Spatial> getTowerList() {
+        return GameState.getTowerList();
     }
     
     public Box getUnivBox() {

@@ -170,8 +170,8 @@ public class BombControl extends AbstractControl {
     protected void collideWithCreeps() {
         if (reachable != null) {
             for (int i = 0; i < reachable.size(); i++) {
-                if (reachable.get(i).getControl(CreepControl.class) != null) {
-                    reachable.get(i).getControl(CreepControl.class).decCreepHealth(bombDMG);
+                if (reachable.get(i).getControl(STDCreepControl.class) != null) {
+                    reachable.get(i).getControl(STDCreepControl.class).decCreepHealth(bombDMG);
                 }
                 reachable.remove(i);
             }

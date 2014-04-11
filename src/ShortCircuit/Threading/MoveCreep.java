@@ -1,6 +1,6 @@
 package ShortCircuit.Threading;
 
-import ShortCircuit.Controls.CreepControl;
+import ShortCircuit.Controls.STDCreepControl;
 import ShortCircuit.States.Game.CreepState;
 
 /**
@@ -10,9 +10,9 @@ import ShortCircuit.States.Game.CreepState;
  */
 public class MoveCreep {
     private CreepState cs;
-    private CreepControl cc;
+    private STDCreepControl cc;
     
-    public MoveCreep(CreepState _cs, CreepControl _cc) {
+    public MoveCreep(CreepState _cs, STDCreepControl _cc) {
         cs = _cs;
         cc = _cc;
     }

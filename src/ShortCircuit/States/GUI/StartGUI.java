@@ -120,8 +120,8 @@ public class StartGUI extends AbstractAppState {
     private void settingsWindow() {
         MainWindow = new Window(screen, new Vector2f(width/4, height/2-height/4), new Vector2f(width/2, height/2) );
         MainWindow.setIgnoreMouse(true);
-        MainWindow.setIsMovable(false);
         MainWindow.setWindowIsMovable(false);
+        MainWindow.setEffectZOrder(false);
         MainWindow.setIsResizable(false);
         MainWindow.setText("ShortCircuit");
         MainWindow.setTextAlign(BitmapFont.Align.Center);
