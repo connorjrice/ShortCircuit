@@ -14,8 +14,7 @@ import com.jme3.scene.shape.Line;
 import java.util.ArrayList;
 
 /**
- * TODO: Documentation
- * TODO: Speed up
+ * This state controls the firing of beams, and the sounds that they make.
  * @author Connor Rice
  */
 public class BeamState extends AbstractAppState {
@@ -46,6 +45,9 @@ public class BeamState extends AbstractAppState {
         initAudio();
     }
     
+    /**
+     * Initializes all of the audio we need for making beams.
+     */
     private void initAudio() {
         tower1audio = new AudioNode(assetManager, "Audio/tower1.wav");
         tower1audio.setVolume(.4f);
@@ -58,6 +60,11 @@ public class BeamState extends AbstractAppState {
 
     }
 
+    /**
+     * Removes all beams every .15 seconds.
+     * TODO: Make it so each beam has a life of .15 seconds
+     * @param tpf 
+     */
     @Override
     public void update(float tpf) {
         super.update(tpf);
@@ -74,17 +81,18 @@ public class BeamState extends AbstractAppState {
         }
     }
     
+    /**
+     * Attaches the beam node to the world node.
+     */
     public void attachBeamNode() {
         worldNode.attachChild(beamNode);
     }
 
-    public void reset() {
-        beamList.clear();
-    }
-
     /**
      * Creates a laser beam from the origin to the target.
-     *
+     * This is the fastest version of doing this for now.
+     * Other implementations involve removing the else ifs and using string
+     * parsing
      * @param origin
      * @param target
      */
@@ -113,8 +121,13 @@ public class BeamState extends AbstractAppState {
         shot = true;
     }
     
-    
-
+    /**
+     * Clears the beamlist, and removes any stray beams.
+     */
+    public void reset() {
+        beamList.clear();
+        beamNode.detachAllChildren();
+    }
 
 
     @Override

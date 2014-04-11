@@ -6,7 +6,6 @@ import ShortCircuit.States.Game.CreepState;
 /**
  * Currently, this class moves creeps based upon a Vector3f called direction.
  * Eventually, this will be used to do pathfinding!
- * TODO: This isn't actually threaded. Make it so.
  * @author clarence
  */
 public class MoveCreep {
@@ -18,6 +17,10 @@ public class MoveCreep {
         cc = _cc;
     }
     
+    /**
+     * This takes care of the death conditions, and moves the creep in the
+     * direction specified by it's direction.
+     */
     public void run() {
         if (cc.getSpatial().getWorldBound().intersects(cs.getBaseBounds())) {
             cs.decPlrHealth(cc.getValue());
@@ -32,6 +35,7 @@ public class MoveCreep {
             cc.getSpatial().removeFromParent();
             cc.getSpatial().removeControl(cc);
         }
+        // Pathfinding will go here
         else {
             cc.getSpatial().move(cc.getDirection());
         }

@@ -5,8 +5,9 @@ import com.jme3.scene.Spatial;
 import java.util.Comparator;
 
 /**
- *
- * @author clarence
+ * This compares the distance of two spatials, and returns the relationship
+ * between the distance of each spatial to the origin.
+ * @author Connor Rice
  */
 public class STCCreepCompare implements Comparator<Spatial>{
     
@@ -15,7 +16,7 @@ public class STCCreepCompare implements Comparator<Spatial>{
     public STCCreepCompare(Vector3f _origin) {
         origin = _origin;
     }
-    // TODO: Document CreepCompare
+    
     @Override
     public int compare(Spatial lhs, Spatial rhs) {
         if (lhs.getLocalTranslation().distance(origin) < rhs.getLocalTranslation().distance(origin)) {

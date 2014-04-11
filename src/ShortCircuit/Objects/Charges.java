@@ -2,6 +2,8 @@ package ShortCircuit.Objects;
 
 /**
  * TODO: Document
+ * TODO: Switch from charges system to integer container for overall number of
+ * remaining charges. This should save memory.
  * @author Connor Rice
  */
 public class Charges {

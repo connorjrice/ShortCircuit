@@ -20,7 +20,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
@@ -33,6 +32,7 @@ import tonegod.gui.core.Screen;
 
 /**
  * Gameplay GUI for Tower Defense
+ *
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {
@@ -43,29 +43,28 @@ public class GameGUI extends AbstractAppState {
     private InputManager inputManager;
     private GameState gs;
     private TowerState TowerState;
-    private Button Level0;
     private Button Charge;
     private Screen screen;
     private Node guiNode;
-    public Button Modify;
-    private ButtonAdapter Camera;
     private Panel leftPanel;
     private Panel rightPanel;
     private ButtonAdapter Settings;
-    private int camlocation = 0;
     public ButtonAdapter Health;
     public ButtonAdapter Budget;
     public ButtonAdapter Score;
     public ButtonAdapter Level;
     private ButtonAdapter TextColorButton;
-    private ButtonAdapter Loading;
     private ButtonAdapter BloomToggleButton;
+    public ButtonAdapter Modify;
+    private ButtonAdapter Camera;
+    private ButtonAdapter Menu;
+    private ButtonAdapter CheatsButton;
+    private ButtonAdapter CheatToggleButton;
     private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
     private float updateTimer;
     private float frillsTimer;
-    private ButtonAdapter Menu;
-    private ScheduledThreadPoolExecutor ex;
+    private ColorRGBA color = new ColorRGBA();
     private int leftButtons = 10;
     private int rightButtons = 1605;
     private int height;
@@ -74,16 +73,15 @@ public class GameGUI extends AbstractAppState {
     private int internalBudget;
     private int internalScore;
     private int internalLevel;
+    private int camlocation = 0;
     private Menu internalMenu;
     private Window SetWindow;
     private Slider BloomSlider;
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
-    private ColorRGBA color = new ColorRGBA();
-    private ButtonAdapter CheatsButton;
-    private ButtonAdapter CheatToggleButton;
 
-    public GameGUI() {}
+    public GameGUI() {
+    }
 
     public GameGUI(TowerDefenseMain _game) {
         this.game = _game;
@@ -98,12 +96,11 @@ public class GameGUI extends AbstractAppState {
         this.inputManager = this.app.getInputManager();
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        this.ex = this.gs.getEx();
         width = game.getWidth();
         height = game.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
         cam.setLocation(new Vector3f(0, 0, 20f));
-        this.app.getListener().setLocation(new Vector3f (0,0,5f));
+        this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
         this.app.getListener().setRotation(cam.getRotation());
         initScreen();
         setupGUI();
@@ -122,19 +119,18 @@ public class GameGUI extends AbstractAppState {
             updateTimer += tpf;
         }
         if (frillsTimer > .25 && isFrills) {
-            if (gs.getPlrLvl() != internalLevel){
+            if (gs.getPlrLvl() != internalLevel) {
                 game.incBloomIntensity(.2f);
                 internalLevel = gs.getPlrLvl();
             }
             updateFrills();
             frillsTimer = 0;
-        }
-        else {
+        } else {
             frillsTimer += tpf;
         }
-        
+
     }
-    
+
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
@@ -143,13 +139,13 @@ public class GameGUI extends AbstractAppState {
         //screen.setUseKeyboardIcons(true);
 
     }
-    
+
     /**
-     * This will be the button that, after cheats are activated, shows up
-     * and lets the user use dirty cheats.
+     * This will be the button that, after cheats are activated, shows up and
+     * lets the user use dirty cheats.
      */
     private void cheatsButton() {
-       CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
+        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!game.StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
@@ -157,14 +153,14 @@ public class GameGUI extends AbstractAppState {
                 }
             }
         };
-       game.cheatsHandler();
+        game.cheatsHandler();
         CheatsButton.setLocalScale(3f, 2f, 1f);
         CheatsButton.setText("Cheats");
         CheatsButton.setUseButtonPressedSound(true);
         screen.addElement(CheatsButton);
         CheatsButton.hide();
     }
-    
+
     /**
      * This button will appear in settings, as a toggle. Next to the textcolor
      * button probably.
@@ -180,32 +176,31 @@ public class GameGUI extends AbstractAppState {
         CheatToggleButton.setText("Cheats");
         SetWindow.addChild(CheatToggleButton);
     }
-    
+
     /**
      * This is the method for toggling the cheat menu button.
      */
     private void toggleCheats() {
         if (CheatsButton.getIsVisible()) {
             CheatsButton.hide();
-        }
-        else {
+        } else {
             CheatsButton.show();
         }
-        
+
     }
-    
+
     public void setAudioListenerPosition(Vector3f trans) {
         app.getListener().setLocation(trans);
-        app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI/2,   new Vector3f(0,0,1)));
+        app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI / 2, new Vector3f(0, 0, 1)));
     }
-        /**
+    /**
      * Handles touch events for GameState.
      */
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (isEnabled()) {
                 if (keyPressed) {
-                    
+
 
                     Vector2f click2d = inputManager.getCursorPosition();
                     Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
@@ -220,10 +215,9 @@ public class GameGUI extends AbstractAppState {
             }
         }
     };
-    
+
     private void setupGUI() {
         objectivePopup();
-
         leftPanel();
         rightPanel();
         settingsWindow();
@@ -245,10 +239,9 @@ public class GameGUI extends AbstractAppState {
         cheatsButton();
 
     }
-    
-    private void objectivePopup() {
-        ObjectivePopup = new AlertBox(screen, "objective", new Vector2f(width/2-200, height/2-175), new Vector2f(400,300)) {
 
+    private void objectivePopup() {
+        ObjectivePopup = new AlertBox(screen, "objective", new Vector2f(width / 2 - 200, height / 2 - 175), new Vector2f(400, 300)) {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
                 game.pause();
@@ -260,15 +253,15 @@ public class GameGUI extends AbstractAppState {
         ObjectivePopup.setMsg("Objective: Build 4 purple towers.");
         screen.addElement(ObjectivePopup);
     }
-    
+
     private void settingsWindow() {
-        SetWindow = new Window(screen, new Vector2f(400,800), new Vector2f(width/2, height/4) );
+        SetWindow = new Window(screen, new Vector2f(400, 800), new Vector2f(width / 2, height / 4));
         SetWindow.setIgnoreMouse(true);
         SetWindow.setIsMovable(false);
         screen.addElement(SetWindow);
         SetWindow.hide();
     }
-    
+
     private void settingsButton() {
         Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
@@ -278,8 +271,7 @@ public class GameGUI extends AbstractAppState {
                         SetWindow.hideWindow();
                         Menu.setIgnoreMouse(false);
                         game.pause();
-                    }
-                    else {
+                    } else {
                         SetWindow.showWindow();
                         Menu.setIgnoreMouse(true);
                         game.pause();
@@ -292,37 +284,37 @@ public class GameGUI extends AbstractAppState {
         Settings.setUseButtonPressedSound(true);
         screen.addElement(Settings);
     }
-    
+
     private void progressIndicator() {
         ProgressIndicator = new Indicator(screen, "Progress", new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {
             @Override
             public void onChange(float arg0, float arg1) {
             }
-            
         };
         ProgressIndicator.setMaxValue(100f);
         screen.addElement(ProgressIndicator);
-        
+
     }
-    
+
     public void modifyProgress() {
-        float blend = ProgressIndicator.getCurrentValue()*0.01f;
-        color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f,0.0f,0.2f,0.4f), blend);
+        float blend = ProgressIndicator.getCurrentValue() * 0.01f;
+        color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f, 0.0f, 0.2f, 0.4f), blend);
         ProgressIndicator.setIndicatorColor(color);
         ProgressIndicator.setCurrentValue(gs.getCurrentProgress());
     }
+
     private void updateText() {
         updatePlrInfo();
         updateTowerInfo();
     }
-    
+
     private void updateFrills() {
         updateChargeFrill();
         updateHealthColor();
         updateTowerFrills();
         modifyProgress();
     }
-    
+
     public void toggleFrills() {
         if (isFrills) {
             Health.setFontColor(ColorRGBA.White);
@@ -332,7 +324,7 @@ public class GameGUI extends AbstractAppState {
         }
         isFrills = !isFrills;
     }
-    
+
     private void internalMenu() {
         internalMenu = new Menu(screen, new Vector2f(0, 0), false) {
             @Override
@@ -345,8 +337,6 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(internalMenu);
     }
 
-
-
     private void updatePlrInfo() {
         if (gs.getPlrHealth() != internalHealth) {
             Health.setText("Health: " + gs.getPlrHealth());
@@ -357,7 +347,7 @@ public class GameGUI extends AbstractAppState {
             internalBudget = gs.getPlrBudget();
         }
         if (gs.getPlrScore() != internalScore) {
-            Score.setText("Score: " + gs.getPlrScore());            
+            Score.setText("Score: " + gs.getPlrScore());
             internalScore = gs.getPlrScore();
         }
         if (gs.getPlrLvl() != internalLevel) {
@@ -388,20 +378,19 @@ public class GameGUI extends AbstractAppState {
             if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("unbuilt")) {
                 Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
             } else {
-                Modify.setText("Upgrade: " +gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+                Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
             }
         }
     }
-    
+
     private void updateChargeFrill() {
         if (gs.getPlrBudget() >= 10 && Charge.getFontColor() != ColorRGBA.Green) {
             Charge.setFontColor(ColorRGBA.Green);
-        }
-        else if (gs.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
+        } else if (gs.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
             Charge.setFontColor(ColorRGBA.Red);
         }
     }
-    
+
     private void updateTowerFrills() {
         if (gs.getSelected() != -1) {
             if (gs.getPlrBudget() >= Integer.parseInt(gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")))) {
@@ -431,10 +420,8 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-
-    
     private void textColorToggleButton() {
-        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240,100), buttonSize) {
+        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 game.toggleFrills();
@@ -444,10 +431,9 @@ public class GameGUI extends AbstractAppState {
         TextColorButton.setText("Disable Text Colors");
         SetWindow.addChild(TextColorButton);
     }
-    
-    
+
     private void bloomToggleButton() {
-        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40,100), buttonSize) {
+        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 game.toggleBloom();
@@ -457,11 +443,9 @@ public class GameGUI extends AbstractAppState {
         BloomToggleButton.setText("Disable bloom");
         SetWindow.addChild(BloomToggleButton);
     }
-    
 
-    
     private void bloomLevelSlider() {
-        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60,70), Slider.Orientation.HORIZONTAL, true) {
+        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
                 game.setBloomIntensity(selectedIndex);
@@ -472,10 +456,6 @@ public class GameGUI extends AbstractAppState {
         game.setBloomIntensity(2.0f);
         SetWindow.addChild(BloomSlider);
     }
-        
-
-
-
 
     private void leftPanel() {
         leftPanel = new Panel(screen, "leftPanel", new Vector2f(0, 0), new Vector2f(325, 1200));
@@ -549,8 +529,6 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-
-
     private void menuButton() {
         Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, 900)) {
             @Override
@@ -558,8 +536,7 @@ public class GameGUI extends AbstractAppState {
                 if (!SetWindow.getIsVisible()) {
                     SetWindow.setIgnoreMouse(true);
                     game.goToMainMenu();
-                }
-                else {
+                } else {
                     game.goToMainMenu();
                     SetWindow.setIgnoreMouse(false);
                 }
@@ -608,9 +585,6 @@ public class GameGUI extends AbstractAppState {
         Level.setIgnoreMouse(true);
         screen.addElement(Level);
     }
-
-    
-
 
     @Override
     public void cleanup() {

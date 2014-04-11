@@ -8,11 +8,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 /**
- * TODO: Documentation
  * @author Connor Rice
  */
 public class XMLLoader implements AssetLoader {   
-    
+
     public Document load(AssetInfo assetInfo) {
         return createDocFromStream(assetInfo.openStream());
     }

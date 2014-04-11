@@ -19,7 +19,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * TODO: Implementation of upgrades for radius/damage, and creation of textures/
+ * PENDING: Implementation of upgrades for radius/damage, and creation of textures/
  * sounds that would go along with that sort of implementation.
  * @author Connor Rice
  */

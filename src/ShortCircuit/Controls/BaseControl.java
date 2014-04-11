@@ -16,7 +16,7 @@ import com.jme3.scene.control.Control;
 import java.io.IOException;
 import java.util.ArrayList;
 /**
- * TODO: Make decision as to whether or not the base shooting creeps should
+ * PENDING: Make decision as to whether or not the base shooting creeps should
  * be a thing, and then figure out how to implement it. For now, this control
  * is sort of wasting space.
  * @author Connor Rice

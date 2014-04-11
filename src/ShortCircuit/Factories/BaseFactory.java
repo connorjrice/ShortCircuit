@@ -8,7 +8,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 
 /**
- *
+ * ASKMATTHEW: Factories, disposable or reusuable?
  * @author Connor Rice
  */
 public class BaseFactory {

@@ -7,7 +7,6 @@ import com.jme3.asset.AssetManager;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
- * TODO: This isn't actually threaded. Make it so.
  * @author Connor Rice
  */
 public class UpgradeTower implements Runnable {
@@ -65,7 +64,6 @@ public class UpgradeTower implements Runnable {
      * Checks to see if selected is actually a tower, also makes sure the tower
      * is upgradeable.
      * Mostly uses methods from GameState.
-     * URGENT: Make this actually threadable
      */
     public void run() {
         if (gs.getSelected() != -1) {

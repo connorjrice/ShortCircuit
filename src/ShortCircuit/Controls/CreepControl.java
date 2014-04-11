@@ -123,17 +123,3 @@ public class CreepControl extends AbstractControl {
         OutputCapsule out = ex.getCapsule(this);
     }
 }
-
-            /*if (spatial.getWorldBound().intersects(CreepState.getBaseBounds())) {
-                collisionDeath();
-            }
-            else if (getCreepHealth() <= 0) {
-                CreepState.incPlrBudget(getValue());
-                CreepState.incPlrScore(1);
-                CreepState.creepList.remove(getSpatial());
-                getSpatial().removeFromParent();
-                getSpatial().removeControl(this);
-            }
-            else {
-                getSpatial().move(direction);
-            }*/
