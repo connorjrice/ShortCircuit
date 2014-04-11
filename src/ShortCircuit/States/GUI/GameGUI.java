@@ -7,6 +7,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
@@ -79,6 +80,8 @@ public class GameGUI extends AbstractAppState {
     private Slider BloomSlider;
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
+    private AudioNode endTheme;
+    private boolean end = false;
 
     public GameGUI() {
     }
@@ -108,7 +111,6 @@ public class GameGUI extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-
         if (updateTimer > .15) {
             if (gs.getPlrHealth() <= 0) {
                 game.gameover();
@@ -122,7 +124,13 @@ public class GameGUI extends AbstractAppState {
             if (gs.getPlrLvl() != internalLevel) {
                 game.incBloomIntensity(.2f);
                 internalLevel = gs.getPlrLvl();
+
             }
+            if (gs.getFours() > 0 && !end) {
+                    endTheme();
+                    game.stopUnder();
+                    end = true;
+                }
             updateFrills();
             frillsTimer = 0;
         } else {
@@ -130,6 +138,16 @@ public class GameGUI extends AbstractAppState {
         }
 
     }
+    
+    private void endTheme() {
+        System.out.println("thisistheend");
+        endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
+        endTheme.setVolume(1.0f);
+        endTheme.setPositional(false);
+        endTheme.setLooping(true);
+        endTheme.play();
+    }
+
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
@@ -602,6 +620,11 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Settings);
         screen.removeElement(leftPanel);
         screen.removeElement(rightPanel);
+        if (endTheme != null) {
+            endTheme.stop();
+            game.underPinning();
+        }
+        
         guiNode.removeControl(screen);
 
     }

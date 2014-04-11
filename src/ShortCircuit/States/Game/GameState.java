@@ -60,7 +60,8 @@ public class GameState extends AbstractAppState {
     public AudioNode buildSound;
     
     public AudioNode levelUpSound;
-    
+    public AudioNode globPop;
+    public int fours;
 
 
     public GameState() {}
@@ -83,6 +84,8 @@ public class GameState extends AbstractAppState {
         levelUpSound = new AudioNode(assetManager, "Audio/levelup.wav");
         levelUpSound.setPositional(false);
         levelUpSound.setVolume(.6f);
+        
+        globPop = new AudioNode(assetManager, "Audio/globpop.wav");
         ex = new ScheduledThreadPoolExecutor(4);
     }
 
@@ -132,6 +135,14 @@ public class GameState extends AbstractAppState {
         
     }
     
+    public void incFours() {
+        fours += 1;
+    }
+    
+    public int getFours() {
+        return fours;
+    }
+    
     private void updateNumCreeps() {
         numCreeps += creepMod;
     }
@@ -177,10 +188,17 @@ public class GameState extends AbstractAppState {
             int towerIndex = target.getUserData("Index");
             TowerState.towerSelected(towerIndex);
         } else if (target.getName().equals("Glob")) {
-            target.getControl(GlobControl.class).decGlobHealth();
+            popGlob(trans, target);
         }else {
             dropBomb(trans);
         }
+    }
+    
+    public void popGlob(Vector3f trans, Spatial target) {
+        int health = target.getControl(GlobControl.class).decGlobHealth();
+        globPop.setPitch(health *0.1f + 1f);
+        globPop.setLocalTranslation(trans);
+        globPop.playInstance();
     }
     
     public float getCurrentProgress() {

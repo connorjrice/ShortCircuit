@@ -67,6 +67,7 @@ public class TowerDefenseMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
+    private AudioNode endTheme;
 
 
 
@@ -111,13 +112,18 @@ public class TowerDefenseMain extends SimpleApplication {
      * Initializes the theme that plays throughout the game.
      * Sets volume, sets looping true, and begins playing.
      */
-    private void underPinning() {
-        theme = new AudioNode(assetManager, "Audio/theme.wav");
+    public void underPinning() {
+        theme = new AudioNode(assetManager, "Audio/underpinning.wav");
         theme.setVolume(1.0f);
+        theme.setPositional(false);
         theme.setLooping(true);
         theme.play();
-
     }
+    
+    public void stopUnder() {
+        theme.stop();
+    }
+    
 
     /**
      * Toggle the bloom filter.

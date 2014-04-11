@@ -69,9 +69,15 @@ public class UpgradeTower implements Runnable {
         if (gs.getSelected() != -1) {
             if (!type.equals("ANGRYMONSTER")) {
                 TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
+                
+
+
                 if (gs.getPlrBudget() >= cost) {
                     tower.charges.add(new Charges(type));
                     tower.setType(type);
+                    if (type.equals("tower4")) {
+                        gs.incFours();
+                    }
                     tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
@@ -79,6 +85,7 @@ public class UpgradeTower implements Runnable {
                     if (type.equals("tower1")) {
                         tower.setBuilt();
                     }
+
                 } 
             }
         }
