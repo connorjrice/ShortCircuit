@@ -28,12 +28,15 @@ C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\build.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\buildgam.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\chargegam.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\emptytower.wav \
+C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\endtheme.wav \
+C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\globpop.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\levelup.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\theme.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\tower1.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\tower2.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\tower3.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\tower4.wav \
+C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Audio\underpinning.wav \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Interface\Fonts \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Interface\loading.png \
 C:\Users\Connor\Documents\ShortCircuit\mobile\assets\Interface\Fonts\DejaVuSans.fnt \

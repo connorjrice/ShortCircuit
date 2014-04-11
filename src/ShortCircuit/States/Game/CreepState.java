@@ -64,6 +64,7 @@ public class CreepState extends AbstractAppState {
     private ArrayList<Vector3f> creepSpawnerVecs;
     private ArrayList<String> creepSpawnerDirs;
     private ArrayList<Spatial> creepSpawners = new ArrayList<Spatial>();
+    public ArrayList<Spatial> globList;
     private int nextspawner;
     private int nextrandom;
     private float randomCheck = 0;
@@ -79,6 +80,7 @@ public class CreepState extends AbstractAppState {
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
         creepList = new ArrayList<Spatial>();
+        globList = new ArrayList<Spatial>();
     }
     
     @Override
@@ -98,7 +100,7 @@ public class CreepState extends AbstractAppState {
     }
     
     private void getNextRandomSpecialEnemyInt() {
-        nextrandom = random.nextInt(60);
+        nextrandom = random.nextInt(2);
     }
     
     private void spawnRandomEnemy() {
@@ -110,8 +112,9 @@ public class CreepState extends AbstractAppState {
         Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
         GlobFactory gF = new GlobFactory(towerVictimLocation, towerVictimIndex, assetManager, this);
         Spatial glob = gF.getGlob();
-        GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).disableTower();
+        GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
         creepNode.attachChild(glob);
+        globList.add(glob);
     }
 
     public void attachCreepNode() {

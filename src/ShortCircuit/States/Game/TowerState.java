@@ -26,6 +26,7 @@ public class TowerState extends AbstractAppState {
     private AssetManager assetManager;
     public ArrayList<Spatial> towerList = new ArrayList<Spatial>();
     public ArrayList<Vector3f> unbuiltTowerVecs = new ArrayList<Vector3f>();
+    public ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
     private Vector3f unbuiltTowerSize = new Vector3f(0.5f, 0.5f, .1f);
     private Vector3f builtTowerSize = new Vector3f(0.5f, 0.5f, 1.0f);
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);

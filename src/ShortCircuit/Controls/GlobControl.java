@@ -31,9 +31,10 @@ public class GlobControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (getGlobHealth() <= 0) {
-            enableVictimTower();
             cs.incPlrBudget(10);
+            unglobTower();
             cs.getCreepNode().detachChild(spatial);
+            cs.globList.remove(spatial);
             spatial.removeControl(this);
         }
     }
@@ -44,6 +45,10 @@ public class GlobControl extends AbstractControl {
     
     protected void enableVictimTower() {
         cs.getTowerList().get(getVictimTower()).getControl(TowerControl.class).enableTower();
+    }
+    
+    protected void unglobTower() {
+        cs.getTowerList().get(getVictimTower()).getControl(TowerControl.class).unglobTower();
     }
     
     private int getVictimTower() {

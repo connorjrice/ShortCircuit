@@ -48,6 +48,8 @@ public class TowerControl extends AbstractControl {
     private Comparator<Spatial> cc;
     private Future future;
     private AudioNode emptySound;
+    private boolean isGlobbed = false;
+
 
     public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc, boolean enabled) {
         BeamState = _bstate;
@@ -93,10 +95,32 @@ public class TowerControl extends AbstractControl {
         isActive = false;
     }
     
+    public void globTower() {
+        isActive = false;
+        TowerState.globbedTowers.add(getIndex());
+        isGlobbed = true;
+    }
+    
     public void enableTower() {
         if (!spatial.getUserData("Type").equals("unbuilt")) {
             isActive = true;
         }
+    }
+    
+    public void unglobTower() {
+        if (!spatial.getUserData("Type").equals("unbuilt")) {
+            isActive = true;
+            isGlobbed = false;
+            TowerState.globbedTowers.remove(getIndex());
+        }
+    }
+    
+    public ArrayList<Integer> getGlobbedTowerIndices() {
+        return TowerState.globbedTowers;
+    }
+    
+    public boolean getIsGlobbed() {
+        return isGlobbed;
     }
     
     
