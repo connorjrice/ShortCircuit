@@ -87,7 +87,7 @@ public class CreepState extends AbstractAppState {
     public void update(float tpf) {
         if (isEnabled()) {
             if (randomCheck > nextrandom) {
-                spawnRandomEnemy();
+                //spawnRandomEnemy();
                 getNextRandomSpecialEnemyInt();
                 randomCheck = 0;
             }
