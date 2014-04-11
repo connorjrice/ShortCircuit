@@ -105,7 +105,7 @@ public class CheatState extends AbstractAppState {
         for (int i = 0; i < towerList.size(); i++) {
             Spatial tower = towerList.get(i);
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
-            tower.setUserData("Type", "purpleLaser");
+            tower.setUserData("Type", "tower4");
             addPurptoPurp(control);
             TowerState.changeTowerTexture(TowerState.tow4MatLoc, control);
         }
@@ -116,7 +116,7 @@ public class CheatState extends AbstractAppState {
      */
     private void addPurptoPurp(TowerControl control) {
         for (int i = 0; i < 100; i++) {
-            control.charges.add(new Charges("purpleLaser"));
+            control.charges.add(new Charges("tower4"));
         }
     }
     
@@ -130,7 +130,7 @@ public class CheatState extends AbstractAppState {
         for (int i = 0; i < towerList.size(); i++) {
             Spatial tower = towerList.get(i);
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
-            tower.setUserData("Type", "purpleLaser");
+            tower.setUserData("Type", "tower4");
             addBadAsstoBadAss(control);
             TowerState.changeTowerTexture(LevelState.getFloorMatLoc(), control);
         }

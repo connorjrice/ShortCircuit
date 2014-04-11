@@ -33,29 +33,29 @@ public class UpgradeTower implements Runnable {
     private void getUpgradeType() {
         if (type.equals("unbuilt")) {
             cost = 100;
-            type = "redLaser";
+            type = "tower1";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower1.j3m";
             pitch = 0.6f;
         }
-        else if (type.equals("redLaser")) {
+        else if (type.equals("tower1")) {
             cost = 50;
-            type = "pinkLaser";
+            type = "tower2";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower2.j3m";
             pitch = 0.8f;
         }
-        else if (type.equals("pinkLaser")) {
+        else if (type.equals("tower2")) {
             cost = 100;
-            type = "greenLaser";
+            type = "tower3";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower3.j3m";
             pitch = 0.9f;
         }
-        else if (type.equals("greenLaser")) {
+        else if (type.equals("tower3")) {
             cost = 500;
-            type = "purpleLaser";
+            type = "tower4";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower4.j3m";
             pitch = 1.0f;
         }
-        else if (type.equals("purpleLaser")) {
+        else if (type.equals("tower4")) {
             type = "ANGRYMONSTER";
             pitch = 1f;
         }
@@ -78,7 +78,7 @@ public class UpgradeTower implements Runnable {
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
                     gs.playBuildSound(pitch);
-                    if (type.equals("redLaser")) {
+                    if (type.equals("tower1")) {
                         tower.setBuilt();
                     }
                 } 

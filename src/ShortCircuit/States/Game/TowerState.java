@@ -110,21 +110,21 @@ public class TowerState extends AbstractAppState {
         if (selectedTower != -1) {
             TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
             if (GameState.getPlrBudget() >= chargeCost) {
-                if (tower.getType().equals("redLaser")) {
+                if (tower.getType().equals("tower1")) {
                     changeTowerTexture(tow1MatLoc, tower);
-                    tower.charges.add(new Charges("redLaser"));
+                    tower.charges.add(new Charges("tower1"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("pinkLaser")) {
+                } else if (tower.getType().equals("tower2")) {
                     changeTowerTexture(tow2MatLoc, tower);
-                    tower.charges.add(new Charges("pinkLaser"));
+                    tower.charges.add(new Charges("tower2"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("greenLaser")) {
+                } else if (tower.getType().equals("tower3")) {
                     changeTowerTexture(tow3MatLoc, tower);
-                    tower.charges.add(new Charges("greenLaser"));
+                    tower.charges.add(new Charges("tower3"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("purpleLaser")) {
+                } else if (tower.getType().equals("tower4")) {
                     changeTowerTexture(tow4MatLoc, tower);
-                    tower.charges.add(new Charges("purpleLaser"));
+                    tower.charges.add(new Charges("tower4"));
                     GameState.decPlrBudget(chargeCost);
                 }
                 playChargeSound();
@@ -168,8 +168,8 @@ public class TowerState extends AbstractAppState {
         towEmMatLoc = "Materials/" + GameState.getMatDir()+ "/EmptyTower.j3m";
         for (int i = 0; i < starterTowerIn.size(); i++) {
             TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
-            tower.charges.add(new Charges("redLaser"));
-            tower.setType("redLaser");
+            tower.charges.add(new Charges("tower1"));
+            tower.setType("tower1");
             tower.setBuilt();
             changeTowerTexture(tow1MatLoc, tower);
             tower.setSize(builtTowerSize);

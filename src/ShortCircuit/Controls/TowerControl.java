@@ -185,7 +185,7 @@ public class TowerControl extends AbstractControl {
     }
 
     public void addInitialCharges() {
-        charges.add(new Charges("redLaser"));
+        charges.add(new Charges("tower1"));
     }
 
     public int getHeight() {

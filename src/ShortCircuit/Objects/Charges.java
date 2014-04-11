@@ -11,23 +11,22 @@ public class Charges {
     public String type;
 
     public Charges(String _type) {
-        if (_type.equals("redLaser")) {
+        if (_type.equals("tower1")) {
             damage = 100;
             remBullets = 10;
             type = _type;
-        } else if (_type.equals("pinkLaser")) {
             damage = 150;
             remBullets = 20;
             type = _type;
-        } else if (_type.equals("greenLaser")) {
+        } else if (_type.equals("tower3")) {
             damage = 250;
             remBullets = 30;
             type = _type;
-        } else if (_type.equals("purpleLaser")) {
+        } else if (_type.equals("tower4")) {
             damage = 400;
             remBullets = 40;
             type = _type;
-        } else if (_type.equals("baseLaser")) {
+        } else if (_type.equals("towerc")) {
             damage = 1600;
             remBullets = 9999999;
             type = _type;

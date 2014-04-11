@@ -93,7 +93,7 @@ public class BeamState extends AbstractAppState {
      * @param target
      */
     public void makeLaserBeam(Vector3f origin, Vector3f target, String type) {
-        if (type.equals("redLaser")) {
+        if (type.equals("tower1")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
@@ -101,7 +101,7 @@ public class BeamState extends AbstractAppState {
             beamNode.attachChild(beamg);
             tower1.setLocalTranslation(origin);
             tower1.playInstance();
-        } else if (type.equals("pinkLaser")) {
+        } else if (type.equals("tower2")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
@@ -109,7 +109,7 @@ public class BeamState extends AbstractAppState {
             beamNode.attachChild(beamg);
             tower2.setLocalTranslation(origin);
             tower2.playInstance();
-        } else if (type.equals("greenLaser")) {
+        } else if (type.equals("tower3")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);
@@ -117,7 +117,7 @@ public class BeamState extends AbstractAppState {
             beamNode.attachChild(beamg);
             tower3.setLocalTranslation(origin);
             tower3.playInstance();
-        } else if (type.equals("purpleLaser")) {
+        } else if (type.equals("tower4")) {
             beaml = new Line(origin, target);
             beaml.setLineWidth(beamwidth);
             beamg = new Geometry("Beam", beaml);

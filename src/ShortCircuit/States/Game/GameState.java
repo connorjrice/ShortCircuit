@@ -150,13 +150,13 @@ public class GameState extends AbstractAppState {
             return "10";
         } else if (type.equals("unbuilt")) {
             return "100";
-        } else if (type.equals("redLaser")) {
+        } else if (type.equals("tower1")) {
             return "50";
 
-        } else if (type.equals("pinkLaser")) {
+        } else if (type.equals("tower2")) {
             return "100";
 
-        } else if (type.equals("greenLaser")) {
+        } else if (type.equals("tower3")) {
             return "500";
         } else {
             return "0";
