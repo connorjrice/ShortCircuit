@@ -19,9 +19,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * TODO: Documentation
- * TODO: Add input to change amount of damage to creep
- * TODO: Upgrades (textures/effect)
+ * TODO: Implementation of upgrades for radius/damage, and creation of textures/
+ * sounds that would go along with that sort of implementation.
  * @author Connor Rice
  */
 public class BombControl extends AbstractControl {
@@ -35,14 +34,31 @@ public class BombControl extends AbstractControl {
     private ScheduledThreadPoolExecutor ex;
     private AudioNode bombsound;
     
+    
     public BombControl(float size, GameState _gstate) {
-        bombSize = size;
-        gs = _gstate;
+        bombSize = size; // Initial size of bomb
+        gs = _gstate;    // Game state
         this.ex = gs.getEx();
         bombsound = new AudioNode(gs.getAssetManager(), "Audio/bomb.wav");
-        playSound();
+        playSound(); // We want to begin the sound when a control has been made
     }
     
+    /**
+     * If the gamestate is enabled, and the bomb has been alive for less than
+     * .5f, and the bombSize is smaller than 3.0f:
+     * 1. Increment bomb size (internally to bombSize variable)
+     * 2. Apply change to bomb's spatial
+     * 3. Increment bomb timer
+     * 4. If enough time has passed to check if we've collided with creeps, we
+     *    do so.
+     * 4a. If not, tpf is added to the collision timer.
+     * 5. After we've collided with the creeps, we throw away the reachable
+     *    we just used.
+     *    (Reachable is an arraylist of spatials that is given from the callable
+     *     method "callableFindVics"
+     * 6. We then search for victims, and reset the collision timer to 0.
+     * @param tpf 
+     */
     @Override
     protected void controlUpdate(float tpf) {
         if (gs.isEnabled() && bombTimer < .5f && bombSize < 3.0f) {
@@ -59,6 +75,11 @@ public class BombControl extends AbstractControl {
                 collideTimer += tpf;
             }
         }
+        /**
+         * If any of the ending conditions have been met (3.0f > bombSize, 
+         * .5f > bombTimer, gs is disabled), we stop the sound, and remove 
+         * the bomb's spatial, and remove this control.
+         */
         else {
             stopSound();
             spatial.removeFromParent();
@@ -66,14 +87,36 @@ public class BombControl extends AbstractControl {
         }
     }
     
-    public void playSound() {
+    /**
+     * Plays the bomb sound. Not an instance, because each bomb has it's own
+     * control.
+     */
+    private void playSound() {
         bombsound.play();
     }
-    
-    public void stopSound() {
+
+    /**
+     * Stop the bomb sound.
+     */
+    private void stopSound() {
         bombsound.stop();
     }
     
+    /**
+     * Uses threading to find collisions between the bomb and the creeps.
+     * If we don't have a reachable list of creeps, and we don't have a 
+     * non-null future object, we submit the task of finding the collisions to
+     * the executor.
+     * 
+     * If we have a future that is done, we feed that into reachable so it can
+     * be utilized in the update loop.
+     * 
+     * If it's cancelled, we nullify future.
+     * 
+     * If something goes wrong, the most lame form of exception handling has
+     * been implemented.
+     * TODO: Implement better exception handling for concurrent tasks.
+     */
     private void searchForVictims() {
         try {
             if (reachable == null && future == null) {
@@ -92,7 +135,13 @@ public class BombControl extends AbstractControl {
         }
     }
     
-    
+    /**
+     * Clones the list of creeps currently on the map, iterates through the 
+     * list looking for collisions, if there is a collision it is added to the
+     * list reach, which is then passed into a FindBombVictims object for
+     * retrieval.
+     * TODO: See if we can do the same thing without a FindBombVictims wrapper.
+     */
     private Callable<FindBombVictims> callableFindVics = new Callable<FindBombVictims>() {
         public FindBombVictims call() throws Exception {
             ArrayList<Spatial> reach = new ArrayList<Spatial>();
@@ -111,9 +160,12 @@ public class BombControl extends AbstractControl {
 
         }
     };
+    
+    
     /**
-     * This method collides with all of the creeps currently.
-     * Test method: collide with creepNode instead
+     * If we have a list of reachable creeps that isn't null, we iterate through
+     * the list looking for non-null creeps. If we find one, we decrement it's 
+     * health according to the value of bombDMG.
      */
     protected void collideWithCreeps() {
         if (reachable != null) {

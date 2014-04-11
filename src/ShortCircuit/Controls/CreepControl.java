@@ -14,7 +14,9 @@ import com.jme3.scene.control.AbstractControl;
 import java.io.IOException;
 
 /**
- * TODO: Document CreepControl
+ * This is the control class for standard creeps.
+ * It has not been decided if specialty creeps will inherit this control.
+ * Currently, this control is used by the STD family of creeps.
  *
  * @author Connor Rice
  */
@@ -25,10 +27,21 @@ public class CreepControl extends AbstractControl {
     protected Vector3f direction;
     private MoveCreep mc;
 
+    /**
+     * Initialization for Control Classes happens in Constructors.
+     * @param _state - our CreepState
+     * We need access to CreepState for certain methods.
+     * 
+     * TODO: Implement standardized naming of passed states, (CreepState or cs)
+     */
     public CreepControl(CreepState _state) {
         CreepState = _state;
     }
 
+    /**
+     * If CreepState is enabled, we create a new MoveCreep runnable to 
+     * @param tpf 
+     */
     @Override
     protected void controlUpdate(float tpf) {
         if (CreepState.isEnabled()) {
