@@ -65,7 +65,6 @@ public class TowerState extends AbstractAppState {
 
 
     public void attachTowerNode() {
-
         worldNode.attachChild(towerNode);
     }
 
@@ -237,5 +236,8 @@ public class TowerState extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         towerNode.detachAllChildren();
+        towerList.clear();
+        globbedTowers.clear();
+        
     }
 }

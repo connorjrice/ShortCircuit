@@ -110,8 +110,10 @@ public class TowerControl extends AbstractControl {
     public void unglobTower() {
         if (!spatial.getUserData("Type").equals("unbuilt")) {
             isActive = true;
-            isGlobbed = false;
-            TowerState.globbedTowers.remove(getIndex());
+        }
+        isGlobbed = false;
+        if (TowerState.globbedTowers.indexOf(getIndex()) != -1) {
+            TowerState.globbedTowers.remove(TowerState.globbedTowers.indexOf(getIndex()));
         }
     }
     

@@ -40,19 +40,32 @@ public class GlobControl extends AbstractControl {
     }
     
     private void disableVictimTower() {
-        cs.getTowerList().get(getVictimTower()).getControl(TowerControl.class).disableTower();
+        getVictimTower().getControl(TowerControl.class).disableTower();
     }
     
     protected void enableVictimTower() {
-        cs.getTowerList().get(getVictimTower()).getControl(TowerControl.class).enableTower();
+        getVictimTower().getControl(TowerControl.class).enableTower();
     }
     
     protected void unglobTower() {
-        cs.getTowerList().get(getVictimTower()).getControl(TowerControl.class).unglobTower();
+       getVictimTower().getControl(TowerControl.class).unglobTower();
     }
     
-    private int getVictimTower() {
-       return spatial.getUserData("TowerIndex");
+    private Spatial getVictimTower() {
+       return cs.getTowerList().get(getVictimTowerInd());
+    }
+    
+    private boolean getIsVictimTowerBuilt() {
+        if (cs.getTowerList().get(getVictimTowerInd()).getUserData("Type").equals("unbuilt")) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    
+    private int getVictimTowerInd() {
+        return spatial.getUserData("TowerIndex");
     }
     
     public int decGlobHealth() {

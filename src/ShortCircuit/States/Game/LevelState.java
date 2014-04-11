@@ -8,7 +8,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 /**
  * LevelState calls the appropriate methods in its sibling states to create a 
@@ -120,14 +119,6 @@ public class LevelState extends AbstractAppState {
         mg.parseXML();
     }
     
-    public void reset() {
-        worldNode.detachAllChildren();
-        TowerState.reset();
-        CreepState.reset();
-        BeamState.reset();
-        newGame("Level0");
-        
-    }
     
     public String getFloorMatLoc() {
         return "Materials/"+GameState.getMatDir()+"/Floor.j3m";

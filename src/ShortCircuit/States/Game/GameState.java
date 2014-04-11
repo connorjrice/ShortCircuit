@@ -177,16 +177,19 @@ public class GameState extends AbstractAppState {
             TowerState.shortenTowers();
             int towerIndex = target.getUserData("Index");
             if (TowerState.globbedTowers.contains(towerIndex)) {
-                if (CreepState.globList.get(CreepState.globList.indexOf(towerIndex)) != null);
-                Spatial glob = CreepState.globList.get(CreepState.globList.indexOf(towerIndex));
-                if (glob != null) {
-                    if (glob.getUserData("TowerIndex").equals(towerIndex)) {
-                        popGlob(trans, glob);
+                for (int i = 0; i < CreepState.globList.size(); i++) {
+                    // TODO: Update this to take less resources
+                    if (CreepState.globList.get(i).getUserData("TowerIndex").equals(towerIndex)) {
+                        if (CreepState.globList.get(i) != null) {
+                            Spatial glob = CreepState.globList.get(i);
+                            int popHealth = popGlob(trans, glob);
+                            if (popHealth <= 0) {
+                                TowerState.globbedTowers.remove(towerIndex);
+                            }
+                        }
                     }
-
                 }
-            }
-            else {
+            } else {
                 TowerState.towerSelected(towerIndex);
             }
         } else if (target.getName().equals("Glob")) {
@@ -194,20 +197,19 @@ public class GameState extends AbstractAppState {
         } else {
             dropBomb(trans);
         }
-    
     }
-    public void popGlob(Vector3f trans, Spatial target) {
-        int health = target.getControl(GlobControl.class  
 
-    ).decGlobHealth();
-        globPop.setPitch (health 
+    public int popGlob(Vector3f trans, Spatial target) {
+        int health = target.getControl(GlobControl.class).decGlobHealth();
+        globPop.setPitch(health
+                * 0.1f + 1f);
+        globPop.setLocalTranslation(trans);
 
-    *0.1f + 1f);
-        globPop.setLocalTranslation (trans);
+        globPop.playInstance();
+        return health;
+    }
 
-    globPop.playInstance ();
-}
-public float getCurrentProgress() {
+    public float getCurrentProgress() {
         return TowerState.towerList.size();
     }
 
@@ -219,8 +221,6 @@ public float getCurrentProgress() {
         bomb_geom.addControl(new BombControl(.1f, this));
         worldNode.attachChild(bomb_geom);
     }
-    
-
 
     /**
      * Creates the light for the game world.
@@ -237,34 +237,34 @@ public float getCurrentProgress() {
      * Creates a textured floor.
      */
     public void createFloor(Vector3f floorscale, String floortexloc) {
-        FloorFactory ff = new FloorFactory(floorscale, floortexloc, 
+        FloorFactory ff = new FloorFactory(floorscale, floortexloc,
                 assetManager, this);
         worldNode.attachChild(ff.getFloor());
 
     }
 
     /**
-     * Creates a base at the base vector given by LevelState.
-     * TODO:Should be updated to allow for multiple bases
+     * Creates a base at the base vector given by LevelState. TODO:Should be
+     * updated to allow for multiple bases
      */
     public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
         basevec = _basevec;
         BaseFactory bf = new BaseFactory(texloc, basevec, basescale, assetManager, this);
         worldNode.attachChild(bf.getBase());
     }
-    
+
     public SimpleApplication getApp() {
         return this.app;
     }
-    
+
     public BeamState getBeamState() {
         return BeamState;
     }
-    
+
     public TowerState getTowerState() {
         return TowerState;
     }
-    
+
     public CreepState getCreepState() {
         return CreepState;
     }
@@ -272,7 +272,7 @@ public float getCurrentProgress() {
     public Node getWorldNode() {
         return worldNode;
     }
-    
+
     public Node getCreepNode() {
         return CreepState.getCreepNode();
     }
@@ -280,7 +280,7 @@ public float getCurrentProgress() {
     public ArrayList<Spatial> getCreepList() {
         return CreepState.creepList;
     }
-    
+
     public ArrayList<Spatial> getCreepSpawnerList() {
         return CreepState.getCreepSpawnerList();
     }
@@ -289,52 +289,55 @@ public float getCurrentProgress() {
         return TowerState.towerList;
     }
     
+    public ArrayList<Integer> getGlobbedTowerList() {
+        return TowerState.globbedTowers;
+    }
+
     public Sphere getBombMesh() {
         return bombMesh;
     }
-    
+
     public void setNumCreeps(int nc) {
         numCreeps = nc;
     }
-    
+
     public void setCreepMod(int cm) {
         creepMod = cm;
     }
-    
+
     protected int getNumCreeps() {
         return numCreeps;
     }
-    
+
     protected int getCreepMod() {
         return creepMod;
     }
-    
+
     public String getMatDir() {
         return matDir;
     }
-    
+
     public void setMatDir(String _matDir) {
         matDir = _matDir;
     }
-    
 
     // User Data Manipulation \\
     private void setLevelCap(int lc) {
         levelCap = lc;
     }
-    
+
     private void setLevelMod(int lc) {
         levelCap = lc;
     }
-    
+
     public void setDebug(boolean isDebug) {
         debugMode = isDebug;
     }
-    
+
     public int getSelected() {
         return TowerState.getSelectedNum();
     }
-    
+
     public int getBuildCost() {
         return 100;
     }
@@ -369,7 +372,7 @@ public float getCurrentProgress() {
     public void setPlrScore(int score) {
         plrScore = score;
     }
-    
+
     public void incPlrScore(int inc) {
         plrScore += inc;
     }
@@ -390,7 +393,7 @@ public float getCurrentProgress() {
         plrHealth += 5;
 
     }
-    
+
     public void decPlrHealth(int dam) {
         plrHealth -= dam;
     }
@@ -402,7 +405,7 @@ public float getCurrentProgress() {
     public int getPlrBudget() {
         return plrBudget;
     }
-    
+
     public void incPlrBudget(int value) {
         plrBudget += value;
     }
@@ -410,33 +413,33 @@ public float getCurrentProgress() {
     public void decPlrBudget(int cost) {
         plrBudget -= cost;
     }
-    
+
     public AssetManager getAssetManager() {
         return assetManager;
     }
-    
+
     public boolean getDebugMode() {
         return debugMode;
     }
-    
+
     public void playBuildSound(float pitch) {
         buildSound.setPitch(pitch);
         buildSound.playInstance();
         buildSound.setPitch(1f);
     }
-    
+
     public void playLevelUpSound() {
         levelUpSound.playInstance();
     }
-    
+
     @Override
-        public void cleanup() {
+    public void cleanup() {
         super.cleanup();
         worldNode.detachAllChildren();
         rootNode.detachAllChildren();
         ex.shutdown();
     }
-    
+
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
     }

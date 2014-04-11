@@ -85,7 +85,6 @@ public class CreepState extends AbstractAppState {
     
     @Override
     public void update(float tpf) {
-        super.update(tpf);
         if (isEnabled()) {
             if (randomCheck > nextrandom) {
                 spawnRandomEnemy();
@@ -100,7 +99,7 @@ public class CreepState extends AbstractAppState {
     }
     
     private void getNextRandomSpecialEnemyInt() {
-        nextrandom = random.nextInt(2);
+        nextrandom = random.nextInt(5);
     }
     
     private void spawnRandomEnemy() {
@@ -109,12 +108,17 @@ public class CreepState extends AbstractAppState {
     
     private void spawnGlob() {
         int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
-        Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
-        GlobFactory gF = new GlobFactory(towerVictimLocation, towerVictimIndex, assetManager, this);
-        Spatial glob = gF.getGlob();
-        GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
-        creepNode.attachChild(glob);
-        globList.add(glob);
+        if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
+            Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+            GlobFactory gF = new GlobFactory(towerVictimLocation, towerVictimIndex, assetManager, this);
+            Spatial glob = gF.getGlob();
+            GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
+            creepNode.attachChild(glob);
+            globList.add(glob);
+        }
+        else {
+            spawnGlob();
+        }
     }
 
     public void attachCreepNode() {
@@ -314,6 +318,10 @@ public class CreepState extends AbstractAppState {
         return GameState.getTowerList();
     }
     
+    public ArrayList<Integer> getGlobbedTowerList() {
+        return GameState.getGlobbedTowerList();
+    }
+    
     public Box getUnivBox() {
         return univ_box;
     }
@@ -356,5 +364,7 @@ public class CreepState extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         creepNode.detachAllChildren();
-    }
+        globList.clear();
+        creepList.clear();
+   }
 }
