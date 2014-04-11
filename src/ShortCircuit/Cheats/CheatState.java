@@ -174,11 +174,13 @@ public class CheatState extends AbstractAppState {
         if (superMedic) {
             GameState.incPlrHealth();
         }
-        if (levelOverload && slowItDownThere > 5f) {
-            GameState.incPlrLvl();
+        if (levelOverload && slowItDownThere > 1f) {
+            GameState.nextLevel();
             slowItDownThere = 0;
         }
-        slowItDownThere += tpf;
+        else {
+            slowItDownThere += tpf;
+        }
     }
     
     @Override

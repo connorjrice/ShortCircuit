@@ -30,6 +30,9 @@ public class CheatGUI extends AbstractAppState {
     private CheatState CheatState;
     private ButtonAdapter AmmoH4KZ;
     private ButtonAdapter TowerHack;
+    private ButtonAdapter DollaBillz;
+    private ButtonAdapter SuperMedic;
+    private ButtonAdapter SuperDeath;
 
     public CheatGUI() {}
 
@@ -57,7 +60,10 @@ public class CheatGUI extends AbstractAppState {
         millionButton();
         billionButton();
         ammoH4KZ();
-        towerHack();
+        hackyTowers();
+        dollaBillz();
+        superMedic();
+        superDeath();
     }
     
     
@@ -71,7 +77,7 @@ public class CheatGUI extends AbstractAppState {
     }
 
     private void millionButton() {
-        MillionDollars = new ButtonAdapter(screen, "Millions", new Vector2f(40, 100), buttonSize) {
+        MillionDollars = new ButtonAdapter(screen, "Millions", new Vector2f(10, 35), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 CheatState.giveMeAMillionDollars();
@@ -83,7 +89,7 @@ public class CheatGUI extends AbstractAppState {
     }
 
     private void billionButton() {
-        BillionDollars = new ButtonAdapter(screen, "Billions", new Vector2f(240, 100), buttonSize) {
+        BillionDollars = new ButtonAdapter(screen, "Billions", new Vector2f(210, 35), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 CheatState.giveMeABillionDollars();
@@ -95,7 +101,7 @@ public class CheatGUI extends AbstractAppState {
     }
 
     private void ammoH4KZ() {
-        AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ", new Vector2f(440, 100), buttonSize) {
+        AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ", new Vector2f(410, 35), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 CheatState.badassAmmoH4KX();
@@ -105,15 +111,48 @@ public class CheatGUI extends AbstractAppState {
         CheatWindow.addChild(AmmoH4KZ);
     }
     
-    private void towerHack() {
-        TowerHack = new ButtonAdapter(screen, "TowerHack", new Vector2f(640, 100), buttonSize) {
+    private void hackyTowers() {
+        TowerHack = new ButtonAdapter(screen, "TowerHack", new Vector2f(610, 35), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 CheatState.makeTowersBadAss();
             }
         };
-        TowerHack.setText("Tower Hack");
+        TowerHack.setText("Tower Glitch");
         CheatWindow.addChild(TowerHack);
+    }
+    
+    private void dollaBillz() {
+        DollaBillz = new ButtonAdapter(screen, "MoneyGack", new Vector2f(10, 135), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                CheatState.dollaDollaBillsYall();
+            }
+        };
+        DollaBillz.setText("Dolla Billz");
+        CheatWindow.addChild(DollaBillz);
+    }
+    
+    private void superMedic() {
+        SuperMedic = new ButtonAdapter(screen, "MuchMedic", new Vector2f(210, 135), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                CheatState.iNeedASuperMedic();
+            }
+        };
+        SuperMedic.setText("Super Medic");
+        CheatWindow.addChild(SuperMedic);
+    }
+    
+    private void superDeath() {
+        SuperDeath = new ButtonAdapter(screen, "MuchHurt", new Vector2f(410, 135), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                CheatState.bringMeThePainIWantToFeelThePain();
+            }
+        };
+        SuperDeath.setText("Super Death");
+        CheatWindow.addChild(SuperDeath);
     }
     
     public void toggleCheatWindow() {

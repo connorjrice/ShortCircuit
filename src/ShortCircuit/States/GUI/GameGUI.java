@@ -153,7 +153,6 @@ public class GameGUI extends AbstractAppState {
                 }
             }
         };
-        game.cheatsHandler();
         CheatsButton.setLocalScale(3f, 2f, 1f);
         CheatsButton.setText("Cheats");
         CheatsButton.setUseButtonPressedSound(true);

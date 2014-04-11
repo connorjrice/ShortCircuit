@@ -91,11 +91,7 @@ public class GameState extends AbstractAppState {
         if (isEnabled()) {
             if (updateTimer > .1) {
                 if (getPlrScore() > levelCap) {
-                    incPlrLvl();
-                    playLevelUpSound();
-                    levelCap *= 2;
-                    incPlrHealth();
-
+                    nextLevel();
                 }
                 if (debugMode) {
                     debugLoopAdditions();
@@ -126,7 +122,18 @@ public class GameState extends AbstractAppState {
         setMatDir(lp.getMatDir());
     }
     
-
+    public void nextLevel() {
+        incPlrLvl();
+        playLevelUpSound();
+        levelCap *= 2;
+        updateNumCreeps();
+        incPlrHealth();
+        
+    }
+    
+    private void updateNumCreeps() {
+        numCreeps += creepMod;
+    }
 
     
     private void debugLoopAdditions() {

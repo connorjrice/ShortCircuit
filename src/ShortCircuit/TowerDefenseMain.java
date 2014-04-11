@@ -187,17 +187,6 @@ public class TowerDefenseMain extends SimpleApplication {
         CheatGUI.toggleCheatWindow();
     }
     
-    public void cheatsHandler() {
-        if (CheatState == null) {
-            CheatState = new CheatState();
-            stateManager.attach(CheatState);
-        }
-        if (CheatGUI == null) {
-            CheatGUI = new CheatGUI();
-            stateManager.attach(CheatGUI);
-        }
-    }
-
     /**
      * Instantiates all Game States, detaches Start Menu. Then, starts the game
      * by attaching all of the states.
@@ -222,6 +211,8 @@ public class TowerDefenseMain extends SimpleApplication {
         isPaused = false;
         isPauseAllowed = true;
         inGame = true;
+        CheatState = new CheatState();
+        CheatGUI = new CheatGUI();
         GameState = new GameState();
         LevelState = new LevelState(debug, levelName);
         GameGUI = new GameGUI(this);
@@ -243,6 +234,8 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.attach(CreepState);
         stateManager.attach(BeamState);
         stateManager.attach(LevelState);
+        stateManager.attach(CheatState);
+        stateManager.attach(CheatGUI);
     }
 
     /**
@@ -256,6 +249,8 @@ public class TowerDefenseMain extends SimpleApplication {
         stateManager.detach(CreepState);
         stateManager.detach(BeamState);
         stateManager.detach(LevelState);
+        stateManager.detach(CheatState);
+        stateManager.detach(CheatGUI);
     }
 
     /**
@@ -264,10 +259,10 @@ public class TowerDefenseMain extends SimpleApplication {
     public void pause() {
         if (isPauseAllowed) {
             if (isPaused) {
-                enableStates();
+                enableTowerGameStates();
                 isPaused = false;
             } else {
-                disableStates();
+                disableTowerGameStates();
                 isPaused = true;
             }
         }
@@ -287,7 +282,7 @@ public class TowerDefenseMain extends SimpleApplication {
     /**
      * These are the states that are disabled on pause.
      */
-    public void disableStates() {
+    public void disableTowerGameStates() {
         GameState.setEnabled(false);
         LevelState.setEnabled(false);
         BeamState.setEnabled(false);
@@ -298,7 +293,7 @@ public class TowerDefenseMain extends SimpleApplication {
     /**
      * These are the states that are enabled on unpause.
      */
-    public void enableStates() {
+    public void enableTowerGameStates() {
         GameState.setEnabled(true);
         CreepState.setEnabled(true);
         LevelState.setEnabled(true);

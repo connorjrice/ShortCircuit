@@ -121,7 +121,6 @@ public class StartGUI extends AbstractAppState {
         MainWindow = new Window(screen, new Vector2f(width/4, height/2-height/4), new Vector2f(width/2, height/2) );
         MainWindow.setIgnoreMouse(true);
         MainWindow.setIsMovable(false);
-        MainWindow.setAsContainerOnly();
         MainWindow.setWindowIsMovable(false);
         MainWindow.setIsResizable(false);
         MainWindow.setText("ShortCircuit");
@@ -210,27 +209,21 @@ public class StartGUI extends AbstractAppState {
         screen.addElement(ReallyExitPopup);
     }
 
-    /*private void hideAll() {
-        MainWindow.hide();
-        newGame.hide();
-        Level1.hide();
-        debug.hide();
-    }
-
-    private void showAll() {
-        MainWindow.show();
-        newGame.show();
-        Level1.show();
-        debug.show();
-
-    }*/
     
     public void toggle() {
         if (MainWindow.getIsVisible()) {
             MainWindow.hide();
+            newGame.hide();
+            Level1.hide();
+            debug.hide();
+            ExitButton.hide();
         }
         else {
             MainWindow.show();
+            newGame.show();
+            Level1.show();
+            debug.show();
+            ExitButton.show();
         }
     }
     
