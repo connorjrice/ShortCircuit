@@ -36,26 +36,21 @@ public class TowerControl extends AbstractControl {
     private Vector3f towerloc;
     protected TowerState TowerState;
     private ScheduledThreadPoolExecutor ex;
-    private boolean isActive;
-    private float shotTimer = 0;
-    private float shotDelay = .3f;
-    private float searchTimer = .3f;
-    private float searchDelay = .3f;
-    private float genDelay = 0;
+    private boolean isActive = false;
+    private float searchTimer = .0f;
+    private float searchDelay = .1f;
     private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
     private AudioNode emptySound;
     private boolean isGlobbed = false;
 
-
-    public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc, boolean enabled) {
+    public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc) {
         BeamState = _bstate;
         TowerState = _tstate;
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
-        isActive = enabled;
         this.ex = TowerState.getEx();
         emptySound = new AudioNode(TowerState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
@@ -63,48 +58,33 @@ public class TowerControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (TowerState.isEnabled() && isActive) {
-            if (genDelay > .4f) {
-                if (!charges.isEmpty()) {
-                    if (searchTimer > searchDelay) {
-                        reachable = null;
-                        searchForCreeps();
-                        searchTimer = 0;
-                    } else {
-                        searchTimer += tpf;
-                    }
-                    if (shotTimer > shotDelay) {
-                        decideShoot();
-                        shotTimer = 0;
-                    } else {
-                        shotTimer += tpf;
-                    }
-                } else {
-                    emptyTower();
-                }
+            if (searchTimer > searchDelay) {
+                decideShoot();
+                reachable = null;
+                searchForCreeps();
+                searchTimer = 0;
+            } else {
+                searchTimer += tpf;
             }
-            else {
-                genDelay += tpf;
-            }
-
-        }
+        } 
     }
-    
+
     public void disableTower() {
         isActive = false;
     }
-    
+
     public void globTower() {
         isActive = false;
         TowerState.globbedTowers.add(getIndex());
         isGlobbed = true;
     }
-    
+
     public void enableTower() {
         if (!spatial.getUserData("Type").equals("unbuilt")) {
             isActive = true;
         }
     }
-    
+
     public void unglobTower() {
         if (!spatial.getUserData("Type").equals("unbuilt")) {
             isActive = true;
@@ -114,16 +94,14 @@ public class TowerControl extends AbstractControl {
             TowerState.globbedTowers.remove(TowerState.globbedTowers.indexOf(getIndex()));
         }
     }
-    
+
     public ArrayList<Integer> getGlobbedTowerIndices() {
         return TowerState.globbedTowers;
     }
-    
+
     public boolean getIsGlobbed() {
         return isGlobbed;
     }
-    
-    
 
     private void excludeCreeps() {
         ArrayList<Spatial> creepSpawners = TowerState.getCreepSpawnerList();
@@ -185,23 +163,31 @@ public class TowerControl extends AbstractControl {
     };
 
     protected void decideShoot() {
-        if (reachable != null) {
-            if (!reachable.isEmpty()) {
-                shootCreep();
+        if (!charges.isEmpty()) {
+            if (reachable != null) {
+                if (!reachable.isEmpty()) {
+                    shootCreep();
+                }
             }
+        } else {
+            emptyTower();
         }
+        
     }
 
     protected void emptyTower() {
         emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
+
+
     }
 
     protected void shootCreep() {
         if (charges.get(0).getRemBullets() > 0) {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
                 BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
-                if (reachable.peek().getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
+                if (reachable.peek()
+                        .getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
             } else {
@@ -224,7 +210,7 @@ public class TowerControl extends AbstractControl {
         return spatial.getUserData("Height");
 
     }
-    
+
     public float getBeamWidth() {
         return spatial.getUserData("BeamWidth");
     }
@@ -233,11 +219,11 @@ public class TowerControl extends AbstractControl {
         return spatial.getUserData("Index");
 
     }
-    
+
     public String getBeamType() {
         return spatial.getUserData("BeamType");
     }
-    
+
     public void setBeamType(String newtype) {
         spatial.setUserData("BeamType", newtype);
     }

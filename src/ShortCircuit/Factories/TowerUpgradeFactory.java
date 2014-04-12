@@ -9,7 +9,7 @@ import com.jme3.asset.AssetManager;
  * This class handles the upgrading of a tower/building of a tower
  * @author Connor Rice
  */
-public class TowerUpgradeFactory implements Runnable {
+public class TowerUpgradeFactory {
     private int cost;
     private String matLoc;
     private float pitch;
@@ -58,6 +58,7 @@ public class TowerUpgradeFactory implements Runnable {
                 TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
                 if (gs.getPlrBudget() >= cost) {
                     tower.charges.add(new Charges("tower"+type));
+                    tower.setBuilt();                    
                     tower.setTowerType("tower"+type);
                     tower.setBeamType("beam"+type);
                     if (type.equals("4")) {
@@ -67,9 +68,6 @@ public class TowerUpgradeFactory implements Runnable {
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
                     gs.playBuildSound(pitch);
-                    if (type.equals("1")) {
-                        tower.setBuilt();
-                    }
 
                 } 
             }

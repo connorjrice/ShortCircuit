@@ -139,7 +139,7 @@ public class TowerState extends AbstractAppState {
     
     public void upgradeTower() {
         if (selectedTower != -1) {
-            GameState.getEx().submit(tuf);
+            tuf.run();
         }
     }
     

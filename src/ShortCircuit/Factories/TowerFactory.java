@@ -31,7 +31,7 @@ public class TowerFactory {
         tower.setUserData("Index", index);
         tower.setUserData("BeamWidth", 6.0f);
         tower.setUserData("BeamType", "beam1");
-        tower.addControl(new TowerControl(gs.getBeamState(), gs.getTowerState(), towervec, false));
+        tower.addControl(new TowerControl(gs.getBeamState(), gs.getTowerState(), towervec));
         return tower;
     }
     
