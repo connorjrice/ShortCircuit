@@ -68,6 +68,8 @@ public class CheatState extends AbstractAppState {
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
             for (int j = 0; i < 10; i++) {
                 control.charges.add(new Charges("baseLaser"));
+                control.setBeamType("beam4");
+                control.setBuilt();
             }
         }
     }
@@ -103,10 +105,9 @@ public class CheatState extends AbstractAppState {
     public void makeTowersPurp() {
         ArrayList<Spatial> towerList = TowerState.towerList;
         for (int i = 0; i < towerList.size(); i++) {
-            Spatial tower = towerList.get(i);
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
-            tower.setUserData("Type", "tower4");
             addPurptoPurp(control);
+            control.setTowerType("tower4");
             TowerState.changeTowerTexture(TowerState.tow4MatLoc, control);
         }
     }
@@ -128,11 +129,12 @@ public class CheatState extends AbstractAppState {
     public void makeTowersBadAss() {
         ArrayList<Spatial> towerList = TowerState.towerList;
         for (int i = 0; i < towerList.size(); i++) {
-            Spatial tower = towerList.get(i);
-            TowerControl control = towerList.get(i).getControl(TowerControl.class);
-            tower.setUserData("Type", "tower4");
-            addBadAsstoBadAss(control);
-            TowerState.changeTowerTexture(LevelState.getFloorMatLoc(), control);
+            TowerControl tower = towerList.get(i).getControl(TowerControl.class);
+            addBadAsstoBadAss(tower);
+            tower.setBuilt();                    
+            tower.setTowerType("globpop");
+            tower.setBeamType("Bomb");
+            TowerState.changeTowerTexture("Materials/Bomb.j3m", tower);
         }
     }
     /**
@@ -141,7 +143,7 @@ public class CheatState extends AbstractAppState {
      */
     private void addBadAsstoBadAss(TowerControl control) {
         for (int i = 0; i < 100; i++) {
-            control.charges.add(new Charges("baseLaser"));
+            control.charges.add(new Charges("towerc"));
         }
     }
     

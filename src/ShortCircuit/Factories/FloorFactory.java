@@ -16,7 +16,6 @@ public class FloorFactory {
     public FloorFactory(GameState _gs) {
         gs = _gs;
         assetManager = gs.getAssetManager();
-                
     }
     
     public Geometry getFloor(Vector3f floorscale, 

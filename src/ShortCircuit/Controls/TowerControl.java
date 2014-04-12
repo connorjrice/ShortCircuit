@@ -38,7 +38,7 @@ public class TowerControl extends AbstractControl {
     private ScheduledThreadPoolExecutor ex;
     private boolean isActive = false;
     private float searchTimer = .0f;
-    private float searchDelay = .1f;
+    private float searchDelay = .2f;
     private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
