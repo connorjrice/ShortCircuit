@@ -57,17 +57,17 @@ public class TowerUpgradeFactory {
             if (!type.equals("ANGRYMONSTER")) {
                 TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
                 if (gs.getPlrBudget() >= cost) {
-                    tower.charges.add(new Charges(type));
+                    tower.charges.add(new Charges("tower"+type));
                     tower.setTowerType("tower"+type);
                     tower.setBeamType("beam"+type);
-                    if (type.equals("tower4")) {
+                    if (type.equals("4")) {
                         gs.incFours();
                     }
                     tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
                     tower.setSize(gs.getTowerState().getBuiltTowerSize());
                     gs.decPlrBudget(cost);
                     gs.playBuildSound(pitch);
-                    if (type.equals("tower1")) {
+                    if (type.equals("1")) {
                         tower.setBuilt();
                     }
 
