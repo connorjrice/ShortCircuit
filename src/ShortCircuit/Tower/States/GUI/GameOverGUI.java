@@ -1,10 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Tower.States.GUI;
 
-import ShortCircuit.TowerDefenseMain;
+import ShortCircuit.Tower.MainState.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -21,7 +17,7 @@ import tonegod.gui.core.Screen;
  * @author Connor
  */
 public class GameOverGUI extends AbstractAppState {
-    private TowerDefenseMain game;
+    private TowerMainState tMS;
     private Window GameOverWindow;
     private Screen screen;
     private SimpleApplication app;
@@ -31,8 +27,8 @@ public class GameOverGUI extends AbstractAppState {
     private ButtonAdapter startButton;
     private Vector2f buttonSize = new Vector2f(200, 100);
     
-    public GameOverGUI(TowerDefenseMain _game) {
-        this.game = _game;
+    public GameOverGUI(TowerMainState _tMS) {
+        this.tMS = _tMS;
     }
     
     @Override
@@ -40,8 +36,8 @@ public class GameOverGUI extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
-        width = game.getWidth();
-        height = game.getHeight();
+        width = tMS.getWidth();
+        height = tMS.getHeight();
         initScreen();
     }
     
@@ -74,7 +70,7 @@ public class GameOverGUI extends AbstractAppState {
             startButton = new ButtonAdapter(screen, "start", new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
                 @Override
                 public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                    game.backToTGStart();
+                    tMS.backToTGStart();
                 }
             };
             startButton.setText("Too bad.");

@@ -1,6 +1,7 @@
 package ShortCircuit.GUI;
 
-import ShortCircuit.TowerDefenseMain;
+import ShortCircuit.ShortCircuitMain;
+import ShortCircuit.Tower.MainState.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -29,7 +30,7 @@ public class StartGUI extends AbstractAppState {
 
     private SimpleApplication app;
     private Node guiNode;
-    private TowerDefenseMain game;
+    private ShortCircuitMain game;
     private Screen screen;
     private Button Level1;
     private Button newGame;
@@ -48,11 +49,12 @@ public class StartGUI extends AbstractAppState {
     private boolean isTheme = false;
     private ButtonAdapter ExitButton;
     private DialogBox ReallyExitPopup;
+    private TowerMainState tMS;
 
     
     public StartGUI() {}
 
-    public StartGUI(TowerDefenseMain _game) {
+    public StartGUI(ShortCircuitMain _game) {
         game = _game;
     }
 
@@ -62,8 +64,9 @@ public class StartGUI extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
         this.assetManager = this.app.getAssetManager();
-        width = game.getWidth();
-        height = game.getHeight();
+        this.tMS = this.app.getStateManager().getState(TowerMainState.class);
+        width = tMS.getWidth();
+        height = tMS.getHeight();
         initScreen();
     }
     
@@ -170,13 +173,13 @@ public class StartGUI extends AbstractAppState {
     
 
     public void onStart(String level) {
-        game.detachGameStates();
-        game.startGame(false, level);
+        tMS.detachGameStates();
+        tMS.startGame(false, level);
     }
 
     public void onDebug() {
-        game.detachGameStates();
-        game.startGame(true, null);
+        tMS.detachGameStates();
+        tMS.startGame(true, null);
     }
     
     public void exitButton() {

@@ -2,7 +2,7 @@ package ShortCircuit.Tower.States.GUI;
 
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.TowerState;
-import ShortCircuit.TowerDefenseMain;
+import ShortCircuit.Tower.MainState.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -38,7 +38,7 @@ import tonegod.gui.core.Screen;
  */
 public class GameGUI extends AbstractAppState {
 
-    private TowerDefenseMain game;
+    private TowerMainState tMS;
     private SimpleApplication app;
     private Camera cam;
     private InputManager inputManager;
@@ -82,12 +82,10 @@ public class GameGUI extends AbstractAppState {
     private Indicator ProgressIndicator;
     private AudioNode endTheme;
     private boolean end = false;
+ 
 
-    public GameGUI() {
-    }
-
-    public GameGUI(TowerDefenseMain _game) {
-        this.game = _game;
+    public GameGUI(TowerMainState _tMS) {
+        this.tMS = _tMS;
     }
 
     @Override
@@ -99,8 +97,8 @@ public class GameGUI extends AbstractAppState {
         this.inputManager = this.app.getInputManager();
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        width = game.getWidth();
-        height = game.getHeight();
+        width = tMS.getWidth();
+        height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
         cam.setLocation(new Vector3f(0, 0, 20f));
         this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
@@ -113,7 +111,7 @@ public class GameGUI extends AbstractAppState {
     public void update(float tpf) {
         if (updateTimer > .15) {
             if (gs.getPlrHealth() <= 0) {
-                game.gameover();
+                tMS.gameover();
             }
             updateText();
             updateTimer = 0;
@@ -122,13 +120,13 @@ public class GameGUI extends AbstractAppState {
         }
         if (frillsTimer > .25 && isFrills) {
             if (gs.getPlrLvl() != internalLevel) {
-                game.incBloomIntensity(.2f);
+                tMS.incBloomIntensity(.2f);
                 internalLevel = gs.getPlrLvl();
 
             }
             if (gs.getFours() > 0 && !end) {
                     endTheme();
-                    game.stopUnder();
+                    tMS.stopUnder();
                     end = true;
                 }
             updateFrills();
@@ -166,8 +164,8 @@ public class GameGUI extends AbstractAppState {
         CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!game.StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
-                    game.toggleCheatsWindow();
+                if (!tMS.StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
+                    tMS.toggleCheatsWindow();
                 }
             }
         };
@@ -244,7 +242,7 @@ public class GameGUI extends AbstractAppState {
         Vector3f dir = cam.getWorldCoordinates(
                 new Vector2f(click2d.getX(), click2d.getY()), 1f);
         Ray ray = new Ray(click3d, dir);
-        game.getRootNode().collideWith(ray, results);
+        tMS.getRootNode().collideWith(ray, results);
         if (results.size() > 0) {
             Vector3f trans = results.getCollision(0).getContactPoint();
             Spatial target = results.getCollision(0).getGeometry();
@@ -280,11 +278,11 @@ public class GameGUI extends AbstractAppState {
         ObjectivePopup = new AlertBox(screen, "objective", new Vector2f(width / 2 - 200, height / 2 - 175), new Vector2f(400, 300)) {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
-                game.pause();
+                tMS.pause();
                 screen.removeElement(ObjectivePopup);
             }
         };
-        game.pause();
+        tMS.pause();
         ObjectivePopup.setText("Objective");
         ObjectivePopup.setMsg("Objective: Build 4 purple towers.");
         screen.addElement(ObjectivePopup);
@@ -302,15 +300,15 @@ public class GameGUI extends AbstractAppState {
         Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!game.StartGUI.MainWindow.getIsVisible()) {
+                if (!tMS.StartGUI.MainWindow.getIsVisible()) {
                     if (SetWindow.getIsVisible()) {
                         SetWindow.hideWindow();
                         Menu.setIgnoreMouse(false);
-                        game.pause();
+                        tMS.pause();
                     } else {
                         SetWindow.showWindow();
                         Menu.setIgnoreMouse(true);
-                        game.pause();
+                        tMS.pause();
                     }
                 }
             }
@@ -443,7 +441,7 @@ public class GameGUI extends AbstractAppState {
         TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                game.toggleFrills();
+                tMS.toggleFrills();
             }
         };
         TextColorButton.setIsToggleButton(true);
@@ -455,7 +453,7 @@ public class GameGUI extends AbstractAppState {
         BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                game.toggleBloom();
+                tMS.toggleBloom();
             }
         };
         BloomToggleButton.setIsToggleButton(true);
@@ -467,12 +465,12 @@ public class GameGUI extends AbstractAppState {
         BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
-                game.setBloomIntensity(selectedIndex);
+                tMS.setBloomIntensity(selectedIndex);
             }
         };
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
-        game.setBloomIntensity(2.0f);
+        tMS.setBloomIntensity(2.0f);
         SetWindow.addChild(BloomSlider);
     }
 
@@ -539,12 +537,12 @@ public class GameGUI extends AbstractAppState {
             camlocation = 1;
             cam.setLocation(new Vector3f(0.06431137f, 3.8602734f, 3.5616555f));
             cam.setRotation(new Quaternion(1f, 0f, 0f, 0.5f));
-            game.getFlyByCamera().setRotationSpeed(1.0f);
+            tMS.getFlyByCamera().setRotationSpeed(1.0f);
         } else if (camlocation == 1) {
             camlocation = 0;
             cam.setLocation(new Vector3f(0, 0, 20));
             cam.setRotation(new Quaternion(0, 1, 0, 0));
-            game.getFlyByCamera().setRotationSpeed(0.0f);
+            tMS.getFlyByCamera().setRotationSpeed(0.0f);
         }
     }
 
@@ -554,9 +552,9 @@ public class GameGUI extends AbstractAppState {
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!SetWindow.getIsVisible()) {
                     SetWindow.setIgnoreMouse(true);
-                    game.goToMainMenu();
+                    tMS.goToMainMenu();
                 } else {
-                    game.goToMainMenu();
+                    tMS.goToMainMenu();
                     SetWindow.setIgnoreMouse(false);
                 }
             }
@@ -622,7 +620,7 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(rightPanel);
         if (endTheme != null) {
             endTheme.stop();
-            game.underPinning();
+            tMS.underPinning();
         }
         
         guiNode.removeControl(screen);
