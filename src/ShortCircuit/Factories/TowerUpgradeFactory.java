@@ -1,4 +1,4 @@
-package ShortCircuit.Threading;
+package ShortCircuit.Factories;
 
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.Controls.TowerControl;
@@ -9,27 +9,15 @@ import com.jme3.asset.AssetManager;
  * This class handles the upgrading of a tower/building of a tower
  * @author Connor Rice
  */
-public class UpgradeTower implements Runnable {
-    private GameState gs;
-    private AssetManager assetManager;
+public class TowerUpgradeFactory {
     private int cost;
-    private String type;
     private String matLoc;
     private float pitch;
 
-    public UpgradeTower(GameState _gs, Object _type) {
-        gs = _gs;
-        type = (String) _type;
-        this.assetManager = gs.getAssetManager();
-        getUpgradeType();
-    }
-    
-    /**
-     * Determines the cost, name, and location of the texture of the next
-     * available tower upgrade. ANGRYMONSTER ensures that you cannot go beyond
-     * 4 modifications
-     */
-    private void getUpgradeType() {
+
+    public TowerUpgradeFactory() {}      
+
+    public void run(GameState gs, String type, AssetManager assetManager) {
         if (type.equals("unbuilt")) {
             cost = 100;
             type = "tower1";
@@ -58,20 +46,10 @@ public class UpgradeTower implements Runnable {
             type = "ANGRYMONSTER";
             pitch = 1f;
         }
-    }
     
-    /**
-     * Checks to see if selected is actually a tower, also makes sure the tower
-     * is upgradeable.
-     * Mostly uses methods from GameState.
-     */
-    public void run() {
         if (gs.getSelected() != -1) {
             if (!type.equals("ANGRYMONSTER")) {
                 TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
-                
-
-
                 if (gs.getPlrBudget() >= cost) {
                     tower.charges.add(new Charges(type));
                     tower.setType(type);

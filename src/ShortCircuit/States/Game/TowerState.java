@@ -1,6 +1,6 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.Threading.UpgradeTower;
+import ShortCircuit.Factories.TowerUpgradeFactory;
 import ShortCircuit.Factories.TowerFactory;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.Controls.TowerControl;
@@ -31,6 +31,7 @@ public class TowerState extends AbstractAppState {
     private Vector3f builtTowerSize = new Vector3f(0.5f, 0.5f, 1.0f);
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
+    private TowerUpgradeFactory ut = new TowerUpgradeFactory();
     
     private TowerFactory tf = new TowerFactory();
     
@@ -136,9 +137,12 @@ public class TowerState extends AbstractAppState {
     
     public void upgradeTower() {
         if (selectedTower != -1) {
-            UpgradeTower ut = new UpgradeTower(GameState, towerList.get(selectedTower).getUserData("Type"));
-            ut.run();
+            ut.run(GameState, getSelectedTowerType(), assetManager);
         }
+    }
+    
+    public String getSelectedTowerType() {
+        return towerList.get(selectedTower).getUserData("Type");
     }
 
 

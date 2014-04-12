@@ -1,4 +1,4 @@
-package ShortCircuit.Threading;
+package ShortCircuit.Controls;
 
 import ShortCircuit.Controls.STDCreepControl;
 import ShortCircuit.States.Game.CreepState;

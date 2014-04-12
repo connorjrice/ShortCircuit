@@ -2,7 +2,6 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Factories.CreepFactory;
-import ShortCircuit.Threading.SpawnSTDCreep;
 import ShortCircuit.Objects.CreepTraits;
 import ShortCircuit.Factories.CreepSpawnerFactory;
 import ShortCircuit.Factories.GlobFactory;
@@ -72,7 +71,6 @@ public class CreepState extends AbstractAppState {
     private int nextrandom;
     private float randomCheck = 0;
     private Node worldNode;
-    private SpawnSTDCreep sc;
     private CreepFactory cf = new CreepFactory();
     private GlobFactory gf = new GlobFactory();
     private CreepSpawnerFactory csf = new CreepSpawnerFactory();

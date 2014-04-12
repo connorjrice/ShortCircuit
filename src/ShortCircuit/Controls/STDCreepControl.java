@@ -1,6 +1,5 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.CreepState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
