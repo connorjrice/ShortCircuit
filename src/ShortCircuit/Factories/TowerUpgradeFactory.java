@@ -4,12 +4,13 @@ import ShortCircuit.Objects.Charges;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.Game.GameState;
 import com.jme3.asset.AssetManager;
+import java.util.concurrent.Callable;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
  * @author Connor Rice
  */
-public class TowerUpgradeFactory {
+public class TowerUpgradeFactory implements Runnable {
     private int cost;
     private String matLoc;
     private float pitch;
@@ -23,7 +24,8 @@ public class TowerUpgradeFactory {
         gs = _gs;
     }      
 
-    public void run(String type) {
+    public void run() {
+        String type = gs.getTowerList().get(gs.getSelected()).getUserData("Type");
         if (type.equals("unbuilt")) {
             cost = 100;
             type = "1";
