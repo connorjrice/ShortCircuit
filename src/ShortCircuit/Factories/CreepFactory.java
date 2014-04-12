@@ -15,11 +15,9 @@ import com.jme3.scene.Spatial;
 public class CreepFactory {
     private Spatial creep;
     
-    public CreepFactory(CreepTraits ct, AssetManager assetManager, CreepState cs) {
-        createCreep(ct, assetManager, cs);
-    }
+    public CreepFactory() {}
     
-    private void createCreep(CreepTraits ct, 
+    public Spatial getCreep(CreepTraits ct, 
             AssetManager assetManager, CreepState cs) {
         Geometry creep_geom = new Geometry("Creep", cs.getUnivBox());
         creep_geom.setMaterial(assetManager.loadMaterial(ct.getMaterialLocation()));
@@ -44,10 +42,9 @@ public class CreepFactory {
         }
         
         creep.addControl(new STDCreepControl(cs));
+        return creep;
+ 
     }
     
-    public Spatial getCreep() {
-        return creep;
-    }
     
 }

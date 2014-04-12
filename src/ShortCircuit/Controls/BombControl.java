@@ -1,7 +1,6 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.GameState;
-import ShortCircuit.Threading.FindBombVictims;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -123,8 +122,7 @@ public class BombControl extends AbstractControl {
                 future = ex.submit(callableFindVics);
             } else if (future != null) {
                 if (future.isDone()) {
-                    FindBombVictims find = (FindBombVictims) future.get();
-                    reachable = find.getCreepVictims();
+                    reachable = (ArrayList<Spatial>) future.get();
                     future = null;
                 } else if (future.isCancelled()) {
                     future = null;
@@ -142,8 +140,8 @@ public class BombControl extends AbstractControl {
      * retrieval.
      * TODO: See if we can do the same thing without a FindBombVictims wrapper.
      */
-    private Callable<FindBombVictims> callableFindVics = new Callable<FindBombVictims>() {
-        public FindBombVictims call() throws Exception {
+    private Callable<ArrayList<Spatial>> callableFindVics = new Callable<ArrayList<Spatial>>() {
+        public ArrayList<Spatial> call() throws Exception {
             ArrayList<Spatial> reach = new ArrayList<Spatial>();
             ArrayList<Spatial> creepClone = gs.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
                 public ArrayList<Spatial> call() throws Exception {
@@ -156,7 +154,7 @@ public class BombControl extends AbstractControl {
                     reach.add(creepClone.get(i));
                 }
             }
-            return new FindBombVictims(reach);
+            return reach;
 
         }
     };

@@ -9,19 +9,11 @@ import ShortCircuit.States.Game.CreepState;
  * @author clarence
  */
 public class MoveCreep {
-    private CreepState cs;
-    private STDCreepControl cc;
-    
-    public MoveCreep(CreepState _cs, STDCreepControl _cc) {
-        cs = _cs;
-        cc = _cc;
-    }
-    
     /**
      * This takes care of the death conditions, and moves the creep in the
      * direction specified by it's direction.
      */
-    public void run() {
+    public void run(CreepState cs, STDCreepControl cc) {
         if (cc.getSpatial().getWorldBound().intersects(cs.getBaseBounds())) {
             cs.decPlrHealth(cc.getValue());
             cs.creepList.remove(cc.getSpatial());

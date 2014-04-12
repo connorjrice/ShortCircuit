@@ -32,6 +32,8 @@ public class TowerState extends AbstractAppState {
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
     
+    private TowerFactory tf = new TowerFactory();
+    
     public String tow1MatLoc;
     public String tow2MatLoc;
     public String tow3MatLoc;
@@ -147,9 +149,8 @@ public class TowerState extends AbstractAppState {
      * @param v, vector for tower
      */
     public void createTower(int index, Vector3f towervec, String type) {
-        TowerFactory tf = new TowerFactory(index, towervec,  unbuiltTowerSize, type, assetManager, GameState);
-        towerList.add(tf.getTower());
-        towerNode.attachChild(tf.getTower());
+        towerList.add(tf.getTower(index, towervec,  unbuiltTowerSize, type, assetManager, GameState));
+        towerNode.attachChild(towerList.get(towerList.size()-1));
     }
 
     public void buildUnbuiltTowers(ArrayList<Vector3f> unbuiltTowerIn) {

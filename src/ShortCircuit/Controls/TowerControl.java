@@ -1,6 +1,5 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.Threading.FindCreeps;
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.STCCreepCompare;
 import ShortCircuit.States.Game.TowerState;
@@ -34,7 +33,6 @@ public class TowerControl extends AbstractControl {
     public int[] reachableSpawners;
     public STC<Spatial> reachable;
     public ArrayList<Charges> charges = new ArrayList<Charges>();
-    protected FindCreeps findCreeps;
     private Vector3f towerloc;
     protected TowerState TowerState;
     private ScheduledThreadPoolExecutor ex;
@@ -147,8 +145,7 @@ public class TowerControl extends AbstractControl {
                 future = ex.submit(callableCreepFind);
             } else if (future != null) {
                 if (future.isDone()) {
-                    FindCreeps find = (FindCreeps) future.get();
-                    reachable = find.getReach();
+                    reachable = (STC<Spatial>) future.get();
                     future = null;
                 } else if (future.isCancelled()) {
                     future = null;
@@ -166,8 +163,8 @@ public class TowerControl extends AbstractControl {
      * Future goal would be to only build the relevant list of creeps in the
      * first place.
      */
-    private Callable<FindCreeps> callableCreepFind = new Callable<FindCreeps>() {
-        public FindCreeps call() throws Exception {
+    private Callable<STC<Spatial>> callableCreepFind = new Callable<STC<Spatial>>() {
+        public STC<Spatial> call() throws Exception {
             STC<Spatial> reach = new STC<Spatial>(cc);
             ArrayList<Spatial> creepClone = TowerState.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
                 public ArrayList<Spatial> call() throws Exception {
@@ -182,7 +179,7 @@ public class TowerControl extends AbstractControl {
 
             }
 
-            return new FindCreeps(reach);
+            return reach;
 
         }
     };

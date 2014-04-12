@@ -25,7 +25,7 @@ public class STDCreepControl extends AbstractControl {
     protected CreepState CreepState;
     protected int creepNum;
     protected Vector3f direction;
-    private MoveCreep mc;
+    private MoveCreep mc = new MoveCreep();
 
     /**
      * Initialization for Control Classes happens in Constructors.
@@ -45,8 +45,7 @@ public class STDCreepControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (CreepState.isEnabled()) {
-            mc = new MoveCreep(CreepState, this);
-            mc.run();
+            mc.run(CreepState, this);
         }
     }
 

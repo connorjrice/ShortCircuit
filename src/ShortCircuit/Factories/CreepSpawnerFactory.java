@@ -13,15 +13,10 @@ import com.jme3.scene.shape.Box;
  * @author Connor Rice
  */
 public class CreepSpawnerFactory {
-    private Spatial spawner;
     
-    public CreepSpawnerFactory(int index, String creepSpawnerMat, Vector3f spawnervec, String direction,
-            AssetManager assetManager, CreepState cs) {
-        createCreepSpawner(index, creepSpawnerMat, spawnervec, direction, assetManager, cs);
-    }
+    public CreepSpawnerFactory() {}
     
-    
-    private void createCreepSpawner(int index, String creepSpawnerMat, Vector3f spawnervec, String direction,
+    public Spatial getSpawner(int index, String creepSpawnerMat, Vector3f spawnervec, String direction,
             AssetManager assetManager, CreepState cs) {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1,1,1));
         spawner_geom.setMaterial(assetManager.loadMaterial("Materials/"+cs.getMatDir()+"/"+creepSpawnerMat+".j3m"));
@@ -33,14 +28,12 @@ public class CreepSpawnerFactory {
         }
         spawner_geom.setLocalTranslation(spawnervec);
 
-        spawner = spawner_geom;
+        Spatial spawner = spawner_geom;
         spawner.addControl(new STDSpawnerControl(cs));
         spawner.setUserData("Index", index);
         spawner.setUserData("Direction", direction);
-    }
-    
-    public Spatial getSpawner() {
         return spawner;
     }
     
+
 }

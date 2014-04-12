@@ -1,6 +1,7 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
+import ShortCircuit.Factories.CreepFactory;
 import ShortCircuit.Threading.SpawnSTDCreep;
 import ShortCircuit.Objects.CreepTraits;
 import ShortCircuit.Factories.CreepSpawnerFactory;
@@ -15,6 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -34,6 +36,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class CreepState extends AbstractAppState {
 
     private Box univ_box = new Box(1,1,1);
+    private Sphere glob_sphere = new Sphere(32,32,1f);
     public Node creepNode = new Node("Creep");
     public ArrayList<Spatial> creepList;
     private static final Vector3f SM_CREEP_SIZE =
@@ -70,6 +73,9 @@ public class CreepState extends AbstractAppState {
     private float randomCheck = 0;
     private Node worldNode;
     private SpawnSTDCreep sc;
+    private CreepFactory cf = new CreepFactory();
+    private GlobFactory gf = new GlobFactory();
+    private CreepSpawnerFactory csf = new CreepSpawnerFactory();
 
     
     @Override
@@ -87,7 +93,7 @@ public class CreepState extends AbstractAppState {
     public void update(float tpf) {
         if (isEnabled()) {
             if (randomCheck > nextrandom) {
-                //spawnRandomEnemy();
+                spawnRandomEnemy();
                 getNextRandomSpecialEnemyInt();
                 randomCheck = 0;
             }
@@ -99,7 +105,7 @@ public class CreepState extends AbstractAppState {
     }
     
     private void getNextRandomSpecialEnemyInt() {
-        nextrandom = random.nextInt(5);
+        nextrandom = random.nextInt(15);
     }
     
     private void spawnRandomEnemy() {
@@ -110,8 +116,7 @@ public class CreepState extends AbstractAppState {
         int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
         if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
             Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
-            GlobFactory gF = new GlobFactory(towerVictimLocation, towerVictimIndex, assetManager, this);
-            Spatial glob = gF.getGlob();
+            Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex, assetManager, this);
             GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
             creepNode.attachChild(glob);
             globList.add(glob);
@@ -120,16 +125,19 @@ public class CreepState extends AbstractAppState {
             spawnGlob();
         }
     }
+    
+    public Sphere getGlobSphere() {
+        return glob_sphere;
+    }
 
     public void attachCreepNode() {
         worldNode.attachChild(creepNode);
     }
 
     public void createCreepSpawner(int index, Vector3f spawnervec) {
-        CreepSpawnerFactory csf = new CreepSpawnerFactory(index,
-                "CreepSpawner", spawnervec, getCreepSpawnerDir(index), assetManager, this);
-        creepSpawners.add(csf.getSpawner());
-        creepNode.attachChild(csf.getSpawner());
+        creepSpawners.add(csf.getSpawner(index,
+                "CreepSpawner", spawnervec, getCreepSpawnerDir(index), assetManager, this));
+        creepNode.attachChild(creepSpawners.get(creepSpawners.size()-1));
     }
 
     public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs, ArrayList<String> _creepSpawnerDirs) {
@@ -229,13 +237,14 @@ public class CreepState extends AbstractAppState {
         }
     }
     
+    
     /**
      * Creates a creep based upon the input from creepBuilder.
      * @param ct, object containing traits of the creep
      */
     private void createSTDCreep(CreepTraits ct) {
-        sc = new SpawnSTDCreep(creepList, creepNode, ct,assetManager,this);
-        sc.run();
+        creepList.add(cf.getCreep(ct, assetManager, this));
+        creepNode.attachChild(creepList.get(creepList.size()-1));
     }
 
     public String getCreepSpawnerDir(int index) {

@@ -56,7 +56,9 @@ public class GameState extends AbstractAppState {
     public AudioNode levelUpSound;
     public AudioNode globPop;
     public int fours;
-
+    
+    private FloorFactory ff = new FloorFactory();
+    private BaseFactory bf = new BaseFactory();
     public GameState() {
     }
 
@@ -184,7 +186,9 @@ public class GameState extends AbstractAppState {
                             Spatial glob = CreepState.globList.get(i);
                             int popHealth = popGlob(trans, glob);
                             if (popHealth <= 0) {
-                                TowerState.globbedTowers.remove(towerIndex);
+                                if (TowerState.globbedTowers.size() >= 1) {
+                                    TowerState.globbedTowers.remove(TowerState.globbedTowers.indexOf(towerIndex));
+                                }
                             }
                         }
                     }
@@ -236,10 +240,8 @@ public class GameState extends AbstractAppState {
     /**
      * Creates a textured floor.
      */
-    public void createFloor(Vector3f floorscale, String floortexloc) {
-        FloorFactory ff = new FloorFactory(floorscale, floortexloc,
-                assetManager, this);
-        worldNode.attachChild(ff.getFloor());
+    public void createFloor(Vector3f floorscale, String floortexloc) {;
+        worldNode.attachChild(ff.getFloor(floorscale, floortexloc, assetManager, this));
 
     }
 
@@ -249,8 +251,7 @@ public class GameState extends AbstractAppState {
      */
     public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
         basevec = _basevec;
-        BaseFactory bf = new BaseFactory(texloc, basevec, basescale, assetManager, this);
-        worldNode.attachChild(bf.getBase());
+        worldNode.attachChild(bf.getBase(texloc, basevec, basescale, assetManager, this));
     }
 
     public SimpleApplication getApp() {

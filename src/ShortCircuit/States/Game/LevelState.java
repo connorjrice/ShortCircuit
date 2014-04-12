@@ -76,7 +76,6 @@ public class LevelState extends AbstractAppState {
      */
     public void newGame(String levelname) {
         initMG(levelname);
-
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createLight();
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());

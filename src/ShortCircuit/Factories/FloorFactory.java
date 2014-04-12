@@ -14,21 +14,15 @@ public class FloorFactory {
     
     private Geometry floor_geom;
     
-    public FloorFactory(Vector3f floorscale, String floorName, 
-            AssetManager assetManager, GameState gs) {
-        createFloor(floorscale, floorName, assetManager, gs);
-    }
+    public FloorFactory() {}
     
-    private void createFloor(Vector3f floorscale, 
+    public Geometry getFloor(Vector3f floorscale, 
             String floorName, AssetManager assetManager, GameState gs) {
         floor_geom = new Geometry("Floor", new Box(1,1,1));
         floor_geom.setMaterial(assetManager.loadMaterial(floorName));
         floor_geom.setLocalScale(floorscale);
-    }
-    
-    public Geometry getFloor() {
         return floor_geom;
     }
-         
+    
     
 }

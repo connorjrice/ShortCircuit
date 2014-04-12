@@ -31,9 +31,7 @@ public class SpawnSTDCreep implements Runnable {
     }
 
     public void run() {
-        CreepFactory cf = new CreepFactory(ct, assetManager, cs);
-        creepList.add(cf.getCreep());
-        creepNode.attachChild(cf.getCreep());
+        CreepFactory cf = new CreepFactory();
     }
     
     

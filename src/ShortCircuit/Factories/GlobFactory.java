@@ -6,7 +6,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
 
 /**
  * Creates a glob. An annoying enemy that prevents your towers from firing,
@@ -17,26 +16,21 @@ import com.jme3.scene.shape.Sphere;
  * @author Connor
  */
 public class GlobFactory {
-    private Spatial glob;
     
-    public GlobFactory(Vector3f location, int index, AssetManager assetManager, CreepState cs) {
-        glob(location, index, assetManager, cs);
-    }
+    public GlobFactory(){}
     
-    private void glob(Vector3f location, int index,
+    
+    public Spatial getGlob(Vector3f location, int index,
             AssetManager assetManager, CreepState cs) {
-        Geometry creep_geom = new Geometry("Glob", new Sphere(32,32,1f));
+        Geometry creep_geom = new Geometry("Glob", cs.getGlobSphere());
         creep_geom.setMaterial(assetManager.loadMaterial("Materials/"+cs.getMatDir()+"/GiantCreep.j3m"));
         creep_geom.setLocalTranslation(location);
-        glob = creep_geom;
+        Spatial glob = creep_geom;
         glob.setUserData("Name", "glob");
         glob.setUserData("Health", 5);
         glob.setUserData("TowerIndex", index);
         glob.addControl(new GlobControl(cs));
-    }
-    
-    public Spatial getGlob() {
         return glob;
     }
-    
+
 }
