@@ -31,7 +31,7 @@ public class TowerState extends AbstractAppState {
     private Vector3f builtTowerSize = new Vector3f(0.5f, 0.5f, 1.0f);
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
-    private TowerUpgradeFactory ut = new TowerUpgradeFactory();
+    private TowerUpgradeFactory tuf;
     
     private TowerFactory tf = new TowerFactory();
     
@@ -59,6 +59,7 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+        tuf = new TowerUpgradeFactory(assetManager, GameState);
         charge = new AudioNode(assetManager, "Audio/chargegam.wav");
         charge.setPositional(false);
         charge.setVolume(.8f);
@@ -113,19 +114,19 @@ public class TowerState extends AbstractAppState {
         if (selectedTower != -1) {
             TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
             if (GameState.getPlrBudget() >= chargeCost) {
-                if (tower.getType().equals("tower1")) {
+                if (tower.getTowerType().equals("tower1")) {
                     changeTowerTexture(tow1MatLoc, tower);
                     tower.charges.add(new Charges("tower1"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("tower2")) {
+                } else if (tower.getTowerType().equals("tower2")) {
                     changeTowerTexture(tow2MatLoc, tower);
                     tower.charges.add(new Charges("tower2"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("tower3")) {
+                } else if (tower.getTowerType().equals("tower3")) {
                     changeTowerTexture(tow3MatLoc, tower);
                     tower.charges.add(new Charges("tower3"));
                     GameState.decPlrBudget(chargeCost);
-                } else if (tower.getType().equals("tower4")) {
+                } else if (tower.getTowerType().equals("tower4")) {
                     changeTowerTexture(tow4MatLoc, tower);
                     tower.charges.add(new Charges("tower4"));
                     GameState.decPlrBudget(chargeCost);
@@ -137,7 +138,7 @@ public class TowerState extends AbstractAppState {
     
     public void upgradeTower() {
         if (selectedTower != -1) {
-            ut.run(GameState, getSelectedTowerType(), assetManager);
+            tuf.run(getSelectedTowerType());
         }
     }
     
@@ -174,7 +175,7 @@ public class TowerState extends AbstractAppState {
         for (int i = 0; i < starterTowerIn.size(); i++) {
             TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
             tower.charges.add(new Charges("tower1"));
-            tower.setType("tower1");
+            tower.setTowerType("tower1");
             tower.setBuilt();
             changeTowerTexture(tow1MatLoc, tower);
             tower.setSize(builtTowerSize);

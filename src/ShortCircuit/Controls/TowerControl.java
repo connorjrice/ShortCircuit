@@ -200,7 +200,7 @@ public class TowerControl extends AbstractControl {
     protected void shootCreep() {
         if (charges.get(0).getRemBullets() > 0) {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
-                BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getType());
+                BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
                 if (reachable.peek().getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
@@ -224,17 +224,29 @@ public class TowerControl extends AbstractControl {
         return spatial.getUserData("Height");
 
     }
+    
+    public float getBeamWidth() {
+        return spatial.getUserData("BeamWidth");
+    }
 
     public int getIndex() {
         return spatial.getUserData("Index");
 
     }
+    
+    public String getBeamType() {
+        return spatial.getUserData("BeamType");
+    }
+    
+    public void setBeamType(String newtype) {
+        spatial.setUserData("BeamType", newtype);
+    }
 
-    public String getType() {
+    public String getTowerType() {
         return spatial.getUserData("Type");
     }
 
-    public void setType(String newtype) {
+    public void setTowerType(String newtype) {
         spatial.setUserData("Type", newtype);
     }
 

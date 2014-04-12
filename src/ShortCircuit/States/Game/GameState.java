@@ -18,6 +18,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -37,6 +38,7 @@ public class GameState extends AbstractAppState {
     private Node rootNode;
     private Sphere bombMesh = new Sphere(16, 16, 1.0f);
     private Node worldNode = new Node("World");
+    private Box univ_box = new Box(1,1,1);
     private int levelCap;
     private int levelMod;
     private int plrLevel;
@@ -145,10 +147,6 @@ public class GameState extends AbstractAppState {
         dropBomb(new Vector3f(0.0f, -7.5f, 0.1f));
     }
 
-    public void baseShoot() {
-        BaseControl base = worldNode.getChild("Base").getControl(BaseControl.class);
-        base.shootCreep();
-    }
 
     /**
      * Provides the cost of various operations.
@@ -296,6 +294,10 @@ public class GameState extends AbstractAppState {
 
     public Sphere getBombMesh() {
         return bombMesh;
+    }
+    
+    public Box getUnivBox() {
+        return univ_box;
     }
 
     public void setNumCreeps(int nc) {

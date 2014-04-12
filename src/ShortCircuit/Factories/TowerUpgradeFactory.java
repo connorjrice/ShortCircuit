@@ -13,32 +13,38 @@ public class TowerUpgradeFactory {
     private int cost;
     private String matLoc;
     private float pitch;
+    private String beamType;
+    private AssetManager assetManager;
+    private GameState gs;
 
 
-    public TowerUpgradeFactory() {}      
+    public TowerUpgradeFactory(AssetManager _assetManager, GameState _gs) {
+        assetManager = _assetManager;
+        gs = _gs;
+    }      
 
-    public void run(GameState gs, String type, AssetManager assetManager) {
+    public void run(String type) {
         if (type.equals("unbuilt")) {
             cost = 100;
-            type = "tower1";
+            type = "1";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower1.j3m";
             pitch = 0.6f;
         }
         else if (type.equals("tower1")) {
             cost = 50;
-            type = "tower2";
+            type = "2";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower2.j3m";
             pitch = 0.8f;
         }
         else if (type.equals("tower2")) {
             cost = 100;
-            type = "tower3";
+            type = "3";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower3.j3m";
             pitch = 0.9f;
         }
         else if (type.equals("tower3")) {
             cost = 500;
-            type = "tower4";
+            type = "4";
             matLoc = "Materials/" +gs.getMatDir()+ "/Tower4.j3m";
             pitch = 1.0f;
         }
@@ -52,7 +58,8 @@ public class TowerUpgradeFactory {
                 TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
                 if (gs.getPlrBudget() >= cost) {
                     tower.charges.add(new Charges(type));
-                    tower.setType(type);
+                    tower.setTowerType("tower"+type);
+                    tower.setBeamType("beam"+type);
                     if (type.equals("tower4")) {
                         gs.incFours();
                     }

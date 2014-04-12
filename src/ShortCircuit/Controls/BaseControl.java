@@ -34,64 +34,14 @@ public class BaseControl extends AbstractControl {
     public BaseControl(GameState _gstate, Vector3f loc) {
         GameState = _gstate;
         baseloc = loc;
-        charges.add(new Charges("baseLaser"));
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        /*if (GameState.isEnabled()) {
-            if (isActive) {
-                findCreeps();
-            }
-        }*/
+
     }
 
-    /**
-     * Finds creeps within 8.5f WU of the base, adds to list.
-     */
-    protected void findCreeps() {
-        for (int i = 0; i < GameState.getCreepList().size(); i++) {
-            Spatial current = GameState.getCreepList().get(i);
-            if (current != null) {
-                Vector3f local = current.getLocalTranslation();
-                current.getControl(STDCreepControl.class);
-                if (local.distance(baseloc) < 8.5f
-                        && !reachable.contains(current)) {
-                    reachable.add(current);
-                }
-            }
-        }
-    }
-
-    /**
-     * Shoots at a creep if possible.
-     * Uses old model of firing, should be updated if this feature is to be 
-     * implemented.
-     */
-    public void shootCreep() {
-        if (!charges.isEmpty() && !reachable.isEmpty()) {
-            if (charges.get(0).remBullets > 0) {
-                boolean hasShot = false;
-                while (!hasShot && reachable.size() > 0) {
-                    if (reachable.get(0).getControl(STDCreepControl.class) != null) {
-                        GameState.getBeamState().makeLaserBeam(baseloc, 
-                                reachable.get(0).getControl(STDCreepControl.class)
-                                .getCreepLocation(), "baseLaser");
-                        if (reachable.get(0).getControl(STDCreepControl.class)
-                                .decCreepHealth(charges.get(0).shoot()) <= 0) {
-                            reachable.remove(0);
-                        }
-                        hasShot = true;
-                    } else {
-                        // If curCreep IS null
-                        reachable.remove(0);
-                    }
-                }
-            } else {
-                charges.remove(0);
-            }
-        }
-    }
+    
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
