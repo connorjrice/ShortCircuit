@@ -13,17 +13,20 @@ import com.jme3.scene.Spatial;
  * @author Connor Rice
  */
 public class CreepFactory {
-    private Spatial creep;
+    private AssetManager assetManager;
+    private CreepState cs;
     
-    public CreepFactory() {}
+    public CreepFactory(AssetManager _assetManager, CreepState _cs) {
+        assetManager = _assetManager;
+        cs = _cs;
+    }
     
-    public Spatial getCreep(CreepTraits ct, 
-            AssetManager assetManager, CreepState cs) {
+    public Spatial getCreep(CreepTraits ct) {
         Geometry creep_geom = new Geometry("Creep", cs.getUnivBox());
         creep_geom.setMaterial(assetManager.loadMaterial(ct.getMaterialLocation()));
         creep_geom.setLocalScale(ct.getSize());
         creep_geom.setLocalTranslation(ct.getSpawnPoint());
-        creep = creep_geom;
+        Spatial creep = creep_geom;
         creep.setUserData("Name", ct.getName());
         creep.setUserData("Parent", ct.getSpawnIndex());
         creep.setUserData("Health", ct.getHealth());

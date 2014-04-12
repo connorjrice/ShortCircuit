@@ -71,9 +71,9 @@ public class CreepState extends AbstractAppState {
     private int nextrandom;
     private float randomCheck = 0;
     private Node worldNode;
-    private CreepFactory cf = new CreepFactory();
-    private GlobFactory gf = new GlobFactory();
-    private CreepSpawnerFactory csf = new CreepSpawnerFactory();
+    private CreepFactory cf;
+    private GlobFactory gf;
+    private CreepSpawnerFactory csf;
 
     
     @Override
@@ -83,6 +83,9 @@ public class CreepState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+        cf = new CreepFactory(assetManager, this);
+        gf = new GlobFactory(assetManager, this);
+        csf = new CreepSpawnerFactory(assetManager, this);
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
     }
@@ -114,7 +117,7 @@ public class CreepState extends AbstractAppState {
         int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
         if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
             Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
-            Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex, assetManager, this);
+            Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
             GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
             creepNode.attachChild(glob);
             globList.add(glob);
@@ -134,7 +137,7 @@ public class CreepState extends AbstractAppState {
 
     public void createCreepSpawner(int index, Vector3f spawnervec) {
         creepSpawners.add(csf.getSpawner(index,
-                "CreepSpawner", spawnervec, getCreepSpawnerDir(index), assetManager, this));
+                "CreepSpawner", spawnervec, getCreepSpawnerDir(index)));
         creepNode.attachChild(creepSpawners.get(creepSpawners.size()-1));
     }
 
@@ -241,7 +244,7 @@ public class CreepState extends AbstractAppState {
      * @param ct, object containing traits of the creep
      */
     private void createSTDCreep(CreepTraits ct) {
-        creepList.add(cf.getCreep(ct, assetManager, this));
+        creepList.add(cf.getCreep(ct));
         creepNode.attachChild(creepList.get(creepList.size()-1));
     }
 

@@ -1,6 +1,5 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.Controls.STDCreepControl;
 import ShortCircuit.States.Game.CreepState;
 
 /**
@@ -8,12 +7,16 @@ import ShortCircuit.States.Game.CreepState;
  * Eventually, this will be used to do pathfinding!
  * @author clarence
  */
-public class MoveCreep {
-    /**
-     * This takes care of the death conditions, and moves the creep in the
-     * direction specified by it's direction.
-     */
-    public void run(CreepState cs, STDCreepControl cc) {
+public class MoveCreep implements Runnable {
+    private CreepState cs;
+    private STDCreepControl cc;
+
+    public MoveCreep(CreepState _cs, STDCreepControl _cc) {
+        cs = _cs;
+        cc = _cc;
+    }
+    
+    public void run() {
         if (cc.getSpatial().getWorldBound().intersects(cs.getBaseBounds())) {
             cs.decPlrHealth(cc.getValue());
             cs.creepList.remove(cc.getSpatial());

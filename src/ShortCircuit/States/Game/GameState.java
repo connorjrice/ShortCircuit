@@ -59,8 +59,8 @@ public class GameState extends AbstractAppState {
     public AudioNode globPop;
     public int fours;
     
-    private FloorFactory ff = new FloorFactory();
-    private BaseFactory bf = new BaseFactory();
+    private FloorFactory ff;
+    private BaseFactory bf;
     public GameState() {
     }
 
@@ -74,6 +74,8 @@ public class GameState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
+        ff = new FloorFactory(this);
+        bf = new BaseFactory(this);
 
 
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
@@ -84,7 +86,7 @@ public class GameState extends AbstractAppState {
         levelUpSound.setVolume(.6f);
 
         globPop = new AudioNode(assetManager, "Audio/globpop.wav");
-        ex = new ScheduledThreadPoolExecutor(4);
+        ex = new ScheduledThreadPoolExecutor(8);
     }
 
     @Override
@@ -239,7 +241,7 @@ public class GameState extends AbstractAppState {
      * Creates a textured floor.
      */
     public void createFloor(Vector3f floorscale, String floortexloc) {;
-        worldNode.attachChild(ff.getFloor(floorscale, floortexloc, assetManager, this));
+        worldNode.attachChild(ff.getFloor(floorscale, floortexloc));
 
     }
 
@@ -249,7 +251,7 @@ public class GameState extends AbstractAppState {
      */
     public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
         basevec = _basevec;
-        worldNode.attachChild(bf.getBase(texloc, basevec, basescale, assetManager, this));
+        worldNode.attachChild(bf.getBase(texloc, basevec, basescale));
     }
 
     public SimpleApplication getApp() {

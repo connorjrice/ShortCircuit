@@ -16,12 +16,16 @@ import com.jme3.scene.Spatial;
  * @author Connor
  */
 public class GlobFactory {
+    private AssetManager assetManager;
+    private CreepState cs;
     
-    public GlobFactory(){}
+    public GlobFactory(AssetManager _assetManager, CreepState _cs){
+        assetManager = _assetManager;
+        cs = _cs;
+    }
     
     
-    public Spatial getGlob(Vector3f location, int index,
-            AssetManager assetManager, CreepState cs) {
+    public Spatial getGlob(Vector3f location, int index) {
         Geometry creep_geom = new Geometry("Glob", cs.getGlobSphere());
         creep_geom.setMaterial(assetManager.loadMaterial("Materials/"+cs.getMatDir()+"/GiantCreep.j3m"));
         creep_geom.setLocalTranslation(location);

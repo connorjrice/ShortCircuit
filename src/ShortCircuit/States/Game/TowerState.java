@@ -33,7 +33,7 @@ public class TowerState extends AbstractAppState {
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
     private TowerUpgradeFactory tuf;
     
-    private TowerFactory tf = new TowerFactory();
+    private TowerFactory tf;
     
     public String tow1MatLoc;
     public String tow2MatLoc;
@@ -59,7 +59,8 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
-        tuf = new TowerUpgradeFactory(assetManager, GameState);
+        tf = new TowerFactory(GameState);
+        tuf = new TowerUpgradeFactory(GameState);
         charge = new AudioNode(assetManager, "Audio/chargegam.wav");
         charge.setPositional(false);
         charge.setVolume(.8f);
@@ -154,7 +155,7 @@ public class TowerState extends AbstractAppState {
      * @param v, vector for tower
      */
     public void createTower(int index, Vector3f towervec, String type) {
-        towerList.add(tf.getTower(index, towervec,  unbuiltTowerSize, type, assetManager, GameState));
+        towerList.add(tf.getTower(index, towervec,  unbuiltTowerSize, type));
         towerNode.attachChild(towerList.get(towerList.size()-1));
     }
 

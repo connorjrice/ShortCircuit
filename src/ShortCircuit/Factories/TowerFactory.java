@@ -12,11 +12,15 @@ import com.jme3.scene.Spatial;
  * @author Connor Rice
  */
 public class TowerFactory {
+    private GameState gs;
+    private AssetManager assetManager;
     
-    public TowerFactory(){}
+    public TowerFactory(GameState _gs){
+        gs = _gs;
+        assetManager = gs.getAssetManager();
+    }
 
-    public Spatial getTower(int index, Vector3f towervec, Vector3f unbuiltTowerSize, String type,
-            AssetManager assetManager, GameState gs) {
+    public Spatial getTower(int index, Vector3f towervec, Vector3f unbuiltTowerSize, String type) {
         Geometry tower_geom = new Geometry("Tower", gs.getUnivBox());
         tower_geom.setLocalScale(unbuiltTowerSize);
         tower_geom.setMaterial(assetManager.loadMaterial("Materials/"+gs.getMatDir()+"/UnbuiltTower.j3m"));
