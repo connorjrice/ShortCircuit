@@ -1,8 +1,0 @@
-Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
-     MaterialParameters {
-        GlowColor : 1.0 1.0 0.0 1.0
-        ColorMap : Textures/Circuit/bomb.jpg
-     }
-    AdditionalRenderState {
-    }
-}

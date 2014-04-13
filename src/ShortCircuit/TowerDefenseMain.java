@@ -1,15 +1,15 @@
 package ShortCircuit;
 
-import ShortCircuit.Cheats.CheatGUI;
-import ShortCircuit.Cheats.CheatState;
-import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.BeamState;
-import ShortCircuit.States.Game.CreepState;
-import ShortCircuit.States.Game.TowerState;
-import ShortCircuit.States.GUI.GameGUI;
-import ShortCircuit.States.GUI.GameOverGUI;
-import ShortCircuit.States.GUI.StartGUI;
-import ShortCircuit.States.Game.LevelState;
+import ShortCircuit.Tower.Cheats.CheatGUI;
+import ShortCircuit.Tower.Cheats.CheatState;
+import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.BeamState;
+import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.TowerState;
+import ShortCircuit.Tower.States.GUI.GameGUI;
+import ShortCircuit.Tower.States.GUI.GameOverGUI;
+import ShortCircuit.GUI.StartGUI;
+import ShortCircuit.Tower.States.Game.LevelState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
 import com.jme3.input.MouseInput;
@@ -59,7 +59,7 @@ public class TowerDefenseMain extends SimpleApplication {
      * @param args
      */
     public static void main(String[] args) {
-        //Logger.getLogger("").setLevel(Level.OFF);
+        Logger.getLogger("").setLevel(Level.OFF);
         TowerDefenseMain app = new TowerDefenseMain();
         AppSettings sets = new AppSettings(true);
         sets.setSettingsDialogImage("Interface/loading.png");
