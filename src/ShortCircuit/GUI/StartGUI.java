@@ -2,6 +2,7 @@ package ShortCircuit.GUI;
 
 import ShortCircuit.ShortCircuitMain;
 import ShortCircuit.Tower.MainState.TowerMainState;
+import ShortCircuit.Transit.Game.TransitGameState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -50,6 +51,9 @@ public class StartGUI extends AbstractAppState {
     private ButtonAdapter ExitButton;
     private DialogBox ReallyExitPopup;
     private TowerMainState tMS;
+    private ButtonAdapter transit;
+    private TransitGameState tGS;
+    private AppStateManager stateManager;
 
     
     public StartGUI() {}
@@ -64,6 +68,7 @@ public class StartGUI extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
         this.assetManager = this.app.getAssetManager();
+        this.stateManager = this.app.getStateManager();
         this.tMS = this.app.getStateManager().getState(TowerMainState.class);
         width = tMS.getWidth();
         height = tMS.getHeight();
@@ -86,7 +91,8 @@ public class StartGUI extends AbstractAppState {
         level1();
         debugButton();
         initLoadBar();
-       exitButton();
+        exitButton();
+        transitButton();
     }
     
     
@@ -171,6 +177,24 @@ public class StartGUI extends AbstractAppState {
         screen.addElement(debug);
     }
     
+    private void transitButton() {
+        transit = new ButtonAdapter(screen, "transit", new Vector2f(540,height/2-100), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                onTransit();
+            }
+        };
+        transit.setText("Transit");
+        transit.setFont("Interface/Fonts/DejaVuSans.fnt");
+        screen.addElement(transit);
+    }
+    
+    public void onTransit() {
+        tGS = new TransitGameState();
+        stateManager.attach(tGS);
+        toggle();
+    }
+    
 
     public void onStart(String level) {
         tMS.detachGameStates();
@@ -220,6 +244,7 @@ public class StartGUI extends AbstractAppState {
             Level1.hide();
             debug.hide();
             ExitButton.hide();
+            transit.hide();
         }
         else {
             MainWindow.show();
@@ -227,6 +252,7 @@ public class StartGUI extends AbstractAppState {
             Level1.show();
             debug.show();
             ExitButton.show();
+            transit.show();
         }
     }
     
