@@ -1,12 +1,10 @@
 package ShortCircuit.GUI;
 
-import ShortCircuit.ShortCircuitMain;
 import ShortCircuit.Tower.MainState.TowerMainState;
 import ShortCircuit.Transit.Game.TransitGameState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
@@ -217,7 +215,6 @@ public class StartGUI extends AbstractAppState {
             firstLoad = false;
         }
         else {
-            tMS.detachStates();
             stateManager.detach(tMS);
             tMS = new TowerMainState(false, level);
             stateManager.attach(tMS);

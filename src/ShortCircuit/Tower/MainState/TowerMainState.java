@@ -308,6 +308,6 @@ public class TowerMainState extends AbstractAppState {
     
     @Override
     public void cleanup() {
-
+        detachStates();
     }
 }
