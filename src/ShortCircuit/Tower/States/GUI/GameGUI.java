@@ -254,7 +254,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void setupGUI() {
-        objectivePopup();
+        //objectivePopup();
         leftPanel();
         rightPanel();
         settingsWindow();
