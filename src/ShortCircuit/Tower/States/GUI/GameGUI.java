@@ -476,6 +476,7 @@ public class GameGUI extends AbstractAppState {
         };
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
+        FilterState.setBloomIntensity(FilterState.bloomIntensity);
         SetWindow.addChild(BloomSlider);
     }
 
