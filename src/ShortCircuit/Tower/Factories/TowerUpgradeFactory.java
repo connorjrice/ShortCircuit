@@ -66,6 +66,7 @@ public class TowerUpgradeFactory {
                 tower.setSize(gs.getTowerState().getBuiltTowerSize());
                 gs.decPlrBudget(cost);
                 gs.playBuildSound(pitch);
+                valid = false;
 
 
             }

@@ -11,7 +11,7 @@
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Circuit</matdir>
+            <matdir>Circuit2</matdir>
         </param>
     </levelparams>
     <floor>
