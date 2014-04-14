@@ -237,16 +237,6 @@ public class TowerState extends AbstractAppState {
         return builtTowerSize;
     }
     
-    @Override
-    public void stateAttached(AppStateManager stateManager) {
-        
-    }
-    
-    @Override
-    public void stateDetached(AppStateManager stateManager) {
-        towerNode.detachAllChildren();
-    }
-
 
     @Override
     public void cleanup() {
@@ -256,8 +246,5 @@ public class TowerState extends AbstractAppState {
         globbedTowers.clear();
         
     }
-
-
-
 
 }

@@ -140,6 +140,7 @@ public class TowerMainState extends AbstractAppState {
      * @param volume -New volume level. Not implemented yet.
      */
     public void setVolume(int volume) {
+        
     }
 
     public void backToTGStart() {
@@ -177,6 +178,8 @@ public class TowerMainState extends AbstractAppState {
             detachStates();
             inGame = false;
         } else {
+            super.cleanup();
+            cleanup();
             app.stop();
         }
     }

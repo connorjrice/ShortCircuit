@@ -87,7 +87,6 @@ public class GameGUI extends AbstractAppState {
     private boolean end = false;
     private StartGUI StartGUI;
     private FilterState FilterState;
- 
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -112,6 +111,7 @@ public class GameGUI extends AbstractAppState {
         initScreen();
         setupGUI();
         setCameraLocation();
+        setInitialPlrInfo();
     }
 
     @Override
@@ -132,10 +132,10 @@ public class GameGUI extends AbstractAppState {
 
             }
             if (gs.getFours() > 0 && !end) {
-                    endTheme();
-                    tMS.stopUnder();
-                    end = true;
-                }
+                endTheme();
+                tMS.stopUnder();
+                end = true;
+            }
             updateFrills();
             frillsTimer = 0;
         } else {
@@ -143,7 +143,7 @@ public class GameGUI extends AbstractAppState {
         }
 
     }
-    
+
     private void endTheme() {
         System.out.println("thisistheend");
         endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
@@ -153,7 +153,6 @@ public class GameGUI extends AbstractAppState {
         endTheme.play();
     }
 
-
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
@@ -162,8 +161,6 @@ public class GameGUI extends AbstractAppState {
         //screen.setUseKeyboardIcons(true);
 
     }
-    
-
 
     /**
      * This will be the button that, after cheats are activated, shows up and
@@ -217,7 +214,6 @@ public class GameGUI extends AbstractAppState {
         app.getListener().setLocation(trans);
         app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI / 2, new Vector3f(0, 0, 1)));
     }
-    
     /**
      * Handles touch events for GameState.
      */
@@ -240,8 +236,8 @@ public class GameGUI extends AbstractAppState {
             }
         }
     };
-    
-        /**
+
+    /**
      * Handles collisions. TODO: Update this process of selecting objects
      *
      * @param click2d
@@ -399,6 +395,13 @@ public class GameGUI extends AbstractAppState {
             internalLevel = gs.getPlrLvl();
         }
     }
+    
+    private void setInitialPlrInfo() {
+        Health.setText("Health: " + gs.getPlrHealth());
+        Budget.setText("Budget: " + gs.getPlrBudget());
+        Score.setText("Score: " + gs.getPlrScore());
+        Level.setText("Level: " + gs.getPlrLvl());
+    }
 
     private void updateHealthColor() {
         if (gs.getPlrHealth() != internalHealth) {
@@ -444,8 +447,6 @@ public class GameGUI extends AbstractAppState {
             }
         }
     }
-
-
 
     private void textColorToggleButton() {
         TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize) {
@@ -612,7 +613,7 @@ public class GameGUI extends AbstractAppState {
         Level.setIgnoreMouse(true);
         screen.addElement(Level);
     }
-    
+
     public void setCameraLocation() {
         cam.setLocation(gs.getCamLocation());
     }
@@ -636,7 +637,7 @@ public class GameGUI extends AbstractAppState {
             endTheme.stop();
             tMS.underPinning();
         }
-        
+
         guiNode.removeControl(screen);
 
     }

@@ -109,6 +109,8 @@ public class StartGUI extends AbstractAppState {
                     onStart("TestLevel", true);
                 } else if (value.equals("StartProfile")) {
                     onStart("profilelevel", false);
+                } else if (value.equals("GameOverTest")) {
+                    onStart("TestGameOver", false);
                 }
             }
         };
@@ -118,6 +120,7 @@ public class StartGUI extends AbstractAppState {
         levelMenu.addMenuItem("Level4", "Start4", null);
         levelMenu.addMenuItem("TestLevel", "StartTest", null);
         levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
+        levelMenu.addMenuItem("TestGameOver", "GameOverTest", null);
         levelMenu.hide();
         MainWindow.addChild(levelMenu);
     }
@@ -233,7 +236,9 @@ public class StartGUI extends AbstractAppState {
 
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
-                app.stop();
+                super.cleanup();
+                guiNode.detachAllChildren();
+                app.stop(false);
             }
         };
         ReallyExitPopup.setText("Exit");

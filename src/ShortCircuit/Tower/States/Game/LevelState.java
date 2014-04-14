@@ -9,6 +9,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
  * LevelState calls the appropriate methods in its sibling states to create a 
@@ -56,10 +57,6 @@ public class LevelState extends AbstractAppState {
         }
     }
     
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-    }
     
     /**
      * Initializes the XML Parser, builds the map in GameState with specified
@@ -80,6 +77,7 @@ public class LevelState extends AbstractAppState {
         CreepState.initMaterials();
         CreepState.attachCreepNode();
         GameState.attachWorldNode();
+
     }
     
     
