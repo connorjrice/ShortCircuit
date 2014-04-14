@@ -38,15 +38,11 @@ public class StartGUI extends AbstractAppState {
     private boolean cont = true;
     public Menu MainMenu;
     public Window MainWindow;
-    private ButtonAdapter debug;
     private int height;
     private int width;
     private Vector2f buttonSize;
-    private ColorRGBA color;
     private AssetManager assetManager;
     private Indicator ind;
-    private AudioNode theme;
-    private boolean isTheme = false;
     private ButtonAdapter ExitButton;
     private DialogBox ReallyExitPopup;
     private ButtonAdapter transit;
@@ -70,8 +66,8 @@ public class StartGUI extends AbstractAppState {
         this.stateManager = this.app.getStateManager();
         height = this.app.getContext().getSettings().getHeight();
         width = this.app.getContext().getSettings().getWidth();
-        buttonSize = new Vector2f(width/8, height/8);
-        scaler = width/13;
+        buttonSize = new Vector2f(width / 8, height / 8);
+        scaler = width / 13;
 
         initScreen();
     }
@@ -104,8 +100,7 @@ public class StartGUI extends AbstractAppState {
                     onStart("Level3", false);
                 } else if (value.equals("Start4")) {
                     onStart("Level4", false);
-                }
-                else if (value.equals("StartTest")) {
+                } else if (value.equals("StartTest")) {
                     onStart("TestLevel", true);
                 } else if (value.equals("StartProfile")) {
                     onStart("profilelevel", false);
@@ -124,7 +119,7 @@ public class StartGUI extends AbstractAppState {
         levelMenu.hide();
         MainWindow.addChild(levelMenu);
     }
-    
+
     public void onStart(String level, boolean debug) {
         if (firstLoad) {
             tMS = new TowerMainState(debug, level);
@@ -150,7 +145,6 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void initLoadBar() {
-        color = ColorRGBA.randomColor();
         ind = new Indicator(screen, "loadbar", new Vector2f(width / 2, height / 2 - 100), Indicator.Orientation.HORIZONTAL) {
             @Override
             public void onChange(float arg0, float arg1) {
@@ -176,14 +170,13 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(MainWindow.getWidth() - scaler * 6, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
+        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(MainWindow.getWidth() - scaler * 6, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (levelMenu.getIsVisible()) {
                     levelMenu.hideMenu();
-                }
-                else {
-                    levelMenu.showMenu(null, newGame.getWidth()/2, scaler*2);
+                } else {
+                    levelMenu.showMenu(null, newGame.getWidth() / 2, scaler * 2);
                 }
             }
         };
@@ -194,7 +187,7 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void transitButton() {
-        transit = new ButtonAdapter(screen, "transit", new Vector2f(MainWindow.getWidth() - scaler * 4, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
+        transit = new ButtonAdapter(screen, "transit", new Vector2f(MainWindow.getWidth() - scaler * 4, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onTransit();
@@ -204,9 +197,9 @@ public class StartGUI extends AbstractAppState {
         transit.setFont("Interface/Fonts/DejaVuSans.fnt");
         MainWindow.addChild(transit);
     }
-    
+
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(MainWindow.getWidth() - scaler * 2, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(MainWindow.getWidth() - scaler * 2, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();
@@ -223,12 +216,8 @@ public class StartGUI extends AbstractAppState {
         toggle();
     }
 
-
-
-
-
     public void reallyExitDialog() {
-        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(200,200)) {
+        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(200, 200)) {
             @Override
             public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
                 screen.removeElement(ReallyExitPopup);
@@ -264,10 +253,6 @@ public class StartGUI extends AbstractAppState {
         return ind;
     }
 
-    @Override
-    public void update(float tpf) {
-        //TODO: implement behavior during runtime
-    }
 
     @Override
     public void cleanup() {

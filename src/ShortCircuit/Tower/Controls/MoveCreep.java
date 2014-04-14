@@ -10,10 +10,12 @@ import ShortCircuit.Tower.States.Game.CreepState;
 public class MoveCreep implements Runnable {
     private CreepState cs;
     private STDCreepControl cc;
+    private float moveamount;
 
     public MoveCreep(CreepState _cs, STDCreepControl _cc) {
         cs = _cs;
         cc = _cc;
+        moveamount = .001f;
     }
     
     public void run() {
@@ -25,7 +27,13 @@ public class MoveCreep implements Runnable {
         }
         // Pathfinding will go here
         else {
-            cc.getSpatial().move(cc.getDirection());
+            
+            /*Vector3f baselocation = cs.getBaseBounds().getCenter();
+            Vector3f creeplocation = cc.getCreepLocation();
+            Vector3f interpolated = creeplocation.interpolate(baselocation, moveamount);*/
+            //System.out.println(interpolated);
+            moveamount += .00001f;
+            cc.getSpatial().setLocalTranslation(cc.getCreepLocation().interpolate(cs.getBaseBounds().getCenter(), moveamount));
         }
     }
     

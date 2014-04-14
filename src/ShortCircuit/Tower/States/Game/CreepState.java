@@ -139,6 +139,11 @@ public class CreepState extends AbstractAppState {
         basebounds = worldNode.getChild("Base").getWorldBound();
     }
     
+    /**
+     * Spawns a glob. Checks to see if there is already a glob on the tower that
+     * was randomly selected, and if so, calls it's self again to find a new
+     * tower.
+     */
     private void spawnGlob() {
         int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
         if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
@@ -167,7 +172,8 @@ public class CreepState extends AbstractAppState {
         creepNode.attachChild(creepSpawners.get(creepSpawners.size()-1));
     }
 
-    public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs, ArrayList<String> _creepSpawnerDirs) {
+    public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs, 
+            ArrayList<String> _creepSpawnerDirs) {
         creepSpawnerVecs = _creepSpawnerVecs;
         creepSpawnerDirs = _creepSpawnerDirs;
         for (int i = 0; i < creepSpawnerVecs.size(); i++) {
@@ -291,6 +297,11 @@ public class CreepState extends AbstractAppState {
         return new Vector3f(getCreepNextBound(), spawnervec.getY(), 0.2f);
     }
     
+    /**
+     * Provides some different spawn points for the creep along the correct
+     * axis.
+     * @return an offset for the creep's spawning point
+     */
     private float getCreepNextBound() {
         int n = random.nextInt(2);
         if (n == 0) {

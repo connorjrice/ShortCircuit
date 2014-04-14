@@ -3,7 +3,7 @@
     <levelparams>
         <param id = "levelParams">
             <camLocation>0,0,20f</camLocation>
-            <numCreeps>3</numCreeps>
+            <numCreeps>1</numCreeps>
             <creepMod>2</creepMod>
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
