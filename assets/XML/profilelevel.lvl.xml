@@ -3,16 +3,16 @@
     <levelparams>
         <param id = "levelParams">
             <camLocation>0,0,20f</camLocation>
-            <numCreeps>3</numCreeps>
-            <creepMod>2</creepMod>
-            <levelCap>50</levelCap>
-            <levelMod>50</levelMod>
-            <plrHealth>100</plrHealth>
-            <plrBudget>20</plrBudget>
-            <plrLevel>0</plrLevel>
+            <numCreeps>30</numCreeps>
+            <creepMod>4</creepMod>
+            <levelCap>5000</levelCap>
+            <levelMod>5000</levelMod>
+            <plrHealth>10</plrHealth>
+            <plrBudget>100000</plrBudget>
+            <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Circuit</matdir>
+            <matdir>Neon</matdir>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>

@@ -98,9 +98,9 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(TowerState);
         stateManager.attach(CreepState);
         stateManager.attach(BeamState);
+        stateManager.attach(CheatState);
         stateManager.attach(LevelState);
         stateManager.attach(GameGUI);
-        stateManager.attach(CheatState);
         stateManager.attach(CheatGUI);
 
     }
@@ -207,9 +207,6 @@ public class TowerMainState extends AbstractAppState {
         return StartGUI.mainWindowShown();
     }
 
-    /* This is called from the pause menu to get back to the main menu.  False
-     * Alternatively, it is called from the GameOver state, with boolean True
-     */
     public void goToMainMenu() {
         pause();
         StartGUI.toggle();

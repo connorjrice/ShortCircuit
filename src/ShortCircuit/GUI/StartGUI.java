@@ -108,7 +108,7 @@ public class StartGUI extends AbstractAppState {
                 else if (value.equals("StartTest")) {
                     onStart("TestLevel", true);
                 } else if (value.equals("StartProfile")) {
-                    onStart("profilelevel", true);
+                    onStart("profilelevel", false);
                 }
             }
         };
@@ -120,6 +120,19 @@ public class StartGUI extends AbstractAppState {
         levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
         levelMenu.hide();
         MainWindow.addChild(levelMenu);
+    }
+    
+    public void onStart(String level, boolean debug) {
+        if (firstLoad) {
+            tMS = new TowerMainState(debug, level);
+            stateManager.attach(tMS);
+            firstLoad = false;
+        } else {
+            stateManager.detach(tMS);
+            tMS = new TowerMainState(debug, level);
+            stateManager.attach(tMS);
+        }
+        toggle();
     }
 
     private void loadingpic() {
@@ -207,18 +220,7 @@ public class StartGUI extends AbstractAppState {
         toggle();
     }
 
-    public void onStart(String level, boolean debug) {
-        if (firstLoad) {
-            tMS = new TowerMainState(debug, level);
-            stateManager.attach(tMS);
-            firstLoad = false;
-        } else {
-            stateManager.detach(tMS);
-            tMS = new TowerMainState(debug, level);
-            stateManager.attach(tMS);
-        }
-        toggle();
-    }
+
 
 
 
