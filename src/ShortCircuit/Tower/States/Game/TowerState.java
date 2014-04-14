@@ -24,15 +24,16 @@ public class TowerState extends AbstractAppState {
 
     private SimpleApplication app;
     private AssetManager assetManager;
-    public ArrayList<Spatial> towerList = new ArrayList<Spatial>();
-    public ArrayList<Vector3f> unbuiltTowerVecs = new ArrayList<Vector3f>();
-    public ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
+    private ArrayList<Spatial> towerList = new ArrayList<Spatial>();
+    private ArrayList<Vector3f> unbuiltTowerVecs = new ArrayList<Vector3f>();
+    private ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
     private Vector3f unbuiltTowerSize = new Vector3f(0.5f, 0.5f, .1f);
     private Vector3f builtTowerSize = new Vector3f(0.5f, 0.5f, 1.0f);
     private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
-    private TowerUpgradeFactory tuf;
     
+    
+    private TowerUpgradeFactory tuf;
     private TowerFactory tf;
     
     public String tow1MatLoc;
@@ -58,13 +59,19 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+        initFactories();
+        initAssets();
+    }
+    
+    private void initFactories() {
         tf = new TowerFactory(GameState);
         tuf = new TowerUpgradeFactory(GameState);
+    }
+    
+    private void initAssets() {
         charge = new AudioNode(assetManager, "Audio/chargegam.wav");
         charge.setPositional(false);
         charge.setVolume(.8f);
-
-
     }
 
 
@@ -73,9 +80,9 @@ public class TowerState extends AbstractAppState {
     }
 
     /**
-     * Makes the tower slightly larger to show which is currently selected.
-     *
-     * @param selectedTower
+     * Modifies the size of a tower specified by the input parameter tindex.
+     * @param tindex - index of the tower to be modified.
+     * Then, sets selectedTower to be tindex for other methods to access.
      */
     public void towerSelected(int tindex) {
         Spatial selTower = towerList.get(tindex);
@@ -87,14 +94,19 @@ public class TowerState extends AbstractAppState {
         selectedTower = tindex;
     }
     
-    public void playChargeSound() {
+    /**
+     * Plays an instance of the charge sound.
+     * Used locally by chargeTower().
+     */
+    private void playChargeSound() {
         charge.playInstance();
     }
 
     /**
-     * Returns towers to normal size.
+     * If there has been a tower selected, (selectedTower is not -1), this
+     * method shortens that tower to indicate that it is no longer selected.
      */
-    public void shortenTowers() {
+    public void shortenTower() {
         if (selectedTower != -1) {
             Spatial selTower = towerList.get(selectedTower);
             if (selTower.getUserData("Type").equals("unbuilt")) {
@@ -114,23 +126,9 @@ public class TowerState extends AbstractAppState {
         if (selectedTower != -1) {
             TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
             if (GameState.getPlrBudget() >= chargeCost) {
-                if (tower.getTowerType().equals("tower1")) {
-                    changeTowerTexture(tow1MatLoc, tower);
-                    tower.charges.add(new Charges("tower1"));
-                    GameState.decPlrBudget(chargeCost);
-                } else if (tower.getTowerType().equals("tower2")) {
-                    changeTowerTexture(tow2MatLoc, tower);
-                    tower.charges.add(new Charges("tower2"));
-                    GameState.decPlrBudget(chargeCost);
-                } else if (tower.getTowerType().equals("tower3")) {
-                    changeTowerTexture(tow3MatLoc, tower);
-                    tower.charges.add(new Charges("tower3"));
-                    GameState.decPlrBudget(chargeCost);
-                } else if (tower.getTowerType().equals("tower4")) {
-                    changeTowerTexture(tow4MatLoc, tower);
-                    tower.charges.add(new Charges("tower4"));
-                    GameState.decPlrBudget(chargeCost);
-                }
+                changeTowerTexture("Materials/"+ getMatDir()+"/"+tower.getTowerType()+".j3m", tower);
+                tower.charges.add(new Charges(tower.getTowerType()));
+                GameState.decPlrBudget(chargeCost);
                 playChargeSound();
             }
         }
@@ -166,16 +164,16 @@ public class TowerState extends AbstractAppState {
     }
 
     public void buildStarterTowers(ArrayList<Integer> starterTowerIn) {
-        tow1MatLoc = "Materials/" + GameState.getMatDir() + "/Tower1.j3m";
-        tow2MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower2.j3m";
-        tow3MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower3.j3m";
-        tow4MatLoc = "Materials/" + GameState.getMatDir()+ "/Tower4.j3m";
-        towUnMatLoc = "Materials/" + GameState.getMatDir()+ "/UnbuiltTower.j3m";
-        towEmMatLoc = "Materials/" + GameState.getMatDir()+ "/EmptyTower.j3m";
+        tow1MatLoc = "Materials/" + getMatDir() + "/Tower1.j3m";
+        tow2MatLoc = "Materials/" + getMatDir()+ "/Tower2.j3m";
+        tow3MatLoc = "Materials/" + getMatDir()+ "/Tower3.j3m";
+        tow4MatLoc = "Materials/" + getMatDir()+ "/Tower4.j3m";
+        towUnMatLoc = "Materials/" + getMatDir()+ "/UnbuiltTower.j3m";
+        towEmMatLoc = "Materials/" + getMatDir()+ "/EmptyTower.j3m";
         for (int i = 0; i < starterTowerIn.size(); i++) {
             TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
-            tower.charges.add(new Charges("tower1"));
-            tower.setTowerType("tower1");
+            tower.charges.add(new Charges("Tower1"));
+            tower.setTowerType("Tower1");
             tower.setBuilt();
             changeTowerTexture(tow1MatLoc, tower);
             tower.setSize(builtTowerSize);
@@ -205,6 +203,18 @@ public class TowerState extends AbstractAppState {
 
     public int getSelectedNum() {
         return selectedTower;
+    }
+    
+    public ArrayList<Spatial> getTowerList() {
+        return towerList;
+    }
+    
+    public ArrayList<Integer> getGlobbedTowerList() {
+        return globbedTowers;
+    }
+    
+    public String getMatDir() {
+        return GameState.getMatDir();
     }
 
     public ArrayList<Spatial> getCreepList() {
@@ -246,4 +256,8 @@ public class TowerState extends AbstractAppState {
         globbedTowers.clear();
         
     }
+
+
+
+
 }

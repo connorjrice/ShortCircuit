@@ -88,7 +88,7 @@ public class TowerControl extends AbstractControl {
 
     public void globTower() {
         isActive = false;
-        TowerState.globbedTowers.add(getIndex());
+        TowerState.getGlobbedTowerList().add(getIndex());
         isGlobbed = true;
     }
 
@@ -103,13 +103,13 @@ public class TowerControl extends AbstractControl {
             isActive = true;
         }
         isGlobbed = false;
-        if (TowerState.globbedTowers.indexOf(getIndex()) != -1) {
-            TowerState.globbedTowers.remove(TowerState.globbedTowers.indexOf(getIndex()));
+        if (TowerState.getGlobbedTowerList().indexOf(getIndex()) != -1) {
+            TowerState.getGlobbedTowerList().remove(TowerState.getGlobbedTowerList().indexOf(getIndex()));
         }
     }
 
     public ArrayList<Integer> getGlobbedTowerIndices() {
-        return TowerState.globbedTowers;
+        return TowerState.getGlobbedTowerList();
     }
 
     public boolean getIsGlobbed() {

@@ -7,8 +7,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.Quad;
-import com.jme3.ui.Picture;
 import java.util.ArrayList;
 
 /**
@@ -16,14 +14,12 @@ import java.util.ArrayList;
  * level. A level is defined at this moment in time as a floor, at least one 
  * base vector, n number of towers, and n number of creep spawners.
  * @author Connor Rice
- * TODO: Finish integration with other states.
  */
 public class LevelState extends AbstractAppState {
     private SimpleApplication app;
     private GameState GameState;
     public Node rootNode;
     private TowerState TowerState;
-    private BeamState BeamState;
     private CreepState CreepState;
     private MapGenerator mg;
     private boolean isDebug;
@@ -42,9 +38,8 @@ public class LevelState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.TowerState = this.GameState.getTowerState();
-        this.BeamState = this.GameState.getBeamState();
-        this.CreepState = this.GameState.getCreepState();
+        this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.rootNode = this.app.getRootNode();
         begin();
     }
@@ -78,8 +73,9 @@ public class LevelState extends AbstractAppState {
         TowerState.attachTowerNode();
         CreepState.buildCreepSpawners(mg.getCreepSpawnVecs(), mg.getCreepSpawnDirs());
         CreepState.setBaseBounds();
+        CreepState.initMaterials();
         CreepState.attachCreepNode();
-        BeamState.attachBeamNode();
+
         GameState.attachWorldNode();
     }
     
@@ -96,7 +92,7 @@ public class LevelState extends AbstractAppState {
         CreepState.buildCreepSpawners(mg.getCreepSpawnVecs(), mg.getCreepSpawnDirs());
         CreepState.attachCreepNode();
         CreepState.setBaseBounds();
-        BeamState.attachBeamNode();
+        CreepState.initMaterials();
         GameState.attachWorldNode();
     }
     

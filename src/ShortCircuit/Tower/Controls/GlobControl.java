@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.Tower.States.Game.CreepState;
@@ -34,7 +30,7 @@ public class GlobControl extends AbstractControl {
             cs.incPlrBudget(10);
             unglobTower();
             cs.getCreepNode().detachChild(spatial);
-            cs.globList.remove(spatial);
+            cs.getGlobList().remove(spatial);
             spatial.removeControl(this);
         }
     }

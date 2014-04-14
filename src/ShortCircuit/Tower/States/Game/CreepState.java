@@ -37,7 +37,7 @@ public class CreepState extends AbstractAppState {
     private Box univ_box = new Box(1,1,1);
     private Sphere glob_sphere = new Sphere(32,32,1f);
     public Node creepNode = new Node("Creep");
-    public ArrayList<Spatial> creepList;
+
     private static final Vector3f SM_CREEP_SIZE =
             new Vector3f(0.125f, 0.125f, 0.20f);
     private static final Vector3f MD_CREEP_SIZE =
@@ -63,10 +63,7 @@ public class CreepState extends AbstractAppState {
     private SimpleApplication app;
     private AssetManager assetManager;
     private GameState GameState;
-    private ArrayList<Vector3f> creepSpawnerVecs;
-    private ArrayList<String> creepSpawnerDirs;
-    private ArrayList<Spatial> creepSpawners = new ArrayList<Spatial>();
-    public ArrayList<Spatial> globList;
+
     private int nextspawner;
     private int nextrandom;
     private float randomCheck = 0;
@@ -76,6 +73,12 @@ public class CreepState extends AbstractAppState {
     private CreepSpawnerFactory csf;
     private BoundingVolume basebounds;
 
+    public ArrayList<Spatial> creepList;
+    private ArrayList<Vector3f> creepSpawnerVecs;
+    private ArrayList<String> creepSpawnerDirs;
+    private ArrayList<Spatial> creepSpawners;
+    private ArrayList<Spatial> globList;
+    
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -84,12 +87,27 @@ public class CreepState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.worldNode = this.GameState.getWorldNode();
+        initFactories();
+        initLists();
+    }
+    
+    private void initFactories() {
         cf = new CreepFactory(this);
         gf = new GlobFactory(this);
         csf = new CreepSpawnerFactory(this);
+    }
+    
+    private void initLists() {
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
-
+        creepSpawners = new ArrayList<Spatial>();
+    }
+    
+    public void initMaterials() {
+        smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
+        mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
+        lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
+        xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
     }
     
 
@@ -150,10 +168,6 @@ public class CreepState extends AbstractAppState {
     }
 
     public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs, ArrayList<String> _creepSpawnerDirs) {
-        smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
-        mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
-        lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
-        xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
         creepSpawnerVecs = _creepSpawnerVecs;
         creepSpawnerDirs = _creepSpawnerDirs;
         for (int i = 0; i < creepSpawnerVecs.size(); i++) {
@@ -285,10 +299,6 @@ public class CreepState extends AbstractAppState {
             return -random.nextFloat() * 1.2f;
         }
     }
-    
-    
-    
-    
 
     /**
      * Determines how many creeps should be on the map based upon the player's
@@ -298,14 +308,6 @@ public class CreepState extends AbstractAppState {
      */
     public int getNumCreepsByLevel() {
         return GameState.getNumCreeps();
-    }
-
-
-
-    public void reset() {
-        creepList.clear();
-        creepSpawners.clear();
-        creepNode.detachAllChildren();
     }
 
     public ArrayList<Spatial> getCreepSpawnerList() {
@@ -338,6 +340,10 @@ public class CreepState extends AbstractAppState {
     
     public ArrayList<Integer> getGlobbedTowerList() {
         return GameState.getGlobbedTowerList();
+    }
+    
+    public ArrayList<Spatial> getGlobList() {
+        return globList;
     }
     
     public Box getUnivBox() {

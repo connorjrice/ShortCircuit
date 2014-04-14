@@ -63,13 +63,12 @@ public class CheatState extends AbstractAppState {
      * Adds 10 charges of type base to all towers fo FREE.
      */
     public void badassAmmoH4KX() {
-        ArrayList<Spatial> towerList = TowerState.towerList;
+        ArrayList<Spatial> towerList = TowerState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
             for (int j = 0; i < 10; i++) {
-                control.charges.add(new Charges("baseLaser"));
+                control.charges.add(new Charges("Towerc"));
                 control.setBeamType("beam4");
-                control.setBuilt();
             }
         }
     }
@@ -92,7 +91,7 @@ public class CheatState extends AbstractAppState {
      * Makes towers quite large.
      */
     public void makeTowersHUGE() {
-        ArrayList<Spatial> towerList = TowerState.towerList;
+        ArrayList<Spatial> towerList = TowerState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
             Spatial tower = towerList.get(i);
             tower.setLocalScale(new Vector3f(10f,10f,10f));
@@ -103,7 +102,7 @@ public class CheatState extends AbstractAppState {
      * Upgrades all of the towers to purple and adds a bunch of charges.
      */
     public void makeTowersPurp() {
-        ArrayList<Spatial> towerList = TowerState.towerList;
+        ArrayList<Spatial> towerList = TowerState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
             addPurptoPurp(control);
@@ -127,7 +126,7 @@ public class CheatState extends AbstractAppState {
      * those super lasers.
      */
     public void makeTowersBadAss() {
-        ArrayList<Spatial> towerList = TowerState.towerList;
+        ArrayList<Spatial> towerList = TowerState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
             TowerControl tower = towerList.get(i).getControl(TowerControl.class);
             addBadAsstoBadAss(tower);
@@ -137,13 +136,14 @@ public class CheatState extends AbstractAppState {
             TowerState.changeTowerTexture("Materials/Circuit/Bomb.j3m", tower);
         }
     }
+    
     /**
      * Gives the wonky towers some super badass charges.
      * @param control 
      */
     private void addBadAsstoBadAss(TowerControl control) {
         for (int i = 0; i < 100; i++) {
-            control.charges.add(new Charges("towerc"));
+            control.charges.add(new Charges("Towerc"));
         }
     }
     
@@ -174,7 +174,7 @@ public class CheatState extends AbstractAppState {
             GameState.incPlrBudget(20);
         }
         if (superMedic) {
-            GameState.incPlrHealth();
+            GameState.incPlrHealth(10);
         }
         if (levelOverload && slowItDownThere > 1f) {
             GameState.nextLevel();
