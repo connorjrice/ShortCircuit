@@ -35,7 +35,6 @@ public class CreepSpawnerFactory {
         Spatial spawner = spawner_geom;
         spawner.addControl(new STDSpawnerControl(cs));
         spawner.setUserData("Index", index);
-        spawner.setUserData("Direction", direction);
         return spawner;
     }
     

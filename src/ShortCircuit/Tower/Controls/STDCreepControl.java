@@ -48,11 +48,10 @@ public class STDCreepControl extends AbstractControl {
             mc.run();
         }
     }
-
-    public Vector3f getDirection() {
-        return spatial.getUserData("Direction");
+    public float getCreepSpeed() {
+        return spatial.getUserData("Speed");
     }
-
+    
     public int getCreepHealth() {
         return spatial.getUserData("Health");
     }

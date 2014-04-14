@@ -15,7 +15,7 @@ public class MoveCreep implements Runnable {
     public MoveCreep(CreepState _cs, STDCreepControl _cc) {
         cs = _cs;
         cc = _cc;
-        moveamount = .001f;
+        moveamount = .004f;
     }
     
     public void run() {
@@ -32,7 +32,7 @@ public class MoveCreep implements Runnable {
             Vector3f creeplocation = cc.getCreepLocation();
             Vector3f interpolated = creeplocation.interpolate(baselocation, moveamount);*/
             //System.out.println(interpolated);
-            moveamount += .00001f;
+            moveamount += cc.getCreepSpeed();
             cc.getSpatial().setLocalTranslation(cc.getCreepLocation().interpolate(cs.getBaseBounds().getCenter(), moveamount));
         }
     }

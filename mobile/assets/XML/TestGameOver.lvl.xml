@@ -3,13 +3,13 @@
     <levelparams>
         <param id = "levelParams">
             <camLocation>0,0,20f</camLocation>
-            <numCreeps>3</numCreeps>
+            <numCreeps>30</numCreeps>
             <creepMod>2</creepMod>
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
-            <plrHealth>100</plrHealth>
+            <plrHealth>1</plrHealth>
             <plrBudget>100</plrBudget>
-            <plrLevel>0</plrLevel>
+            <plrLevel>30</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
             <matdir>Neon</matdir>
@@ -47,13 +47,13 @@
             <x>-4.5f</x>
             <y>-4.0f</y>
             <z>0.1</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "1" >
             <x>4.5f</x>
             <y>-4.0f</y>
             <z>0.1</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "2" >
             <x>-4.5f</x>

@@ -50,10 +50,10 @@ public class CreepState extends AbstractAppState {
     private static final int MD_CREEP_HEALTH = 200;
     private static final int LG_CREEP_HEALTH = 400;
     private static final int XL_CREEP_HEALTH = 800;
-    private static final float SM_CREEP_SPEED = 0.045f;
-    private static final float MD_CREEP_SPEED = 0.035f;
-    private static final float LG_CREEP_SPEED = 0.025f;
-    private static final float XL_CREEP_SPEED = 0.030f;
+    private static final float SM_CREEP_SPEED = 0.000085f;
+    private static final float MD_CREEP_SPEED = 0.000035f;
+    private static final float LG_CREEP_SPEED = 0.000025f;
+    private static final float XL_CREEP_SPEED = 0.000030f;
     private String smCreepMatloc;
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
@@ -229,40 +229,40 @@ public class CreepState extends AbstractAppState {
     private void prepareSmSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc));
         } else {
             createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc));
         }
     }
 
     private void prepareMdSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc));
         } else {
             createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc));
         }
     }
 
     private void prepareLgSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc));
         } else {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc));
         }
     }
     
     private void prepareXlSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", XL_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc, getCreepDirection(spawnIndex)));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc));
         } else {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc, getCreepDirection(spawnIndex)));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc));
         }
     }
     
@@ -282,10 +282,6 @@ public class CreepState extends AbstractAppState {
     
     public String getMatDir() {
         return GameState.getMatDir();
-    }
-    
-    private String getCreepDirection(int spawnIndex) {
-        return creepSpawnerDirs.get(spawnIndex);
     }
     
             
