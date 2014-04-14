@@ -53,36 +53,31 @@ public class STDCreepControl extends AbstractControl {
         return spatial.getUserData("Direction");
     }
 
-    private float getCreepSpeed() {
-        return spatial.getUserData("Speed");
-    }
-
     public int getCreepHealth() {
         return spatial.getUserData("Health");
     }
 
-    public String getCreepType() {
-        return spatial.getUserData("Type");
-    }
 
+    /**
+     * Decrements creep health, removes creep from world if below 0.
+     * @param damage
+     * @return 
+     */
     public int decCreepHealth(int damage) {
         int health = getCreepHealth();
         spatial.setUserData("Health", health - damage);
+        if (health - damage <= 0) {
+            CreepState.incPlrBudget(getValue());
+            CreepState.incPlrScore(1);
+            CreepState.creepList.remove(getSpatial());
+            getSpatial().removeFromParent();
+            getSpatial().removeControl(this);
+        }
         return health - damage;
     }
 
     public int getValue() {
-        if (getCreepType().equals("Small")) {
-            return 1;
-        } else if (getCreepType().equals("Medium")) {
-            return 2;
-        } else if (getCreepType().equals("Large")) {
-            return 3;
-        } else if (getCreepType().equals("XL")) {
-            return 5;
-        } else {
-            return -1;
-        }
+        return spatial.getUserData("Value");
     }
 
     public Vector3f getCreepLocation() {

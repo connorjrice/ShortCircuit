@@ -23,13 +23,6 @@ public class MoveCreep implements Runnable {
             cc.getSpatial().removeFromParent();
             cc.getSpatial().removeControl(cc);
         }
-        else if (cc.getCreepHealth() <= 0) {
-            cs.incPlrBudget(cc.getValue());
-            cs.incPlrScore(1);
-            cs.creepList.remove(cc.getSpatial());
-            cc.getSpatial().removeFromParent();
-            cc.getSpatial().removeControl(cc);
-        }
         // Pathfinding will go here
         else {
             cc.getSpatial().move(cc.getDirection());

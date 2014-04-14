@@ -74,6 +74,7 @@ public class CreepState extends AbstractAppState {
     private CreepFactory cf;
     private GlobFactory gf;
     private CreepSpawnerFactory csf;
+    private BoundingVolume basebounds;
 
     
     @Override
@@ -88,6 +89,7 @@ public class CreepState extends AbstractAppState {
         csf = new CreepSpawnerFactory(this);
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
+
     }
     
 
@@ -113,6 +115,10 @@ public class CreepState extends AbstractAppState {
     
     private void spawnRandomEnemy() {
         spawnGlob();
+    }
+    
+    public void setBaseBounds() {
+        basebounds = worldNode.getChild("Base").getWorldBound();
     }
     
     private void spawnGlob() {
@@ -203,40 +209,40 @@ public class CreepState extends AbstractAppState {
     private void prepareSmSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createSTDCreep(new CreepTraits("Creep", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, "Small", smCreepMatloc, getCreepDirection(spawnIndex)));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
     private void prepareMdSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createSTDCreep(new CreepTraits("Creep", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, "Medium", mdCreepMatloc, getCreepDirection(spawnIndex)));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
 
     private void prepareLgSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, "Large", lgCreepMatloc, getCreepDirection(spawnIndex)));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
     
     private void prepareXlSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Creep", XL_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, "Large", xlCreepMatloc, getCreepDirection(spawnIndex)));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc, getCreepDirection(spawnIndex)));
         } else {
             createSTDCreep(new CreepTraits("Creep", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, "Large", xlCreepMatloc, getCreepDirection(spawnIndex)));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc, getCreepDirection(spawnIndex)));
         }
     }
     
@@ -307,7 +313,7 @@ public class CreepState extends AbstractAppState {
     }
     
     public BoundingVolume getBaseBounds() {
-        return worldNode.getChild("Base").getWorldBound();
+        return basebounds;
     }
 
     public Node getCreepNode() {

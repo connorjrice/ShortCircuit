@@ -75,11 +75,10 @@ public class LevelState extends AbstractAppState {
         TowerState.buildStarterTowers(mg.getStarterTowers());
         TowerState.attachTowerNode();
         CreepState.buildCreepSpawners(mg.getCreepSpawnVecs(), mg.getCreepSpawnDirs());
+        CreepState.setBaseBounds();
         CreepState.attachCreepNode();
         BeamState.attachBeamNode();
         GameState.attachWorldNode();
-
-
     }
     
     

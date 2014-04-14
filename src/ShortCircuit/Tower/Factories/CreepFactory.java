@@ -30,8 +30,7 @@ public class CreepFactory {
         creep.setUserData("Name", ct.getName());
         creep.setUserData("Parent", ct.getSpawnIndex());
         creep.setUserData("Health", ct.getHealth());
-        creep.setUserData("Speed", ct.getSpeed());
-        creep.setUserData("Type", ct.getType());
+        creep.setUserData("Value", ct.getValue());
         if (ct.getDirection().equals("north")) {
             creep.setUserData("Direction", new Vector3f(0f, ct.getSpeed(), 0f));
         } else if (ct.getDirection().equals("south")) {

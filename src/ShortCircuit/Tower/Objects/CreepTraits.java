@@ -20,16 +20,17 @@ public class CreepTraits {
     public Vector3f spawnPoint;
     public String matloc;
     private String dir;
+    private int value;
     
     public CreepTraits(String _name, int _health, int _spawnIndex, Vector3f _spawnPoint,
-            Vector3f _size, float _speed, String _type, String _texloc, String _dir) {
+            Vector3f _size, float _speed, int _value, String _texloc, String _dir) {
         name = _name;
         health = _health;
         spawnIndex = _spawnIndex;
         size = _size;
         spawnPoint = _spawnPoint;
         speed = _speed;
-        type = _type;
+        value = _value;
         matloc = _texloc;
         dir = _dir;
     }
@@ -62,8 +63,8 @@ public class CreepTraits {
         return speed;
     }
     
-    public String getType() {
-        return type;
+    public int getValue() {
+        return value;
     }
     
     public String getMaterialLocation() {
