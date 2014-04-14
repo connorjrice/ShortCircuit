@@ -1,9 +1,11 @@
 package ShortCircuit.Tower.MapXML;
 
+import ShortCircuit.Tower.Objects.FilterParams;
 import ShortCircuit.Tower.Objects.LevelParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
+import com.jme3.post.filters.BloomFilter.GlowMode;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -134,4 +136,38 @@ public class MapGenerator {
         }
         return new LevelParams(numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir);
     }
+    
+    public FilterParams getFilterParams() {
+        System.out.println(pList.getLength());
+        Element eElement = (Element) pList.item(0);
+        String blooms = eElement.getElementsByTagName("bloom").item(0).getTextContent();
+        boolean bloom;
+        if (blooms.equals("false")) {
+            bloom = false;
+        }
+        else {
+            bloom = true;
+        }
+        float downsampling = Float.parseFloat(eElement.getElementsByTagName("downsampling").item(0).getTextContent());
+        float blurscale = Float.parseFloat(eElement.getElementsByTagName("blurscale").item(0).getTextContent());
+        float exposurepower = Float.parseFloat(eElement.getElementsByTagName("exposurepower").item(0).getTextContent());
+        float bloomintensity = Float.parseFloat(eElement.getElementsByTagName("bloomintensity").item(0).getTextContent());
+        String glowmodes = eElement.getElementsByTagName("glowmode").item(0).getTextContent();
+        GlowMode glowmode;
+        if (glowmodes.equals("GlowMode.SceneAndObjects")) {
+            glowmode = GlowMode.SceneAndObjects;
+        }
+        else if (glowmodes.equals("GlowMode.Scene")) {
+            glowmode = GlowMode.Scene;
+        }
+        else if (glowmodes.equals("GlowMode.Objects")) {
+            glowmode = GlowMode.Objects;
+        }
+        else {
+            glowmode = null;
+        }
+        return new FilterParams(bloom, downsampling, blurscale, exposurepower, bloomintensity, glowmode);
+    }
+    
+
 }

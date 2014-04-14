@@ -11,8 +11,17 @@
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Circuit</matdir>
+            <matdir>Circuit2</matdir>
         </param>
+        <param id = "filterparams"> 
+            <bloom>true</bloom>
+            <downsampling>2.0f</downsampling>
+            <blurscale>3.0f</blurscale>
+            <exposurepower>4.0f</exposurepower>
+            <bloomintensity>2.0f</bloomintensity>
+            <glowmode>GlowMode.SceneAndObjects</glowmode>
+        </param>
+        
     </levelparams>
     <floor>
         <floor id = "floorscale">

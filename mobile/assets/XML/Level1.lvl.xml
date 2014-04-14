@@ -13,6 +13,14 @@
             <debug>false</debug>
             <matdir>Neon</matdir>
         </param>
+        <param id = "filterparams"> 
+            <bloom>true</bloom>
+            <downsampling>2.0f</downsampling>
+            <blurscale>5.0f</blurscale>
+            <exposurepower>6.0f</exposurepower>
+            <bloomintensity>2.0f</bloomintensity>
+            <glowmode>GlowMode.SceneAndObjects</glowmode>
+        </param>
     </levelparams>
     <floor>
         <floor id = "floorscale">

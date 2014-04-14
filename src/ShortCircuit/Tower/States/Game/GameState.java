@@ -60,6 +60,7 @@ public class GameState extends AbstractAppState {
     private FloorFactory ff;
     private BaseFactory bf;
     private Material bomb_mat;
+
     
     public GameState() {}
 
@@ -111,6 +112,7 @@ public class GameState extends AbstractAppState {
         ff = new FloorFactory(this);
         bf = new BaseFactory(this);
     }
+
 
     public void attachWorldNode() {
         rootNode.attachChild(worldNode);

@@ -125,7 +125,7 @@ public class TowerState extends AbstractAppState {
     public void chargeTower() {
         if (selectedTower != -1) {
             TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
-            if (GameState.getPlrBudget() >= chargeCost) {
+            if (GameState.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("unbuilt")) {
                 changeTowerTexture("Materials/"+ getMatDir()+"/"+tower.getTowerType()+".j3m", tower);
                 tower.charges.add(new Charges(tower.getTowerType()));
                 GameState.decPlrBudget(chargeCost);

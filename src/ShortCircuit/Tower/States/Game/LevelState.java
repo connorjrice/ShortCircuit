@@ -25,6 +25,7 @@ public class LevelState extends AbstractAppState {
     private boolean isDebug;
     protected boolean gameOver = false;
     private final String levelName;
+    private FilterState FilterState;
     
     public LevelState(boolean _isDebug, String _levelName) {
         isDebug = _isDebug;
@@ -37,6 +38,7 @@ public class LevelState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        this.FilterState = this.app.getStateManager().getState(FilterState.class);
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
@@ -64,6 +66,7 @@ public class LevelState extends AbstractAppState {
      */
     public void newGame(String levelname) {
         initMG(levelname);
+        FilterState.initFilters(mg.getFilterParams());
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createLight();
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
@@ -82,6 +85,7 @@ public class LevelState extends AbstractAppState {
     
     public void debugGame() {
         initMG("TestLevel");
+        FilterState.initFilters(mg.getFilterParams());
         GameState.createLight();
         GameState.setLevelParams(mg.getLevelParams());
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());

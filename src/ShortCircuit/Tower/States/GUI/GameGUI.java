@@ -4,6 +4,7 @@ import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.MainState.TowerMainState;
+import ShortCircuit.Tower.States.Game.FilterState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -84,6 +85,7 @@ public class GameGUI extends AbstractAppState {
     private AudioNode endTheme;
     private boolean end = false;
     private StartGUI StartGUI;
+    private FilterState FilterState;
  
 
     public GameGUI(TowerMainState _tMS) {
@@ -100,6 +102,7 @@ public class GameGUI extends AbstractAppState {
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
+        this.FilterState = this.app.getStateManager().getState(FilterState.class);
         width = tMS.getWidth();
         height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
@@ -123,7 +126,7 @@ public class GameGUI extends AbstractAppState {
         }
         if (frillsTimer > .25 && isFrills) {
             if (gs.getPlrLvl() != internalLevel) {
-                tMS.incBloomIntensity(.2f);
+                FilterState.incBloomIntensity(.2f);
                 internalLevel = gs.getPlrLvl();
 
             }
@@ -456,7 +459,7 @@ public class GameGUI extends AbstractAppState {
         BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                tMS.toggleBloom();
+                FilterState.toggleBloom();
             }
         };
         BloomToggleButton.setIsToggleButton(true);
@@ -468,12 +471,11 @@ public class GameGUI extends AbstractAppState {
         BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
-                tMS.setBloomIntensity(selectedIndex);
+                FilterState.setBloomIntensity(selectedIndex);
             }
         };
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
-        tMS.setBloomIntensity(2.0f);
         SetWindow.addChild(BloomSlider);
     }
 
