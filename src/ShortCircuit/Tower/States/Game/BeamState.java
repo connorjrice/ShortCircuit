@@ -65,6 +65,5 @@ public class BeamState extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         beamNode.detachAllChildren();
-        beamAudio.stop();
     }
 }
