@@ -18,7 +18,7 @@
             <downsampling>2.0f</downsampling>
             <blurscale>3.0f</blurscale>
             <exposurepower>4.0f</exposurepower>
-            <bloomintensity>3.0f</bloomintensity>
+            <bloomintensity>1.0f</bloomintensity>
             <glowmode>GlowMode.SceneAndObjects</glowmode>
         </param>
         

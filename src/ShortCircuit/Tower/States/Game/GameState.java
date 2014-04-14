@@ -204,7 +204,7 @@ public class GameState extends AbstractAppState {
         } else if (target.getName().equals("Glob")) {
             popGlob(trans, target);
         } else {
-            dropBomb(trans, 1f);
+            dropBomb(trans, .1f);
         }
     }
 

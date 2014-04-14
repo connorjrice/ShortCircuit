@@ -63,6 +63,7 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Menu;
     private ButtonAdapter CheatsButton;
     private ButtonAdapter CheatToggleButton;
+    private Menu levelMenu;
     private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
     private float updateTimer;
@@ -161,6 +162,8 @@ public class GameGUI extends AbstractAppState {
         //screen.setUseKeyboardIcons(true);
 
     }
+    
+
 
     /**
      * This will be the button that, after cheats are activated, shows up and

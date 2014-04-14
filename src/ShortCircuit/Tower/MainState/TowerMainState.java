@@ -78,9 +78,6 @@ public class TowerMainState extends AbstractAppState {
     }
 
     public void attachStates() {
-        if (!profile) {
-            StartGUI.toggle();
-        }
         isPaused = false;
         isPauseAllowed = true;
         inGame = true;

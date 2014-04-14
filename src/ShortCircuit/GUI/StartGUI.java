@@ -22,11 +22,12 @@ import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 import tonegod.gui.controls.windows.DialogBox;
+
 /**
  * Start menu
+ *
  * @author Connor Rice
  */
-
 public class StartGUI extends AbstractAppState {
 
     private SimpleApplication app;
@@ -40,8 +41,7 @@ public class StartGUI extends AbstractAppState {
     private ButtonAdapter debug;
     private int height;
     private int width;
-    private Vector2f buttonSize = new Vector2f(200, 100);
-
+    private Vector2f buttonSize;
     private ColorRGBA color;
     private AssetManager assetManager;
     private Indicator ind;
@@ -55,9 +55,11 @@ public class StartGUI extends AbstractAppState {
     private Picture loading;
     private boolean firstLoad = true;
     private TowerMainState tMS;
+    private Menu levelMenu;
+    private float scaler;
 
-    
-    public StartGUI() {}
+    public StartGUI() {
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -68,13 +70,11 @@ public class StartGUI extends AbstractAppState {
         this.stateManager = this.app.getStateManager();
         height = this.app.getContext().getSettings().getHeight();
         width = this.app.getContext().getSettings().getWidth();
-                
+        buttonSize = new Vector2f(width/8, height/8);
+        scaler = width/13;
+
         initScreen();
     }
-    
-
-
-   
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
@@ -85,31 +85,50 @@ public class StartGUI extends AbstractAppState {
 
         settingsWindow();
         newGame();
-        level1();
-        debugButton();
         initLoadBar();
         exitButton();
         transitButton();
         loadingpic();
+        initLevelMenu();
     }
-    
+
+    private void initLevelMenu() {
+        levelMenu = new Menu(screen, "levelmenu", new Vector2f(), false) {
+            @Override
+            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
+                if (value.equals("Start1")) {
+                    onStart("Level1", false);
+                } else if (value.equals("Start0")) {
+                    onStart("Level0", false);
+                } else if (value.equals("StartTest")) {
+                    onStart("TestLevel", true);
+                } else if (value.equals("StartProfile")) {
+                    onStart("profilelevel", true);
+                }
+            }
+        };
+        levelMenu.addMenuItem("Level1", "Start1", null);
+        levelMenu.addMenuItem("Level0", "Start0", null);
+        levelMenu.addMenuItem("TestLevel", "StartTest", null);
+        levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
+        levelMenu.hide();
+        MainWindow.addChild(levelMenu);
+    }
+
     private void loadingpic() {
         loading = new Picture("loading");
         loading.setImage(assetManager, "Interface/internalloadingsc.jpg", false);
         loading.setWidth(width);
         loading.setHeight(height);
-
-        
     }
-    
+
     private void showloading() {
         guiNode.attachChild(loading);
     }
-    
-    
+
     private void initLoadBar() {
         color = ColorRGBA.randomColor();
-        ind = new Indicator(screen, "loadbar", new Vector2f(width/2, height/2-100), Indicator.Orientation.HORIZONTAL) {
+        ind = new Indicator(screen, "loadbar", new Vector2f(width / 2, height / 2 - 100), Indicator.Orientation.HORIZONTAL) {
             @Override
             public void onChange(float arg0, float arg1) {
             }
@@ -117,28 +136,13 @@ public class StartGUI extends AbstractAppState {
         ind.setBaseImage(screen.getStyle("Window").getString("defaultImg"));
         ind.setIndicatorColor(ColorRGBA.randomColor());
         ind.setAlphaMap(screen.getStyle("Indicator").getString("alphaImg"));
-        ind.setIndicatorPadding(new Vector4f(7,7,7,7));
+        ind.setIndicatorPadding(new Vector4f(7, 7, 7, 7));
         ind.setMaxValue(100);
         ind.setDisplayPercentage();
     }
-    
-    public Indicator getInd() {
-        return ind;
-    }
 
-    /*private void initWindow() {
-        MainWindow = new Window(screen, "mainwindow",
-                new Vector2f(width / 4, height / 4), new Vector2f(width / 2, height / 2));
-        MainWindow.setWindowTitle("ShortCircuit");
-        MainWindow.setWindowIsMovable(false);
-        MainWindow.setIsResizable(false);
-        MainWindow.setIgnoreMouse(true);
-        MainWindow.setAsContainerOnly();
-        screen.addElement(MainWindow);
-    }*/
-    
     private void settingsWindow() {
-        MainWindow = new Window(screen, new Vector2f(width/4, height/2-height/4), new Vector2f(width/2, height/2) );
+        MainWindow = new Window(screen, new Vector2f(width / 4, height / 2 - height / 4), new Vector2f(width / 2, height / 2));
         MainWindow.setIgnoreMouse(true);
         MainWindow.setWindowIsMovable(false);
         MainWindow.setEffectZOrder(false);
@@ -148,49 +152,26 @@ public class StartGUI extends AbstractAppState {
         screen.addElement(MainWindow);
     }
 
-
-
-
-    private void level1() {
-        Level1 = new ButtonAdapter(screen, "level1", new Vector2f(540,height/2+100), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onStart("Level1");
-             
-            }
-        };
-        Level1.setText("Level1");
-        newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(Level1);
-    }
-
     private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(740,height/2+100), buttonSize) {
+        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(MainWindow.getWidth() - scaler * 6, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onStart("Level0");
+                if (levelMenu.getIsVisible()) {
+                    levelMenu.hideMenu();
+                }
+                else {
+                    levelMenu.showMenu(null, newGame.getWidth()/2, scaler*2);
+                }
             }
         };
 
-        newGame.setText("Level0");
+        newGame.setText("New Game");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(newGame);
+        MainWindow.addChild(newGame);
     }
 
-    private void debugButton() {
-        debug = new ButtonAdapter(screen, "debug", new Vector2f(940,height/2+100), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onDebug();
-            }
-        };
-        debug.setText("Debug");
-        debug.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(debug);
-    }
-    
     private void transitButton() {
-        transit = new ButtonAdapter(screen, "transit", new Vector2f(540,height/2-100), buttonSize) {
+        transit = new ButtonAdapter(screen, "transit", new Vector2f(MainWindow.getWidth() - scaler * 4, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onTransit();
@@ -198,35 +179,11 @@ public class StartGUI extends AbstractAppState {
         };
         transit.setText("Transit");
         transit.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(transit);
-    }
-    
-    public void onTransit() {
-        tGS = new TransitGameState();
-        stateManager.attach(tGS);
-        toggle();
-    }
-    
-
-    public void onStart(String level) {
-        if (firstLoad) {
-            tMS = new TowerMainState(false, level);
-            stateManager.attach(tMS);
-            firstLoad = false;
-        }
-        else {
-            stateManager.detach(tMS);
-            tMS = new TowerMainState(false, level);
-            stateManager.attach(tMS);
-        }
-    }
-
-    public void onDebug() {
-        //tMS.startGame(true, null);
+        MainWindow.addChild(transit);
     }
     
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(1140,height/2+100), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(MainWindow.getWidth() - scaler * 2, MainWindow.getHeight() - scaler*1.5f), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();
@@ -234,12 +191,32 @@ public class StartGUI extends AbstractAppState {
         };
         ExitButton.setText("Exit");
         ExitButton.setFont("Interface/Fonts/DejaVuSans.fnt");
-        screen.addElement(ExitButton);
+        MainWindow.addChild(ExitButton);
     }
-    
-    public void reallyExitDialog() {
-        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(width/2, height/2)) {
 
+    public void onTransit() {
+        tGS = new TransitGameState();
+        stateManager.attach(tGS);
+        toggle();
+    }
+
+    public void onStart(String level, boolean debug) {
+        if (firstLoad) {
+            tMS = new TowerMainState(debug, level);
+            stateManager.attach(tMS);
+            firstLoad = false;
+        } else {
+            stateManager.detach(tMS);
+            tMS = new TowerMainState(debug, level);
+            stateManager.attach(tMS);
+        }
+        toggle();
+    }
+
+
+
+    public void reallyExitDialog() {
+        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(200,200)) {
             @Override
             public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
                 screen.removeElement(ReallyExitPopup);
@@ -252,50 +229,31 @@ public class StartGUI extends AbstractAppState {
         };
         ReallyExitPopup.setText("Exit");
         ReallyExitPopup.setMsg("Are you sure?");
-        screen.addElement(ReallyExitPopup);
+        MainWindow.addChild(ReallyExitPopup);
     }
 
-    
     public void toggle() {
-        if (MainWindow.getIsVisible()) {
-            MainWindow.hide();
-            newGame.hide();
-            Level1.hide();
-            debug.hide();
-            ExitButton.hide();
-            transit.hide();
-        }
-        else {
+        if (!MainWindow.getIsVisible()) {
             MainWindow.show();
-            newGame.show();
-            Level1.show();
-            debug.show();
-            ExitButton.show();
-            transit.show();
+            levelMenu.hide();
+        } else {
+            MainWindow.hide();
+            levelMenu.hide();
         }
     }
-    
-    
-
-    /*public void toggle() {
-        if (cont) {
-            hideAll();
-            cont = false;
-        } else {
-            showAll();
-            cont = true;
-        }
-    }*/
 
     public boolean mainWindowShown() {
-        return cont;
+        return MainWindow.getIsVisible();
+    }
+
+    public Indicator getInd() {
+        return ind;
     }
 
     @Override
     public void update(float tpf) {
         //TODO: implement behavior during runtime
     }
-   
 
     @Override
     public void cleanup() {
