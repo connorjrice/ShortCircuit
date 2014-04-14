@@ -85,8 +85,9 @@ public class TowerMainState extends AbstractAppState {
         FilterState = new FilterState();
         CheatGUI = new CheatGUI();
         GameState = new GameState();
-        LevelState = new LevelState(profile, level);
+
         GameGUI = new GameGUI(this);
+        LevelState = new LevelState(profile, level);
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();

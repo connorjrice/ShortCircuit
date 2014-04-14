@@ -12,13 +12,12 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 
 /**
- * TODO: Document TODO: Creep spawner direction specification from within XML
- *
+ * Generates maps for Tower game based upon XML files.
+ * Files must have .lvl.xml extensions
  * @author Connor Rice
  */
 public class MapGenerator {
 
-    private String levelName;
     private Document doc;
     private NodeList tList;
     private Application app;
@@ -33,7 +32,6 @@ public class MapGenerator {
         this.assetManager = this.app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
         this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
-        levelName = level;
     }
 
     public void parseXML() {
@@ -118,6 +116,11 @@ public class MapGenerator {
 
     public LevelParams getLevelParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
+        // ASKMATTHEW: This parsing is crazy banannas
+        String camlocS = eElement.getElementsByTagName("camLocation").item(0).getTextContent();
+        String[] camlocF = camlocS.split(",");
+        Vector3f camLocation = new Vector3f(Float.parseFloat(camlocF[0]), Float.parseFloat(camlocF[1]), Float.parseFloat(camlocF[2]));
+        // ---> End crazy banannas
         int numCreeps = Integer.parseInt(eElement.getElementsByTagName("numCreeps").item(0).getTextContent());
         int creepMod = Integer.parseInt(eElement.getElementsByTagName("creepMod").item(0).getTextContent());
         int levelCap = Integer.parseInt(eElement.getElementsByTagName("levelCap").item(0).getTextContent());
@@ -134,7 +137,7 @@ public class MapGenerator {
         } else {
             debug = false;
         }
-        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir);
+        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir);
     }
     
     public FilterParams getFilterParams() {

@@ -47,6 +47,7 @@ public class GameState extends AbstractAppState {
     private int plrBombs;
     private float updateTimer = 0;
     private boolean debugMode = false;
+    private Vector3f camLocation;
     protected int numCreeps;
     protected int creepMod;
     public ScheduledThreadPoolExecutor ex;
@@ -119,6 +120,7 @@ public class GameState extends AbstractAppState {
     }
 
     public void setLevelParams(LevelParams lp) {
+        setCamLocation(lp.getCamLocation());
         setNumCreeps(lp.getNumCreeps());
         setCreepMod(lp.getCreepMod());
         setLevelCap(lp.getLevelCap());
@@ -447,6 +449,14 @@ public class GameState extends AbstractAppState {
         return debugMode;
     }
 
+    public void setCamLocation(Vector3f _cam) {
+        camLocation = _cam;
+    }
+    
+    public Vector3f getCamLocation() {
+        return camLocation;
+    }
+    
     public void playBuildSound(float pitch) {
         buildSound.setPitch(pitch);
         buildSound.playInstance();

@@ -1,6 +1,7 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.MapXML.MapGenerator;
+import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -78,7 +79,6 @@ public class LevelState extends AbstractAppState {
         CreepState.setBaseBounds();
         CreepState.initMaterials();
         CreepState.attachCreepNode();
-
         GameState.attachWorldNode();
     }
     

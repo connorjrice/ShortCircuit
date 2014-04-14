@@ -3,25 +3,26 @@
     <levelparams>
         <param id = "levelParams">
             <camLocation>0,0,20f</camLocation>
-            <numCreeps>30</numCreeps>
-            <creepMod>4</creepMod>
+            <numCreeps>3</numCreeps>
+            <creepMod>2</creepMod>
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
             <plrHealth>100</plrHealth>
-            <plrBudget>100000</plrBudget>
-            <plrLevel>100</plrLevel>
+            <plrBudget>20</plrBudget>
+            <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Neon</matdir>
+            <matdir>Circuit</matdir>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>
             <downsampling>2.0f</downsampling>
-            <blurscale>5.0f</blurscale>
-            <exposurepower>6.0f</exposurepower>
-            <bloomintensity>3.0f</bloomintensity>
+            <blurscale>3.0f</blurscale>
+            <exposurepower>4.0f</exposurepower>
+            <bloomintensity>1.0f</bloomintensity>
             <glowmode>GlowMode.SceneAndObjects</glowmode>
         </param>
+        
     </levelparams>
     <floor>
         <floor id = "floorscale">
@@ -53,13 +54,13 @@
             <x>-2.25f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "2">
             <x>2.25f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "3">
             <x>-2.25f</x>
@@ -71,97 +72,97 @@
             <x>4.5f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "5">
             <x>4.5f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "6">
             <x>6.75f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "7">
             <x>6.75f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "8">
             <x>-4.5f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "9">
             <x> -4.5f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "10">
             <x>-6.75f</x>
             <y>2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "11">
             <x>-6.75f</x>
             <y>-2.0f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "12">
             <x>2.25f</x>
             <y>4.25f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "13">
             <x>-2.25f</x>
             <y>4.25f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "14">
             <x>2.25f</x>
             <y>6.50f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "15">
             <x>-2.25f</x>
             <y>6.50f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "16">
             <x>2.25f</x>
             <y>-4.25f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "17">
             <x>-2.25f</x>
             <y>-4.25f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "18">
             <x>2.25f</x>
             <y>-6.50f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
         <tower id = "19">
             <x>-2.25f</x>
             <y>-6.50f</y>
             <z>0.1f</z>
-            <isStarter>true</isStarter>
+            <isStarter>false</isStarter>
         </tower>
     </unbuilttowers>
     <creepspawners>

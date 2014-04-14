@@ -107,11 +107,11 @@ public class GameGUI extends AbstractAppState {
         width = tMS.getWidth();
         height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
-        cam.setLocation(new Vector3f(0, 0, 20f));
         this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
         this.app.getListener().setRotation(cam.getRotation());
         initScreen();
         setupGUI();
+        setCameraLocation();
     }
 
     @Override
@@ -217,6 +217,7 @@ public class GameGUI extends AbstractAppState {
         app.getListener().setLocation(trans);
         app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI / 2, new Vector3f(0, 0, 1)));
     }
+    
     /**
      * Handles touch events for GameState.
      */
@@ -334,7 +335,7 @@ public class GameGUI extends AbstractAppState {
             public void onChange(float arg0, float arg1) {
             }
         };
-        ProgressIndicator.setMaxValue(100f);
+        ProgressIndicator.setMaxValue(4);
         screen.addElement(ProgressIndicator);
 
     }
@@ -549,7 +550,7 @@ public class GameGUI extends AbstractAppState {
             app.getFlyByCamera().setRotationSpeed(1.0f);
         } else if (camlocation == 1) {
             camlocation = 0;
-            cam.setLocation(new Vector3f(0, 0, 20));
+            cam.setLocation(gs.getCamLocation());
             cam.setRotation(new Quaternion(0, 1, 0, 0));
             app.getFlyByCamera().setRotationSpeed(0.0f);
         }
@@ -610,6 +611,10 @@ public class GameGUI extends AbstractAppState {
         Level.setText("Level: ");
         Level.setIgnoreMouse(true);
         screen.addElement(Level);
+    }
+    
+    public void setCameraLocation() {
+        cam.setLocation(gs.getCamLocation());
     }
 
     @Override

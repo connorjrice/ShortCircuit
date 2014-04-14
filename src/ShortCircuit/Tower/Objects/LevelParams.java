@@ -1,5 +1,7 @@
 package ShortCircuit.Tower.Objects;
 
+import com.jme3.math.Vector3f;
+
 /**
  * This object contains all of the level parameters as specified by the XML file
  * for the level. It is created by MapGenerator, and used by GameState, which
@@ -9,6 +11,7 @@ package ShortCircuit.Tower.Objects;
  */
 public class LevelParams {
 
+    private Vector3f camLocation;
     private int numCreeps;
     private int creepMod;
     private int levelCap;
@@ -20,8 +23,9 @@ public class LevelParams {
     private boolean debug;
     private String matdir;
 
-    public LevelParams(int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
+    public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
             int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir) {
+        camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
         levelCap = _levelCap;
@@ -32,6 +36,10 @@ public class LevelParams {
         plrScore = _plrScore;
         debug = _debug;
         matdir = _matdir;
+    }
+    
+    public Vector3f getCamLocation() {
+        return camLocation;
     }
 
     public int getNumCreeps() {

@@ -98,9 +98,14 @@ public class StartGUI extends AbstractAppState {
             public void onMenuItemClicked(int index, Object value, boolean isToggled) {
                 if (value.equals("Start1")) {
                     onStart("Level1", false);
-                } else if (value.equals("Start0")) {
-                    onStart("Level0", false);
-                } else if (value.equals("StartTest")) {
+                } else if (value.equals("Start2")) {
+                    onStart("Level2", false);
+                } else if (value.equals("Start3")) {
+                    onStart("Level3", false);
+                } else if (value.equals("Start4")) {
+                    onStart("Level4", false);
+                }
+                else if (value.equals("StartTest")) {
                     onStart("TestLevel", true);
                 } else if (value.equals("StartProfile")) {
                     onStart("profilelevel", true);
@@ -108,7 +113,9 @@ public class StartGUI extends AbstractAppState {
             }
         };
         levelMenu.addMenuItem("Level1", "Start1", null);
-        levelMenu.addMenuItem("Level0", "Start0", null);
+        levelMenu.addMenuItem("Level2", "Start2", null);
+        levelMenu.addMenuItem("Level3", "Start3", null);
+        levelMenu.addMenuItem("Level4", "Start4", null);
         levelMenu.addMenuItem("TestLevel", "StartTest", null);
         levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
         levelMenu.hide();
