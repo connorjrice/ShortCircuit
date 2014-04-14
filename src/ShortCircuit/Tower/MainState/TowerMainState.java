@@ -96,8 +96,8 @@ public class TowerMainState extends AbstractAppState {
         fpp = new FilterPostProcessor(assetManager);
         bloom = new BloomFilter(BloomFilter.GlowMode.SceneAndObjects);
         bloom.setDownSamplingFactor(2.0f);
-        bloom.setBlurScale(4.0f);
-        bloom.setExposurePower(7f);
+        bloom.setBlurScale(3.0f);
+        bloom.setExposurePower(4f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
     }

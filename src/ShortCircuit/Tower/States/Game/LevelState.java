@@ -7,6 +7,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Quad;
+import com.jme3.ui.Picture;
 import java.util.ArrayList;
 
 /**
@@ -93,6 +95,7 @@ public class LevelState extends AbstractAppState {
         TowerState.attachTowerNode();
         CreepState.buildCreepSpawners(mg.getCreepSpawnVecs(), mg.getCreepSpawnDirs());
         CreepState.attachCreepNode();
+        CreepState.setBaseBounds();
         BeamState.attachBeamNode();
         GameState.attachWorldNode();
     }

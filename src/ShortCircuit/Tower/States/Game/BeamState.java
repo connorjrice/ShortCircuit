@@ -68,6 +68,7 @@ public class BeamState extends AbstractAppState {
     
     public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, String beamtype, float beamwidth) {
         beamAudio = new AudioNode(assetManager, "Audio/"+towertype+".wav");
+        beamAudio.setVolume(.3f);
         beamAudio.setLocalTranslation(origin);
         beamAudio.playInstance();
         beamNode.attachChild(bf.makeLaserBeam(origin, target, beamtype, beamwidth));

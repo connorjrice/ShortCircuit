@@ -19,16 +19,10 @@ public class MainActivity extends AndroidHarness{
  
     public MainActivity(){
         // Set the application class to run
-        appClass = "ShortCircuit.TowerDefenseMain";
+        appClass = "ShortCircuit.ShortCircuitMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
         eglConfigType = ConfigType.FASTEST;
-        if (Build.VERSION.SDK_INT >= 9){
-            logger.log(Level.INFO, "Enabling OpenAL Soft Audio (Android 2.3 or higher)");
-            audioRendererType = AppSettings.ANDROID_OPENAL_SOFT;
-        } else {
-            logger.log(Level.INFO, "Enabling Android MediaPlayer/SoundPool Audio (Android 2.2)");
-            audioRendererType = AppSettings.ANDROID_MEDIAPLAYER;
-        }
+        audioRendererType = AppSettings.ANDROID_OPENAL_SOFT;
         // Enable verbose logging
         eglConfigVerboseLogging = false;
         // Choose screen orientation

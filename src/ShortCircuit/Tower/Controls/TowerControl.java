@@ -68,6 +68,19 @@ public class TowerControl extends AbstractControl {
             }
         } 
     }
+    
+    protected void decideShoot() {
+        if (!charges.isEmpty()) {
+            if (reachable != null) {
+                if (!reachable.isEmpty()) {
+                    shootCreep();
+                }
+            }
+        } else {
+            emptyTower();
+        }
+        
+    }
 
     public void disableTower() {
         isActive = false;
@@ -162,18 +175,7 @@ public class TowerControl extends AbstractControl {
         }
     };
 
-    protected void decideShoot() {
-        if (!charges.isEmpty()) {
-            if (reachable != null) {
-                if (!reachable.isEmpty()) {
-                    shootCreep();
-                }
-            }
-        } else {
-            emptyTower();
-        }
-        
-    }
+
 
     protected void emptyTower() {
         emptySound.play();

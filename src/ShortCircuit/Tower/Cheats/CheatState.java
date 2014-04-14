@@ -134,7 +134,7 @@ public class CheatState extends AbstractAppState {
             tower.setBuilt();                    
             tower.setTowerType("globpop");
             tower.setBeamType("Bomb");
-            TowerState.changeTowerTexture("Materials/Bomb.j3m", tower);
+            TowerState.changeTowerTexture("Materials/Circuit/Bomb.j3m", tower);
         }
     }
     /**

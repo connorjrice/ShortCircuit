@@ -15,6 +15,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
+import com.jme3.shader.VarType;
+import com.jme3.ui.Picture;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
@@ -54,6 +56,7 @@ public class StartGUI extends AbstractAppState {
     private ButtonAdapter transit;
     private TransitGameState tGS;
     private AppStateManager stateManager;
+    private Picture loading;
 
     
     public StartGUI() {}
@@ -93,6 +96,20 @@ public class StartGUI extends AbstractAppState {
         initLoadBar();
         exitButton();
         transitButton();
+        loadingpic();
+    }
+    
+    private void loadingpic() {
+        loading = new Picture("loading");
+        loading.setImage(assetManager, "Interface/internalloadingsc.jpg", false);
+        loading.setWidth(width);
+        loading.setHeight(height);
+
+        
+    }
+    
+    private void showloading() {
+        guiNode.attachChild(loading);
     }
     
     
@@ -145,6 +162,7 @@ public class StartGUI extends AbstractAppState {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 onStart("Level1");
+             
             }
         };
         Level1.setText("Level1");

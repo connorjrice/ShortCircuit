@@ -22,7 +22,7 @@ public class ShortCircuitMain extends SimpleApplication {
         //Logger.getLogger("").setLevel(Level.OFF);
         ShortCircuitMain app = new ShortCircuitMain();
         AppSettings sets = new AppSettings(true);
-        sets.setSettingsDialogImage("Interface/loading.png");
+        sets.setSettingsDialogImage("Interface/loading.jpg");
         sets.setFrameRate(60);
         app.setSettings(sets);
         app.start();

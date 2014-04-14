@@ -2,7 +2,6 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Factories.FloorFactory;
-import ShortCircuit.Tower.Controls.BaseControl;
 import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.Objects.LevelParams;
@@ -241,7 +240,7 @@ public class GameState extends AbstractAppState {
     /**
      * Creates a textured floor.
      */
-    public void createFloor(Vector3f floorscale, String floortexloc) {;
+    public void createFloor(Vector3f floorscale, String floortexloc) {
         worldNode.attachChild(ff.getFloor(floorscale, floortexloc));
 
     }
