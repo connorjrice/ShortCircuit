@@ -1,7 +1,6 @@
 package ShortCircuit.Tower.MainState;
 
 import ShortCircuit.GUI.StartGUI;
-import ShortCircuit.ShortCircuitMain;
 import ShortCircuit.Tower.Cheats.CheatGUI;
 import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.States.GUI.GameGUI;
@@ -17,7 +16,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
-import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -25,7 +23,6 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Node;
 
 /**
  * This is the main state for all Tower gameplay.
@@ -39,7 +36,6 @@ public class TowerMainState extends AbstractAppState {
     private TowerState TowerState;
     private LevelState LevelState;
     private CheatState CheatState;
-    public StartGUI StartGUI;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
     private CheatGUI CheatGUI;
@@ -55,37 +51,77 @@ public class TowerMainState extends AbstractAppState {
     private final static String MAPPING_ACTIVATE = "Touch";
     private BloomFilter bloom;
     private AudioNode endTheme;
-    private ShortCircuitMain game;
     private SimpleApplication app;
-    private Node rootNode;
     private InputManager inputManager;
-    private ViewPort viewPort;
     private AssetManager assetManager;
+    private ViewPort viewPort;
     private AppStateManager stateManager;
+    private StartGUI StartGUI;
+    private final boolean profile;
+    private final String level;
     
-    public TowerMainState(ShortCircuitMain game) {
-        this.game = game;
+    public TowerMainState(boolean _profile, String level) {
+        this.profile = _profile;
+        this.level = level;
     }
     
     
+
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
+    public void initialize(AppStateManager stateManager,Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
-        this.stateManager = this.app.getStateManager();
+        this.assetManager = this.app.getAssetManager();
         this.viewPort = this.app.getViewPort();
-        this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
-        
-        width = game.getContext().getSettings().getWidth();
-        height = game.getContext().getSettings().getHeight();
+        this.stateManager = this.app.getStateManager();
+        this.StartGUI = stateManager.getState(StartGUI.class);
+        width = app.getContext().getSettings().getWidth();
+        height = app.getContext().getSettings().getHeight();
         inputManager.setCursorVisible(true);
-        inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
-        
+        inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);        
         initFilters();
         underPinning();
+        attachStates();
+    }
+    
+    public void attachStates() {
+        if (!profile) {
+            StartGUI.toggle();
+        }
+        isPaused = false;
+        isPauseAllowed = true;
+        inGame = true;
+        CheatState = new CheatState();
+        CheatGUI = new CheatGUI();
+        GameState = new GameState();
+        LevelState = new LevelState(profile, level);
+        GameGUI = new GameGUI(this);
+        BeamState = new BeamState();
+        CreepState = new CreepState();
+        TowerState = new TowerState();
+        GameOverGUI = new GameOverGUI(this);
+        stateManager.attach(GameGUI);
+        stateManager.attach(GameState);
+        stateManager.attach(TowerState);
+        stateManager.attach(CreepState);
+        stateManager.attach(BeamState);
+        stateManager.attach(LevelState);
+        stateManager.attach(CheatState);
+        stateManager.attach(CheatGUI);
+    }
+    
+    public void detachStates() {
+        stateManager.detach(GameGUI);
+        stateManager.detach(GameState);
+        stateManager.detach(TowerState);
+        stateManager.detach(CreepState);
+        stateManager.detach(BeamState);
+        stateManager.detach(LevelState);
+        stateManager.detach(CheatState);
+        stateManager.detach(CheatGUI);
+        removeFilters();
+        theme.stop();
     }
     
       /**
@@ -100,6 +136,10 @@ public class TowerMainState extends AbstractAppState {
         bloom.setExposurePower(4f);
         fpp.addFilter(bloom);
         viewPort.addProcessor(fpp);
+    }
+    
+    private void removeFilters() {
+        viewPort.removeProcessor(fpp);
     }
 
     /**
@@ -181,62 +221,6 @@ public class TowerMainState extends AbstractAppState {
     public void toggleCheatsWindow() {
         CheatGUI.toggleCheatWindow();
     }
-    
-    /**
-     * Instantiates all Game States, detaches Start Menu. Then, starts the game
-     * by attaching all of the states.
-     *
-     * @param debug - different method calls need to happen for debug games.
-     * @param levelName - Name of the level to be loaded by LevelState The
-     * levelName is given by the StartMenu state. The levelName corresponds to
-     * an XML file located in: assets/XML; the file extension is .lvl.xml
-     */
-    public void startGame(boolean debug, String levelName) {
-        StartGUI.toggle();
-        isPaused = false;
-        isPauseAllowed = true;
-        inGame = true;
-        CheatState = new CheatState();
-        CheatGUI = new CheatGUI();
-        GameState = new GameState();
-        LevelState = new LevelState(debug, levelName);
-        GameGUI = new GameGUI(this);
-        BeamState = new BeamState();
-        CreepState = new CreepState();
-        TowerState = new TowerState();
-        GameOverGUI = new GameOverGUI(this);
-        attachGameStates();
-    }
-
-    /**
-     * Attaches all of the states necessary for playing a level. Called by
-     * startGame().
-     */
-    private void attachGameStates() {
-        stateManager.attach(GameGUI);
-        stateManager.attach(GameState);
-        stateManager.attach(TowerState);
-        stateManager.attach(CreepState);
-        stateManager.attach(BeamState);
-        stateManager.attach(LevelState);
-        stateManager.attach(CheatState);
-        stateManager.attach(CheatGUI);
-    }
-
-    /**
-     * Detaches all of the states necessary for playing a level. Called when
-     * starting/continuing from the Start menu.
-     */
-    public void detachGameStates() {
-        stateManager.detach(GameGUI);
-        stateManager.detach(GameState);
-        stateManager.detach(TowerState);
-        stateManager.detach(CreepState);
-        stateManager.detach(BeamState);
-        stateManager.detach(LevelState);
-        stateManager.detach(CheatState);
-        stateManager.detach(CheatGUI);
-    }
 
     /**
      * Pauses the game. Called by TGGamePlay
@@ -254,14 +238,18 @@ public class TowerMainState extends AbstractAppState {
     }
 
     /**
-     * Ends game and detaches the states so they cannot be retrieved. TODO:
-     * Integrate with TGGamePlay
+     * Ends game and detaches the states so they cannot be retrieved.
      */
     public void gameover() {
-        isPauseAllowed = false;
-        detachGameStates();
-        stateManager.attach(GameOverGUI);
-        inGame = false;
+        if (!profile) {
+            isPauseAllowed = false;
+            stateManager.attach(GameOverGUI);
+            detachStates();
+            inGame = false;
+        }
+        else {
+            app.stop();
+        }
     }
 
     /**
@@ -316,23 +304,10 @@ public class TowerMainState extends AbstractAppState {
         }
     }
     
-    public Node getRootNode() {
-        return app.getRootNode();
-    }
-    
-    public FlyByCamera getFlyByCamera() {
-        return app.getFlyByCamera();
-    }
 
     
     @Override
-    public void update(float tpf) {
-        //TODO: implement behavior during runtime
-    }
-    
-    @Override
     public void cleanup() {
-        super.cleanup();
-        theme.stop();
+
     }
 }

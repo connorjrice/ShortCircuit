@@ -6,6 +6,7 @@ import ShortCircuit.Transit.Game.TransitGameState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
@@ -15,7 +16,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
-import com.jme3.shader.VarType;
 import com.jme3.ui.Picture;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
@@ -33,7 +33,6 @@ public class StartGUI extends AbstractAppState {
 
     private SimpleApplication app;
     private Node guiNode;
-    private ShortCircuitMain game;
     private Screen screen;
     private Button Level1;
     private Button newGame;
@@ -52,18 +51,15 @@ public class StartGUI extends AbstractAppState {
     private boolean isTheme = false;
     private ButtonAdapter ExitButton;
     private DialogBox ReallyExitPopup;
-    private TowerMainState tMS;
     private ButtonAdapter transit;
     private TransitGameState tGS;
     private AppStateManager stateManager;
     private Picture loading;
+    private boolean firstLoad = true;
+    private TowerMainState tMS;
 
     
     public StartGUI() {}
-
-    public StartGUI(ShortCircuitMain _game) {
-        game = _game;
-    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -72,9 +68,9 @@ public class StartGUI extends AbstractAppState {
         this.guiNode = this.app.getGuiNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
-        this.tMS = this.app.getStateManager().getState(TowerMainState.class);
-        width = tMS.getWidth();
-        height = tMS.getHeight();
+        height = this.app.getContext().getSettings().getHeight();
+        width = this.app.getContext().getSettings().getWidth();
+                
         initScreen();
     }
     
@@ -215,13 +211,21 @@ public class StartGUI extends AbstractAppState {
     
 
     public void onStart(String level) {
-        tMS.detachGameStates();
-        tMS.startGame(false, level);
+        if (firstLoad) {
+            tMS = new TowerMainState(false, level);
+            stateManager.attach(tMS);
+            firstLoad = false;
+        }
+        else {
+            tMS.detachStates();
+            stateManager.detach(tMS);
+            tMS = new TowerMainState(false, level);
+            stateManager.attach(tMS);
+        }
     }
 
     public void onDebug() {
-        tMS.detachGameStates();
-        tMS.startGame(true, null);
+        //tMS.startGame(true, null);
     }
     
     public void exitButton() {
@@ -246,7 +250,7 @@ public class StartGUI extends AbstractAppState {
 
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
-                game.stop();
+                app.stop();
             }
         };
         ReallyExitPopup.setText("Exit");

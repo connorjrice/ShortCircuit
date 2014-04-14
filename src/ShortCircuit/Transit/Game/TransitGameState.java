@@ -1,15 +1,12 @@
 package ShortCircuit.Transit.Game;
 
-import ShortCircuit.Transit.Controls.PlayerControl;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.input.ChaseCamera;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -18,14 +15,11 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.control.CameraControl;
 import com.jme3.scene.control.CameraControl.ControlDirection;
 import com.jme3.scene.shape.Sphere;
 
@@ -53,7 +47,7 @@ public class TransitGameState extends AbstractAppState {
     private FlyByCamera flyCam;
     private Camera cam;
     private float speed = 10.0f;
-    private AppStateManager stateManager;
+
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -61,7 +55,6 @@ public class TransitGameState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
-        this.stateManager = this.app.getStateManager();
         this.rootNode = this.app.getRootNode();
         this.flyCam = this.app.getFlyByCamera();
         this.cam = this.app.getCamera();
@@ -199,6 +192,5 @@ public class TransitGameState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-
     }
 }

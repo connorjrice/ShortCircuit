@@ -38,7 +38,8 @@ public class TowerProfileMain extends SimpleApplication {
     }
         
     public void startTower() {
-
+        tms = new TowerMainState(true, "profilelevel");
+        stateManager.attach(tms);
     }
     
     

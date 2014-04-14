@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.States.GUI;
 
+import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.MainState.TowerMainState;
@@ -82,6 +83,7 @@ public class GameGUI extends AbstractAppState {
     private Indicator ProgressIndicator;
     private AudioNode endTheme;
     private boolean end = false;
+    private StartGUI StartGUI;
  
 
     public GameGUI(TowerMainState _tMS) {
@@ -97,6 +99,7 @@ public class GameGUI extends AbstractAppState {
         this.inputManager = this.app.getInputManager();
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
         width = tMS.getWidth();
         height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
@@ -164,7 +167,7 @@ public class GameGUI extends AbstractAppState {
         CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!tMS.StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
+                if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
                     tMS.toggleCheatsWindow();
                 }
             }
@@ -242,7 +245,7 @@ public class GameGUI extends AbstractAppState {
         Vector3f dir = cam.getWorldCoordinates(
                 new Vector2f(click2d.getX(), click2d.getY()), 1f);
         Ray ray = new Ray(click3d, dir);
-        tMS.getRootNode().collideWith(ray, results);
+        app.getRootNode().collideWith(ray, results);
         if (results.size() > 0) {
             Vector3f trans = results.getCollision(0).getContactPoint();
             Spatial target = results.getCollision(0).getGeometry();
@@ -300,7 +303,7 @@ public class GameGUI extends AbstractAppState {
         Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!tMS.StartGUI.MainWindow.getIsVisible()) {
+                if (!StartGUI.MainWindow.getIsVisible()) {
                     if (SetWindow.getIsVisible()) {
                         SetWindow.hideWindow();
                         Menu.setIgnoreMouse(false);
@@ -537,12 +540,12 @@ public class GameGUI extends AbstractAppState {
             camlocation = 1;
             cam.setLocation(new Vector3f(0.06431137f, 3.8602734f, 3.5616555f));
             cam.setRotation(new Quaternion(1f, 0f, 0f, 0.5f));
-            tMS.getFlyByCamera().setRotationSpeed(1.0f);
+            app.getFlyByCamera().setRotationSpeed(1.0f);
         } else if (camlocation == 1) {
             camlocation = 0;
             cam.setLocation(new Vector3f(0, 0, 20));
             cam.setRotation(new Quaternion(0, 1, 0, 0));
-            tMS.getFlyByCamera().setRotationSpeed(0.0f);
+            app.getFlyByCamera().setRotationSpeed(0.0f);
         }
     }
 

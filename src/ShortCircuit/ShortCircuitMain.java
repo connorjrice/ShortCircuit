@@ -40,19 +40,12 @@ public class ShortCircuitMain extends SimpleApplication {
         flyCam.setZoomSpeed(0.0f);
         setDisplayFps(false);
         setDisplayStatView(false);
-        
-        startTower();
         startGUI();
     }
     
     public void startGUI() {
-        sgui = new StartGUI(this);
+        sgui = new StartGUI();
         stateManager.attach(sgui);
-    }
-    
-    public void startTower() {
-        tms = new TowerMainState(this);
-        stateManager.attach(tms);
     }
   
     @Override
