@@ -122,13 +122,13 @@
             <x>0f</x>
             <y>-8.0f</y>
             <z>0.1f</z>
-            <direction>north</direction>
+            <orientation>north</orientation>
         </creepspawn>
         <creepspawn id = "1">
             <x>0f</x>
             <y>8.0f</y>
             <z>0.1f</z>
-            <direction>south</direction>
+            <orientation>south</orientation>
         </creepspawn>
     </creepspawners>
 

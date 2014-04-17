@@ -11,6 +11,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
+import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
@@ -87,6 +88,11 @@ public class GameGUI extends AbstractAppState {
     private boolean end = false;
     private StartGUI StartGUI;
     private FilterState FilterState;
+    private ButtonAdapter soundToggle;
+    private Slider SoundSlider;
+    private Window PurchaseWindow;
+    private ButtonAdapter PurchaseButton;
+   
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -167,7 +173,7 @@ public class GameGUI extends AbstractAppState {
      * lets the user use dirty cheats.
      */
     private void cheatsButton() {
-        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(rightButtons, 800)) {
+        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, 1000)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
@@ -277,6 +283,10 @@ public class GameGUI extends AbstractAppState {
         bloomToggleButton();
         bloomLevelSlider();
         cheatsButton();
+        soundToggleButton();
+        soundSlider();
+        purchaseButton();
+        purchaseWindow();
 
     }
 
@@ -300,6 +310,38 @@ public class GameGUI extends AbstractAppState {
         SetWindow.setIsMovable(false);
         screen.addElement(SetWindow);
         SetWindow.hide();
+    }
+    
+    private void purchaseWindow() {
+        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, 650), new Vector2f(300,500));
+        PurchaseWindow.setIgnoreMouse(true);
+        PurchaseWindow.setWindowIsMovable(false);
+        PurchaseWindow.setWindowTitle("Purchasables");
+        PurchaseWindow.setTextAlign(BitmapFont.Align.Center);
+        screen.addElement(PurchaseWindow);
+        
+        PurchaseWindow.hide();
+    }
+    
+    private void purchaseButton() {
+       PurchaseButton = new ButtonAdapter(screen, "PurchaseButton", new Vector2f(rightButtons, 500)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (!StartGUI.MainWindow.getIsVisible()) {
+                    if (PurchaseWindow.getIsVisible()) {
+                        PurchaseWindow.hideWindow();
+                        Menu.setIgnoreMouse(false);
+                    } else {
+                        PurchaseWindow.showWindow();
+                        Menu.setIgnoreMouse(true);
+                    }
+                }
+            }
+        };
+        PurchaseButton.setLocalScale(3f, 2f, 1f);
+        PurchaseButton.setText("Purchase");
+        PurchaseButton.setUseButtonPressedSound(true);
+        screen.addElement(PurchaseButton);
     }
 
     private void settingsButton() {
@@ -331,6 +373,9 @@ public class GameGUI extends AbstractAppState {
             public void onChange(float arg0, float arg1) {
             }
         };
+        ProgressIndicator.setText("Progress");
+        ProgressIndicator.setTextAlign(BitmapFont.Align.Center);
+        ProgressIndicator.setWidth(300);
         ProgressIndicator.setMaxValue(4);
         screen.addElement(ProgressIndicator);
 
@@ -483,6 +528,35 @@ public class GameGUI extends AbstractAppState {
         BloomSlider.setSelectedByValue(2.0f);
         FilterState.setBloomIntensity(FilterState.bloomIntensity);
         SetWindow.addChild(BloomSlider);
+    }
+    
+    private void soundToggleButton() {
+        soundToggle = new ButtonAdapter(screen, "SoundToggle", new Vector2f(640, 100), buttonSize) {
+            
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (app.getListener().getVolume() == 0) {
+                    app.getListener().setVolume(1f);
+                }
+                else {
+                    app.getListener().setVolume(0f);
+                }
+            }
+        };
+        soundToggle.setText("Toggle Sound");
+        SetWindow.addChild(soundToggle);
+    }
+    
+    private void soundSlider() {
+        SoundSlider = new Slider(screen, "SoundSlider", new Vector2f(670, 70), Slider.Orientation.HORIZONTAL, true) {
+            @Override
+            public void onChange(int selectedIndex, Object value) {
+                app.getListener().setVolume(selectedIndex);
+            }
+        };
+        SoundSlider.setStepFloatRange(0.0f, 1.0f, .1f);
+        app.getListener().setVolume(1.0f);
+        SetWindow.addChild(SoundSlider);
     }
 
     private void leftPanel() {
@@ -637,8 +711,6 @@ public class GameGUI extends AbstractAppState {
             endTheme.stop();
             tMS.underPinning();
         }
-
         guiNode.removeControl(screen);
-
     }
 }

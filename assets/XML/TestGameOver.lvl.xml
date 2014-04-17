@@ -109,7 +109,7 @@
             <x>0.0f</x>
             <y>7.0f</y>
             <z>1.0f</z>
-            <direction>south</direction>
+            <orientation>south</orientation>
         </creepspawn>
     </creepspawners>
 </level>

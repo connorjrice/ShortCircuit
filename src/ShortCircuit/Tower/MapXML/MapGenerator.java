@@ -72,7 +72,7 @@ public class MapGenerator {
         ArrayList<String> creepSpawnDirs = new ArrayList<String>();
         for (int i = 0; i < cList.getLength(); i++) {
             Element eElement = (Element) cList.item(i);
-            creepSpawnDirs.add(eElement.getElementsByTagName("direction").item(0).getTextContent());
+            creepSpawnDirs.add(eElement.getElementsByTagName("orientation").item(0).getTextContent());
         }
         return creepSpawnDirs;
 

@@ -79,7 +79,7 @@ public class StartGUI extends AbstractAppState {
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
 
-        settingsWindow();
+        mainWindow();
         newGame();
         initLoadBar();
         exitButton();
@@ -89,7 +89,7 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void initLevelMenu() {
-        levelMenu = new Menu(screen, "levelmenu", new Vector2f(), false) {
+        levelMenu = new Menu(screen, "levelmenu", new Vector2f(), true) {
             @Override
             public void onMenuItemClicked(int index, Object value, boolean isToggled) {
                 if (value.equals("Start1")) {
@@ -116,6 +116,7 @@ public class StartGUI extends AbstractAppState {
         levelMenu.addMenuItem("TestLevel", "StartTest", null);
         levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
         levelMenu.addMenuItem("TestGameOver", "GameOverTest", null);
+        levelMenu.setPreferredSize(new Vector2f(300,300));
         levelMenu.hide();
         MainWindow.addChild(levelMenu);
     }
@@ -158,14 +159,13 @@ public class StartGUI extends AbstractAppState {
         ind.setDisplayPercentage();
     }
 
-    private void settingsWindow() {
+    private void mainWindow() {
         MainWindow = new Window(screen, new Vector2f(width / 4, height / 2 - height / 4), new Vector2f(width / 2, height / 2));
         MainWindow.setIgnoreMouse(true);
         MainWindow.setWindowIsMovable(false);
         MainWindow.setEffectZOrder(false);
         MainWindow.setIsResizable(false);
-        MainWindow.setText("ShortCircuit");
-        MainWindow.setTextAlign(BitmapFont.Align.Center);
+        MainWindow.setWindowTitle("ShortCircuit");
         screen.addElement(MainWindow);
     }
 
@@ -176,11 +176,10 @@ public class StartGUI extends AbstractAppState {
                 if (levelMenu.getIsVisible()) {
                     levelMenu.hideMenu();
                 } else {
-                    levelMenu.showMenu(null, newGame.getWidth() / 2, scaler * 2);
+                    levelMenu.showMenu(null, 100,300);
                 }
             }
         };
-
         newGame.setText("New Game");
         newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
         MainWindow.addChild(newGame);
