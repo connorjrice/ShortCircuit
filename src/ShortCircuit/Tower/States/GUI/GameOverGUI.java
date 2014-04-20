@@ -13,7 +13,7 @@ import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
- *
+ * TODO: Fix z-order bug on gameover
  * @author Connor
  */
 public class GameOverGUI extends AbstractAppState {

@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * TODO: Finish integration with LevelState TODO: Documentation
- *
+ * TODO: Fix stack overflow when no more places for globs to spawn
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {
