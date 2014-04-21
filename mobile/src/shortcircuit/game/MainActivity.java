@@ -7,6 +7,13 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.android.AndroidConfigChooser.ConfigType;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
+
+/*
+ * TODO: Fix android menu bug (stays open on selecting second level)
+ * TODO: Fix andriod exiting bug (exit button does not exit)
+ * TODO: Fix android GUI for size (level selection)
+ * 
+ */
  
 public class MainActivity extends AndroidHarness{
  
