@@ -1,9 +1,9 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.TowerControl;
-import ShortCircuit.Tower.Factories.CreepFactory;
+import ShortCircuit.Tower.Factories.STDCreepFactory;
 import ShortCircuit.Tower.Objects.CreepTraits;
-import ShortCircuit.Tower.Factories.CreepSpawnerFactory;
+import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.GlobFactory;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -67,9 +67,9 @@ public class CreepState extends AbstractAppState {
     private int nextrandom;
     private float randomCheck = 0;
     private Node worldNode;
-    private CreepFactory cf;
+    private STDCreepFactory cf;
     private GlobFactory gf;
-    private CreepSpawnerFactory csf;
+    private STDCreepSpawnerFactory csf;
     private BoundingVolume basebounds;
 
     public ArrayList<Spatial> creepList;
@@ -91,9 +91,9 @@ public class CreepState extends AbstractAppState {
     }
     
     private void initFactories() {
-        cf = new CreepFactory(this);
+        cf = new STDCreepFactory(this);
         gf = new GlobFactory(this);
-        csf = new CreepSpawnerFactory(this);
+        csf = new STDCreepSpawnerFactory(this);
     }
     
     private void initLists() {

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Tower.Controls;
 
 import com.jme3.export.InputCapsule;
@@ -20,9 +16,6 @@ import java.io.IOException;
  * @author Connor
  */
 public class DiggerControl extends AbstractControl {
-    //Any local variables should be encapsulated by getters/setters so they
-    //appear in the SDK properties window and can be edited.
-    //Right-click a local variable to encapsulate it with getters and setters.
 
     @Override
     protected void controlUpdate(float tpf) {

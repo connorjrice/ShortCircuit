@@ -141,7 +141,6 @@ public class MapGenerator {
     }
     
     public FilterParams getFilterParams() {
-        System.out.println(pList.getLength());
         Element eElement = (Element) pList.item(0);
         String blooms = eElement.getElementsByTagName("bloom").item(0).getTextContent();
         boolean bloom;

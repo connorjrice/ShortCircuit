@@ -24,7 +24,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- *
+ * Control for user-controlled towers.
+ * TODO: Documentation for TowerControl
  * @author Connor Rice
  */
 public class TowerControl extends AbstractControl {
@@ -237,8 +238,6 @@ public class TowerControl extends AbstractControl {
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        //Only needed for rendering-related operations,
-        //not called when spatial is culled.
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * This creep will come down from the ceiling and try to destroy one of your
  * towers if you don't get it first
+ * TODO: Documentation for GlobControl
  * @author Connor
  */
 public class GlobControl extends AbstractControl {
@@ -64,14 +65,11 @@ public class GlobControl extends AbstractControl {
     
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        //Only needed for rendering-related operations,
-        //not called when spatial is culled.
     }
     
     @Override
     public Control cloneForSpatial(Spatial spatial) {
         GlobControl control = new GlobControl(cs);
-        //TODO: copy parameters to new Control
         return control;
     }
     
@@ -79,15 +77,11 @@ public class GlobControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
-        //TODO: load properties of this Control, e.g.
-        //this.value = in.readFloat("name", defaultValue);
     }
     
     @Override
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
-        //TODO: save properties of this Control, e.g.
-        //out.write(this.value, "name", defaultValue);
     }
 }

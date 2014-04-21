@@ -3,11 +3,10 @@ package ShortCircuit.Tower.Factories;
 import ShortCircuit.Tower.Objects.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.States.Game.GameState;
-import com.jme3.asset.AssetManager;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
- *
+ * TODO: Document tower upgrade factory
  * @author Connor Rice
  */
 public class TowerUpgradeFactory {
@@ -15,13 +14,11 @@ public class TowerUpgradeFactory {
     private int cost;
     private String matLoc;
     private float pitch;
-    private AssetManager assetManager;
     private GameState gs;
     private boolean valid;
 
     public TowerUpgradeFactory(GameState _gs) {
         gs = _gs;
-        assetManager = gs.getAssetManager();
     }
 
     public void run() {
@@ -62,7 +59,7 @@ public class TowerUpgradeFactory {
                 if (type.equals("4")) {
                     gs.incFours();
                 }
-                tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
+                tower.getSpatial().setMaterial(gs.getAssetManager().loadMaterial(matLoc));
                 tower.setSize(gs.getBuiltTowerSize());
                 gs.decPlrBudget(cost);
                 gs.playBuildSound(pitch);

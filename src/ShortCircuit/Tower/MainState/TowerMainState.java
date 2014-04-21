@@ -77,15 +77,20 @@ public class TowerMainState extends AbstractAppState {
         attachStates();
     }
 
+    /**
+     * Instantiates/attaches all states necessary for a tower game.
+     * TODO: Figure out what all of these boolean vars do
+     * TODO: Figure out which states need "this" in constructor
+     */
     public void attachStates() {
         isPaused = false;
         isPauseAllowed = true;
         inGame = true;
+        
         CheatState = new CheatState();
         FilterState = new FilterState();
         CheatGUI = new CheatGUI();
         GameState = new GameState();
-
         GameGUI = new GameGUI(this);
         LevelState = new LevelState(profile, level);
         BeamState = new BeamState();
@@ -105,6 +110,10 @@ public class TowerMainState extends AbstractAppState {
 
     }
 
+    /**
+     * Detaches all tower states.
+     * TODO: Figure out when this happens, document
+     */
     public void detachStates() {
         stateManager.detach(GameGUI);
         stateManager.detach(GameState);
@@ -136,25 +145,34 @@ public class TowerMainState extends AbstractAppState {
 
     /**
      * Changes global volume.
-     *
      * @param volume -New volume level. Not implemented yet.
      */
     public void setVolume(int volume) {
-        
+        app.getListener().setVolume(volume);
     }
 
+    /**
+     * Returns to the start menu.
+     * Currently used by GameOver state, the "Too Bad" button.
+     */
     public void backToTGStart() {
         stateManager.detach(GameOverGUI);
         stateManager.attach(StartGUI);
         StartGUI.toggle();
     }
 
+    /**
+     * Toggles the window for the cheats.
+     */
     public void toggleCheatsWindow() {
         CheatGUI.toggleCheatWindow();
     }
 
     /**
-     * Pauses the game. Called by TGGamePlay
+     * Pauses the game.
+     * TODO: Decide if this should be multipurpose (as it currently is)
+     * or write more specific functions.
+     * TODO: Sort out this boolean variable mess
      */
     public void pause() {
         if (isPauseAllowed) {
@@ -178,6 +196,9 @@ public class TowerMainState extends AbstractAppState {
             detachStates();
             inGame = false;
         } else {
+            /**
+             * If we're in a profile session, we want to end the game.
+             */
             super.cleanup();
             cleanup();
             app.stop();

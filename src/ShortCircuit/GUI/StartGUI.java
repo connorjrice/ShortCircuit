@@ -23,7 +23,9 @@ import tonegod.gui.controls.windows.DialogBox;
 
 /**
  * Start menu
- *
+ * TODO: Scaling
+ * TODO: Create theme
+ * TODO: Create loading screen
  * @author Connor Rice
  */
 public class StartGUI extends AbstractAppState {
@@ -31,9 +33,7 @@ public class StartGUI extends AbstractAppState {
     private SimpleApplication app;
     private Node guiNode;
     private Screen screen;
-    private Button Level1;
     private Button newGame;
-    private boolean cont = true;
     public Menu MainMenu;
     public Window MainWindow;
     private int height;

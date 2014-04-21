@@ -49,7 +49,6 @@ public class FilterState extends AbstractAppState {
             bloomIntensity = fp.getBloomIntensity();
             fpp.addFilter(bloom);
             viewPort.addProcessor(fpp);
-            System.out.println("here"+fp.getBloomIntensity());
         }
     }
     

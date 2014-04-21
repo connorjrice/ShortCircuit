@@ -36,7 +36,6 @@ import tonegod.gui.core.Screen;
 
 /**
  * Gameplay GUI for Tower Defense
- *
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {
@@ -154,7 +153,6 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void endTheme() {
-        System.out.println("thisistheend");
         endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
         endTheme.setVolume(1.0f);
         endTheme.setPositional(false);
@@ -710,6 +708,10 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Settings);
         screen.removeElement(leftPanel);
         screen.removeElement(rightPanel);
+        screen.removeElement(CheatsButton);
+        screen.removeElement(PurchaseButton);
+        screen.removeElement(PurchaseWindow);
+        screen.removeElement(ProgressIndicator);
         if (endTheme != null) {
             endTheme.stop();
             tMS.underPinning();

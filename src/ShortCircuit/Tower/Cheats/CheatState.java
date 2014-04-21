@@ -3,7 +3,6 @@ package ShortCircuit.Tower.Cheats;
 import ShortCircuit.Tower.Objects.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.States.Game.GameState;
-import ShortCircuit.Tower.States.Game.LevelState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -14,19 +13,13 @@ import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 
 /**
- * This state will contain a bunch of l33t h4x.
- * Mostly for debugging purposes. And because it's fun.
- * RULES: Don't look at any code. Only use what the IDE lets you, and
- * see why documentation is pretty important. +5 l33t programmer points if
- * you can get it to compile the first time. GO!
- * *and no runtime errors
- * *you can do the GUI later
+ * This state contains the code for l33t h4x.
+ * TODO: Ensure all code works, add more
  * @author Connor Rice
  */
 public class CheatState extends AbstractAppState {
     private SimpleApplication app;
     private GameState GameState;
-    private LevelState LevelState;
     private TowerState TowerState;
     
     private boolean dollaBillz;
@@ -40,9 +33,7 @@ public class CheatState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.LevelState = this.app.getStateManager().getState(LevelState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-
     }
     
     /**

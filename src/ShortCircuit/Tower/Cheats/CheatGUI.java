@@ -13,7 +13,7 @@ import tonegod.gui.core.Screen;
 
 /**
  * GUI for interacting with cheat methods :)
- *
+ * TODO: Documentation for CheatGUI
  * @author Connor
  */
 public class CheatGUI extends AbstractAppState {
