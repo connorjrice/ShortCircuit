@@ -1,7 +1,8 @@
 package ShortCircuit.DataStructures;
 
 /**
- * TODO: Write description for STCNode
+ * Node for STC (Sorted Triple Coord) Data structure.
+ * Has the fewest amount of methods possible to reduce memory usage.
  * @author clarence
  */
 public class STCNode<E>{

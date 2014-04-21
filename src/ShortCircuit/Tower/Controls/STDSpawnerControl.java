@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * TODO: Document CreepSpawnerControl
- * URGENT: Blinking creepspawner and then flood of enemies, simultaneously shut
+ * PENDING: Blinking creepspawner and then flood of enemies, simultaneously shut
  * down other spawners (Juliya's idea)
  * @author Connor Rice
  */

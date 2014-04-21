@@ -38,11 +38,8 @@ public class BaseControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-
     }
-
     
-
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
@@ -65,4 +62,6 @@ public class BaseControl extends AbstractControl {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
     }
+
+
 }

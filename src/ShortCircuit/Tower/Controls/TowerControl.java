@@ -45,9 +45,9 @@ public class TowerControl extends AbstractControl {
     private AudioNode emptySound;
     private boolean isGlobbed = false;
 
-    public TowerControl(BeamState _bstate, TowerState _tstate, Vector3f loc) {
-        BeamState = _bstate;
+    public TowerControl(TowerState _tstate, Vector3f loc) {
         TowerState = _tstate;
+        BeamState = TowerState.getApp().getStateManager().getState(BeamState.class);
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
@@ -66,9 +66,9 @@ public class TowerControl extends AbstractControl {
             } else {
                 searchTimer += tpf;
             }
-        } 
+        }
     }
-    
+
     protected void decideShoot() {
         if (!charges.isEmpty()) {
             if (reachable != null) {
@@ -79,7 +79,7 @@ public class TowerControl extends AbstractControl {
         } else {
             emptyTower();
         }
-        
+
     }
 
     public void disableTower() {
@@ -175,8 +175,6 @@ public class TowerControl extends AbstractControl {
         }
     };
 
-
-
     protected void emptyTower() {
         emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
@@ -185,7 +183,7 @@ public class TowerControl extends AbstractControl {
     }
 
     protected void shootCreep() {
-        if (charges.get(0).getRemBullets() > 0) {
+        if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
                 BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
                 if (reachable.peek()
@@ -206,11 +204,6 @@ public class TowerControl extends AbstractControl {
 
     public void addInitialCharges() {
         charges.add(new Charges("tower1"));
-    }
-
-    public int getHeight() {
-        return spatial.getUserData("Height");
-
     }
 
     public float getBeamWidth() {

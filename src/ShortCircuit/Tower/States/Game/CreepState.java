@@ -21,10 +21,7 @@ import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * URGENT: Fix offering process to only offer towers the creeps that are in
- * the relevant range!
- * 
- * TODO: New Enemies: 
+ * PENDING: New Enemies: 
  * 1. Descendant (working on)
  * 2. Digger
  * 3. Lone Ranger
@@ -46,6 +43,8 @@ public class CreepState extends AbstractAppState {
             new Vector3f(0.4f, 0.4f, 0.60f);
     private static final Vector3f XL_CREEP_SIZE =
                 new Vector3f(0.6f, 0.6f, 0.8f);
+    
+    
     private static final int SM_CREEP_HEALTH = 100;
     private static final int MD_CREEP_HEALTH = 200;
     private static final int LG_CREEP_HEALTH = 400;
@@ -126,9 +125,13 @@ public class CreepState extends AbstractAppState {
         }
 
     }
-    
+    /**
+     * Determines how many seconds have to pass before another random enemy
+     * (non standard creep) is spawned.
+     * TODO: Implement better system for random enemies, perhaps XML.
+     */
     private void getNextRandomSpecialEnemyInt() {
-        nextrandom = random.nextInt(15);
+        nextrandom = random.nextInt(50);
     }
     
     private void spawnRandomEnemy() {
@@ -145,16 +148,18 @@ public class CreepState extends AbstractAppState {
      * tower.
      */
     private void spawnGlob() {
-        int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
-        if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
-            Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
-            Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-            GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
-            creepNode.attachChild(glob);
-            globList.add(glob);
-        }
-        else {
-            spawnGlob();
+        if (GameState.getGlobbedTowerList().size() < GameState.getTowerList().size()) {
+            int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
+            if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
+                Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+                Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
+                GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
+                creepNode.attachChild(glob);
+                globList.add(glob);
+            }
+            else {
+                spawnGlob();
+            }
         }
     }
     

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * TODO: Finish integration with LevelState TODO: Documentation
- * TODO: Fix stack overflow when no more places for globs to spawn
- * @author Connor Rice
+* This is the main game state for the Tower Defense game.
+* TODO: Documentation for GameState
+* @author Connor Rice
  */
 public class GameState extends AbstractAppState {
 
@@ -170,10 +170,8 @@ public class GameState extends AbstractAppState {
             return "100";
         } else if (type.equals("Tower1")) {
             return "50";
-
         } else if (type.equals("Tower2")) {
             return "100";
-
         } else if (type.equals("Tower3")) {
             return "500";
         } else {
@@ -253,7 +251,7 @@ public class GameState extends AbstractAppState {
     /**
      * Creates the player's base.
      * Called by LevelState.
-     * TODO: Multiple Bases (GUI additions as well)
+     * Pending: Multiple Bases (GUI additions as well)
      */
     public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
         basevec = _basevec;
@@ -263,23 +261,10 @@ public class GameState extends AbstractAppState {
     /**
      * Returns the app.
      * Used by BombControl to enqueue.
-     * TODO: See if there is a less hacky way to have BombControl enqueue
-     * it's searching callable.
      * @return the app.
      */
     public SimpleApplication getApp() {
         return this.app;
-    }
-    
-    /**
-     * Returns the BeamState.
-     * Used by TowerControl.
-     * TODO: See if there is a less hacky way for TowerControl to have access
-     * to BeamState.
-     * @return BeamState, the Beam State
-     */
-    public BeamState getBeamState() {
-        return BeamState;
     }
     
     /**
@@ -291,6 +276,10 @@ public class GameState extends AbstractAppState {
      */
     public TowerState getTowerState() {
         return TowerState;
+    }
+    
+    public Vector3f getBuiltTowerSize() {
+        return TowerState.getBuiltTowerSize();
     }
 
     public Node getWorldNode() {

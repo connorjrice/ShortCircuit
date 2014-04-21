@@ -114,7 +114,6 @@ public class BombControl extends AbstractControl {
      * 
      * If something goes wrong, the most lame form of exception handling has
      * been implemented.
-     * TODO: Implement better exception handling for concurrent tasks.
      */
     private void searchForVictims() {
         try {
@@ -138,7 +137,6 @@ public class BombControl extends AbstractControl {
      * list looking for collisions, if there is a collision it is added to the
      * list reach, which is then passed into a FindBombVictims object for
      * retrieval.
-     * TODO: See if we can do the same thing without a FindBombVictims wrapper.
      */
     private Callable<ArrayList<Spatial>> callableFindVics = new Callable<ArrayList<Spatial>>() {
         public ArrayList<Spatial> call() throws Exception {

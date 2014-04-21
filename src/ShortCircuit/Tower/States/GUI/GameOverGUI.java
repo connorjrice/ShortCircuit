@@ -13,7 +13,6 @@ import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
- * TODO: Fix z-order bug on gameover
  * @author Connor
  */
 public class GameOverGUI extends AbstractAppState {
@@ -41,11 +40,6 @@ public class GameOverGUI extends AbstractAppState {
         initScreen();
     }
     
-    @Override
-    public void update(float tpf) {
-        //TODO: implement behavior during runtime
-    }
-    
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
@@ -63,6 +57,7 @@ public class GameOverGUI extends AbstractAppState {
         GameOverWindow.setWindowIsMovable(false);
         GameOverWindow.setIsResizable(false);
         GameOverWindow.setIgnoreMouse(true);
+        GameOverWindow.setZOrder(-1f);
         screen.addElement(GameOverWindow);
     }
     

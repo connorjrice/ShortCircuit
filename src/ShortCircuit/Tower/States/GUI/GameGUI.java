@@ -120,6 +120,10 @@ public class GameGUI extends AbstractAppState {
         setInitialPlrInfo();
     }
 
+    /**
+     * TODO: Document GameGUI's update loop
+     * @param tpf 
+     */
     @Override
     public void update(float tpf) {
         if (updateTimer > .15) {
@@ -135,7 +139,6 @@ public class GameGUI extends AbstractAppState {
             if (gs.getPlrLvl() != internalLevel) {
                 FilterState.incBloomIntensity(.2f);
                 internalLevel = gs.getPlrLvl();
-
             }
             if (gs.getFours() > 0 && !end) {
                 endTheme();

@@ -63,7 +63,7 @@ public class TowerUpgradeFactory {
                     gs.incFours();
                 }
                 tower.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
-                tower.setSize(gs.getTowerState().getBuiltTowerSize());
+                tower.setSize(gs.getBuiltTowerSize());
                 gs.decPlrBudget(cost);
                 gs.playBuildSound(pitch);
                 valid = false;

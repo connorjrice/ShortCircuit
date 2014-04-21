@@ -24,7 +24,7 @@ import com.jme3.input.controls.Trigger;
 
 /**
  * This is the main state for all Tower gameplay.
- *
+ * TODO: Document Tower Main State
  * @author Connor
  */
 public class TowerMainState extends AbstractAppState {
@@ -181,6 +181,7 @@ public class TowerMainState extends AbstractAppState {
             super.cleanup();
             cleanup();
             app.stop();
+            System.exit(0);
         }
     }
 

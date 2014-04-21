@@ -16,7 +16,7 @@ import com.jme3.scene.control.Control;
 import java.io.IOException;
 
 /**
- *
+ * TODO: Implement Lone Ranger enemy type.
  * @author Connor
  */
 public class LoneRangerControl extends AbstractControl {
@@ -26,19 +26,14 @@ public class LoneRangerControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        //TODO: add code that controls Spatial,
-        //e.g. spatial.rotate(tpf,tpf,tpf);
     }
     
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        //Only needed for rendering-related operations,
-        //not called when spatial is culled.
     }
     
     public Control cloneForSpatial(Spatial spatial) {
         LoneRangerControl control = new LoneRangerControl();
-        //TODO: copy parameters to new Control
         return control;
     }
     
@@ -46,8 +41,6 @@ public class LoneRangerControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
-        //TODO: load properties of this Control, e.g.
-        //this.value = in.readFloat("name", defaultValue);
     }
     
     @Override

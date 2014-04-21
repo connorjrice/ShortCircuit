@@ -5,8 +5,6 @@ import com.jme3.math.Vector3f;
 /**
  * CreepTraits holds the information about a given creep, including:
  * Health, Size, Speed, Type, SpawnIndex
- * URGENT: Create CreepSpawner object with direction that is fed in from
- * MapGenerator
  * @author Connor Rice
  */
 public class CreepTraits {

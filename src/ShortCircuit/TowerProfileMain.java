@@ -1,6 +1,5 @@
 package ShortCircuit;
 
-import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.MainState.TowerMainState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
@@ -25,7 +24,6 @@ public class TowerProfileMain extends SimpleApplication {
         app.setShowSettings(false);
         app.start();
     }
-    private StartGUI sgui;
 
     @Override
     public void simpleInitApp() {
