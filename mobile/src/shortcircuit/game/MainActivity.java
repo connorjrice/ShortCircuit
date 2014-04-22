@@ -1,7 +1,6 @@
 package shortcircuit.game;
  
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import com.jme3.app.AndroidHarness;
 import com.jme3.system.AppSettings;
 import com.jme3.system.android.AndroidConfigChooser.ConfigType;
@@ -28,7 +27,7 @@ public class MainActivity extends AndroidHarness{
         // Set the application class to run
         appClass = "ShortCircuit.ShortCircuitMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
-        eglConfigType = ConfigType.FASTEST;
+        eglConfigType = ConfigType.BEST;
         audioRendererType = AppSettings.ANDROID_OPENAL_SOFT;
         // Enable verbose logging
         eglConfigVerboseLogging = false;

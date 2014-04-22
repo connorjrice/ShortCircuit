@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * This is the main game state for the Tower Defense game. TODO: Documentation
- * for GameState
- *
+ * This is the main game state for the Tower Defense game. 
+ * TODO: Documentation
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {
@@ -61,9 +60,17 @@ public class GameState extends AbstractAppState {
     private BaseFactory bf;
     private Material bomb_mat;
 
+    /**
+     * Constructor takes no input parameters.
+     */
     public GameState() {
     }
 
+    /**
+     * Initialize GameState.
+     * @param stateManager
+     * @param app 
+     */
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -73,9 +80,14 @@ public class GameState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
+        // TODO: Dynamic backgorund color, XML
+        this.app.getViewPort().setBackgroundColor(ColorRGBA.Blue);
     }
 
+    /**
+     * Update loop. Handles level incrementation.
+     * @param tpf 
+     */
     @Override
     public void update(float tpf) {
         super.update(tpf);
@@ -91,6 +103,10 @@ public class GameState extends AbstractAppState {
         }
     }
 
+    /**
+     * Initializes sounds and bomb material.
+     * Called by setLevelParams().
+     */
     private void initAssets() {
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
         buildSound.setPositional(false);
@@ -106,15 +122,27 @@ public class GameState extends AbstractAppState {
         bomb_mat = assetManager.loadMaterial("Materials/" + getMatDir() + "/Bomb.j3m");
     }
 
+    /**
+     * Initializes floor and base factories.
+     * Called by setLevelParams().
+     */
     private void initFactories() {
         ff = new FloorFactory(this);
         bf = new BaseFactory(this);
     }
 
+    /**
+     * Attaches the worldNode to the rootNode.
+     */
     public void attachWorldNode() {
         rootNode.attachChild(worldNode);
     }
 
+    /**
+     * Sets the parameters for the level.
+     * Called by LevelState.
+     * @param lp 
+     */
     public void setLevelParams(LevelParams lp) {
         setCamLocation(lp.getCamLocation());
         setNumCreeps(lp.getNumCreeps());
@@ -129,9 +157,12 @@ public class GameState extends AbstractAppState {
         setMatDir(lp.getMatDir());
         initAssets();
         initFactories();
-
     }
 
+    /**
+     * Increments level.
+     * Called by update loop when conditions are met.
+     */
     public void nextLevel() {
         incPlrLvl();
         playLevelUpSound();
@@ -140,13 +171,6 @@ public class GameState extends AbstractAppState {
         incPlrHealth(getPlrLvl());
     }
 
-    public void incFours() {
-        fours += 1;
-    }
-
-    public int getFours() {
-        return fours;
-    }
 
     private void updateNumCreeps() {
         numCreeps += creepMod;
@@ -184,7 +208,7 @@ public class GameState extends AbstractAppState {
                 TowerState.towerSelected(towerIndex);  //   select the tower.
             }
         } else if (target.getName().equals("Glob")) {
-            popGlob(trans, target);
+            popGlob(trans, target.getControl(GlobControl.class));
         } else {
             dropBomb(trans, .1f);
         }
@@ -192,9 +216,10 @@ public class GameState extends AbstractAppState {
     
     private boolean globCheck(Vector3f trans, Spatial target, int towerIndex) {
         if (TowerState.getGlobbedTowerList().contains(towerIndex)) {
-            Spatial glob = CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex));
+            GlobControl glob = CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex)).getControl(GlobControl.class);
             int popHealth = popGlob(trans, glob);
             if (popHealth <= 0) {
+                glob.remove();
                 if (TowerState.getGlobbedTowerList().size() >= 1) {
                     TowerState.getGlobbedTowerList().remove(TowerState.getGlobbedTowerList().indexOf(towerIndex));
                 }
@@ -206,13 +231,16 @@ public class GameState extends AbstractAppState {
         }
     }
 
-    public int popGlob(Vector3f trans, Spatial target) {
-        int health = target.getControl(GlobControl.class).decGlobHealth();
+    public int popGlob(Vector3f trans, GlobControl glob) {
+        int health = glob.decGlobHealth();
         globPop.setPitch(health
                 * 0.1f + 1f);
         globPop.setLocalTranslation(trans);
 
         globPop.playInstance();
+        if (health <= 0) {
+            glob.remove();
+        }
         return health;
     }
 
@@ -443,6 +471,15 @@ public class GameState extends AbstractAppState {
     public Vector3f getCamLocation() {
         return camLocation;
     }
+    
+    public void incFours() {
+        fours += 1;
+    }
+
+    public int getFours() {
+        return fours;
+    }
+
 
     public void playBuildSound(float pitch) {
         buildSound.setPitch(pitch);

@@ -15,70 +15,73 @@ import java.io.IOException;
 /**
  * This creep will come down from the ceiling and try to destroy one of your
  * towers if you don't get it first
- * TODO: Documentation for GlobControl
+ *
  * @author Connor
  */
 public class GlobControl extends AbstractControl {
+
     private CreepState cs;
-    
+
     public GlobControl(CreepState _cs) {
         cs = _cs;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (getGlobHealth() <= 0) {
-            cs.incPlrBudget(10);
-            cs.incPlrScore(10);
-            unglobTower();
-            cs.getCreepNode().detachChild(spatial);
-            cs.getGlobList().remove(spatial);
-            spatial.removeControl(this);
-        }
     }
-    
+
+    public void remove() {
+        cs.incPlrBudget(10);
+        cs.incPlrScore(10);
+        unglobTower();
+        cs.getCreepNode().detachChild(spatial);
+        cs.getGlobList().remove(spatial);
+        spatial.removeControl(this);
+
+    }
+
     protected void enableVictimTower() {
         getVictimTower().getControl(TowerControl.class).enableTower();
     }
-    
+
     protected void unglobTower() {
-       getVictimTower().getControl(TowerControl.class).unglobTower();
+        getVictimTower().getControl(TowerControl.class).unglobTower();
     }
-    
+
     private Spatial getVictimTower() {
-       return cs.getTowerList().get(getVictimTowerInd());
+        return cs.getTowerList().get(getVictimTowerInd());
     }
-    
+
     private int getVictimTowerInd() {
         return spatial.getUserData("TowerIndex");
     }
-    
+
     public int decGlobHealth() {
         int health = spatial.getUserData("Health");
-        spatial.setUserData("Health", health-1);
-        return health-1;
+        spatial.setUserData("Health", health - 1);
+        return health - 1;
     }
-    
+
     public int getGlobHealth() {
         return spatial.getUserData("Health");
     }
-    
+
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
-    
+
     @Override
     public Control cloneForSpatial(Spatial spatial) {
         GlobControl control = new GlobControl(cs);
         return control;
     }
-    
+
     @Override
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
     }
-    
+
     @Override
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);

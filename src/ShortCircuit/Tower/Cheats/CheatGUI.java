@@ -13,7 +13,6 @@ import tonegod.gui.core.Screen;
 
 /**
  * GUI for interacting with cheat methods :)
- * TODO: Documentation for CheatGUI
  * @author Connor
  */
 public class CheatGUI extends AbstractAppState {
@@ -34,8 +33,17 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter SuperMedic;
     private ButtonAdapter SuperDeath;
 
-    public CheatGUI() {}
+    /**
+     * Constructor takes no input parameters.
+     */
+    public CheatGUI() {
+    }
 
+    /**
+     * Initialize CheatGUI State.
+     * @param stateManager
+     * @param app 
+     */
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -48,6 +56,9 @@ public class CheatGUI extends AbstractAppState {
         setupGUI();
     }
 
+    /**
+     * Initializes ToneGodGUI Screen and attaches to guiNode.
+     */
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
@@ -55,6 +66,9 @@ public class CheatGUI extends AbstractAppState {
         guiNode.addControl(screen);
     }
 
+    /**
+     * Lays out all buttons/windows used.
+     */
     private void setupGUI() {
         cheatWindow();
         millionButton();
@@ -65,21 +79,29 @@ public class CheatGUI extends AbstractAppState {
         superMedic();
         superDeath();
     }
-    
-    
 
+    /**
+     * Window for buttons that perform cheat operations. 
+     * TODO: Scaling/positioning for cheatWindow in CheatGUI.
+     */
     private void cheatWindow() {
-        CheatWindow = new Window(screen, new Vector2f(400, 800), new Vector2f(width / 2, height / 4));
+        CheatWindow = new Window(screen, new Vector2f(400, 800),
+                new Vector2f(width / 2, height / 4));
         CheatWindow.setIgnoreMouse(true);
         CheatWindow.setIsMovable(false);
         screen.addElement(CheatWindow);
         CheatWindow.hide();
     }
 
+    /**
+     * Button for adding one million to player budget.
+     */
     private void millionButton() {
-        MillionDollars = new ButtonAdapter(screen, "Millions", new Vector2f(10, 35), buttonSize) {
+        MillionDollars = new ButtonAdapter(screen, "Millions",
+                new Vector2f(10, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.giveMeAMillionDollars();
             }
         };
@@ -88,10 +110,15 @@ public class CheatGUI extends AbstractAppState {
 
     }
 
+    /**
+     * Button for adding one billion to player budget.
+     */
     private void billionButton() {
-        BillionDollars = new ButtonAdapter(screen, "Billions", new Vector2f(210, 35), buttonSize) {
+        BillionDollars = new ButtonAdapter(screen, "Billions",
+                new Vector2f(210, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.giveMeABillionDollars();
             }
         };
@@ -100,73 +127,110 @@ public class CheatGUI extends AbstractAppState {
 
     }
 
+    /**
+     * Button for adding cheat ammo to all towers.
+     */
     private void ammoH4KZ() {
-        AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ", new Vector2f(410, 35), buttonSize) {
+        AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ",
+                new Vector2f(410, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.badassAmmoH4KX();
             }
         };
         AmmoH4KZ.setText("@MM0 H4KZ");
         CheatWindow.addChild(AmmoH4KZ);
     }
-    
+
+    /**
+     * Changes towers to invalid type with cheat ammo.
+     */
     private void hackyTowers() {
-        TowerHack = new ButtonAdapter(screen, "TowerHack", new Vector2f(610, 35), buttonSize) {
+        TowerHack = new ButtonAdapter(screen, "TowerHack",
+                new Vector2f(610, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.makeTowersBadAss();
             }
         };
         TowerHack.setText("Tower Glitch");
         CheatWindow.addChild(TowerHack);
     }
-    
+
+    /**
+     * Toggles increment of player budget during update loop.
+     */
     private void dollaBillz() {
-        DollaBillz = new ButtonAdapter(screen, "MoneyGack", new Vector2f(10, 135), buttonSize) {
+        DollaBillz = new ButtonAdapter(screen, "MoneyGack",
+                new Vector2f(10, 135), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.dollaDollaBillsYall();
             }
         };
         DollaBillz.setText("Dolla Billz");
         CheatWindow.addChild(DollaBillz);
     }
-    
+
+    /**
+     * Toggles increment of player health during update loop.
+     */
     private void superMedic() {
-        SuperMedic = new ButtonAdapter(screen, "MuchMedic", new Vector2f(210, 135), buttonSize) {
+        SuperMedic = new ButtonAdapter(screen, "MuchMedic",
+                new Vector2f(210, 135), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.iNeedASuperMedic();
             }
         };
         SuperMedic.setText("Super Medic");
         CheatWindow.addChild(SuperMedic);
     }
-    
+
+    /**
+     * Toggles increment of level during update loop.
+     */
     private void superDeath() {
-        SuperDeath = new ButtonAdapter(screen, "MuchHurt", new Vector2f(410, 135), buttonSize) {
+        SuperDeath = new ButtonAdapter(screen, "MuchHurt",
+                new Vector2f(410, 135), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
                 CheatState.bringMeThePainIWantToFeelThePain();
             }
         };
         SuperDeath.setText("Super Death");
         CheatWindow.addChild(SuperDeath);
     }
-    
+
+    /**
+     * Toggles visibility of cheat window.
+     */
     public void toggleCheatWindow() {
         if (CheatWindow.getIsVisible()) {
             CheatWindow.hide();
-        }
-        else {
+        } else {
             CheatWindow.show();
         }
     }
-    
+
+    /**
+     * Cleanup of CheatGUI.
+     */
     @Override
     public void cleanup() {
+        screen.removeElement(AmmoH4KZ);
+        screen.removeElement(BillionDollars);
         screen.removeElement(CheatWindow);
+        screen.removeElement(DollaBillz);
+        screen.removeElement(MillionDollars);
+        screen.removeElement(SuperDeath);
+        screen.removeElement(SuperMedic);
+        screen.removeElement(TowerHack);
         guiNode.removeControl(screen);
     }
 }

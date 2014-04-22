@@ -129,7 +129,7 @@ public class StartGUI extends AbstractAppState {
             tMS = new TowerMainState(debug, level);
             stateManager.attach(tMS);
         }
-        toggle();
+        forceHide();
     }
 
     private void loadingpic() {
@@ -240,6 +240,11 @@ public class StartGUI extends AbstractAppState {
             MainWindow.hide();
             levelMenu.hide();
         }
+    }
+    
+    public void forceHide() {
+        MainWindow.hide();
+        MainWindow.hide();
     }
 
     public boolean mainWindowShown() {

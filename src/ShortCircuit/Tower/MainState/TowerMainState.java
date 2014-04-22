@@ -155,7 +155,8 @@ public class TowerMainState extends AbstractAppState {
      * Returns to the start menu.
      * Currently used by GameOver state, the "Too Bad" button.
      */
-    public void backToTGStart() {
+    public void backToStartGUI() {
+        detachStates();
         stateManager.detach(GameOverGUI);
         stateManager.attach(StartGUI);
         StartGUI.toggle();

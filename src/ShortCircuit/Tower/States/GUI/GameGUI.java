@@ -30,7 +30,6 @@ import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.AlertBox;
-import tonegod.gui.controls.windows.Panel;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
@@ -49,8 +48,6 @@ public class GameGUI extends AbstractAppState {
     private Button Charge;
     private Screen screen;
     private Node guiNode;
-    private Panel leftPanel;
-    private Panel rightPanel;
     private ButtonAdapter Settings;
     public ButtonAdapter Health;
     public ButtonAdapter Budget;
@@ -63,7 +60,6 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Menu;
     private ButtonAdapter CheatsButton;
     private ButtonAdapter CheatToggleButton;
-    private Menu levelMenu;
     private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
     private float updateTimer;
@@ -264,9 +260,6 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void setupGUI() {
-        //objectivePopup();
-        leftPanel();
-        rightPanel();
         settingsWindow();
         cheatToggleButton();
         internalMenu();
@@ -560,22 +553,6 @@ public class GameGUI extends AbstractAppState {
         SetWindow.addChild(SoundSlider);
     }
 
-    private void leftPanel() {
-        leftPanel = new Panel(screen, "leftPanel", new Vector2f(0, 0), new Vector2f(325, 1200));
-        leftPanel.setIgnoreMouse(true);
-        leftPanel.setAsContainerOnly();
-        screen.addElement(leftPanel);
-
-    }
-
-    private void rightPanel() {
-        rightPanel = new Panel(screen, "rightPanel", new Vector2f(1595, 0), new Vector2f(325, 1200));
-        rightPanel.setIgnoreMouse(true);
-        rightPanel.setAsContainerOnly();
-        screen.addElement(rightPanel);
-
-    }
-
     private void chargeButton() {
         Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, 100)) {
             @Override
@@ -585,7 +562,7 @@ public class GameGUI extends AbstractAppState {
         };
         Charge.setLocalScale(3f, 2f, 1f);
         Charge.setText("Charge: 10");
-        leftPanel.addChild(Charge);
+        screen.addElement(Charge);
 
     }
 
@@ -600,7 +577,7 @@ public class GameGUI extends AbstractAppState {
         Modify.setLocalScale(3f, 2f, 1f);
         Modify.setText("Modify");
         Modify.setUseButtonPressedSound(true);
-        leftPanel.addChild(Modify);
+        screen.addElement(Modify);
 
     }
 
@@ -706,8 +683,6 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Modify);
         screen.removeElement(Score);
         screen.removeElement(Settings);
-        screen.removeElement(leftPanel);
-        screen.removeElement(rightPanel);
         screen.removeElement(CheatsButton);
         screen.removeElement(PurchaseButton);
         screen.removeElement(PurchaseWindow);
