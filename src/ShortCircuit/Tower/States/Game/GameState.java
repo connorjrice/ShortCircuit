@@ -203,7 +203,7 @@ public class GameState extends AbstractAppState {
         if (target.getName().equals("Tower")) {
             TowerState.shortenTower();
             int towerIndex = target.getUserData("Index");
-            if (globCheck(trans, target, towerIndex)) { // If the tower isn't 
+            if (globCheck(trans, towerIndex)) { // If the tower isn't 
             } else {                                    //  globbed, we
                 TowerState.towerSelected(towerIndex);  //   select the tower.
             }
@@ -214,16 +214,16 @@ public class GameState extends AbstractAppState {
         }
     }
     
-    private boolean globCheck(Vector3f trans, Spatial target, int towerIndex) {
+    /**
+     * Check to see if the tower is globbed. If it isn't globbed, it is 
+     * @param trans
+     * @param target
+     * @param towerIndex
+     * @return 
+     */
+    private boolean globCheck(Vector3f trans, int towerIndex) {
         if (TowerState.getGlobbedTowerList().contains(towerIndex)) {
-            GlobControl glob = CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex)).getControl(GlobControl.class);
-            int popHealth = popGlob(trans, glob);
-            if (popHealth <= 0) {
-                glob.remove();
-                if (TowerState.getGlobbedTowerList().size() >= 1) {
-                    TowerState.getGlobbedTowerList().remove(TowerState.getGlobbedTowerList().indexOf(towerIndex));
-                }
-            }
+            popGlob(trans, CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex)).getControl(GlobControl.class));
             return true;
         }
         else {
@@ -344,6 +344,7 @@ public class GameState extends AbstractAppState {
         numCreeps = nc;
     }
 
+ 
     public void setCreepMod(int cm) {
         creepMod = cm;
     }

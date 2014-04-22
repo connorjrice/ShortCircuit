@@ -45,12 +45,13 @@ public class GlobControl extends AbstractControl {
     }
 
     protected void unglobTower() {
-        getVictimTower().getControl(TowerControl.class).unglobTower();
+        cs.getTowerList().get(getVictimTowerInd()).getControl(TowerControl.class).unglobTower();
     }
-
-    private Spatial getVictimTower() {
+    
+    protected Spatial getVictimTower() {
         return cs.getTowerList().get(getVictimTowerInd());
     }
+
 
     private int getVictimTowerInd() {
         return spatial.getUserData("TowerIndex");
