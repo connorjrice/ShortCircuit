@@ -1,6 +1,6 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Textures/Neon/spawner.png
+        ColorMap : Textures/Neon/spawner.jpg
         GlowColor : 1.0 0.8 0.8 0.7
      }
     AdditionalRenderState {

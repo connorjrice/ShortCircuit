@@ -1,7 +1,6 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Factories.BaseFactory;
-import ShortCircuit.Tower.Factories.FloorFactory;
 import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.Objects.LevelParams;
@@ -59,7 +58,6 @@ public class GameState extends AbstractAppState {
     public AudioNode levelUpSound;
     public AudioNode globPop;
     public int fours;
-    private FloorFactory ff;
     private BaseFactory bf;
     private Material bomb_mat;
 
@@ -130,7 +128,6 @@ public class GameState extends AbstractAppState {
      * Called by setLevelParams().
      */
     private void initFactories() {
-        ff = new FloorFactory(this);
         bf = new BaseFactory(this);
     }
 
@@ -275,7 +272,10 @@ public class GameState extends AbstractAppState {
      * Called by LevelState
      */
     public void createFloor(Vector3f floorscale, String floortexloc) {
-        worldNode.attachChild(ff.getFloor(floorscale, floortexloc));
+        Geometry floor_geom = new Geometry("Floor", univ_box);
+        floor_geom.setMaterial(assetManager.loadMaterial(floortexloc));
+        floor_geom.setLocalScale(floorscale);
+        worldNode.attachChild(floor_geom);
 
     }
 

@@ -1,6 +1,6 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Textures/Neon/largecreep.png
+        ColorMap : Textures/Neon/largecreep.jpg
         GlowColor : 0.8 0.0 0.8 1.0
      }
     AdditionalRenderState {
