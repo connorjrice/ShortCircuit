@@ -57,7 +57,7 @@ public class CreepState extends AbstractAppState {
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
     private String xlCreepMatloc;
-    public Random random = new Random();
+    public Random random = new Random(42);
     
     private SimpleApplication app;
     private AssetManager assetManager;

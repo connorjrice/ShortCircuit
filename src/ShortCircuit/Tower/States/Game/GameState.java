@@ -26,6 +26,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * This is the main game state for the Tower Defense game. 
  * TODO: Documentation
+ * TODO: Tutorial
+ * TODO: XML Level Features
+ * TODO: New enemy type, new helper type.
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {
@@ -81,7 +84,7 @@ public class GameState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         // TODO: Dynamic backgorund color, XML
-        this.app.getViewPort().setBackgroundColor(ColorRGBA.Blue);
+        this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
     }
 
     /**
