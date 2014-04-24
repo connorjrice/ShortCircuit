@@ -11,6 +11,7 @@ import ShortCircuit.Tower.States.Game.FilterState;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.LevelState;
 import ShortCircuit.Tower.States.Game.TowerState;
+import ShortCircuit.Tower.States.Game.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -55,6 +56,7 @@ public class TowerMainState extends AbstractAppState {
     private final boolean profile;
     private final String level;
     private FilterState FilterState;
+    private TutorialState TutorialState;
 
     public TowerMainState(boolean _profile, String level) {
         this.profile = _profile;
@@ -97,6 +99,7 @@ public class TowerMainState extends AbstractAppState {
         CreepState = new CreepState();
         TowerState = new TowerState();
         GameOverGUI = new GameOverGUI(this);
+        TutorialState = new TutorialState();
 
         stateManager.attach(FilterState);
         stateManager.attach(GameState);
@@ -107,6 +110,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(LevelState);
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
+        stateManager.attach(TutorialState);
 
     }
 
@@ -255,9 +259,22 @@ public class TowerMainState extends AbstractAppState {
             GameGUI.toggleFrills();
         }
     }
-
+    
+    @Override
+    public void stateDetached(AppStateManager asm) {
+        asm.detach(GameGUI);
+        asm.detach(GameState);
+        asm.detach(TowerState);
+        asm.detach(CreepState);
+        asm.detach(BeamState);
+        asm.detach(LevelState);
+        asm.detach(CheatState);
+        asm.detach(CheatGUI);
+        asm.detach(FilterState);
+    }
+    
     @Override
     public void cleanup() {
-        detachStates();
+        theme.stop();
     }
 }

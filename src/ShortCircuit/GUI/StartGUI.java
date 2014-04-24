@@ -76,7 +76,6 @@ public class StartGUI extends AbstractAppState {
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
-
         mainWindow();
         newGame();
         initLoadBar();
@@ -121,10 +120,12 @@ public class StartGUI extends AbstractAppState {
 
     public void onStart(String level, boolean debug) {
         if (firstLoad) {
+            showloading();
             tMS = new TowerMainState(debug, level);
             stateManager.attach(tMS);
             firstLoad = false;
         } else {
+            showloading();
             stateManager.detach(tMS);
             tMS = new TowerMainState(debug, level);
             stateManager.attach(tMS);
@@ -141,6 +142,10 @@ public class StartGUI extends AbstractAppState {
 
     private void showloading() {
         guiNode.attachChild(loading);
+    }
+    
+    public void hideloading() {
+        guiNode.detachChild(loading);
     }
 
     private void initLoadBar() {

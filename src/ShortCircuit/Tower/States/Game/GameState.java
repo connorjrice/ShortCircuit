@@ -60,6 +60,7 @@ public class GameState extends AbstractAppState {
     public int fours;
     private BaseFactory bf;
     private Material bomb_mat;
+    private String basetexloc;
 
     /**
      * Constructor takes no input parameters.
@@ -285,6 +286,7 @@ public class GameState extends AbstractAppState {
      */
     public void createBase(String texloc, Vector3f _basevec, Vector3f basescale) {
         basevec = _basevec;
+        basetexloc = texloc;
         worldNode.attachChild(bf.getBase(texloc, basevec, basescale));
     }
 
@@ -341,6 +343,10 @@ public class GameState extends AbstractAppState {
 
     public Box getUnivBox() {
         return univ_box;
+    }
+    
+    public String getBaseTexLoc() {
+        return "Materials/" + getMatDir() + basetexloc + ".j3m";
     }
 
     public void setNumCreeps(int nc) {

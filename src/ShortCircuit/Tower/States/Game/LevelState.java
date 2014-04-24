@@ -1,7 +1,9 @@
 package ShortCircuit.Tower.States.Game;
 
+import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.MapXML.MapGenerator;
+import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -77,7 +79,7 @@ public class LevelState extends AbstractAppState {
         CreepState.initMaterials();
         CreepState.attachCreepNode();
         GameState.attachWorldNode();
-
+        app.getStateManager().getState(StartGUI.class).hideloading();
     }
     
     
@@ -98,7 +100,7 @@ public class LevelState extends AbstractAppState {
         GameState.attachWorldNode();
         CheatState cHS = app.getStateManager().getState(CheatState.class);
         cHS.makeTowersBadAss();
-        
+        app.getStateManager().getState(StartGUI.class).hideloading();
     }
     
     /**

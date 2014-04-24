@@ -669,9 +669,9 @@ public class GameGUI extends AbstractAppState {
     public void setCameraLocation() {
         cam.setLocation(gs.getCamLocation());
     }
-
+    
     @Override
-    public void cleanup() {
+    public void stateDetached(AppStateManager asm) {
         super.cleanup();
         inputManager.removeListener(actionListener);
         screen.removeElement(Budget);
@@ -693,4 +693,5 @@ public class GameGUI extends AbstractAppState {
         }
         guiNode.removeControl(screen);
     }
+    
 }
