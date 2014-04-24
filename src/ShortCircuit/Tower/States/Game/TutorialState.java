@@ -10,6 +10,7 @@ import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.core.Screen;
 
@@ -28,7 +29,6 @@ public class TutorialState extends AbstractAppState {
     private Screen screen;
     private Node guiNode;
     private GameState GameState;
-    private Node worldNode;
     private Material focusMaterial;
     private int width;
     private int height;
@@ -41,19 +41,18 @@ public class TutorialState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
-        this.tMS = stateManager.getState(TowerMainState.class);
+        this.tMS = this.app.getStateManager().getState(TowerMainState.class);
         this.guiNode = this.app.getGuiNode();
-        this.GameState = this.app.getStateManager().getState(GameState.class);
+        this.GameState = stateManager.getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
-        this.worldNode = this.GameState.getWorldNode();
         this.assetManager = this.app.getAssetManager();
         width = tMS.getWidth();
         height = tMS.getHeight();
         initScreen();
         initMaterials();
-        basePopup();
         tMS.pause();
+        basePopup();
     }
 
     private void initScreen() {
@@ -77,6 +76,7 @@ public class TutorialState extends AbstractAppState {
      */
     private void initBanner() {
     }
+    
 
     private void towerPopup() {
         focusBuiltTowers();
@@ -126,19 +126,20 @@ public class TutorialState extends AbstractAppState {
     private void creepPopup() {
     }
 
-    private void basePopup() {
-        worldNode.getChild("Base").setMaterial(focusMaterial);
+    public void basePopup() {
+        GameState.getWorldNode().getChild("Base").setMaterial(focusMaterial);
         AlertBox baseA = new AlertBox(screen, "Your Base", new Vector2f(width/2, height/2)) {
             
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
-                worldNode.getChild("Base").setMaterial(assetManager.loadMaterial(GameState.getBaseTexLoc()));
+                GameState.getWorldNode().getChild("Base").setMaterial(assetManager.loadMaterial(GameState.getBaseTexLoc()));
                 screen.removeElement(this);
                 towerPopup();
             }
         };
         baseA.setMsg("This is your base. Defend it from creeps.");
         screen.addElement(baseA);
+
         
     }
 

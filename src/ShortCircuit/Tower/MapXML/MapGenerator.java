@@ -12,8 +12,9 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 
 /**
- * Generates maps for Tower game based upon XML files.
- * Files must have .lvl.xml extensions
+ * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
+ * extensions
+ *
  * @author Connor Rice
  */
 public class MapGenerator {
@@ -112,7 +113,6 @@ public class MapGenerator {
         }
         return starterTowers;
     }
-    
 
     public LevelParams getLevelParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
@@ -131,23 +131,30 @@ public class MapGenerator {
         int plrScore = Integer.parseInt(eElement.getElementsByTagName("plrScore").item(0).getTextContent());
         String debugs = eElement.getElementsByTagName("debug").item(0).getTextContent();
         String matdir = eElement.getElementsByTagName("matdir").item(0).getTextContent();
+        String tutorials = eElement.getElementsByTagName("tutorial").item(0).getTextContent();
         boolean debug;
         if (debugs.equals("true")) {
             debug = true;
         } else {
             debug = false;
         }
-        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir);
+        boolean tutorial;
+        if (tutorials.equals("true")) {
+            tutorial = true;
+        } else {
+            tutorial = false;
+        }
+
+        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug, matdir, tutorial);
     }
-    
+
     public FilterParams getFilterParams() {
         Element eElement = (Element) pList.item(0);
         String blooms = eElement.getElementsByTagName("bloom").item(0).getTextContent();
         boolean bloom;
         if (blooms.equals("false")) {
             bloom = false;
-        }
-        else {
+        } else {
             bloom = true;
         }
         float downsampling = Float.parseFloat(eElement.getElementsByTagName("downsampling").item(0).getTextContent());
@@ -158,18 +165,13 @@ public class MapGenerator {
         GlowMode glowmode;
         if (glowmodes.equals("GlowMode.SceneAndObjects")) {
             glowmode = GlowMode.SceneAndObjects;
-        }
-        else if (glowmodes.equals("GlowMode.Scene")) {
+        } else if (glowmodes.equals("GlowMode.Scene")) {
             glowmode = GlowMode.Scene;
-        }
-        else if (glowmodes.equals("GlowMode.Objects")) {
+        } else if (glowmodes.equals("GlowMode.Objects")) {
             glowmode = GlowMode.Objects;
-        }
-        else {
+        } else {
             glowmode = null;
         }
         return new FilterParams(bloom, downsampling, blurscale, exposurepower, bloomintensity, glowmode);
     }
-    
-
 }

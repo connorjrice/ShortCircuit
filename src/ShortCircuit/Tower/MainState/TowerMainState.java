@@ -99,7 +99,6 @@ public class TowerMainState extends AbstractAppState {
         CreepState = new CreepState();
         TowerState = new TowerState();
         GameOverGUI = new GameOverGUI(this);
-        TutorialState = new TutorialState();
 
         stateManager.attach(FilterState);
         stateManager.attach(GameState);
@@ -110,7 +109,6 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(LevelState);
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
-        stateManager.attach(TutorialState);
 
     }
 

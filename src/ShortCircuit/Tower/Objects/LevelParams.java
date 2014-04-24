@@ -22,9 +22,10 @@ public class LevelParams {
     private int plrScore;
     private boolean debug;
     private String matdir;
+    private boolean tutorial;
 
     public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir) {
+            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial) {
         camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
@@ -36,8 +37,9 @@ public class LevelParams {
         plrScore = _plrScore;
         debug = _debug;
         matdir = _matdir;
+        tutorial = _tutorial;
     }
-    
+
     public Vector3f getCamLocation() {
         return camLocation;
     }
@@ -80,5 +82,9 @@ public class LevelParams {
 
     public String getMatDir() {
         return matdir;
+    }
+
+    public boolean getTutorial() {
+        return tutorial;
     }
 }

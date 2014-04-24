@@ -13,6 +13,7 @@
             <plrScore>0</plrScore>
             <debug>false</debug>
             <matdir>Neon</matdir>
+            <tutorial>false</tutorial>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>

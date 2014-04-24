@@ -30,6 +30,7 @@ public class LevelState extends AbstractAppState {
     protected boolean gameOver = false;
     private final String levelName;
     private FilterState FilterState;
+    private AppStateManager stateManager;
     
     public LevelState(boolean _isDebug, String _levelName) {
         isDebug = _isDebug;
@@ -46,6 +47,7 @@ public class LevelState extends AbstractAppState {
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
+        this.stateManager = stateManager;
         this.rootNode = this.app.getRootNode();
         begin();
     }
@@ -79,7 +81,16 @@ public class LevelState extends AbstractAppState {
         CreepState.initMaterials();
         CreepState.attachCreepNode();
         GameState.attachWorldNode();
+        
         app.getStateManager().getState(StartGUI.class).hideloading();
+        tutorial(mg.getLevelParams().getTutorial());
+    }
+    
+    public void tutorial(boolean tutorial) {
+        if (tutorial) {
+            TutorialState ts = new TutorialState();
+            stateManager.attach(ts);
+        }
     }
     
     
@@ -100,7 +111,7 @@ public class LevelState extends AbstractAppState {
         GameState.attachWorldNode();
         CheatState cHS = app.getStateManager().getState(CheatState.class);
         cHS.makeTowersBadAss();
-        app.getStateManager().getState(StartGUI.class).hideloading();
+        
     }
     
     /**

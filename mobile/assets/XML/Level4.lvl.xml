@@ -13,6 +13,7 @@
             <plrScore>0</plrScore>
             <debug>false</debug>
             <matdir>Circuit2</matdir>
+            <tutorial>false</tutorial>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>

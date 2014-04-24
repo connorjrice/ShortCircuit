@@ -61,6 +61,7 @@ public class GameState extends AbstractAppState {
     private BaseFactory bf;
     private Material bomb_mat;
     private String basetexloc;
+    private TutorialState TutorialState;
 
     /**
      * Constructor takes no input parameters.
@@ -82,6 +83,7 @@ public class GameState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        this.TutorialState = this.app.getStateManager().getState(TutorialState.class);
         // TODO: Dynamic backgorund color, XML
         this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
     }
@@ -509,6 +511,7 @@ public class GameState extends AbstractAppState {
     public Vector3f getBaseVec() {
         return basevec;
     }
+   
 
     @Override
     public void cleanup() {
