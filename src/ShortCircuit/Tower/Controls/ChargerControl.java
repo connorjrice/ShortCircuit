@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Tower.Controls;
 
+import ShortCircuit.Tower.States.Game.HelperState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -23,10 +20,12 @@ import java.io.IOException;
  * @author Connor
  */
 public class ChargerControl extends AbstractControl {
-    //Any local variables should be encapsulated by getters/setters so they
-    //appear in the SDK properties window and can be edited.
-    //Right-click a local variable to encapsulate it with getters and setters.
+    private HelperState HelperState;
 
+    public ChargerControl(HelperState _hs) {
+        HelperState = _hs;
+    }
+    
     @Override
     protected void controlUpdate(float tpf) {
         //TODO: add code that controls Spatial,
@@ -40,8 +39,8 @@ public class ChargerControl extends AbstractControl {
     }
     
     public Control cloneForSpatial(Spatial spatial) {
-        ChargerControl control = new ChargerControl();
-        //TODO: copy parameters to new Control
+        ChargerControl control = new ChargerControl(HelperState);
+        control.setSpatial(spatial);
         return control;
     }
     
@@ -49,15 +48,11 @@ public class ChargerControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
-        //TODO: load properties of this Control, e.g.
-        //this.value = in.readFloat("name", defaultValue);
     }
     
     @Override
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
-        //TODO: save properties of this Control, e.g.
-        //out.write(this.value, "name", defaultValue);
     }
 }

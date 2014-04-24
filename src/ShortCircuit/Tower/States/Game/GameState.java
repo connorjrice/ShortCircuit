@@ -453,6 +453,7 @@ public class GameState extends AbstractAppState {
     public void setPlrBudget(int budget) {
         plrBudget = budget;
     }
+    
 
     public int getPlrBudget() {
         return plrBudget;
@@ -503,6 +504,10 @@ public class GameState extends AbstractAppState {
 
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
+    }
+    
+    public Vector3f getBaseVec() {
+        return basevec;
     }
 
     @Override
