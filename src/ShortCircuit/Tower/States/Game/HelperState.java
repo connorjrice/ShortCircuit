@@ -57,6 +57,7 @@ public class HelperState extends AbstractAppState {
         if (!activeChargers.isEmpty()) {
             if (updateTimer > 0.5f) {
                 if (!emptyTowers.isEmpty()) {
+                    System.out.println("Should go");
                     goCharge();
                 }
                 updateTimer = 0;
@@ -85,10 +86,6 @@ public class HelperState extends AbstractAppState {
      * Tells the first active charger to go charge a tower.
      */
     private void goCharge() {
-        if (activeChargers.get(0).getControl(ChargerControl.class).getIsHome()) {
-            activeChargers.get(0).getControl(ChargerControl.class).chargeTower(emptyTowers.get(0));
-            emptyTowers.remove(0);
-        }
 
     }
     
@@ -96,7 +93,10 @@ public class HelperState extends AbstractAppState {
      * Adds an empty tower to the list of towers that need to be charged.
      */
     public void addEmptyTower(Spatial empty) {
-        emptyTowers.add(empty);
+        if (!emptyTowers.contains(empty)) {
+            emptyTowers.add(empty);
+        }
+
     }
     
     /**
@@ -112,6 +112,10 @@ public class HelperState extends AbstractAppState {
      */
     public ArrayList<Spatial> getActiveChargers() {
         return activeChargers;
+    }
+    
+    public ArrayList<Spatial> getEmptyTowers() {
+        return emptyTowers;
     }
     
     /**
@@ -134,6 +138,10 @@ public class HelperState extends AbstractAppState {
         charger.addControl(new ChargerControl(this));
         activeChargers.add(charger);
         worldNode.attachChild(charger);
+    }
+    
+    public void chargeTower(int index) {
+        TowerState.chargerChargeTower(index);
     }
     
     public AssetManager getAssetManager() {

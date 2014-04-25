@@ -275,6 +275,7 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(CheatState);
         asm.detach(CheatGUI);
         asm.detach(FilterState);
+        asm.detach(HelperState);
     }
     
     @Override

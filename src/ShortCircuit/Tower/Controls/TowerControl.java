@@ -182,7 +182,10 @@ public class TowerControl extends AbstractControl {
     protected void emptyTower() {
         emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
-        HelperState.addEmptyTower(spatial);
+        if (!HelperState.getEmptyTowers().contains(spatial)) {
+            System.out.println("Added" + spatial.getName());
+            HelperState.addEmptyTower(spatial);
+        }
     }
 
     protected void shootCreep() {
@@ -215,7 +218,10 @@ public class TowerControl extends AbstractControl {
 
     public int getIndex() {
         return spatial.getUserData("Index");
-
+    }
+    
+    public boolean getIsEmpty() {
+        return charges.isEmpty();
     }
 
     public String getBeamType() {

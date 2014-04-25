@@ -38,7 +38,7 @@ public class DiggerControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (isAlive() && cs.isEnabled()) {
             if (doneDigging) {
-                if ()
+                
             }
         }
     }

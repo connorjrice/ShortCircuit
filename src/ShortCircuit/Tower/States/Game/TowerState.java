@@ -132,7 +132,25 @@ public class TowerState extends AbstractAppState {
                 tower.addCharges();
                 GameState.decPlrBudget(chargeCost);
                 playChargeSound();
+                if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
+                    HelperState.getEmptyTowers().remove(tower.getSpatial());
+                }
+                    
             }
+        }
+    }
+    
+    /**
+     * Charges a tower at a specific index point.
+     *
+     * @param selectedTower = the index on the towerList of the specified tower.
+     */
+    public void chargerChargeTower(int index) {
+        if (index != -1) {
+            TowerControl tower = towerList.get(index).getControl(TowerControl.class);
+            changeTowerTexture("Materials/"+ getMatDir()+"/"+tower.getTowerType()+".j3m", tower);
+            tower.addCharges();
+            playChargeSound();
         }
     }
     

@@ -2,6 +2,7 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Cheats.CheatState;
+import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.MapXML.MapGenerator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -29,6 +30,11 @@ public class LevelState extends AbstractAppState {
     private final String levelName;
     private FilterState FilterState;
     private AppStateManager stateManager;
+    private float profileUpgradeTimer = 0f;
+    private double profileBombTimer;
+    private HelperState HelperState;
+    private double profileEmptyTimer;
+    private double profileChargerTimer;
     
     public LevelState(boolean _isProfile, String _levelName) {
         isProfile = _isProfile;
@@ -45,6 +51,7 @@ public class LevelState extends AbstractAppState {
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
+        this.HelperState = this.app.getStateManager().getState(HelperState.class);
         this.stateManager = stateManager;
         this.rootNode = this.app.getRootNode();
         begin();
@@ -108,10 +115,61 @@ public class LevelState extends AbstractAppState {
         CreepState.setBaseBounds();
         CreepState.initMaterials();
         GameState.attachWorldNode();
-
-        CheatState cHS = app.getStateManager().getState(CheatState.class);
-        cHS.makeTowersBadAss();
-        
+    }
+    
+    @Override
+    public void update(float tpf) {
+        if (isProfile) {
+            profileUpgradeTowers(tpf);
+            profileDropBombs(tpf);
+            profileEmptyTowers(tpf);
+            profileBuildCharger(tpf);
+        }
+    }
+    
+    private void profileUpgradeTowers(float tpf) {
+        if (profileUpgradeTimer > .5) {
+            for (int i = 0; i < TowerState.getTowerList().size(); i++) { 
+                TowerState.selectedTower = i;
+                TowerState.upgradeTower();
+            }
+            profileUpgradeTimer = 0;
+        }
+        else {
+            profileUpgradeTimer += tpf;
+        }
+    }
+    
+    private void profileDropBombs(float tpf) {
+        if (profileBombTimer > .3) {
+            GameState.dropBomb(CreepState.getCreepList().get(0).getLocalTranslation(), .002f);
+            profileBombTimer = 0;
+        }
+        else {
+            profileBombTimer += tpf;
+        }
+    }
+    
+    private void profileEmptyTowers(float tpf) {
+        if (profileEmptyTimer > .75) {
+            for (int i = 0; i < TowerState.getTowerList().size(); i++) {
+                TowerState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
+            }
+            profileEmptyTimer = 0;
+        }
+        else {
+            profileEmptyTimer += tpf;
+        }
+    }
+    
+    private void profileBuildCharger(float tpf) {
+        if (profileChargerTimer > .8) {
+            HelperState.createCharger();
+            profileChargerTimer = 0;
+        }
+        else {
+            profileChargerTimer += tpf;
+        }
     }
     
     /**

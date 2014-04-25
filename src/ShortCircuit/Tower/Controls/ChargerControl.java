@@ -1,7 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.Tower.States.Game.HelperState;
-import com.jme3.asset.AssetManager;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -25,45 +24,88 @@ public class ChargerControl extends AbstractControl {
     private TowerControl destTower;
     private boolean isHome;
     private float moveamount;
-    private AssetManager assetManager;
 
     public ChargerControl(HelperState _hs) {
         HelperState = _hs;
-        assetManager = HelperState.getAssetManager();
-        isHome = true;
-        moveamount = .004f;
+        moveamount = .04f;
+        setIsHome(true);
     }
     
     @Override
     protected void controlUpdate(float tpf) {
-        if (destTower != null) {
-            if (!spatial.getWorldBound().intersects(destTower.getSpatial().getWorldBound())) {
-                spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(destTower.getSpatial().getWorldBound().getCenter(), .004f));
-            }
-            else {
-                destTower.addCharges();
-                destTower.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+ HelperState.getMatDir() + "/"+ destTower.getTowerType()+".j3m"));
-                destTower = null;
-            }
+        nextLocation();
+    }
+    
+    private void nextLocation() {
+        if (HelperState.getEmptyTowers().isEmpty()) {
+            moveTowardsHome();
         }
-        if (destTower == null && isHome == false) {
-            if (!spatial.getLocalTranslation().equals(HelperState.getHomeVec())) {
-                moveamount += .00003f;
-                spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(HelperState.getHomeVec(), moveamount));
-            }
-            else {
-                isHome = true;
+        else {
+            if (destTower == null) {
+                destTower = HelperState.getEmptyTowers().get(0).getControl(TowerControl.class);
+                moveTowardsTower();
+            } else {
+                moveTowardsTower();
             }
         }
     }
+    
+    
+    private void moveTowardsTower() {
+        if (destTower.getIsEmpty()) {
+            if (!spatial.getWorldBound().intersects(destTower.getSpatial()
+                    .getWorldBound())) {
+                
+                spatial.setLocalTranslation(spatial.getLocalTranslation().
+                        interpolate(destTower.getSpatial().
+                        getWorldBound().getCenter(), moveamount));
+            }
+            else {
+                chargeTower();
+            }
+        }
+        else {
+            moveTowardsHome();
+            HelperState.getEmptyTowers().remove(destTower.getSpatial());
+        }
+    }
+    
 
-    public void chargeTower(Spatial tower) {
-        isHome = false;
+    private void chargeTower() {
+        HelperState.chargeTower(getTowerIndex());
+        HelperState.getEmptyTowers().remove(destTower.getSpatial());
+        moveamount = .04f;
+        destTower = null;
+    }
+    
+    private void moveTowardsHome() {
+        if (spatial.getWorldBound().distanceTo(HelperState.getHomeVec()) > .1) {
+            moveamount += .0003f;
+            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(HelperState.getHomeVec(), moveamount));
+        }
+        else {
+            moveamount = .04f;
+            setIsHome(true);
+        }
+    }
+    
+    
+
+    public void startToTower(Spatial tower) {
+        setIsHome(false);
         destTower = tower.getControl(TowerControl.class);
     }
     
     public boolean getIsHome() {
         return isHome;
+    }
+    
+    private void setIsHome(boolean is) {
+        isHome = is;
+    }
+    
+    private int getTowerIndex() {
+        return destTower.getIndex();
     }
     
     @Override
