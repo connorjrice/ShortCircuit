@@ -57,7 +57,6 @@ public class HelperState extends AbstractAppState {
         if (!activeChargers.isEmpty()) {
             if (updateTimer > 0.5f) {
                 if (!emptyTowers.isEmpty()) {
-                    System.out.println("Should go");
                     goCharge();
                 }
                 updateTimer = 0;

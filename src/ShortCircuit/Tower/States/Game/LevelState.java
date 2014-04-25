@@ -128,7 +128,7 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileUpgradeTowers(float tpf) {
-        if (profileUpgradeTimer > .5) {
+        if (profileUpgradeTimer > .75) {
             for (int i = 0; i < TowerState.getTowerList().size(); i++) { 
                 TowerState.selectedTower = i;
                 TowerState.upgradeTower();
@@ -141,7 +141,7 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileDropBombs(float tpf) {
-        if (profileBombTimer > .3) {
+        if (profileBombTimer > .05) {
             GameState.dropBomb(CreepState.getCreepList().get(0).getLocalTranslation(), .002f);
             profileBombTimer = 0;
         }
@@ -151,7 +151,7 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileEmptyTowers(float tpf) {
-        if (profileEmptyTimer > .75) {
+        if (profileEmptyTimer > .3) {
             for (int i = 0; i < TowerState.getTowerList().size(); i++) {
                 TowerState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
             }

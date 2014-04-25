@@ -183,7 +183,6 @@ public class TowerControl extends AbstractControl {
         emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
         if (!HelperState.getEmptyTowers().contains(spatial)) {
-            System.out.println("Added" + spatial.getName());
             HelperState.addEmptyTower(spatial);
         }
     }
