@@ -1,6 +1,7 @@
 package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.Tower.States.Game.HelperState;
+import com.jme3.asset.AssetManager;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -21,23 +22,56 @@ import java.io.IOException;
  */
 public class ChargerControl extends AbstractControl {
     private HelperState HelperState;
+    private TowerControl destTower;
+    private boolean isHome;
+    private float moveamount;
+    private AssetManager assetManager;
 
     public ChargerControl(HelperState _hs) {
         HelperState = _hs;
+        assetManager = HelperState.getAssetManager();
+        isHome = true;
+        moveamount = .004f;
     }
     
     @Override
     protected void controlUpdate(float tpf) {
-        //TODO: add code that controls Spatial,
-        //e.g. spatial.rotate(tpf,tpf,tpf);
+        if (destTower != null) {
+            if (!spatial.getWorldBound().intersects(destTower.getSpatial().getWorldBound())) {
+                spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(destTower.getSpatial().getWorldBound().getCenter(), .004f));
+            }
+            else {
+                destTower.addCharges();
+                destTower.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+ HelperState.getMatDir() + "/"+ destTower.getTowerType()+".j3m"));
+                destTower = null;
+            }
+        }
+        if (destTower == null && isHome == false) {
+            if (!spatial.getLocalTranslation().equals(HelperState.getHomeVec())) {
+                moveamount += .00003f;
+                spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(HelperState.getHomeVec(), moveamount));
+            }
+            else {
+                isHome = true;
+            }
+        }
+    }
+
+    public void chargeTower(Spatial tower) {
+        isHome = false;
+        destTower = tower.getControl(TowerControl.class);
+    }
+    
+    public boolean getIsHome() {
+        return isHome;
     }
     
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        //Only needed for rendering-related operations,
-        //not called when spatial is culled.
+
     }
     
+    @Override
     public Control cloneForSpatial(Spatial spatial) {
         ChargerControl control = new ChargerControl(HelperState);
         control.setSpatial(spatial);

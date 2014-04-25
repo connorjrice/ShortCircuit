@@ -1,8 +1,7 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Flip Textures/Neon/base.png
-        GlowColor : 0.2 1.0 0.2 1.0
-        GlowMap : Textures/Neon/base.jpg
+        ColorMap : Textures/Neon/base.png
+        GlowColor : 0.2 1.0 0.0 1.0
      }
     AdditionalRenderState {
     }

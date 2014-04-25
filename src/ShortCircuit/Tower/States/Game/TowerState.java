@@ -49,6 +49,7 @@ public class TowerState extends AbstractAppState {
     private int chargeCost = 10;
     private Node worldNode;
     public AudioNode charge;
+    private HelperState HelperState;
 
     public TowerState() {}
     
@@ -58,6 +59,7 @@ public class TowerState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
+        this.HelperState = this.app.getStateManager().getState(HelperState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
         initAssets();
@@ -86,7 +88,7 @@ public class TowerState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         Spatial selTower = towerList.get(tindex);
-        if (selTower.getUserData("Type").equals("unbuilt")) {
+        if (selTower.getUserData("Type").equals("UnbuiltTower")) {
             selTower.setLocalScale(unbuiltTowerSelected);
         } else {
             selTower.setLocalScale(builtTowerSelected);
@@ -109,7 +111,7 @@ public class TowerState extends AbstractAppState {
     public void shortenTower() {
         if (selectedTower != -1) {
             Spatial selTower = towerList.get(selectedTower);
-            if (selTower.getUserData("Type").equals("unbuilt")) {
+            if (selTower.getUserData("Type").equals("UnbuiltTower")) {
                 selTower.setLocalScale(unbuiltTowerSize);
             } else {
                 selTower.setLocalScale(builtTowerSize);
@@ -125,9 +127,9 @@ public class TowerState extends AbstractAppState {
     public void chargeTower() {
         if (selectedTower != -1) {
             TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
-            if (GameState.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("unbuilt")) {
+            if (GameState.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("UnbuiltTower")) {
                 changeTowerTexture("Materials/"+ getMatDir()+"/"+tower.getTowerType()+".j3m", tower);
-                tower.charges.add(new Charges(tower.getTowerType()));
+                tower.addCharges();
                 GameState.decPlrBudget(chargeCost);
                 playChargeSound();
             }
@@ -159,7 +161,7 @@ public class TowerState extends AbstractAppState {
     public void buildUnbuiltTowers(ArrayList<Vector3f> unbuiltTowerIn) {
         unbuiltTowerVecs = unbuiltTowerIn;
         for (int i = 0; i < unbuiltTowerVecs.size(); i++) {
-            createTower(i, unbuiltTowerVecs.get(i), "unbuilt");
+            createTower(i, unbuiltTowerVecs.get(i), "UnbuiltTower");
         }
     }
 

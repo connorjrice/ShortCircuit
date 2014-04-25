@@ -5,16 +5,19 @@ import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.MainState.TowerMainState;
 import ShortCircuit.Tower.States.Game.FilterState;
+import ShortCircuit.Tower.States.Game.HelperState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
@@ -31,6 +34,7 @@ import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.controls.windows.Window;
+import tonegod.gui.core.Element;
 import tonegod.gui.core.Screen;
 
 /**
@@ -87,6 +91,10 @@ public class GameGUI extends AbstractAppState {
     private Slider SoundSlider;
     private Window PurchaseWindow;
     private ButtonAdapter PurchaseButton;
+    private ButtonAdapter PurchaseChargerButton;
+    private AssetManager assetManager;
+    private Material oldbuttmat;
+    private HelperState HelperState;
    
 
     public GameGUI(TowerMainState _tMS) {
@@ -100,10 +108,12 @@ public class GameGUI extends AbstractAppState {
         this.guiNode = this.app.getGuiNode();
         this.cam = this.app.getCamera();
         this.inputManager = this.app.getInputManager();
+        this.assetManager = this.app.getAssetManager();
         this.gs = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
         this.FilterState = this.app.getStateManager().getState(FilterState.class);
+        this.HelperState = this.app.getStateManager().getState(HelperState.class);
         width = tMS.getWidth();
         height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
@@ -281,6 +291,8 @@ public class GameGUI extends AbstractAppState {
         soundSlider();
         purchaseButton();
         purchaseWindow();
+        purchaseChargerButton();
+        getOldMat();
 
     }
 
@@ -324,9 +336,11 @@ public class GameGUI extends AbstractAppState {
                 if (!StartGUI.MainWindow.getIsVisible()) {
                     if (PurchaseWindow.getIsVisible()) {
                         PurchaseWindow.hideWindow();
+                        PurchaseChargerButton.hide();
                         Menu.setIgnoreMouse(false);
                     } else {
                         PurchaseWindow.showWindow();
+                        PurchaseChargerButton.show();
                         Menu.setIgnoreMouse(true);
                     }
                 }
@@ -336,6 +350,19 @@ public class GameGUI extends AbstractAppState {
         PurchaseButton.setText("Purchase");
         PurchaseButton.setUseButtonPressedSound(true);
         screen.addElement(PurchaseButton);
+    }
+    
+    private void purchaseChargerButton() {
+        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger", new Vector2f(50,50), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                HelperState.createCharger();
+            }
+        };
+        PurchaseChargerButton.setZOrder(1.0f);
+        PurchaseChargerButton.setText("Charger (100)");
+        PurchaseChargerButton.setUseButtonPressedSound(true);
+        PurchaseWindow.addChild(PurchaseChargerButton);
     }
 
     private void settingsButton() {
@@ -461,7 +488,7 @@ public class GameGUI extends AbstractAppState {
      */
     private void updateTowerInfo() {
         if (gs.getSelected() != -1) {
-            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("unbuilt")) {
+            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("UnbuiltTower")) {
                 Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
             } else {
                 Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
@@ -670,9 +697,27 @@ public class GameGUI extends AbstractAppState {
         cam.setLocation(gs.getCamLocation());
     }
     
+    public void getOldMat() {
+        Element button = screen.getElementById("Budget");
+        oldbuttmat = button.getMaterial();
+    }
+    
+    public void highlightButton(String buttonname) {
+        Element button = screen.getElementById(buttonname);
+        button.setMaterial(assetManager.loadMaterial("Common/Materials/WhiteColor.j3m"));
+    }
+    
+    public void unhighlightButton(String buttonname) {
+        screen.removeElement(screen.getElementById(buttonname));
+        if (buttonname.equals("Budget")) {
+            budgetButton();
+        }
+    }
+    
     @Override
     public void stateDetached(AppStateManager asm) {
         super.cleanup();
+        inputManager.clearMappings();
         inputManager.removeListener(actionListener);
         screen.removeElement(Budget);
         screen.removeElement(Camera);

@@ -31,7 +31,7 @@ public class TowerUpgradeFactory implements Runnable {
     public void run() {
         // Determine type of upgrade/validity
         String type = gs.getTowerList().get(gs.getSelected()).getUserData("Type");
-        if (type.equals("unbuilt")) {
+        if (type.equals("UnbuiltTower")) {
             cost = 100;
             type = "1";
             matLoc = "Materials/" + gs.getMatDir() + "/Tower1.j3m";

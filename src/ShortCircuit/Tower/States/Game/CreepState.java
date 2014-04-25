@@ -57,14 +57,16 @@ public class CreepState extends AbstractAppState {
     private String mdCreepMatloc; 
     private String lgCreepMatloc;
     private String xlCreepMatloc;
-    public Random random = new Random(42);
+    public Random random = new Random();
     
     private SimpleApplication app;
     private AssetManager assetManager;
     private GameState GameState;
+    private HelperState HelperState;
+        
 
     private int nextspawner;
-    private int nextrandom;
+    private int nextrandom = random.nextInt(50);
     private float randomCheck = 0;
     private Node worldNode;
     private STDCreepFactory cf;
@@ -77,7 +79,7 @@ public class CreepState extends AbstractAppState {
     private ArrayList<String> creepSpawnerDirs;
     private ArrayList<Spatial> creepSpawners;
     private ArrayList<Spatial> globList;
-    
+
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -85,6 +87,7 @@ public class CreepState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
+        this.HelperState = this.app.getStateManager().getState(HelperState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
         initLists();
@@ -394,6 +397,10 @@ public class CreepState extends AbstractAppState {
     
     public SimpleApplication getApp() {
         return app;
+    }
+    
+    public void seedForProfile() {
+        random = new Random(42);
     }
 
    @Override

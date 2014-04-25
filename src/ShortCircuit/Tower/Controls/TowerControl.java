@@ -5,6 +5,7 @@ import ShortCircuit.DataStructures.STCCreepCompare;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.States.Game.BeamState;
 import ShortCircuit.Tower.Objects.Charges;
+import ShortCircuit.Tower.States.Game.HelperState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -45,10 +46,12 @@ public class TowerControl extends AbstractControl {
     private Future future;
     private AudioNode emptySound;
     private boolean isGlobbed = false;
+    private HelperState HelperState;
 
     public TowerControl(TowerState _tstate, Vector3f loc) {
         TowerState = _tstate;
         BeamState = TowerState.getApp().getStateManager().getState(BeamState.class);
+        HelperState = TowerState.getApp().getStateManager().getState(HelperState.class);
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
@@ -94,13 +97,13 @@ public class TowerControl extends AbstractControl {
     }
 
     public void enableTower() {
-        if (!spatial.getUserData("Type").equals("unbuilt")) {
+        if (!spatial.getUserData("Type").equals("UnbuiltTower")) {
             isActive = true;
         }
     }
 
     public void unglobTower() {
-        if (!spatial.getUserData("Type").equals("unbuilt")) {
+        if (!spatial.getUserData("Type").equals("UnbuiltTower")) {
             isActive = true;
         }
         isGlobbed = false;
@@ -179,8 +182,7 @@ public class TowerControl extends AbstractControl {
     protected void emptyTower() {
         emptySound.play();
         TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
-
-
+        HelperState.addEmptyTower(spatial);
     }
 
     protected void shootCreep() {
@@ -234,6 +236,10 @@ public class TowerControl extends AbstractControl {
 
     public void setSize(Vector3f size) {
         spatial.setLocalScale(size);
+    }
+    
+    public void addCharges() {
+        charges.add(new Charges(getTowerType()));
     }
 
     @Override

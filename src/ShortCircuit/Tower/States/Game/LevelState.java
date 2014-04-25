@@ -3,7 +3,6 @@ package ShortCircuit.Tower.States.Game;
 import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.MapXML.MapGenerator;
-import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -11,7 +10,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 /**
  * LevelState calls the appropriate methods in its sibling states to create a 
@@ -26,14 +24,14 @@ public class LevelState extends AbstractAppState {
     private TowerState TowerState;
     private CreepState CreepState;
     private MapGenerator mg;
-    private boolean isDebug;
+    private boolean isProfile;
     protected boolean gameOver = false;
     private final String levelName;
     private FilterState FilterState;
     private AppStateManager stateManager;
     
-    public LevelState(boolean _isDebug, String _levelName) {
-        isDebug = _isDebug;
+    public LevelState(boolean _isProfile, String _levelName) {
+        isProfile = _isProfile;
         levelName = _levelName;
     }
     
@@ -53,11 +51,11 @@ public class LevelState extends AbstractAppState {
     }
     
     public void begin() {
-        if (!isDebug) {
+        if (!isProfile) {
             newGame(levelName);
         }
         else {
-            debugGame();
+            profileGame();
         }
     }
     
@@ -94,7 +92,7 @@ public class LevelState extends AbstractAppState {
     }
     
     
-    public void debugGame() {
+    public void profileGame() {
         initMG(levelName);
         FilterState.initFilters(mg.getFilterParams());
         GameState.createLight();
@@ -104,11 +102,13 @@ public class LevelState extends AbstractAppState {
         TowerState.buildUnbuiltTowers(mg.getUnbuiltTowerVecs());
         TowerState.buildStarterTowers(mg.getStarterTowers());
         TowerState.attachTowerNode();
+        CreepState.seedForProfile();
         CreepState.buildCreepSpawners(mg.getCreepSpawnVecs(), mg.getCreepSpawnDirs());
         CreepState.attachCreepNode();
         CreepState.setBaseBounds();
         CreepState.initMaterials();
         GameState.attachWorldNode();
+
         CheatState cHS = app.getStateManager().getState(CheatState.class);
         cHS.makeTowersBadAss();
         

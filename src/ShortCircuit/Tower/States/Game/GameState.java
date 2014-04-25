@@ -189,7 +189,7 @@ public class GameState extends AbstractAppState {
     public String getCost(Object type) {
         if (type.equals("Charge")) {
             return "10";
-        } else if (type.equals("unbuilt")) {
+        } else if (type.equals("UnbuiltTower")) {
             return "100";
         } else if (type.equals("Tower1")) {
             return "50";

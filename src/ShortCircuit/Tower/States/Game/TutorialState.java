@@ -1,6 +1,7 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.MainState.TowerMainState;
+import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -10,7 +11,6 @@ import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.core.Screen;
 
@@ -35,6 +35,7 @@ public class TutorialState extends AbstractAppState {
     private TowerMainState tMS;
     private TowerState TowerState;
     private CreepState CreepState;
+    private GameGUI GameGUI;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -43,6 +44,7 @@ public class TutorialState extends AbstractAppState {
         this.rootNode = this.app.getRootNode();
         this.tMS = this.app.getStateManager().getState(TowerMainState.class);
         this.guiNode = this.app.getGuiNode();
+        this.GameGUI = this.app.getStateManager().getState(GameGUI.class);
         this.GameState = stateManager.getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
@@ -77,58 +79,9 @@ public class TutorialState extends AbstractAppState {
     private void initBanner() {
     }
     
-
-    private void towerPopup() {
-        focusBuiltTowers();
-        AlertBox towerA = new AlertBox(screen, "Your Towers", new Vector2f(height/2, width/2)) {
-
-            @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
-               unfocusBuiltTowers();
-               screen.removeElement(this);
-               //creepSpawnerPopup();
-               tMS.pause();
-               
-            }  
-            
-        };
-        towerA.setMsg("These are your towers. They protect your base from creeps, and need to be charged from time to time.");
-        screen.addElement(towerA);
-    }
-    
-    private void focusBuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("unbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(focusMaterial);
-            }
-        }
-    }
-    
-    private void unfocusBuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("unbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
-            }
-        }
-    }
-    
-    private String getTowerOrigMat(int i) {
-        return "Materials/" + GameState.getMatDir() + "/" + TowerState.getTowerList().get(i).getUserData("Type") + ".j3m";
-    }
-
-    private void upgradePopup() {
-    }
-
-    private void creepSpawnerPopup() {
-        //CreepState.getCreepNode().getChild("spawner").setMaterial(focusMaterial);
-    }
-
-    private void creepPopup() {
-    }
-
     public void basePopup() {
         GameState.getWorldNode().getChild("Base").setMaterial(focusMaterial);
-        AlertBox baseA = new AlertBox(screen, "Your Base", new Vector2f(width/2, height/2)) {
+        AlertBox baseA = new AlertBox(screen, "Your Base", new Vector2f(800,800)) {
             
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
@@ -141,6 +94,146 @@ public class TutorialState extends AbstractAppState {
         screen.addElement(baseA);
 
         
+    }
+    
+    private void towerPopup() {
+        focusBuiltTowers();
+        AlertBox towerA = new AlertBox(screen, "Your Towers", new Vector2f(800, 600)) {
+
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+               unfocusBuiltTowers();
+               screen.removeElement(this);
+               unbuiltTowerPopup();
+            }  
+            
+        };
+        towerA.setMsg("These are your towers. They protect your base from creeps, and need to be charged from time to time.");
+        screen.addElement(towerA);
+    }
+    
+    private void focusBuiltTowers() {
+        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
+            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+                TowerState.getTowerList().get(i).setMaterial(focusMaterial);
+            }
+        }
+    }
+    
+    private void unfocusBuiltTowers() {
+        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
+            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+                TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            }
+        }
+    }
+    
+
+    
+    private void unbuiltTowerPopup() {
+        focusUnbuiltTowers();
+        AlertBox unbuiltA = new AlertBox(screen, "Unbuilt Towers", new Vector2f(800, 500)) {
+
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+               unfocusUnbuiltTowers();
+               screen.removeElement(this);
+               budgetPopup();
+            }  
+            
+        };
+        unbuiltA.setMsg("These are towers that have not been built yet. You may build them for 100 credits.");
+        screen.addElement(unbuiltA);
+    }
+    
+    private void focusUnbuiltTowers() {
+        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
+            if (TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+                TowerState.getTowerList().get(i).setMaterial(focusMaterial);
+            }
+        }
+    }
+    
+    private void unfocusUnbuiltTowers() {
+        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
+            if (TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+                TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            }
+        }
+    
+    }
+    
+    private void budgetPopup() {
+        focusBudgetButton();
+        AlertBox unbuiltA = new AlertBox(screen, "Budget", new Vector2f(1215, 125)) {
+
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+               unfocusBudgetButton();
+               System.out.println(this.getLocalTranslation());
+               screen.removeElement(this);
+               creepPopup();
+               
+
+            }  
+            
+        };
+        unbuiltA.setMsg("This is where your budget is shown. You get more money when you kill creeps, and when you level up.");
+        screen.addElement(unbuiltA);
+    }
+    
+    private void focusBudgetButton() {
+        GameGUI.highlightButton("Budget");
+    }
+    
+    private void unfocusBudgetButton() {
+        GameGUI.unhighlightButton("Budget");
+    }
+
+    private void upgradePopup() {
+    }
+
+    private void creepSpawnerPopup() {
+        //CreepState.getCreepNode().getChild("spawner").setMaterial(focusMaterial);
+    }
+
+    private void creepPopup() {
+        focusCreeps();
+        AlertBox creepA = new AlertBox(screen, "Creep", new Vector2f(800, 400)) {
+            @Override
+            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+               unfocusCreeps();
+               screen.removeElement(this);
+               start();
+            }  
+            
+        };
+        creepA.setMsg("These are your enemies. They will spawn in proportion to your current level.");
+        screen.addElement(creepA);
+    }
+    
+    private void focusCreeps() {
+        for (int i = 0; i < CreepState.creepList.size(); i++) {
+            CreepState.creepList.get(i).setMaterial(focusMaterial);
+        }
+    }
+    
+    private void unfocusCreeps() {
+        for (int i = 0; i < CreepState.creepList.size(); i++) {
+            CreepState.creepList.get(i).setMaterial(focusMaterial);
+        }
+    }
+    
+    private void start() {
+        tMS.pause();
+    }
+
+    private String getTowerOrigMat(int i) {
+        return "Materials/" + GameState.getMatDir() + "/" + TowerState.getTowerList().get(i).getUserData("Type") + ".j3m";
+    }
+    
+    private String getCreepOrigMat(int i) {
+        return "Materials/" + GameState.getMatDir() + "/" + CreepState.getCreepList().get(i).getUserData("Type") + "Creep.j3m";
     }
 
     @Override

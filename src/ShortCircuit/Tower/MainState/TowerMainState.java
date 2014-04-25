@@ -9,6 +9,7 @@ import ShortCircuit.Tower.States.Game.BeamState;
 import ShortCircuit.Tower.States.Game.CreepState;
 import ShortCircuit.Tower.States.Game.FilterState;
 import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.HelperState;
 import ShortCircuit.Tower.States.Game.LevelState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.States.Game.TutorialState;
@@ -57,6 +58,7 @@ public class TowerMainState extends AbstractAppState {
     private final String level;
     private FilterState FilterState;
     private TutorialState TutorialState;
+    private HelperState HelperState;
 
     public TowerMainState(boolean _profile, String level) {
         this.profile = _profile;
@@ -99,6 +101,7 @@ public class TowerMainState extends AbstractAppState {
         CreepState = new CreepState();
         TowerState = new TowerState();
         GameOverGUI = new GameOverGUI(this);
+        HelperState = new HelperState();
 
         stateManager.attach(FilterState);
         stateManager.attach(GameState);
@@ -109,7 +112,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(LevelState);
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
-
+        stateManager.attach(HelperState);
     }
 
     /**
@@ -126,6 +129,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(CheatState);
         stateManager.detach(CheatGUI);
         stateManager.detach(FilterState);
+        stateManager.detach(HelperState);
         theme.stop();
     }
 
@@ -218,6 +222,7 @@ public class TowerMainState extends AbstractAppState {
         BeamState.setEnabled(false);
         CreepState.setEnabled(false);
         TowerState.setEnabled(false);
+        HelperState.setEnabled(false);
     }
 
     /**
@@ -229,6 +234,7 @@ public class TowerMainState extends AbstractAppState {
         LevelState.setEnabled(true);
         BeamState.setEnabled(true);
         TowerState.setEnabled(true);
+        HelperState.setEnabled(true);
     }
 
     public boolean isStartWindowShown() {

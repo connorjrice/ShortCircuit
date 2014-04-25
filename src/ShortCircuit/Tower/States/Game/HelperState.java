@@ -6,6 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -43,15 +44,26 @@ public class HelperState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.worldNode = this.GameState.getWorldNode();
         this.assetManager = this.app.getAssetManager();
+        initLists();
+    }
+    
+    private void initLists() {
+        emptyTowers = new ArrayList<Spatial>();
+        activeChargers = new ArrayList<Spatial>();
     }
     
     @Override
     public void update(float tpf) {
-        if (updateTimer > 0.5f) {
-
-        }
-        else {
-            updateTimer += tpf;
+        if (!activeChargers.isEmpty()) {
+            if (updateTimer > 0.5f) {
+                if (!emptyTowers.isEmpty()) {
+                    goCharge();
+                }
+                updateTimer = 0;
+            }
+            else {
+                updateTimer += tpf;
+            }
         }
     }
     
@@ -67,6 +79,17 @@ public class HelperState extends AbstractAppState {
         charger.setMaterial(assetManager.loadMaterial("Materials/Plain/Base.j3m"));
         charger.setLocalTranslation(GameState.getBaseVec().add(0,0,1f));
         addNewCharger(charger);
+    }
+    
+    /**
+     * Tells the first active charger to go charge a tower.
+     */
+    private void goCharge() {
+        if (activeChargers.get(0).getControl(ChargerControl.class).getIsHome()) {
+            activeChargers.get(0).getControl(ChargerControl.class).chargeTower(emptyTowers.get(0));
+            emptyTowers.remove(0);
+        }
+
     }
     
     /*
@@ -98,6 +121,10 @@ public class HelperState extends AbstractAppState {
         activeChargers.clear();
     }
     
+    public Vector3f getHomeVec() {
+        return GameState.getBaseVec().add(0f,0f,1f);
+    }
+    
     /**
      * Adds a new charger to the worldNode after adding control and creating
      * a reference to the charger in the active charger list.
@@ -107,6 +134,14 @@ public class HelperState extends AbstractAppState {
         charger.addControl(new ChargerControl(this));
         activeChargers.add(charger);
         worldNode.attachChild(charger);
+    }
+    
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+    
+    public String getMatDir() {
+        return GameState.getMatDir();
     }
     
     @Override
