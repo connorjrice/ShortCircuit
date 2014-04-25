@@ -97,13 +97,13 @@ public class TowerControl extends AbstractControl {
     }
 
     public void enableTower() {
-        if (!spatial.getUserData("Type").equals("UnbuiltTower")) {
+        if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
             isActive = true;
         }
     }
 
     public void unglobTower() {
-        if (!spatial.getUserData("Type").equals("UnbuiltTower")) {
+        if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
             isActive = true;
         }
         isGlobbed = false;
@@ -205,6 +205,10 @@ public class TowerControl extends AbstractControl {
 
     public void setBuilt() {
         isActive = true;
+    }
+    
+    public void setUnbuilt() {
+        isActive = false;
     }
 
     public void addInitialCharges() {

@@ -74,12 +74,13 @@ public class ChargerControl extends AbstractControl {
     private void chargeTower() {
         HelperState.chargeTower(getTowerIndex());
         HelperState.getEmptyTowers().remove(destTower.getSpatial());
+        decRemCharges();
         moveamount = .04f;
         destTower = null;
     }
     
     private void moveTowardsHome() {
-        if (spatial.getWorldBound().distanceTo(HelperState.getHomeVec()) > .1) {
+        if (spatial.getWorldBound().distanceTo(HelperState.getHomeVec()) > .2) {
             moveamount += .0003f;
             spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(HelperState.getHomeVec(), moveamount));
         }
@@ -106,6 +107,22 @@ public class ChargerControl extends AbstractControl {
     
     private int getTowerIndex() {
         return destTower.getIndex();
+    }
+    
+    private void decRemCharges() {
+        int old = spatial.getUserData("RemainingCharges");
+        if (old == 1) {
+            removeCharger();
+        }
+        else {
+            spatial.setLocalScale(spatial.getLocalScale().mult(.9f));
+            spatial.setUserData("RemainingCharges", old-1);
+        }
+    }
+    
+    private void removeCharger() {
+        spatial.removeFromParent();
+        spatial.removeControl(this);
     }
     
     @Override

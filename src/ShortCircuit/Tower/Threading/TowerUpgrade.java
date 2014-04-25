@@ -1,27 +1,27 @@
-package ShortCircuit.Tower.Factories;
+package ShortCircuit.Tower.Threading;
 
 import ShortCircuit.Tower.Objects.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
-import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.TowerState;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
  * @author Connor Rice
  */
-public class TowerUpgradeFactory implements Runnable {
+public class TowerUpgrade implements Runnable {
 
     private int cost;
     private String matLoc;
     private float pitch;
-    private GameState gs;
+    private TowerState ts;
     private boolean valid;
 
     /**
-     * Constructor, takes GameState class as input.
-     * @param _gs = GameState
+     * Constructor, takes TowerState class as input.
+     * @param _ts = TowerState
      */
-    public TowerUpgradeFactory(GameState _gs) {
-        gs = _gs;
+    public TowerUpgrade(TowerState _ts) {
+        ts = _ts;
     }
 
     /**
@@ -30,48 +30,48 @@ public class TowerUpgradeFactory implements Runnable {
      */
     public void run() {
         // Determine type of upgrade/validity
-        String type = gs.getTowerList().get(gs.getSelected()).getUserData("Type");
-        if (type.equals("UnbuiltTower")) {
+        String type = ts.getTowerList().get(ts.getSelected()).getUserData("Type");
+        if (type.equals("TowerUnbuilt")) {
             cost = 100;
             type = "1";
-            matLoc = "Materials/" + gs.getMatDir() + "/Tower1.j3m";
+            matLoc = "Materials/" + ts.getMatDir() + "/Tower1.j3m";
             pitch = 0.6f;
             valid = true;
         } else if (type.equals("Tower1")) {
             cost = 50;
             type = "2";
-            matLoc = "Materials/" + gs.getMatDir() + "/Tower2.j3m";
+            matLoc = "Materials/" + ts.getMatDir() + "/Tower2.j3m";
             pitch = 0.8f;
             valid = true;
         } else if (type.equals("Tower2")) {
             cost = 100;
             type = "3";
-            matLoc = "Materials/" + gs.getMatDir() + "/Tower3.j3m";
+            matLoc = "Materials/" + ts.getMatDir() + "/Tower3.j3m";
             pitch = 0.9f;
             valid = true;
         } else if (type.equals("Tower3")) {
             cost = 500;
             type = "4";
-            matLoc = "Materials/" + gs.getMatDir() + "/Tower4.j3m";
+            matLoc = "Materials/" + ts.getMatDir() + "/Tower4.j3m";
             pitch = 1.0f;
             valid = true;
         }
         
         // Perform upgrade if valid
-        if (gs.getSelected() != -1 && valid) {
-            TowerControl tower = gs.getTowerList().get(gs.getSelected()).getControl(TowerControl.class);
-            if (gs.getPlrBudget() >= cost) {
+        if (ts.getSelected() != -1 && valid) {
+            TowerControl tower = ts.getTowerList().get(ts.getSelected()).getControl(TowerControl.class);
+            if (ts.getPlrBudget() >= cost) {
                 tower.charges.add(new Charges("Tower" + type));
                 tower.setBuilt();
                 tower.setTowerType("Tower" + type);
                 tower.setBeamType("beam" + type);
                 if (type.equals("4")) {
-                    gs.incFours();
+                    ts.incFours();
                 }
-                tower.getSpatial().setMaterial(gs.getAssetManager().loadMaterial(matLoc));
-                tower.setSize(gs.getBuiltTowerSize());
-                gs.decPlrBudget(cost);
-                gs.playBuildSound(pitch);
+                tower.getSpatial().setMaterial(ts.getAssetManager().loadMaterial(matLoc));
+                tower.setSize(ts.getBuiltTowerSize());
+                ts.decPlrBudget(cost);
+                ts.playBuildSound(pitch);
                 valid = false;
             }
         }

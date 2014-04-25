@@ -95,6 +95,7 @@ public class GameGUI extends AbstractAppState {
     private AssetManager assetManager;
     private Material oldbuttmat;
     private HelperState HelperState;
+    private ButtonAdapter DowngradeButton;
    
 
     public GameGUI(TowerMainState _tMS) {
@@ -293,6 +294,7 @@ public class GameGUI extends AbstractAppState {
         purchaseWindow();
         purchaseChargerButton();
         getOldMat();
+        downgradeButton();
 
     }
 
@@ -363,6 +365,19 @@ public class GameGUI extends AbstractAppState {
         PurchaseChargerButton.setText("Charger (100)");
         PurchaseChargerButton.setUseButtonPressedSound(true);
         PurchaseWindow.addChild(PurchaseChargerButton);
+    }
+    
+    private void downgradeButton() {
+        DowngradeButton = new ButtonAdapter(screen, "Downgrade", new Vector2f(50,250), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                TowerState.downgradeTower();
+            }
+        };
+        DowngradeButton.setZOrder(1.0f);
+        DowngradeButton.setText("Downgrade");
+        DowngradeButton.setUseButtonPressedSound(true);
+        PurchaseWindow.addChild(DowngradeButton);
     }
 
     private void settingsButton() {
@@ -488,7 +503,7 @@ public class GameGUI extends AbstractAppState {
      */
     private void updateTowerInfo() {
         if (gs.getSelected() != -1) {
-            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("UnbuiltTower")) {
+            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
                 Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
             } else {
                 Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));

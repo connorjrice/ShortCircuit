@@ -114,7 +114,7 @@ public class TutorialState extends AbstractAppState {
     
     private void focusBuiltTowers() {
         for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
                 TowerState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
@@ -122,7 +122,7 @@ public class TutorialState extends AbstractAppState {
     
     private void unfocusBuiltTowers() {
         for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
                 TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
@@ -148,7 +148,7 @@ public class TutorialState extends AbstractAppState {
     
     private void focusUnbuiltTowers() {
         for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+            if (TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
                 TowerState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
@@ -156,7 +156,7 @@ public class TutorialState extends AbstractAppState {
     
     private void unfocusUnbuiltTowers() {
         for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (TowerState.getTowerList().get(i).getUserData("Type").equals("UnbuiltTower")) {
+            if (TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
                 TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }

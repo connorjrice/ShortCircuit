@@ -1,9 +1,11 @@
 package ShortCircuit.Tower.States.Game;
 
-import ShortCircuit.Tower.Factories.TowerUpgradeFactory;
+import ShortCircuit.Tower.Threading.TowerUpgrade;
 import ShortCircuit.Tower.Factories.TowerFactory;
 import ShortCircuit.Tower.Objects.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
+import ShortCircuit.Tower.Threading.TowerCharge;
+import ShortCircuit.Tower.Threading.TowerDowngrade;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -33,7 +35,7 @@ public class TowerState extends AbstractAppState {
     private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
     
     
-    private TowerUpgradeFactory tuf;
+    private TowerUpgrade tur;
     private TowerFactory tf;
     
     public String tow1MatLoc;
@@ -50,6 +52,9 @@ public class TowerState extends AbstractAppState {
     private Node worldNode;
     public AudioNode charge;
     private HelperState HelperState;
+    private TowerCharge tcr;
+    private TowerDowngrade tdr;
+    private AudioNode buildSound;
 
     public TowerState() {}
     
@@ -62,18 +67,28 @@ public class TowerState extends AbstractAppState {
         this.HelperState = this.app.getStateManager().getState(HelperState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
+        initRunnables();
         initAssets();
     }
     
     private void initFactories() {
         tf = new TowerFactory(GameState);
-        tuf = new TowerUpgradeFactory(GameState);
+
+    }
+    private void initRunnables() {
+        tur = new TowerUpgrade(this);
+        tcr = new TowerCharge(this);
+        tdr = new TowerDowngrade(this);
     }
     
     private void initAssets() {
         charge = new AudioNode(assetManager, "Audio/chargegam.wav");
         charge.setPositional(false);
         charge.setVolume(.8f);
+        
+        buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
+        buildSound.setPositional(false);
+        buildSound.setVolume(.3f);
     }
 
 
@@ -88,7 +103,7 @@ public class TowerState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         Spatial selTower = towerList.get(tindex);
-        if (selTower.getUserData("Type").equals("UnbuiltTower")) {
+        if (selTower.getUserData("Type").equals("TowerUnbuilt")) {
             selTower.setLocalScale(unbuiltTowerSelected);
         } else {
             selTower.setLocalScale(builtTowerSelected);
@@ -100,7 +115,7 @@ public class TowerState extends AbstractAppState {
      * Plays an instance of the charge sound.
      * Used locally by chargeTower().
      */
-    private void playChargeSound() {
+    public void playChargeSound() {
         charge.playInstance();
     }
 
@@ -111,7 +126,7 @@ public class TowerState extends AbstractAppState {
     public void shortenTower() {
         if (selectedTower != -1) {
             Spatial selTower = towerList.get(selectedTower);
-            if (selTower.getUserData("Type").equals("UnbuiltTower")) {
+            if (selTower.getUserData("Type").equals("TowerUnbuilt")) {
                 selTower.setLocalScale(unbuiltTowerSize);
             } else {
                 selTower.setLocalScale(builtTowerSize);
@@ -121,22 +136,28 @@ public class TowerState extends AbstractAppState {
 
     /**
      * Charges a tower at a specific index point.
-     *
+     * TODO: Make this a runnable.
      * @param selectedTower = the index on the towerList of the specified tower.
      */
     public void chargeTower() {
+        TowerControl tower = getTowerList().get(GameState.getSelected()).getControl(TowerControl.class);
+        tcr.setTower(tower);
+        tcr.run();
+        if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
+            HelperState.getEmptyTowers().remove(tower.getSpatial());
+        }
+    }
+    
+    public void upgradeTower() {
         if (selectedTower != -1) {
-            TowerControl tower = towerList.get(selectedTower).getControl(TowerControl.class);
-            if (GameState.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("UnbuiltTower")) {
-                changeTowerTexture("Materials/"+ getMatDir()+"/"+tower.getTowerType()+".j3m", tower);
-                tower.addCharges();
-                GameState.decPlrBudget(chargeCost);
-                playChargeSound();
-                if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
-                    HelperState.getEmptyTowers().remove(tower.getSpatial());
-                }
-                    
-            }
+            tur.run();
+        }
+    }
+    
+    public void downgradeTower() {
+        if (selectedTower != -1) {
+            tdr.setVictim(selectedTower);
+            tdr.run();
         }
     }
     
@@ -154,11 +175,7 @@ public class TowerState extends AbstractAppState {
         }
     }
     
-    public void upgradeTower() {
-        if (selectedTower != -1) {
-            tuf.run();
-        }
-    }
+
     
     public String getSelectedTowerType() {
         return towerList.get(selectedTower).getUserData("Type");
@@ -179,7 +196,7 @@ public class TowerState extends AbstractAppState {
     public void buildUnbuiltTowers(ArrayList<Vector3f> unbuiltTowerIn) {
         unbuiltTowerVecs = unbuiltTowerIn;
         for (int i = 0; i < unbuiltTowerVecs.size(); i++) {
-            createTower(i, unbuiltTowerVecs.get(i), "UnbuiltTower");
+            createTower(i, unbuiltTowerVecs.get(i), "TowerUnbuilt");
         }
     }
 
@@ -188,7 +205,7 @@ public class TowerState extends AbstractAppState {
         tow2MatLoc = "Materials/" + getMatDir()+ "/Tower2.j3m";
         tow3MatLoc = "Materials/" + getMatDir()+ "/Tower3.j3m";
         tow4MatLoc = "Materials/" + getMatDir()+ "/Tower4.j3m";
-        towUnMatLoc = "Materials/" + getMatDir()+ "/UnbuiltTower.j3m";
+        towUnMatLoc = "Materials/" + getMatDir()+ "/TowerUnbuilt.j3m";
         towEmMatLoc = "Materials/" + getMatDir()+ "/EmptyTower.j3m";
         for (int i = 0; i < starterTowerIn.size(); i++) {
             TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
@@ -200,6 +217,11 @@ public class TowerState extends AbstractAppState {
         }
     }
     
+    public void playBuildSound(float pitch) {
+        buildSound.setPitch(pitch);
+        buildSound.playInstance();
+        buildSound.setPitch(1f);
+    }
 
     /**
      * Changes a tower at the given index to the given texture.
@@ -255,6 +277,30 @@ public class TowerState extends AbstractAppState {
     
     public Vector3f getBuiltTowerSize() {
         return builtTowerSize;
+    }
+    
+    public Vector3f getUnbuiltTowerSize() {
+        return unbuiltTowerSize;
+    }
+    
+    public int getPlrBudget() {
+        return GameState.getPlrBudget();
+    }
+    
+    public void decPlrBudget(int cost) {
+        GameState.decPlrBudget(cost);
+    }
+    
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+    
+    public int getSelected() {
+        return selectedTower;
+    }
+    
+    public void incFours() {
+        GameState.incFours();
     }
     
 

@@ -54,14 +54,12 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor ex;
     public String matDir;
     private Vector3f basevec;
-    public AudioNode buildSound;
     public AudioNode levelUpSound;
     public AudioNode globPop;
     public int fours;
     private BaseFactory bf;
     private Material bomb_mat;
     private String basetexloc;
-    private TutorialState TutorialState;
 
     /**
      * Constructor takes no input parameters.
@@ -83,7 +81,6 @@ public class GameState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        this.TutorialState = this.app.getStateManager().getState(TutorialState.class);
         // TODO: Dynamic backgorund color, XML
         this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
     }
@@ -112,10 +109,6 @@ public class GameState extends AbstractAppState {
      * Called by setLevelParams().
      */
     private void initAssets() {
-        buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
-        buildSound.setPositional(false);
-        buildSound.setVolume(.3f);
-
         levelUpSound = new AudioNode(assetManager, "Audio/levelup.wav");
         levelUpSound.setPositional(false);
         levelUpSound.setVolume(.6f);
@@ -189,7 +182,7 @@ public class GameState extends AbstractAppState {
     public String getCost(Object type) {
         if (type.equals("Charge")) {
             return "10";
-        } else if (type.equals("UnbuiltTower")) {
+        } else if (type.equals("TowerUnbuilt")) {
             return "100";
         } else if (type.equals("Tower1")) {
             return "50";
@@ -314,7 +307,10 @@ public class GameState extends AbstractAppState {
     public Vector3f getBuiltTowerSize() {
         return TowerState.getBuiltTowerSize();
     }
-
+    public Vector3f getUnbuiltTowerSize() {
+        return TowerState.getUnbuiltTowerSize();
+    }
+    
     public Node getWorldNode() {
         return worldNode;
     }
@@ -491,13 +487,6 @@ public class GameState extends AbstractAppState {
 
     public int getFours() {
         return fours;
-    }
-
-
-    public void playBuildSound(float pitch) {
-        buildSound.setPitch(pitch);
-        buildSound.playInstance();
-        buildSound.setPitch(1f);
     }
 
     public void playLevelUpSound() {
