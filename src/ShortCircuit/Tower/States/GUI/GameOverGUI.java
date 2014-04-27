@@ -65,7 +65,7 @@ public class GameOverGUI extends AbstractAppState {
             startButton = new ButtonAdapter(screen, "start", new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
                 @Override
                 public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                    tMS.backToStartGUI();
+                    tMS.returnToStartAfterGameOver();
                 }
             };
             startButton.setText("Too bad.");

@@ -5,7 +5,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 
 /**
- * ASKMATTHEW: Are my factories better now?
  * @author Connor Rice
  */
 public class BaseFactory {

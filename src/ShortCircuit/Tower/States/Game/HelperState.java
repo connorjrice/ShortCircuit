@@ -16,7 +16,6 @@ import java.util.ArrayList;
 /**
  * This state controls the spawning and operation of friendly NPCS.
  * Currently, the goal is the implementation of the Charger NPC.
- * TODO: Implement Charger NPC Type
  * @author Connor
  */
 public class HelperState extends AbstractAppState {
@@ -54,17 +53,7 @@ public class HelperState extends AbstractAppState {
     
     @Override
     public void update(float tpf) {
-        if (!activeChargers.isEmpty()) {
-            if (updateTimer > 0.5f) {
-                if (!emptyTowers.isEmpty()) {
-                    goCharge();
-                }
-                updateTimer = 0;
-            }
-            else {
-                updateTimer += tpf;
-            }
-        }
+
     }
     
     /**
@@ -80,14 +69,7 @@ public class HelperState extends AbstractAppState {
         charger.setLocalTranslation(GameState.getBaseVec().add(0,0,1f));
         addNewCharger(charger);
     }
-    
-    /**
-     * Tells the first active charger to go charge a tower.
-     */
-    private void goCharge() {
 
-    }
-    
     /*
      * Adds an empty tower to the list of towers that need to be charged.
      */

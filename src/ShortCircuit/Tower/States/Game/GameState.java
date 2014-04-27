@@ -23,11 +23,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * This is the main game state for the Tower Defense game. 
- * TODO: Documentation
- * TODO: Tutorial
- * TODO: XML Level Features
- * TODO: New enemy type, new helper type.
+ * This is the main game state for the Tower Defense game.
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {
@@ -69,8 +65,9 @@ public class GameState extends AbstractAppState {
 
     /**
      * Initialize GameState.
+     *
      * @param stateManager
-     * @param app 
+     * @param app
      */
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -87,7 +84,8 @@ public class GameState extends AbstractAppState {
 
     /**
      * Update loop. Handles level incrementation.
-     * @param tpf 
+     *
+     * @param tpf
      */
     @Override
     public void update(float tpf) {
@@ -105,8 +103,7 @@ public class GameState extends AbstractAppState {
     }
 
     /**
-     * Initializes sounds and bomb material.
-     * Called by setLevelParams().
+     * Initializes sounds and bomb material. Called by setLevelParams().
      */
     private void initAssets() {
         levelUpSound = new AudioNode(assetManager, "Audio/levelup.wav");
@@ -120,8 +117,7 @@ public class GameState extends AbstractAppState {
     }
 
     /**
-     * Initializes floor and base factories.
-     * Called by setLevelParams().
+     * Initializes floor and base factories. Called by setLevelParams().
      */
     private void initFactories() {
         bf = new BaseFactory(this);
@@ -135,9 +131,9 @@ public class GameState extends AbstractAppState {
     }
 
     /**
-     * Sets the parameters for the level.
-     * Called by LevelState.
-     * @param lp 
+     * Sets the parameters for the level. Called by LevelState.
+     *
+     * @param lp
      */
     public void setLevelParams(LevelParams lp) {
         setCamLocation(lp.getCamLocation());
@@ -156,8 +152,7 @@ public class GameState extends AbstractAppState {
     }
 
     /**
-     * Increments level.
-     * Called by update loop when conditions are met.
+     * Increments level. Called by update loop when conditions are met.
      */
     public void nextLevel() {
         incPlrLvl();
@@ -167,14 +162,16 @@ public class GameState extends AbstractAppState {
         incPlrHealth(getPlrLvl());
     }
 
-
+    /**
+     * Updates the number of creeps that are spawned in a level. The number of
+     * creeps is incremented by creepMod, which is fed in from LevelParameters.
+     */
     private void updateNumCreeps() {
         numCreeps += creepMod;
     }
 
     /**
-     * Provides the cost of various operations. TODO: Update in the same manner
-     * as creeps
+     * Provides the cost of various operations.
      *
      * @param type
      * @return (the cost of the operation)
@@ -209,24 +206,35 @@ public class GameState extends AbstractAppState {
             dropBomb(trans, .1f);
         }
     }
-    
+
     /**
-     * Check to see if the tower is globbed. If it isn't globbed, it is 
+     * Check to see if the tower is globbed. When collision is done, we don't
+     * want to select the tower to do things like charge/upgrade because it is
+     * globbed. This checks to see if a tower is globbed, and applies damage to
+     * the glob rather than selecting the tower.
+     *
      * @param trans
      * @param target
      * @param towerIndex
-     * @return 
+     * @return
      */
     private boolean globCheck(Vector3f trans, int towerIndex) {
         if (TowerState.getGlobbedTowerList().contains(towerIndex)) {
-            popGlob(trans, CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex)).getControl(GlobControl.class));
+            popGlob(trans, CreepState.getGlobList().get(TowerState.getGlobbedTowerList().indexOf(towerIndex))
+                    .getControl(GlobControl.class));
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
+    /**
+     * Damages glob enemy. Called from touchHandle and globCheck
+     *
+     * @param trans
+     * @param glob
+     * @return
+     */
     public int popGlob(Vector3f trans, GlobControl glob) {
         int health = glob.decGlobHealth();
         globPop.setPitch(health
@@ -240,10 +248,22 @@ public class GameState extends AbstractAppState {
         return health;
     }
 
+    /**
+     * TODO: Progress indication
+     *
+     * @return
+     */
     public float getCurrentProgress() {
         return TowerState.getTowerList().size();
     }
 
+    /**
+     * Drops a bomb at the given translation, with an initial size for the bomb
+     * to grow from.
+     *
+     * @param translation
+     * @param initialSize
+     */
     public void dropBomb(Vector3f translation, float initialSize) {
         Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
         bomb_geom.setMaterial(bomb_mat);
@@ -294,12 +314,6 @@ public class GameState extends AbstractAppState {
         return this.app;
     }
 
-    /**
-     * Returns the TowerState. Used by TowerControl. TODO: See if there is a
-     * less hacky way for TowerControl to have access to TowerState.
-     *
-     * @return TowerState, the Tower State
-     */
     public TowerState getTowerState() {
         return TowerState;
     }
@@ -307,10 +321,11 @@ public class GameState extends AbstractAppState {
     public Vector3f getBuiltTowerSize() {
         return TowerState.getBuiltTowerSize();
     }
+
     public Vector3f getUnbuiltTowerSize() {
         return TowerState.getUnbuiltTowerSize();
     }
-    
+
     public Node getWorldNode() {
         return worldNode;
     }
@@ -342,7 +357,7 @@ public class GameState extends AbstractAppState {
     public Box getUnivBox() {
         return univ_box;
     }
-    
+
     public String getBaseTexLoc() {
         return "Materials/" + getMatDir() + basetexloc + ".j3m";
     }
@@ -351,7 +366,6 @@ public class GameState extends AbstractAppState {
         numCreeps = nc;
     }
 
- 
     public void setCreepMod(int cm) {
         creepMod = cm;
     }
@@ -451,7 +465,6 @@ public class GameState extends AbstractAppState {
     public void setPlrBudget(int budget) {
         plrBudget = budget;
     }
-    
 
     public int getPlrBudget() {
         return plrBudget;
@@ -480,7 +493,7 @@ public class GameState extends AbstractAppState {
     public Vector3f getCamLocation() {
         return camLocation;
     }
-    
+
     public void incFours() {
         fours += 1;
     }
@@ -496,11 +509,10 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
     }
-    
+
     public Vector3f getBaseVec() {
         return basevec;
     }
-   
 
     @Override
     public void cleanup() {

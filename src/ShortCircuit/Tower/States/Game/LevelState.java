@@ -35,6 +35,7 @@ public class LevelState extends AbstractAppState {
     private HelperState HelperState;
     private double profileEmptyTimer;
     private double profileChargerTimer;
+    private float profileEndTimer;
     
     public LevelState(boolean _isProfile, String _levelName) {
         isProfile = _isProfile;
@@ -124,11 +125,12 @@ public class LevelState extends AbstractAppState {
             profileDropBombs(tpf);
             profileEmptyTowers(tpf);
             profileBuildCharger(tpf);
+            profileEndTimer(tpf);
         }
     }
     
     private void profileUpgradeTowers(float tpf) {
-        if (profileUpgradeTimer > .75) {
+        if (profileUpgradeTimer > 7.0) {
             for (int i = 0; i < TowerState.getTowerList().size(); i++) { 
                 TowerState.selectedTower = i;
                 TowerState.upgradeTower();
@@ -141,8 +143,8 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileDropBombs(float tpf) {
-        if (profileBombTimer > .05) {
-            GameState.dropBomb(CreepState.getCreepList().get(0).getLocalTranslation(), .002f);
+        if (profileBombTimer > .5) {
+            GameState.dropBomb(CreepState.getCreepList().get(0).getLocalTranslation(), .2f);
             profileBombTimer = 0;
         }
         else {
@@ -151,7 +153,7 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileEmptyTowers(float tpf) {
-        if (profileEmptyTimer > .3) {
+        if (profileEmptyTimer > 10.0) {
             for (int i = 0; i < TowerState.getTowerList().size(); i++) {
                 TowerState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
             }
@@ -163,12 +165,21 @@ public class LevelState extends AbstractAppState {
     }
     
     private void profileBuildCharger(float tpf) {
-        if (profileChargerTimer > .8) {
+        if (profileChargerTimer > 1.0) {
             HelperState.createCharger();
             profileChargerTimer = 0;
         }
         else {
             profileChargerTimer += tpf;
+        }
+    }
+    
+    private void profileEndTimer(float tpf) {
+        if (profileEndTimer > 30) {
+            app.stop();
+        }
+        else {
+            profileEndTimer += tpf;
         }
     }
     

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 /**
  * This state contains the code for l33t h4x.
- * TODO: Ensure all code works, add more
  * @author Connor Rice
  */
 public class CheatState extends AbstractAppState {

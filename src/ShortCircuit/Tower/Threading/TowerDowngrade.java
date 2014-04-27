@@ -64,10 +64,9 @@ public class TowerDowngrade implements Runnable {
                     for (int i = 0; i < oldnumcharges; i++) {
                         tower.addCharges();
                     }
-                    tower.getSpatial().setMaterial(ts.getAssetManager().loadMaterial(matLoc));
                     tower.setSize(ts.getBuiltTowerSize());
                 }
-
+                tower.getSpatial().setMaterial(ts.getAssetManager().loadMaterial(matLoc));
 
                 valid = false;
                 victimIndex = -1;

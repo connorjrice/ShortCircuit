@@ -39,6 +39,7 @@ import tonegod.gui.core.Screen;
 
 /**
  * Gameplay GUI for Tower Defense
+ *
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {
@@ -96,7 +97,6 @@ public class GameGUI extends AbstractAppState {
     private Material oldbuttmat;
     private HelperState HelperState;
     private ButtonAdapter DowngradeButton;
-   
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -126,21 +126,37 @@ public class GameGUI extends AbstractAppState {
         setInitialPlrInfo();
     }
 
-    /**
-     * TODO: Document GameGUI's update loop
-     * @param tpf 
-     */
+    
     @Override
     public void update(float tpf) {
+        textLoop(tpf);
+        frillsLoop(tpf);
+    }
+    
+    /**
+     * Updates the GUI text, and checks to see if the game is over.
+     */
+    private void textLoop(float tpf) {
         if (updateTimer > .15) {
-            if (gs.getPlrHealth() <= 0) {
-                tMS.gameover();
-            }
+            checkGameOver();
             updateText();
             updateTimer = 0;
         } else {
             updateTimer += tpf;
         }
+    }
+    
+    private void checkGameOver() {
+        if (gs.getPlrHealth() <= 0) {
+            tMS.gameover();
+        }
+    }
+    
+    /**
+     * Does extra frilly operations (text color, bloom level bump)
+     * @param tpf 
+     */
+    private void frillsLoop(float tpf) {
         if (frillsTimer > .25 && isFrills) {
             if (gs.getPlrLvl() != internalLevel) {
                 FilterState.incBloomIntensity(.2f);
@@ -156,7 +172,6 @@ public class GameGUI extends AbstractAppState {
         } else {
             frillsTimer += tpf;
         }
-
     }
 
     private void endTheme() {
@@ -319,20 +334,20 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(SetWindow);
         SetWindow.hide();
     }
-    
+
     private void purchaseWindow() {
-        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, 650), new Vector2f(300,500));
+        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, 650), new Vector2f(300, 500));
         PurchaseWindow.setIgnoreMouse(true);
         PurchaseWindow.setWindowIsMovable(false);
         PurchaseWindow.setWindowTitle("Purchasables");
         PurchaseWindow.setTextAlign(BitmapFont.Align.Center);
         screen.addElement(PurchaseWindow);
-        
+
         PurchaseWindow.hide();
     }
-    
+
     private void purchaseButton() {
-       PurchaseButton = new ButtonAdapter(screen, "PurchaseButton", new Vector2f(rightButtons, 500)) {
+        PurchaseButton = new ButtonAdapter(screen, "PurchaseButton", new Vector2f(rightButtons, 500)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible()) {
@@ -353,9 +368,9 @@ public class GameGUI extends AbstractAppState {
         PurchaseButton.setUseButtonPressedSound(true);
         screen.addElement(PurchaseButton);
     }
-    
+
     private void purchaseChargerButton() {
-        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger", new Vector2f(50,50), buttonSize) {
+        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger", new Vector2f(50, 50), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 HelperState.createCharger();
@@ -366,9 +381,9 @@ public class GameGUI extends AbstractAppState {
         PurchaseChargerButton.setUseButtonPressedSound(true);
         PurchaseWindow.addChild(PurchaseChargerButton);
     }
-    
+
     private void downgradeButton() {
-        DowngradeButton = new ButtonAdapter(screen, "Downgrade", new Vector2f(50,250), buttonSize) {
+        DowngradeButton = new ButtonAdapter(screen, "Downgrade", new Vector2f(50, 250), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 TowerState.downgradeTower();
@@ -476,7 +491,7 @@ public class GameGUI extends AbstractAppState {
             internalLevel = gs.getPlrLvl();
         }
     }
-    
+
     private void setInitialPlrInfo() {
         Health.setText("Health: " + gs.getPlrHealth());
         Budget.setText("Budget: " + gs.getPlrBudget());
@@ -565,16 +580,14 @@ public class GameGUI extends AbstractAppState {
         FilterState.setBloomIntensity(FilterState.bloomIntensity);
         SetWindow.addChild(BloomSlider);
     }
-    
+
     private void soundToggleButton() {
         soundToggle = new ButtonAdapter(screen, "SoundToggle", new Vector2f(640, 100), buttonSize) {
-            
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (app.getListener().getVolume() == 0) {
                     app.getListener().setVolume(1f);
-                }
-                else {
+                } else {
                     app.getListener().setVolume(0f);
                 }
             }
@@ -582,7 +595,7 @@ public class GameGUI extends AbstractAppState {
         soundToggle.setText("Toggle Sound");
         SetWindow.addChild(soundToggle);
     }
-    
+
     private void soundSlider() {
         SoundSlider = new Slider(screen, "SoundSlider", new Vector2f(670, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
@@ -711,24 +724,24 @@ public class GameGUI extends AbstractAppState {
     public void setCameraLocation() {
         cam.setLocation(gs.getCamLocation());
     }
-    
+
     public void getOldMat() {
         Element button = screen.getElementById("Budget");
         oldbuttmat = button.getMaterial();
     }
-    
+
     public void highlightButton(String buttonname) {
         Element button = screen.getElementById(buttonname);
         button.setMaterial(assetManager.loadMaterial("Common/Materials/WhiteColor.j3m"));
     }
-    
+
     public void unhighlightButton(String buttonname) {
         screen.removeElement(screen.getElementById(buttonname));
         if (buttonname.equals("Budget")) {
             budgetButton();
         }
     }
-    
+
     @Override
     public void stateDetached(AppStateManager asm) {
         super.cleanup();
@@ -753,5 +766,4 @@ public class GameGUI extends AbstractAppState {
         }
         guiNode.removeControl(screen);
     }
-    
 }

@@ -42,7 +42,6 @@ public class TowerMainState extends AbstractAppState {
     private CheatGUI CheatGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
-    private boolean inGame = false;
     public int width;
     public int height;
     private static final Trigger TRIGGER_ACTIVATE = new MouseButtonTrigger(
@@ -84,23 +83,25 @@ public class TowerMainState extends AbstractAppState {
     /**
      * Instantiates/attaches all states necessary for a tower game.
      * TODO: Figure out what all of these boolean vars do
-     * TODO: Figure out which states need "this" in constructor
      */
     public void attachStates() {
         isPaused = false;
         isPauseAllowed = true;
-        inGame = true;
+        
+        
+        GameGUI = new GameGUI(this);
+        GameOverGUI = new GameOverGUI(this);
+        
+        LevelState = new LevelState(profile, level);
+        FilterState = new FilterState();
         
         CheatState = new CheatState();
-        FilterState = new FilterState();
         CheatGUI = new CheatGUI();
+
         GameState = new GameState();
-        GameGUI = new GameGUI(this);
-        LevelState = new LevelState(profile, level);
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-        GameOverGUI = new GameOverGUI(this);
         HelperState = new HelperState();
 
         stateManager.attach(FilterState);
@@ -117,7 +118,6 @@ public class TowerMainState extends AbstractAppState {
 
     /**
      * Detaches all tower states.
-     * TODO: Figure out when this happens, document
      */
     public void detachStates() {
         stateManager.detach(GameGUI);
@@ -161,7 +161,7 @@ public class TowerMainState extends AbstractAppState {
      * Returns to the start menu.
      * Currently used by GameOver state, the "Too Bad" button.
      */
-    public void backToStartGUI() {
+    public void returnToStartAfterGameOver() {
         detachStates();
         stateManager.detach(GameOverGUI);
         stateManager.attach(StartGUI);
@@ -177,9 +177,6 @@ public class TowerMainState extends AbstractAppState {
 
     /**
      * Pauses the game.
-     * TODO: Decide if this should be multipurpose (as it currently is)
-     * or write more specific functions.
-     * TODO: Sort out this boolean variable mess
      */
     public void pause() {
         if (isPauseAllowed) {
@@ -201,7 +198,6 @@ public class TowerMainState extends AbstractAppState {
             isPauseAllowed = false;
             stateManager.attach(GameOverGUI);
             detachStates();
-            inGame = false;
         } else {
             /**
              * If we're in a profile session, we want to end the game.
@@ -259,9 +255,7 @@ public class TowerMainState extends AbstractAppState {
     }
 
     public void toggleFrills() {
-        if (inGame) {
-            GameGUI.toggleFrills();
-        }
+        GameGUI.toggleFrills();
     }
     
     @Override

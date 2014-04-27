@@ -23,9 +23,24 @@ public class LevelParams {
     private boolean debug;
     private String matdir;
     private boolean tutorial;
+    
+    /**
+     * Allowed Enemies
+     * 0123456
+     * 0 = small creep
+     * 1 = medium creep
+     * 2 = large creep
+     * 3 = giant creep
+     * 4 = glob
+     * 5 = ranger
+     * 6 = digger
+     * Binary system, so sm-large is
+     * 111000
+     */
+    private int allowedenemies;
 
     public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial) {
+            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, int _allowedenemies) {
         camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
@@ -38,6 +53,8 @@ public class LevelParams {
         debug = _debug;
         matdir = _matdir;
         tutorial = _tutorial;
+        allowedenemies = _allowedenemies;
+
     }
 
     public Vector3f getCamLocation() {
@@ -87,4 +104,9 @@ public class LevelParams {
     public boolean getTutorial() {
         return tutorial;
     }
+    
+    public int getAllowedEnemiesInt() {
+        return allowedenemies;
+    }
+    
 }

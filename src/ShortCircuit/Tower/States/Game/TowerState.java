@@ -136,7 +136,6 @@ public class TowerState extends AbstractAppState {
 
     /**
      * Charges a tower at a specific index point.
-     * TODO: Make this a runnable.
      * @param selectedTower = the index on the towerList of the specified tower.
      */
     public void chargeTower() {

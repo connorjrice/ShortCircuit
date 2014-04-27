@@ -14,6 +14,7 @@
             <debug>false</debug>
             <matdir>Neon</matdir>
             <tutorial>false</tutorial>
+            <allowedenemies>111111</allowedenemies>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>

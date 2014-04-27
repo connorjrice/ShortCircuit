@@ -5,7 +5,6 @@ import ShortCircuit.Tower.States.Game.CreepState;
 
 /**
  * Runnable for moving creeps.
- * ASKMATTHEW: Is this the correct way to implement this sort of thing?
  * @author clarence
  */
 public class MoveCreep implements Runnable {

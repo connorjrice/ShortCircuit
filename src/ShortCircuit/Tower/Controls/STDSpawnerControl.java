@@ -13,7 +13,6 @@ import com.jme3.scene.control.Control;
 import java.io.IOException;
 
 /**
- * TODO: Document CreepSpawnerControl
  * PENDING: Blinking creepspawner and then flood of enemies, simultaneously shut
  * down other spawners (Juliya's idea)
  * @author Connor Rice
@@ -26,6 +25,12 @@ public class STDSpawnerControl extends AbstractControl {
         CreepState = _cstate;
     }
     
+    /**
+     * Decides if this spawner will spawn a creep based on getNextSpawner().
+     * If the index of the spawner is matched with getNextSpawner(), then it 
+     * spawns a standard creep and goes to the next spawner.
+     * @param tpf 
+     */
     @Override
     protected void controlUpdate(float tpf) {
         if (CreepState.getNextSpawner() == getIndex()) {
@@ -36,7 +41,10 @@ public class STDSpawnerControl extends AbstractControl {
         }
     }
     
-
+    /**
+     * Returns the index of the creepspawner.
+     * @return 
+     */
     protected int getIndex() {
         return spatial.getUserData("Index");
     }
