@@ -79,7 +79,7 @@ public class GameState extends AbstractAppState {
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         // TODO: Dynamic backgorund color, XML
-        this.app.getViewPort().setBackgroundColor(ColorRGBA.DarkGray);
+        this.app.getViewPort().setBackgroundColor(ColorRGBA.Black);
     }
 
     /**

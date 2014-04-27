@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.Objects;
 
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 
 /**
@@ -38,9 +39,10 @@ public class LevelParams {
      * 111000
      */
     private int allowedenemies;
+    private final ColorRGBA backgroundcolor;
 
     public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, int _allowedenemies) {
+            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, int _allowedenemies, ColorRGBA _backgroundcolor) {
         camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
@@ -54,6 +56,7 @@ public class LevelParams {
         matdir = _matdir;
         tutorial = _tutorial;
         allowedenemies = _allowedenemies;
+        backgroundcolor = _backgroundcolor;
 
     }
 
@@ -107,6 +110,10 @@ public class LevelParams {
     
     public int getAllowedEnemiesInt() {
         return allowedenemies;
+    }
+    
+    public ColorRGBA getBackgroundColor() {
+        return backgroundcolor;
     }
     
 }

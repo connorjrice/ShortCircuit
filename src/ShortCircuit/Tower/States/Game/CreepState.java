@@ -379,7 +379,6 @@ public class CreepState extends AbstractAppState {
     }
 
     public void goToNextSpawner() {
-        System.out.println(nextspawner);
         if (creepSpawners.size() > 1) {
             if (nextspawner < creepSpawners.size() - 1) {
 

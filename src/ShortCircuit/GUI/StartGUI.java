@@ -71,7 +71,7 @@ public class StartGUI extends AbstractAppState {
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
+        screen.setUseTextureAtlas(true, "Interface/StartAtlas.png");
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);

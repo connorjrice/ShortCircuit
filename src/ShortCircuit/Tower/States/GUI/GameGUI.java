@@ -184,7 +184,7 @@ public class GameGUI extends AbstractAppState {
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
+        screen.setUseTextureAtlas(true, "Interface/CircuitAtlas.png");
         screen.setUseMultiTouch(false);
         guiNode.addControl(screen);
         //screen.setUseKeyboardIcons(true);

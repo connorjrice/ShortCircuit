@@ -15,6 +15,7 @@
             <matdir>Neon</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111111</allowedenemies>
+            <backgroundcolor>Purple</backgroundcolor>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>

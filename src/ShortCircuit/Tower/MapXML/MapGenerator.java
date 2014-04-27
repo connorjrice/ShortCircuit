@@ -4,6 +4,7 @@ import ShortCircuit.Tower.Objects.FilterParams;
 import ShortCircuit.Tower.Objects.LevelParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import org.w3c.dom.Document;
@@ -47,10 +48,8 @@ public class MapGenerator {
         ArrayList<Vector3f> unbuiltVecs = new ArrayList<Vector3f>();
         for (int i = 0; i < tList.getLength(); i++) {
             Element eElement = (Element) tList.item(i);
-            unbuiltVecs.add(new Vector3f(Float.parseFloat(eElement.getElementsByTagName("x")
-                    .item(0).getTextContent()),
-                    Float.parseFloat(eElement.getElementsByTagName("y").item(0).getTextContent()),
-                    Float.parseFloat(eElement.getElementsByTagName("z").item(0).getTextContent())));
+            unbuiltVecs.add(parseVector3f(getElement("x", eElement),
+                    getElement("y", eElement), getElement("z", eElement)));
         }
         return unbuiltVecs;
 
@@ -60,10 +59,8 @@ public class MapGenerator {
         ArrayList<Vector3f> creepSpawnVecs = new ArrayList<Vector3f>();
         for (int i = 0; i < cList.getLength(); i++) {
             Element eElement = (Element) cList.item(i);
-            creepSpawnVecs.add(new Vector3f(Float.parseFloat(eElement.getElementsByTagName("x")
-                    .item(0).getTextContent()),
-                    Float.parseFloat(eElement.getElementsByTagName("y").item(0).getTextContent()),
-                    Float.parseFloat(eElement.getElementsByTagName("z").item(0).getTextContent())));
+            creepSpawnVecs.add(parseVector3f(getElement("x", eElement),
+                    getElement("y", eElement), getElement("z", eElement)));
         }
         return creepSpawnVecs;
 
@@ -73,42 +70,35 @@ public class MapGenerator {
         ArrayList<String> creepSpawnDirs = new ArrayList<String>();
         for (int i = 0; i < cList.getLength(); i++) {
             Element eElement = (Element) cList.item(i);
-            creepSpawnDirs.add(eElement.getElementsByTagName("orientation").item(0).getTextContent());
+            creepSpawnDirs.add(getElement("orientation", eElement));
         }
         return creepSpawnDirs;
-
     }
 
     public Vector3f getBaseVec() {
         Element eElement = (Element) bList.item(0);
-        return new Vector3f(Float.parseFloat(eElement.getElementsByTagName("x")
-                .item(0).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("y").item(0).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("z").item(0).getTextContent()));
+        return parseVector3f(getElement("x", eElement),
+                getElement("y", eElement), getElement("z", eElement));
     }
 
     public Vector3f getBaseScale() {
         Element eElement = (Element) bList.item(0);
-        return new Vector3f(Float.parseFloat(eElement.getElementsByTagName("x")
-                .item(1).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("y").item(1).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("z").item(1).getTextContent()));
+        return parseVector3f(getElement("x", eElement, 1),
+                getElement("y", eElement, 1), getElement("z", eElement, 1));
     }
 
     public Vector3f getFloorScale() {
         Element eElement = (Element) fList.item(0);
-        return new Vector3f(Float.parseFloat(eElement.getElementsByTagName("x")
-                .item(0).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("y").item(0).getTextContent()),
-                Float.parseFloat(eElement.getElementsByTagName("z").item(0).getTextContent()));
+        return parseVector3f(getElement("x", eElement),
+                getElement("y", eElement), getElement("z", eElement));
     }
 
     public ArrayList<Integer> getStarterTowers() {
         ArrayList<Integer> starterTowers = new ArrayList<Integer>();
         for (int i = 0; i < tList.getLength(); i++) {
             Element eElement = (Element) tList.item(i);
-            if (eElement.getElementsByTagName("isStarter").item(0).getTextContent().equals("true")) {
-                starterTowers.add(Integer.parseInt(eElement.getAttribute("id")));
+            if (getElement("isStarter", eElement).equals("true")) {
+                starterTowers.add(parseInt(eElement.getAttribute("id")));
             }
         }
         return starterTowers;
@@ -116,63 +106,106 @@ public class MapGenerator {
 
     public LevelParams getLevelParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
-        String camlocS = eElement.getElementsByTagName("camLocation").item(0).getTextContent();
-        String[] camlocF = camlocS.split(",");
-        Vector3f camLocation = new Vector3f(Float.parseFloat(camlocF[0]), Float.parseFloat(camlocF[1]), Float.parseFloat(camlocF[2]));
-        int numCreeps = Integer.parseInt(eElement.getElementsByTagName("numCreeps").item(0).getTextContent());
-        int creepMod = Integer.parseInt(eElement.getElementsByTagName("creepMod").item(0).getTextContent());
-        int levelCap = Integer.parseInt(eElement.getElementsByTagName("levelCap").item(0).getTextContent());
-        int levelMod = Integer.parseInt(eElement.getElementsByTagName("levelMod").item(0).getTextContent());
-        int plrHealth = Integer.parseInt(eElement.getElementsByTagName("plrHealth").item(0).getTextContent());
-        int plrBudget = Integer.parseInt(eElement.getElementsByTagName("plrBudget").item(0).getTextContent());
-        int plrLevel = Integer.parseInt(eElement.getElementsByTagName("plrLevel").item(0).getTextContent());
-        int plrScore = Integer.parseInt(eElement.getElementsByTagName("plrScore").item(0).getTextContent());
-        String debugs = eElement.getElementsByTagName("debug").item(0).getTextContent();
-        String matdir = eElement.getElementsByTagName("matdir").item(0).getTextContent();
-        String tutorials = eElement.getElementsByTagName("tutorial").item(0).getTextContent();
-        boolean debug;
-        if (debugs.equals("true")) {
-            debug = true;
-        } else {
-            debug = false;
-        }
-        boolean tutorial;
-        if (tutorials.equals("true")) {
-            tutorial = true;
-        } else {
-            tutorial = false;
-        }
-        int allowedenemies = Integer.parseInt(eElement.getElementsByTagName("allowedenemies").item(0).getTextContent());
-
-        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, 
+        String camlocS = getElement("camLocation", eElement);
+        String debugs = getElement("debug", eElement);
+        String matdir = getElement("matdir", eElement);
+        String tutorials = getElement("tutorial", eElement);
+        String colors = getElement("backgroundcolor", eElement);
+        int numCreeps = parseInt(getElement("numCreeps", eElement));
+        int creepMod = parseInt(getElement("creepMod", eElement));
+        int levelCap = parseInt(getElement("levelCap", eElement));
+        int levelMod = parseInt(getElement("levelMod", eElement));
+        int plrHealth = parseInt(getElement("plrHealth", eElement));
+        int plrBudget = parseInt(getElement("plrBudget", eElement));
+        int plrLevel = parseInt(getElement("plrLevel", eElement));
+        int plrScore = parseInt(getElement("plrScore", eElement));
+        int allowedenemies = parseInt(getElement("allowedenemies", eElement));
+        boolean debug = parseBoolean(debugs);
+        boolean tutorial = parseBoolean(tutorials);
+        Vector3f camLocation = parseVector3f(camlocS);
+        ColorRGBA backgroundcolor = parseColorRGBA(colors);
+        return new LevelParams(camLocation, numCreeps, creepMod, levelCap,
                 levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug,
-                matdir, tutorial, allowedenemies);
+                matdir, tutorial, allowedenemies, backgroundcolor);
     }
+
 
     public FilterParams getFilterParams() {
         Element eElement = (Element) pList.item(0);
-        String blooms = eElement.getElementsByTagName("bloom").item(0).getTextContent();
+        String blooms = getElement("bloom", eElement);
         boolean bloom;
         if (blooms.equals("false")) {
             bloom = false;
         } else {
             bloom = true;
         }
-        float downsampling = Float.parseFloat(eElement.getElementsByTagName("downsampling").item(0).getTextContent());
-        float blurscale = Float.parseFloat(eElement.getElementsByTagName("blurscale").item(0).getTextContent());
-        float exposurepower = Float.parseFloat(eElement.getElementsByTagName("exposurepower").item(0).getTextContent());
-        float bloomintensity = Float.parseFloat(eElement.getElementsByTagName("bloomintensity").item(0).getTextContent());
-        String glowmodes = eElement.getElementsByTagName("glowmode").item(0).getTextContent();
-        GlowMode glowmode;
-        if (glowmodes.equals("GlowMode.SceneAndObjects")) {
-            glowmode = GlowMode.SceneAndObjects;
-        } else if (glowmodes.equals("GlowMode.Scene")) {
-            glowmode = GlowMode.Scene;
-        } else if (glowmodes.equals("GlowMode.Objects")) {
-            glowmode = GlowMode.Objects;
-        } else {
-            glowmode = null;
-        }
-        return new FilterParams(bloom, downsampling, blurscale, exposurepower, bloomintensity, glowmode);
+        float downsampling = parseFloat(getElement("downsampling", eElement));
+        float blurscale = parseFloat(getElement("blurscale", eElement));
+        float exposurepower = parseFloat(getElement("exposurepower", eElement));
+        float bloomintensity = parseFloat(getElement("bloomintensity", eElement));
+        String glowmodes = getElement("glowmode", eElement);
+        GlowMode glowmode = parseGlowMode(glowmodes);
+        return new FilterParams(bloom, downsampling, blurscale, 
+                exposurepower, bloomintensity, glowmode);
     }
+    
+    public ColorRGBA parseColorRGBA(String colors) {
+        if (colors.equals("Black")) {
+            return ColorRGBA.Black;
+        } else if (colors.equals("DarkGrey")) {
+            return ColorRGBA.DarkGray;
+        } else if (colors.equals("Blue")) {
+            return ColorRGBA.Blue;
+        } else {
+            return ColorRGBA.randomColor();
+        }
+    }
+
+    public boolean parseBoolean(String bool) {
+        if (bool.equals("true")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Vector3f parseVector3f(String vec) {
+        String[] split = vec.split(",");
+        return new Vector3f(Float.parseFloat(split[0]),
+                Float.parseFloat(split[1]), Float.parseFloat(split[2]));
+    }
+
+    public Vector3f parseVector3f(String x, String y, String z) {
+        return new Vector3f(Float.parseFloat(x),
+                Float.parseFloat(y), Float.parseFloat(z));
+    }
+
+    public int parseInt(String s) {
+        return Integer.parseInt(s);
+    }
+
+    public float parseFloat(String s) {
+        return Float.parseFloat(s);
+    }
+
+    public String getElement(String s, Element e) {
+        return e.getElementsByTagName(s).item(0).getTextContent();
+    }
+
+    public String getElement(String s, Element e, int i) {
+        return e.getElementsByTagName(s).item(i).getTextContent();
+    }
+    
+    public GlowMode parseGlowMode(String s) {
+        if (s.equals("GlowMode.SceneAndObjects")) {
+            return GlowMode.SceneAndObjects;
+        } else if (s.equals("GlowMode.Scene")) {
+            return GlowMode.Scene;
+        } else if (s.equals("GlowMode.Objects")) {
+            return GlowMode.Objects;
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -15,6 +15,7 @@
             <matdir>Circuit2</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111100</allowedenemies>
+            <backgroundcolor>Red</backgroundcolor>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>
