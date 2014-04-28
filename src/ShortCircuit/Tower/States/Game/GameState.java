@@ -78,13 +78,10 @@ public class GameState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.CreepState = this.app.getStateManager().getState(CreepState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        // TODO: Dynamic backgorund color, XML
-        this.app.getViewPort().setBackgroundColor(ColorRGBA.Black);
     }
 
     /**
      * Update loop. Handles level incrementation.
-     *
      * @param tpf
      */
     @Override
@@ -147,6 +144,7 @@ public class GameState extends AbstractAppState {
         setPlrScore(lp.getPlrScore());
         setDebug(lp.getDebug());
         setMatDir(lp.getMatDir());
+        setBackgroundColor(lp.getBackgroundColor());
         initAssets();
         initFactories();
     }
@@ -512,6 +510,10 @@ public class GameState extends AbstractAppState {
 
     public Vector3f getBaseVec() {
         return basevec;
+    }
+    
+    private void setBackgroundColor(ColorRGBA c) {
+        app.getViewPort().setBackgroundColor(c);
     }
 
     @Override

@@ -12,7 +12,7 @@
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Neon</matdir>
+            <matdir>Circuit2</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111111</allowedenemies>
             <backgroundcolor>Purple</backgroundcolor>

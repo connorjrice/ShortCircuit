@@ -12,9 +12,10 @@
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
             <debug>false</debug>
-            <matdir>Circuit2</matdir>
+            <matdir>Circuit</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111100</allowedenemies>
+            <backgroundcolor>Red</backgroundcolor>
         </param>
         <param id = "filterparams"> 
             <bloom>true</bloom>
