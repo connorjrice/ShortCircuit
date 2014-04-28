@@ -68,6 +68,7 @@ public class BeamState extends AbstractAppState {
     
     private void decideSound(String towertype, Vector3f origin) {
         if (towertype.equals("Tower1")) {
+            //hashmap/arraylist for tower audio nodes
             tower1audio.setVolume(.3f);
             tower1audio.setLocalTranslation(origin);
             tower1audio.playInstance();

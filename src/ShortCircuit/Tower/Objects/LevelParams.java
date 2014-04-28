@@ -38,11 +38,15 @@ public class LevelParams {
      * Binary system, so sm-large is
      * 111000
      */
-    private int allowedenemies;
+    private String allowedenemies;
     private final ColorRGBA backgroundcolor;
+    
+    
+    // TODO: array of ints, accessor methods at the right index
 
     public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, int _allowedenemies, ColorRGBA _backgroundcolor) {
+            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, 
+            String _allowedenemies, ColorRGBA _backgroundcolor) {
         camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
@@ -108,7 +112,7 @@ public class LevelParams {
         return tutorial;
     }
     
-    public int getAllowedEnemiesInt() {
+    public String getAllowedEnemiesInt() {
         return allowedenemies;
     }
     

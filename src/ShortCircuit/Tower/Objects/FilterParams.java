@@ -15,6 +15,8 @@ public class FilterParams {
     private float exposurepower;
     private float bloomintensity;
     private GlowMode glowmode;
+    
+    // TODO: array float FilterParams
 
     public FilterParams(boolean _enabled, float _downsampling, float _blurscale,
             float _exposurepower, float _bloomintensity, GlowMode _glowmode) {

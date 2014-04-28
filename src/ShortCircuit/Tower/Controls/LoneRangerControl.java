@@ -24,6 +24,8 @@ import java.io.IOException;
  * Each iteration of the tower will take 3 seconds, so if it is a level 1 tower
  * it will only take 3 seconds to reduce to unbuilt.
  * 
+ * // find a way to build a grid using distances for these enemies to spawn
+ * 
  * @author Connor
  */
 public class LoneRangerControl extends AbstractControl {

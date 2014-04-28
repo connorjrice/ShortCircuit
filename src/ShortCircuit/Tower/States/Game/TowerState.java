@@ -139,11 +139,14 @@ public class TowerState extends AbstractAppState {
      * @param selectedTower = the index on the towerList of the specified tower.
      */
     public void chargeTower() {
-        TowerControl tower = getTowerList().get(GameState.getSelected()).getControl(TowerControl.class);
-        tcr.setTower(tower);
-        tcr.run();
-        if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
-            HelperState.getEmptyTowers().remove(tower.getSpatial());
+        if (GameState.getSelected() != -1) {
+            TowerControl tower = getTowerList().get(GameState.getSelected()).getControl(TowerControl.class);
+            tcr.setTower(tower);
+            tcr.run();
+            if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
+                // TODO: debug this (charger/empty towers)
+                HelperState.getEmptyTowers().remove(tower.getSpatial());
+            }
         }
     }
     

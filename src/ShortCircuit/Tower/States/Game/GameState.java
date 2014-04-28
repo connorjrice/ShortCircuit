@@ -23,7 +23,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * This is the main game state for the Tower Defense game.
+ * This is the main game state for the Tower Defense game
+ * TODO: Implement Digger and Ranger
+ * TODO: Objects in XML class
+ * TODO: Atlases and backgrounds for levels based on texture pack
+ * TODO: Retool main menu
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {

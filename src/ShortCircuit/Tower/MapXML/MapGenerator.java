@@ -2,6 +2,7 @@ package ShortCircuit.Tower.MapXML;
 
 import ShortCircuit.Tower.Objects.FilterParams;
 import ShortCircuit.Tower.Objects.LevelParams;
+import ShortCircuit.Tower.Objects.PlayerParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
@@ -119,11 +120,13 @@ public class MapGenerator {
         int plrBudget = parseInt(getElement("plrBudget", eElement));
         int plrLevel = parseInt(getElement("plrLevel", eElement));
         int plrScore = parseInt(getElement("plrScore", eElement));
-        int allowedenemies = parseInt(getElement("allowedenemies", eElement));
+        String allowedenemies = getElement("allowedenemies", eElement);
         boolean debug = parseBoolean(debugs);
         boolean tutorial = parseBoolean(tutorials);
         Vector3f camLocation = parseVector3f(camlocS);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
+        PlayerParams pp = new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
+        // TODO: Implement PlayerParams in LevelParams
         return new LevelParams(camLocation, numCreeps, creepMod, levelCap,
                 levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug,
                 matdir, tutorial, allowedenemies, backgroundcolor);
@@ -156,6 +159,8 @@ public class MapGenerator {
             return ColorRGBA.DarkGray;
         } else if (colors.equals("Blue")) {
             return ColorRGBA.Blue;
+        } else if (colors.equals("Purple")) {
+            return new ColorRGBA(.5f, .0f, .5f, .5f); // TODO: make a better purple
         } else {
             return ColorRGBA.randomColor();
         }
@@ -171,8 +176,8 @@ public class MapGenerator {
 
     public Vector3f parseVector3f(String vec) {
         String[] split = vec.split(",");
-        return new Vector3f(Float.parseFloat(split[0]),
-                Float.parseFloat(split[1]), Float.parseFloat(split[2]));
+        return new Vector3f(parseFloat(split[0]),
+                parseFloat(split[1]), parseFloat(split[2]));
     }
 
     public Vector3f parseVector3f(String x, String y, String z) {
@@ -189,7 +194,7 @@ public class MapGenerator {
     }
 
     public String getElement(String s, Element e) {
-        return e.getElementsByTagName(s).item(0).getTextContent();
+        return getElement(s, e, 0);
     }
 
     public String getElement(String s, Element e, int i) {

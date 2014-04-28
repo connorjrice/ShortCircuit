@@ -474,6 +474,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void updatePlrInfo() {
+        // flags
         if (gs.getPlrHealth() != internalHealth) {
             Health.setText("Health: " + gs.getPlrHealth());
             internalHealth = gs.getPlrHealth();
