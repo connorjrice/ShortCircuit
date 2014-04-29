@@ -9,7 +9,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -23,10 +22,10 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * This is the main game state for the Tower Defense game
- * TODO: Implement Digger and Ranger
- * TODO: Objects in XML class
- * TODO: Atlases and backgrounds for levels based on texture pack
+ * PENDING: Clean up GameState
+ * TODO: Implement Digger and Ranger 
+ * TODO: Objects in XML class 
+ * TODO: Atlases and backgrounds for levels based on texture pack 
  * TODO: Retool main menu
  * @author Connor Rice
  */
@@ -54,25 +53,16 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor ex;
     public String matDir;
     private Vector3f basevec;
-    public AudioNode levelUpSound;
-    public AudioNode globPop;
     public int fours;
     private BaseFactory bf;
     private Material bomb_mat;
     private String basetexloc;
+    private AppStateManager stateManager;
+    private AudioState AudioState;
 
-    /**
-     * Constructor takes no input parameters.
-     */
-    public GameState() {
-    }
+    public GameState() {}
 
-    /**
-     * Initialize GameState.
-     *
-     * @param stateManager
-     * @param app
-     */
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -80,61 +70,16 @@ public class GameState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
-        this.CreepState = this.app.getStateManager().getState(CreepState.class);
-        this.TowerState = this.app.getStateManager().getState(TowerState.class);
+        this.stateManager = this.app.getStateManager();
+        this.CreepState = this.stateManager.getState(CreepState.class);
+        this.TowerState = this.stateManager.getState(TowerState.class);
+        this.AudioState = this.stateManager.getState(AudioState.class);
     }
-
+    
     /**
-     * Update loop. Handles level incrementation.
-     * @param tpf
-     */
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        if (isEnabled()) {
-            if (updateTimer > .1) {
-                if (getPlrScore() > levelCap) {
-                    nextLevel();
-                }
-                updateTimer = 0;
-            } else {
-                updateTimer += tpf;
-            }
-        }
-    }
-
-    /**
-     * Initializes sounds and bomb material. Called by setLevelParams().
-     */
-    private void initAssets() {
-        levelUpSound = new AudioNode(assetManager, "Audio/levelup.wav");
-        levelUpSound.setPositional(false);
-        levelUpSound.setVolume(.6f);
-
-        globPop = new AudioNode(assetManager, "Audio/globpop.wav");
-        globPop.setVolume(.4f);
-
-        bomb_mat = assetManager.loadMaterial("Materials/" + getMatDir() + "/Bomb.j3m");
-    }
-
-    /**
-     * Initializes floor and base factories. Called by setLevelParams().
-     */
-    private void initFactories() {
-        bf = new BaseFactory(this);
-    }
-
-    /**
-     * Attaches the worldNode to the rootNode.
-     */
-    public void attachWorldNode() {
-        rootNode.attachChild(worldNode);
-    }
-
-    /**
-     * Sets the parameters for the level. Called by LevelState.
-     *
-     * @param lp
+     * This method assigns values to gameplay variables, and initializes
+     * the assets and factories for the game.
+     * @param lp 
      */
     public void setLevelParams(LevelParams lp) {
         setCamLocation(lp.getCamLocation());
@@ -152,6 +97,40 @@ public class GameState extends AbstractAppState {
         initAssets();
         initFactories();
     }
+
+    /**
+     * Level incrementation is taken care of in this loop.
+     */
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        if (isEnabled()) {
+            if (updateTimer > .1) {
+                if (getPlrScore() > levelCap) {
+                    nextLevel();
+                }
+                updateTimer = 0;
+            } else {
+                updateTimer += tpf;
+            }
+        }
+    }
+
+    private void initAssets() {
+        bomb_mat = assetManager.loadMaterial("Materials/" + getMatDir() + "/Bomb.j3m");
+    }
+
+    private void initFactories() {
+        bf = new BaseFactory(this);
+    }
+
+
+    
+    public void attachWorldNode() {
+        rootNode.attachChild(worldNode);
+    }
+
+
 
     /**
      * Increments level. Called by update loop when conditions are met.
@@ -239,11 +218,7 @@ public class GameState extends AbstractAppState {
      */
     public int popGlob(Vector3f trans, GlobControl glob) {
         int health = glob.decGlobHealth();
-        globPop.setPitch(health
-                * 0.1f + 1f);
-        globPop.setLocalTranslation(trans);
-
-        globPop.playInstance();
+        AudioState.globSound(health, trans);
         if (health <= 0) {
             glob.remove();
         }
@@ -402,7 +377,7 @@ public class GameState extends AbstractAppState {
     }
 
     public int getSelected() {
-        return TowerState.getSelectedNum();
+        return TowerState.getSelectedTowerIndex();
     }
 
     public int getBuildCost() {
@@ -505,7 +480,7 @@ public class GameState extends AbstractAppState {
     }
 
     public void playLevelUpSound() {
-        levelUpSound.playInstance();
+        AudioState.levelUpSound();
     }
 
     public ScheduledThreadPoolExecutor getEx() {
@@ -515,7 +490,7 @@ public class GameState extends AbstractAppState {
     public Vector3f getBaseVec() {
         return basevec;
     }
-    
+
     private void setBackgroundColor(ColorRGBA c) {
         app.getViewPort().setBackgroundColor(c);
     }

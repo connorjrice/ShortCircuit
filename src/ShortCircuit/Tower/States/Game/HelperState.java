@@ -122,7 +122,7 @@ public class HelperState extends AbstractAppState {
     }
     
     public void chargeTower(int index) {
-        TowerState.chargerChargeTower(index);
+        TowerState.chargeTower(index);
     }
     
     public AssetManager getAssetManager() {

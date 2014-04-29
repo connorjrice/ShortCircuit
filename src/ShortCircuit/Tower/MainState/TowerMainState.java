@@ -5,6 +5,7 @@ import ShortCircuit.Tower.Cheats.CheatGUI;
 import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.States.GUI.GameGUI;
 import ShortCircuit.Tower.States.GUI.GameOverGUI;
+import ShortCircuit.Tower.States.Game.AudioState;
 import ShortCircuit.Tower.States.Game.BeamState;
 import ShortCircuit.Tower.States.Game.CreepState;
 import ShortCircuit.Tower.States.Game.FilterState;
@@ -37,6 +38,7 @@ public class TowerMainState extends AbstractAppState {
     private TowerState TowerState;
     private LevelState LevelState;
     private CheatState CheatState;
+    private AudioState AudioState;
     private GameGUI GameGUI;
     private GameOverGUI GameOverGUI;
     private CheatGUI CheatGUI;
@@ -82,16 +84,15 @@ public class TowerMainState extends AbstractAppState {
 
     /**
      * Instantiates/attaches all states necessary for a tower game.
-     * TODO: Figure out what all of these boolean vars do
      */
     public void attachStates() {
         isPaused = false;
-        isPauseAllowed = true;
-        
+        isPauseAllowed = true; 
         
         GameGUI = new GameGUI(this);
         GameOverGUI = new GameOverGUI(this);
         
+        AudioState = new AudioState();
         LevelState = new LevelState(profile, level);
         FilterState = new FilterState();
         
@@ -104,6 +105,7 @@ public class TowerMainState extends AbstractAppState {
         TowerState = new TowerState();
         HelperState = new HelperState();
 
+        stateManager.attach(AudioState);
         stateManager.attach(FilterState);
         stateManager.attach(GameState);
         stateManager.attach(TowerState);
@@ -130,6 +132,8 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(CheatGUI);
         stateManager.detach(FilterState);
         stateManager.detach(HelperState);
+        stateManager.detach(TutorialState);
+        stateManager.detach(AudioState);
         theme.stop();
     }
 

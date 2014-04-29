@@ -1,7 +1,6 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.GUI.StartGUI;
-import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.MapXML.MapGenerator;
 import com.jme3.app.Application;
@@ -41,9 +40,7 @@ public class LevelState extends AbstractAppState {
         isProfile = _isProfile;
         levelName = _levelName;
     }
-    
-    
-    
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

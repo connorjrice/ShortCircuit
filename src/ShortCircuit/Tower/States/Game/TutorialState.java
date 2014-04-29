@@ -20,6 +20,8 @@ import tonegod.gui.core.Screen;
  * towers, banner to state what needs to be done/level up, how levels work, how
  * upgrades work, how budget works, how bombs work.
  *
+ * TODO: Make main menu unopenable while dialog boxes are up.
+ * 
  * @author Connor
  */
 public class TutorialState extends AbstractAppState {
@@ -107,8 +109,6 @@ public class TutorialState extends AbstractAppState {
         };
         baseA.setMsg("This is your base. Defend it from creeps.");
         screen.addElement(baseA);
-
-
     }
 
     private void towerPopup() {
@@ -239,7 +239,7 @@ public class TutorialState extends AbstractAppState {
         String type = CreepState.getCreepList().get(i).getUserData("Name");
         return "Materials/" + GameState.getMatDir() + "/" + type + "Creep.j3m";
     }
-
+    
     @Override
     public void cleanup() {
         super.cleanup();

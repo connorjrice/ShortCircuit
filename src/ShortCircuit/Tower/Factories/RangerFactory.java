@@ -28,7 +28,7 @@ public class RangerFactory {
         ranger.setUserData("Name", "Ranger");
         ranger.setUserData("Health", 200);
         ranger.setUserData("VictimTower", index);
-        ranger.addControl(new RangerControl(cs));
+        //ranger.addControl(new RangerControl(cs, ));
         return ranger;
     }
 
