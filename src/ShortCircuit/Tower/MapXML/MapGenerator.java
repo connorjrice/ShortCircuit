@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.MapXML;
 
 import ShortCircuit.Tower.Objects.FilterParams;
-import ShortCircuit.Tower.Objects.LevelParams;
+import ShortCircuit.Tower.Objects.GameplayParams;
 import ShortCircuit.Tower.Objects.PlayerParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
@@ -105,7 +105,7 @@ public class MapGenerator {
         return starterTowers;
     }
 
-    public LevelParams getLevelParams() {  //throws LevelParseException {
+    public GameplayParams getLevelParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
         String camlocS = getElement("camLocation", eElement);
         String debugs = getElement("debug", eElement);
@@ -126,8 +126,8 @@ public class MapGenerator {
         Vector3f camLocation = parseVector3f(camlocS);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
         PlayerParams pp = new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
-        // TODO: Implement PlayerParams in LevelParams
-        return new LevelParams(camLocation, numCreeps, creepMod, levelCap,
+        // TODO: Implement PlayerParams in GameplayParams
+        return new GameplayParams(camLocation, numCreeps, creepMod, levelCap,
                 levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug,
                 matdir, tutorial, allowedenemies, backgroundcolor);
     }

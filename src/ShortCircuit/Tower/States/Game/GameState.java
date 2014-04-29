@@ -3,7 +3,7 @@ package ShortCircuit.Tower.States.Game;
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Controls.GlobControl;
-import ShortCircuit.Tower.Objects.LevelParams;
+import ShortCircuit.Tower.Objects.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -81,7 +81,7 @@ public class GameState extends AbstractAppState {
      * the assets and factories for the game.
      * @param lp 
      */
-    public void setLevelParams(LevelParams lp) {
+    public void setLevelParams(GameplayParams lp) {
         setCamLocation(lp.getCamLocation());
         setNumCreeps(lp.getNumCreeps());
         setCreepMod(lp.getCreepMod());

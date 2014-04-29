@@ -48,7 +48,7 @@ public class GameGUI extends AbstractAppState {
     private SimpleApplication app;
     private Camera cam;
     private InputManager inputManager;
-    private GameState gs;
+    private GameState GameState;
     private TowerState TowerState;
     private Button Charge;
     private Screen screen;
@@ -110,7 +110,7 @@ public class GameGUI extends AbstractAppState {
         this.cam = this.app.getCamera();
         this.inputManager = this.app.getInputManager();
         this.assetManager = this.app.getAssetManager();
-        this.gs = this.app.getStateManager().getState(GameState.class);
+        this.GameState = this.app.getStateManager().getState(GameState.class);
         this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
         this.FilterState = this.app.getStateManager().getState(FilterState.class);
@@ -147,7 +147,7 @@ public class GameGUI extends AbstractAppState {
     }
     
     private void checkGameOver() {
-        if (gs.getPlrHealth() <= 0) {
+        if (GameState.getPlrHealth() <= 0) {
             tMS.gameover();
         }
     }
@@ -158,11 +158,11 @@ public class GameGUI extends AbstractAppState {
      */
     private void frillsLoop(float tpf) {
         if (frillsTimer > .25 && isFrills) {
-            if (gs.getPlrLvl() != internalLevel) {
+            if (GameState.getPlrLvl() != internalLevel) {
                 FilterState.incBloomIntensity(.2f);
-                internalLevel = gs.getPlrLvl();
+                internalLevel = GameState.getPlrLvl();
             }
-            if (gs.getFours() > 0 && !end) {
+            if (GameState.getFours() > 0 && !end) {
                 endTheme();
                 tMS.stopUnder();
                 end = true;
@@ -258,7 +258,7 @@ public class GameGUI extends AbstractAppState {
 
                     //debugTCoords(click2d.getX(), click2d.getY());
 
-                    if (gs.isEnabled()) {
+                    if (GameState.isEnabled()) {
                         selectPlrObject(click2d, click3d);
                     }
                 }
@@ -281,7 +281,7 @@ public class GameGUI extends AbstractAppState {
         if (results.size() > 0) {
             Vector3f trans = results.getCollision(0).getContactPoint();
             Spatial target = results.getCollision(0).getGeometry();
-            gs.touchHandle(trans, target); // Target
+            GameState.touchHandle(trans, target); // Target
         }
     }
 
@@ -436,7 +436,7 @@ public class GameGUI extends AbstractAppState {
         float blend = ProgressIndicator.getCurrentValue() * 0.01f;
         color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f, 0.0f, 0.2f, 0.4f), blend);
         ProgressIndicator.setIndicatorColor(color);
-        ProgressIndicator.setCurrentValue(gs.getCurrentProgress());
+        ProgressIndicator.setCurrentValue(GameState.getCurrentProgress());
     }
 
     private void updateText() {
@@ -475,41 +475,41 @@ public class GameGUI extends AbstractAppState {
 
     private void updatePlrInfo() {
         // flags
-        if (gs.getPlrHealth() != internalHealth) {
-            Health.setText("Health: " + gs.getPlrHealth());
-            internalHealth = gs.getPlrHealth();
+        if (GameState.getPlrHealth() != internalHealth) {
+            Health.setText("Health: " + GameState.getPlrHealth());
+            internalHealth = GameState.getPlrHealth();
         }
-        if (gs.getPlrBudget() != internalBudget) {
-            Budget.setText("Budget: " + gs.getPlrBudget());
-            internalBudget = gs.getPlrBudget();
+        if (GameState.getPlrBudget() != internalBudget) {
+            Budget.setText("Budget: " + GameState.getPlrBudget());
+            internalBudget = GameState.getPlrBudget();
         }
-        if (gs.getPlrScore() != internalScore) {
-            Score.setText("Score: " + gs.getPlrScore());
-            internalScore = gs.getPlrScore();
+        if (GameState.getPlrScore() != internalScore) {
+            Score.setText("Score: " + GameState.getPlrScore());
+            internalScore = GameState.getPlrScore();
         }
-        if (gs.getPlrLvl() != internalLevel) {
-            Level.setText("Level: " + gs.getPlrLvl());
-            internalLevel = gs.getPlrLvl();
+        if (GameState.getPlrLvl() != internalLevel) {
+            Level.setText("Level: " + GameState.getPlrLvl());
+            internalLevel = GameState.getPlrLvl();
         }
     }
 
     private void setInitialPlrInfo() {
-        Health.setText("Health: " + gs.getPlrHealth());
-        Budget.setText("Budget: " + gs.getPlrBudget());
-        Score.setText("Score: " + gs.getPlrScore());
-        Level.setText("Level: " + gs.getPlrLvl());
+        Health.setText("Health: " + GameState.getPlrHealth());
+        Budget.setText("Budget: " + GameState.getPlrBudget());
+        Score.setText("Score: " + GameState.getPlrScore());
+        Level.setText("Level: " + GameState.getPlrLvl());
     }
 
     private void updateHealthColor() {
-        if (gs.getPlrHealth() != internalHealth) {
-            if (gs.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
+        if (GameState.getPlrHealth() != internalHealth) {
+            if (GameState.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
                 Health.setFontColor(ColorRGBA.Green);
-            } else if (gs.getPlrHealth() <= 50 && gs.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
+            } else if (GameState.getPlrHealth() <= 50 && GameState.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
                 Health.setFontColor(ColorRGBA.Yellow);
-            } else if (gs.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
+            } else if (GameState.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
                 Health.setFontColor(ColorRGBA.Red);
             }
-            internalHealth = gs.getPlrHealth();
+            internalHealth = GameState.getPlrHealth();
         }
     }
 
@@ -518,26 +518,26 @@ public class GameGUI extends AbstractAppState {
      * The selected tower number comes from GameState.
      */
     private void updateTowerInfo() {
-        if (gs.getSelected() != -1) {
-            if (gs.getTowerList().get(gs.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
-                Modify.setText("Build: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+        if (GameState.getSelected() != -1) {
+            if (GameState.getTowerList().get(GameState.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
+                Modify.setText("Build: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
             } else {
-                Modify.setText("Upgrade: " + gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")));
+                Modify.setText("Upgrade: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
             }
         }
     }
 
     private void updateChargeFrill() {
-        if (gs.getPlrBudget() >= 10 && Charge.getFontColor() != ColorRGBA.Green) {
+        if (GameState.getPlrBudget() >= 10 && Charge.getFontColor() != ColorRGBA.Green) {
             Charge.setFontColor(ColorRGBA.Green);
-        } else if (gs.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
+        } else if (GameState.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
             Charge.setFontColor(ColorRGBA.Red);
         }
     }
 
     private void updateTowerFrills() {
-        if (gs.getSelected() != -1) {
-            if (gs.getPlrBudget() >= Integer.parseInt(gs.getCost(gs.getTowerList().get(gs.getSelected()).getUserData("Type")))) {
+        if (GameState.getSelected() != -1) {
+            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")))) {
                 Modify.setFontColor(ColorRGBA.Green);
             } else {
                 Modify.setFontColor(ColorRGBA.Red);
@@ -659,7 +659,7 @@ public class GameGUI extends AbstractAppState {
             app.getFlyByCamera().setRotationSpeed(1.0f);
         } else if (camlocation == 1) {
             camlocation = 0;
-            cam.setLocation(gs.getCamLocation());
+            cam.setLocation(GameState.getCamLocation());
             cam.setRotation(new Quaternion(0, 1, 0, 0));
             app.getFlyByCamera().setRotationSpeed(0.0f);
         }
@@ -691,7 +691,7 @@ public class GameGUI extends AbstractAppState {
         Health.setText("Health");
         Health.setIgnoreMouse(true);
         Health.setFontColor(ColorRGBA.Green);
-        internalHealth = gs.getPlrHealth();
+        internalHealth = GameState.getPlrHealth();
         screen.addElement(Health);
     }
 
@@ -723,12 +723,16 @@ public class GameGUI extends AbstractAppState {
     }
 
     public void setCameraLocation() {
-        cam.setLocation(gs.getCamLocation());
+        cam.setLocation(GameState.getCamLocation());
     }
 
     public void getOldMat() {
         Element button = screen.getElementById("Budget");
         oldbuttmat = button.getMaterial();
+    }
+    
+    public void getAtlas() {
+        
     }
 
     public void highlightButton(String buttonname) {

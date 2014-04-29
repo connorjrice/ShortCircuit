@@ -10,7 +10,7 @@ import com.jme3.math.Vector3f;
  *
  * @author Connor Rice
  */
-public class LevelParams {
+public class GameplayParams {
 
     private Vector3f camLocation;
     private int numCreeps;
@@ -39,12 +39,16 @@ public class LevelParams {
      * 111000
      */
     private String allowedenemies;
-    private final ColorRGBA backgroundcolor;
+    private ColorRGBA backgroundcolor;
     
     
     // TODO: array of ints, accessor methods at the right index
+    
+    public GameplayParams(PlayerParams _pp, MaterialParams _mp) {
+    }
+        
 
-    public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
+    public GameplayParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
             int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, 
             String _allowedenemies, ColorRGBA _backgroundcolor) {
         camLocation = _camLocation;
@@ -61,8 +65,9 @@ public class LevelParams {
         tutorial = _tutorial;
         allowedenemies = _allowedenemies;
         backgroundcolor = _backgroundcolor;
-
     }
+    
+    
 
     public Vector3f getCamLocation() {
         return camLocation;

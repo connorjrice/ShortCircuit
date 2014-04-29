@@ -7,12 +7,15 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.LineWrapMode;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import tonegod.gui.controls.windows.AlertBox;
+import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Screen;
 
 /**
@@ -79,14 +82,14 @@ public class TutorialState extends AbstractAppState {
         Spatial glob = GameState.getWorldNode().getChild("Glob");
         glob.setMaterial(focusMaterial);
         tMS.pause();
-        AlertBox globA = new AlertBox(screen, "Glob", new Vector2f(glob.getLocalTranslation().x+200,600)) {
+        ButtonAdapter globA = new ButtonAdapter(screen, "Glob", new Vector2f(glob.getLocalTranslation().x+200,600)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 screen.removeElement(this);
                 tMS.pause();
             }
         };
-        globA.setMsg("This is a glob.");
+        globA.setText("This is a glob.");
         screen.addElement(globA);
     }
 
@@ -99,29 +102,34 @@ public class TutorialState extends AbstractAppState {
 
     public void basePopup() {
         GameState.getWorldNode().getChild("Base").setMaterial(focusMaterial);
-        AlertBox baseA = new AlertBox(screen, "Your Base", new Vector2f(800, 800)) {
+        ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base", new Vector2f(800, 800)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 GameState.getWorldNode().getChild("Base").setMaterial(assetManager.loadMaterial(GameState.getBaseTexLoc()));
                 screen.removeElement(this);
                 towerPopup();
             }
+
         };
-        baseA.setMsg("This is your base. Defend it from creeps.");
+        baseA.setDimensions(300, 100);
+        baseA.setText("This is your base. Defend it from creeps.");
         screen.addElement(baseA);
     }
 
     private void towerPopup() {
         focusBuiltTowers();
-        AlertBox towerA = new AlertBox(screen, "Your Towers", new Vector2f(800, 600)) {
+        ButtonAdapter towerA = new ButtonAdapter(screen, "Your Towers", new Vector2f(700, 600)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 unfocusBuiltTowers();
                 screen.removeElement(this);
                 unbuiltTowerPopup();
             }
         };
-        towerA.setMsg("These are your towers. They protect your base from creeps, and need to be charged from time to time.");
+        towerA.setDimensions(500, 100);
+        towerA.setText("These are your towers. They protect your base from creeps, and need to be charged from time to time.");
+        towerA.setTextWrap(LineWrapMode.Word);
+        towerA.setTextAlign(BitmapFont.Align.Center);
         screen.addElement(towerA);
     }
 
@@ -143,15 +151,16 @@ public class TutorialState extends AbstractAppState {
 
     private void unbuiltTowerPopup() {
         focusUnbuiltTowers();
-        AlertBox unbuiltA = new AlertBox(screen, "Unbuilt Towers", new Vector2f(800, 500)) {
+        ButtonAdapter unbuiltA = new ButtonAdapter(screen, "Unbuilt Towers", new Vector2f(800, 500)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 unfocusUnbuiltTowers();
                 screen.removeElement(this);
                 budgetPopup();
             }
         };
-        unbuiltA.setMsg("These are towers that have not been built yet. You may build them for 100 credits.");
+        unbuiltA.setDimensions(500,100);
+        unbuiltA.setText("These are towers that have not been built yet. You may build them for 100 credits.");
         screen.addElement(unbuiltA);
     }
 
@@ -174,16 +183,17 @@ public class TutorialState extends AbstractAppState {
 
     private void budgetPopup() {
         focusBudgetButton();
-        AlertBox unbuiltA = new AlertBox(screen, "Budget", new Vector2f(1215, 125)) {
+        ButtonAdapter budgetA = new ButtonAdapter(screen, "Budget", new Vector2f(1215, 125)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 unfocusBudgetButton();
                 screen.removeElement(this);
                 creepPopup();
             }
         };
-        unbuiltA.setMsg("This is where your budget is shown. You get more money when you kill creeps, and when you level up.");
-        screen.addElement(unbuiltA);
+        budgetA.setDimensions(500,100);
+        budgetA.setText("This is where your budget is shown. You get more money when you kill creeps, and when you level up.");
+        screen.addElement(budgetA);
     }
 
     private void focusBudgetButton() {
@@ -203,15 +213,16 @@ public class TutorialState extends AbstractAppState {
 
     private void creepPopup() {
         focusCreeps();
-        AlertBox creepA = new AlertBox(screen, "Creep", new Vector2f(800, 400)) {
+        ButtonAdapter creepA = new ButtonAdapter(screen, "Creep", new Vector2f(800, 400)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 unfocusCreeps();
                 screen.removeElement(this);
                 start();
             }
         };
-        creepA.setMsg("These are your enemies. They will spawn in proportion to your current level.");
+        creepA.setDimensions(500,100);
+        creepA.setText("These are your enemies. They will spawn in proportion to your current level.");
         screen.addElement(creepA);
     }
 
