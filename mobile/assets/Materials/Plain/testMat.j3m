@@ -1,0 +1,7 @@
+Material My Material : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        GlowColor : 0.6901961 0.12156863 0.13725491 1.0
+     }
+    AdditionalRenderState {
+    }
+}

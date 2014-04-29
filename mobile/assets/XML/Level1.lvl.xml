@@ -11,7 +11,7 @@
             <plrBudget>100</plrBudget>
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
-            <debug>false</debug>
+            <profile>false</profile>
             <matdir>Neon</matdir>
             <tutorial>true</tutorial>
             <backgroundcolor>Black</backgroundcolor>

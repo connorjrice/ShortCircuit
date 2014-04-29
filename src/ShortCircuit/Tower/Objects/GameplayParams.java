@@ -12,117 +12,71 @@ import com.jme3.math.Vector3f;
  */
 public class GameplayParams {
 
-    private Vector3f camLocation;
-    private int numCreeps;
-    private int creepMod;
-    private int levelCap;
-    private int levelMod;
-    private int plrHealth;
-    private int plrBudget;
-    private int plrLevel;
-    private int plrScore;
-    private boolean debug;
-    private String matdir;
-    private boolean tutorial;
-    
-    /**
-     * Allowed Enemies
-     * 0123456
-     * 0 = small creep
-     * 1 = medium creep
-     * 2 = large creep
-     * 3 = giant creep
-     * 4 = glob
-     * 5 = ranger
-     * 6 = digger
-     * Binary system, so sm-large is
-     * 111000
-     */
-    private String allowedenemies;
-    private ColorRGBA backgroundcolor;
-    
-    
-    // TODO: array of ints, accessor methods at the right index
-    
-    public GameplayParams(PlayerParams _pp, MaterialParams _mp) {
-    }
-        
+    private PlayerParams pp;
+    private MaterialParams mp;
+    private LevelParams lp;
 
-    public GameplayParams(Vector3f _camLocation, int _numCreeps, int _creepMod, int _levelCap, int _levelMod, int _plrHealth,
-            int _plrBudget, int _plrLevel, int _plrScore, boolean _debug, String _matdir, boolean _tutorial, 
-            String _allowedenemies, ColorRGBA _backgroundcolor) {
-        camLocation = _camLocation;
-        numCreeps = _numCreeps;
-        creepMod = _creepMod;
-        levelCap = _levelCap;
-        levelMod = _levelMod;
-        plrHealth = _plrHealth;
-        plrBudget = _plrBudget;
-        plrLevel = _plrLevel;
-        plrScore = _plrScore;
-        debug = _debug;
-        matdir = _matdir;
-        tutorial = _tutorial;
-        allowedenemies = _allowedenemies;
-        backgroundcolor = _backgroundcolor;
-    }
-    
-    
-
-    public Vector3f getCamLocation() {
-        return camLocation;
+    public GameplayParams(PlayerParams _pp, MaterialParams _mp, LevelParams _lp) {
+        pp = _pp;
+        mp = _mp;
+        lp = _lp;
     }
 
-    public int getNumCreeps() {
-        return numCreeps;
-    }
 
-    public int getCreepMod() {
-        return creepMod;
-    }
-
-    public int getLevelCap() {
-        return levelCap;
-    }
-
-    public int getLevelMod() {
-        return levelMod;
-    }
 
     public int getPlrHealth() {
-        return plrHealth;
+        return pp.getHealth();
     }
 
     public int getPlrBudget() {
-        return plrBudget;
+        return pp.getBudget();
     }
 
     public int getPlrLevel() {
-        return plrLevel;
+        return pp.getLevel();
     }
 
     public int getPlrScore() {
-        return plrScore;
-    }
-
-    public boolean getDebug() {
-        return debug;
-    }
-
-    public String getMatDir() {
-        return matdir;
-    }
-
-    public boolean getTutorial() {
-        return tutorial;
-    }
-    
-    public String getAllowedEnemiesInt() {
-        return allowedenemies;
+        return pp.getScore();
     }
     
     public ColorRGBA getBackgroundColor() {
-        return backgroundcolor;
+        return mp.getBackgroundColor();
     }
     
+    public String getMatDir() {
+        return mp.getMatDir();
+    }
+    
+    public Vector3f getCamLocation() {
+        return lp.getCamLocation();
+    }
+
+    public int getNumCreeps() {
+        return lp.getNumCreeps();
+    }
+
+    public int getCreepMod() {
+        return lp.getCreepMod();
+    }
+
+    public int getLevelCap() {
+        return lp.getLevelCap();
+    }
+
+    public int getLevelMod() {
+        return lp.getLevelMod();
+    }
+    
+    public boolean getProfile() {
+        return lp.getProfile();
+    }
+    
+    public boolean getTutorial() {
+        return lp.getTutorial();
+    }
+    
+    public String getAllowedEnemies() {
+        return lp.getAllowedEnemies();
+    }
 }

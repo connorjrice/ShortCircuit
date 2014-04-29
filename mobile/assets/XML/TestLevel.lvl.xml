@@ -11,7 +11,7 @@
             <plrBudget>20</plrBudget>
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
-            <debug>false</debug>
+            <profile>false</profile>
             <matdir>Circuit</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111111</allowedenemies>

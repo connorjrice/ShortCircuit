@@ -2,6 +2,8 @@ package ShortCircuit.Tower.MapXML;
 
 import ShortCircuit.Tower.Objects.FilterParams;
 import ShortCircuit.Tower.Objects.GameplayParams;
+import ShortCircuit.Tower.Objects.LevelParams;
+import ShortCircuit.Tower.Objects.MaterialParams;
 import ShortCircuit.Tower.Objects.PlayerParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
@@ -105,10 +107,10 @@ public class MapGenerator {
         return starterTowers;
     }
 
-    public GameplayParams getLevelParams() {  //throws LevelParseException {
+    public GameplayParams getGameplayParams() {  //throws LevelParseException {
         Element eElement = (Element) pList.item(0);
         String camlocS = getElement("camLocation", eElement);
-        String debugs = getElement("debug", eElement);
+        String profiles = getElement("profile", eElement);
         String matdir = getElement("matdir", eElement);
         String tutorials = getElement("tutorial", eElement);
         String colors = getElement("backgroundcolor", eElement);
@@ -121,15 +123,30 @@ public class MapGenerator {
         int plrLevel = parseInt(getElement("plrLevel", eElement));
         int plrScore = parseInt(getElement("plrScore", eElement));
         String allowedenemies = getElement("allowedenemies", eElement);
-        boolean debug = parseBoolean(debugs);
+        boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
         Vector3f camLocation = parseVector3f(camlocS);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
-        PlayerParams pp = new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
+        PlayerParams pp = createPlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
+        LevelParams lp = createLevelParams(camLocation, numCreeps, creepMod , levelCap, levelMod, profile, tutorial, allowedenemies);
+        MaterialParams mp = createMaterialParams(backgroundcolor, matdir);
         // TODO: Implement PlayerParams in GameplayParams
-        return new GameplayParams(camLocation, numCreeps, creepMod, levelCap,
-                levelMod, plrHealth, plrBudget, plrLevel, plrScore, debug,
-                matdir, tutorial, allowedenemies, backgroundcolor);
+        return new GameplayParams(pp, mp, lp);
+    }
+
+    public LevelParams createLevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, 
+            int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
+            String _allowedenemies) {
+        return new LevelParams(_camLocation, _numCreeps, _creepMod, _levelCap,
+                _levelMod, _profile, _tutorial, _allowedenemies);
+    }
+    
+    public PlayerParams createPlayerParams(int _plrHealth, int _plrBudget, int _plrLevel, int _plrScore) {
+        return new PlayerParams(_plrHealth,_plrBudget,_plrLevel,_plrScore);
+    }
+    
+    public MaterialParams createMaterialParams(ColorRGBA _backgroundcolor, String _matdir) {
+        return new MaterialParams(_backgroundcolor, _matdir);
     }
 
 
@@ -160,7 +177,9 @@ public class MapGenerator {
         } else if (colors.equals("Blue")) {
             return ColorRGBA.Blue;
         } else if (colors.equals("Purple")) {
-            return new ColorRGBA(.5f, .0f, .5f, .5f); // TODO: make a better purple
+            return new ColorRGBA(.5f, .0f, .5f, .5f);
+        } else if (colors.equals("Red")) {
+            return new ColorRGBA(.4f, .12f, .13f, 0.3f);
         } else {
             return ColorRGBA.randomColor();
         }

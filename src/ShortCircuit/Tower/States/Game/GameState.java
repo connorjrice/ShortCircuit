@@ -24,7 +24,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * PENDING: Clean up GameState
  * TODO: Implement Digger and Ranger 
- * TODO: Objects in XML class 
  * TODO: Atlases and backgrounds for levels based on texture pack 
  * TODO: Retool main menu
  * @author Connor Rice
@@ -44,7 +43,7 @@ public class GameState extends AbstractAppState {
     private int plrScore;
     private int plrHealth;
     private int plrBudget;
-    private int plrBombs;
+    private int plrBombs; // TODO: is plrBombs necessary?
     private float updateTimer = 0;
     private boolean debugMode = false;
     private Vector3f camLocation;
@@ -79,21 +78,21 @@ public class GameState extends AbstractAppState {
     /**
      * This method assigns values to gameplay variables, and initializes
      * the assets and factories for the game.
-     * @param lp 
+     * @param gp 
      */
-    public void setLevelParams(GameplayParams lp) {
-        setCamLocation(lp.getCamLocation());
-        setNumCreeps(lp.getNumCreeps());
-        setCreepMod(lp.getCreepMod());
-        setLevelCap(lp.getLevelCap());
-        setLevelMod(lp.getLevelMod());
-        setPlrHealth(lp.getPlrHealth());
-        setPlrBudget(lp.getPlrBudget());
-        setPlrLvl(lp.getPlrLevel());
-        setPlrScore(lp.getPlrScore());
-        setDebug(lp.getDebug());
-        setMatDir(lp.getMatDir());
-        setBackgroundColor(lp.getBackgroundColor());
+    public void setGameplayParams(GameplayParams gp) {
+        setCamLocation(gp.getCamLocation());
+        setNumCreeps(gp.getNumCreeps());
+        setCreepMod(gp.getCreepMod());
+        setLevelCap(gp.getLevelCap());
+        setLevelMod(gp.getLevelMod());
+        setPlrHealth(gp.getPlrHealth());
+        setPlrBudget(gp.getPlrBudget());
+        setPlrLvl(gp.getPlrLevel());
+        setPlrScore(gp.getPlrScore());
+        setDebug(gp.getProfile());
+        setMatDir(gp.getMatDir());
+        setBackgroundColor(gp.getBackgroundColor());
         initAssets();
         initFactories();
     }
@@ -493,6 +492,10 @@ public class GameState extends AbstractAppState {
 
     private void setBackgroundColor(ColorRGBA c) {
         app.getViewPort().setBackgroundColor(c);
+    }
+    
+    public String getAtlas() {
+        return "Interface/" + getMatDir() + "Atlas.png";
     }
 
     @Override

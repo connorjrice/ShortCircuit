@@ -11,7 +11,7 @@
             <plrBudget>100000</plrBudget>
             <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>
-            <debug>false</debug>
+            <profile>false</profile>
             <matdir>Neon</matdir>
             <tutorial>false</tutorial>
             <allowedenemies>111111</allowedenemies>

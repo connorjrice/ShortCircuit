@@ -70,8 +70,8 @@ public class GameGUI extends AbstractAppState {
     private float updateTimer;
     private float frillsTimer;
     private ColorRGBA color = new ColorRGBA();
-    private int leftButtons = 10;
-    private int rightButtons = 1605;
+    private int leftButtons = 10; // TODO: Scale leftButtons
+    private int rightButtons = 1605; // TODO: Scale rightButtons
     private int height;
     private int width;
     private int internalHealth;
@@ -124,6 +124,18 @@ public class GameGUI extends AbstractAppState {
         setupGUI();
         setCameraLocation();
         setInitialPlrInfo();
+    }
+    
+    private void initScreen() {
+        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, getAtlas());
+        screen.setUseMultiTouch(false);
+        guiNode.addControl(screen);
+        //screen.setUseKeyboardIcons(true);
+    }
+    
+    public String getAtlas() {
+        return "Interface/" + GameState.getMatDir() + "Atlas.png";
     }
 
     
@@ -180,15 +192,6 @@ public class GameGUI extends AbstractAppState {
         endTheme.setPositional(false);
         endTheme.setLooping(true);
         endTheme.play();
-    }
-
-    private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, "Interface/CircuitAtlas.png");
-        screen.setUseMultiTouch(false);
-        guiNode.addControl(screen);
-        //screen.setUseKeyboardIcons(true);
-
     }
 
     /**
@@ -731,9 +734,6 @@ public class GameGUI extends AbstractAppState {
         oldbuttmat = button.getMaterial();
     }
     
-    public void getAtlas() {
-        
-    }
 
     public void highlightButton(String buttonname) {
         Element button = screen.getElementById(buttonname);

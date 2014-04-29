@@ -11,7 +11,7 @@ import ShortCircuit.Tower.States.Game.CreepState;
 import ShortCircuit.Tower.States.Game.FilterState;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.HelperState;
-import ShortCircuit.Tower.States.Game.LevelState;
+import ShortCircuit.Tower.States.Game.LoadingState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.States.Game.TutorialState;
 import com.jme3.app.Application;
@@ -36,7 +36,7 @@ public class TowerMainState extends AbstractAppState {
     private BeamState BeamState;
     private CreepState CreepState;
     private TowerState TowerState;
-    private LevelState LevelState;
+    private LoadingState LevelState;
     private CheatState CheatState;
     private AudioState AudioState;
     private GameGUI GameGUI;
@@ -93,7 +93,7 @@ public class TowerMainState extends AbstractAppState {
         GameOverGUI = new GameOverGUI(this);
         
         AudioState = new AudioState();
-        LevelState = new LevelState(profile, level);
+        LevelState = new LoadingState(profile, level);
         FilterState = new FilterState();
         
         CheatState = new CheatState();

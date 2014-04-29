@@ -1,7 +1,7 @@
 package ShortCircuit.GUI;
 
 import ShortCircuit.Tower.MainState.TowerMainState;
-import ShortCircuit.Transit.Game.TransitGameState;
+import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -42,8 +42,6 @@ public class StartGUI extends AbstractAppState {
     private Indicator ind;
     private ButtonAdapter ExitButton;
     private DialogBox ReallyExitPopup;
-    private ButtonAdapter transit;
-    private TransitGameState tGS;
     private AppStateManager stateManager;
     private Picture loading;
     private boolean firstLoad = true;
@@ -79,7 +77,20 @@ public class StartGUI extends AbstractAppState {
         newGame();
         initLoadBar();
         exitButton();
-        transitButton();
+        loadingpic();
+        initLevelMenu();
+    }
+    
+    private void initScreen(String atlas) {
+        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, atlas);
+        screen.setUseMultiTouch(true);
+        guiNode.addControl(screen);
+        screen.setUseKeyboardIcons(true);
+        mainWindow();
+        newGame();
+        initLoadBar();
+        exitButton();
         loadingpic();
         initLevelMenu();
     }
@@ -187,17 +198,6 @@ public class StartGUI extends AbstractAppState {
         MainWindow.addChild(newGame);
     }
 
-    private void transitButton() {
-        transit = new ButtonAdapter(screen, "transit", new Vector2f(MainWindow.getWidth() - scaler * 4, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                onTransit();
-            }
-        };
-        transit.setText("Transit");
-        transit.setFont("Interface/Fonts/DejaVuSans.fnt");
-        MainWindow.addChild(transit);
-    }
 
     public void exitButton() {
         ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(MainWindow.getWidth() - scaler * 2, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
@@ -209,12 +209,6 @@ public class StartGUI extends AbstractAppState {
         ExitButton.setText("Exit");
         ExitButton.setFont("Interface/Fonts/DejaVuSans.fnt");
         MainWindow.addChild(ExitButton);
-    }
-
-    public void onTransit() {
-        tGS = new TransitGameState();
-        stateManager.attach(tGS);
-        toggle();
     }
 
     public void reallyExitDialog() {
@@ -257,6 +251,12 @@ public class StartGUI extends AbstractAppState {
 
     public Indicator getInd() {
         return ind;
+    }
+    
+    public void updateAtlas(String newAtlas) {
+        guiNode.removeControl(screen);
+        initScreen(newAtlas);
+        forceHide();
     }
 
 

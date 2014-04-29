@@ -3,6 +3,7 @@ package ShortCircuit.Tower.States.Game;
 import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.MapXML.MapGenerator;
+import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -12,12 +13,12 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 
 /**
- * LevelState calls the appropriate methods in its sibling states to create a 
+ * LoadingState calls the appropriate methods in its sibling states to create a 
  * level. A level is defined at this moment in time as a floor, at least one 
  * base vector, n number of towers, and n number of creep spawners.
  * @author Connor Rice
  */
-public class LevelState extends AbstractAppState {
+public class LoadingState extends AbstractAppState {
     private SimpleApplication app;
     private GameState GameState;
     public Node rootNode;
@@ -35,8 +36,9 @@ public class LevelState extends AbstractAppState {
     private double profileEmptyTimer;
     private double profileChargerTimer;
     private float profileEndTimer;
+    private StartGUI StartGUI;
     
-    public LevelState(boolean _isProfile, String _levelName) {
+    public LoadingState(boolean _isProfile, String _levelName) {
         isProfile = _isProfile;
         levelName = _levelName;
     }
@@ -45,11 +47,12 @@ public class LevelState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.FilterState = this.app.getStateManager().getState(FilterState.class);
-        this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        this.CreepState = this.app.getStateManager().getState(CreepState.class);
-        this.HelperState = this.app.getStateManager().getState(HelperState.class);
+        this.FilterState = stateManager.getState(FilterState.class);
+        this.GameState = stateManager.getState(GameState.class);
+        this.TowerState = stateManager.getState(TowerState.class);
+        this.CreepState = stateManager.getState(CreepState.class);
+        this.HelperState = stateManager.getState(HelperState.class);
+        this.StartGUI = stateManager.getState(StartGUI.class);
         this.stateManager = stateManager;
         this.rootNode = this.app.getRootNode();
         begin();
@@ -72,7 +75,7 @@ public class LevelState extends AbstractAppState {
     public void newGame(String levelname) {
         initMG(levelname);
         FilterState.initFilters(mg.getFilterParams());
-        GameState.setLevelParams(mg.getLevelParams());
+        GameState.setGameplayParams(mg.getGameplayParams());
         GameState.createLight();
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
         GameState.createBase("/Base", mg.getBaseVec(), mg.getBaseScale());
@@ -86,7 +89,8 @@ public class LevelState extends AbstractAppState {
         GameState.attachWorldNode();
         
         app.getStateManager().getState(StartGUI.class).hideloading();
-        tutorial(mg.getLevelParams().getTutorial());
+        app.getStateManager().getState(StartGUI.class).updateAtlas(GameState.getAtlas());
+        tutorial(mg.getGameplayParams().getTutorial());
     }
     
     public void tutorial(boolean tutorial) {
@@ -101,7 +105,7 @@ public class LevelState extends AbstractAppState {
         initMG(levelName);
         FilterState.initFilters(mg.getFilterParams());
         GameState.createLight();
-        GameState.setLevelParams(mg.getLevelParams());
+        GameState.setGameplayParams(mg.getGameplayParams());
         GameState.createFloor(mg.getFloorScale(), getFloorMatLoc());
         GameState.createBase("/Base", mg.getBaseVec(), mg.getBaseScale());
         TowerState.buildUnbuiltTowers(mg.getUnbuiltTowerVecs());
@@ -114,7 +118,7 @@ public class LevelState extends AbstractAppState {
         CreepState.initMaterials();
         GameState.attachWorldNode();
     }
-    
+
     @Override
     public void update(float tpf) {
         if (isProfile) {
