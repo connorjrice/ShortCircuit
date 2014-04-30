@@ -130,12 +130,12 @@ public class AudioState extends AbstractAppState {
      * Called by GameState.
      */
     public void chargeSound() {
-        chargeSound.play();
+        chargeSound.playInstance();
     }
     
     public void buildSound(float pitch) {
         buildSound.setPitch(pitch);
-        buildSound.play();
+        buildSound.playInstance();
     }
 
     

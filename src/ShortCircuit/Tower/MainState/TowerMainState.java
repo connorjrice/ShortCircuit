@@ -10,7 +10,7 @@ import ShortCircuit.Tower.States.Game.BeamState;
 import ShortCircuit.Tower.States.Game.CreepState;
 import ShortCircuit.Tower.States.Game.FilterState;
 import ShortCircuit.Tower.States.Game.GameState;
-import ShortCircuit.Tower.States.Game.HelperState;
+import ShortCircuit.Tower.States.Game.FriendlyState;
 import ShortCircuit.Tower.States.Game.LoadingState;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.States.Game.TutorialState;
@@ -59,7 +59,7 @@ public class TowerMainState extends AbstractAppState {
     private final String level;
     private FilterState FilterState;
     private TutorialState TutorialState;
-    private HelperState HelperState;
+    private FriendlyState HelperState;
 
     public TowerMainState(boolean _profile, String level) {
         this.profile = _profile;
@@ -103,7 +103,7 @@ public class TowerMainState extends AbstractAppState {
         BeamState = new BeamState();
         CreepState = new CreepState();
         TowerState = new TowerState();
-        HelperState = new HelperState();
+        HelperState = new FriendlyState();
 
         stateManager.attach(AudioState);
         stateManager.attach(FilterState);

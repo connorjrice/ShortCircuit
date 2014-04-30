@@ -5,7 +5,7 @@ import ShortCircuit.DataStructures.STCCreepCompare;
 import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.States.Game.BeamState;
 import ShortCircuit.Tower.Objects.Charges;
-import ShortCircuit.Tower.States.Game.HelperState;
+import ShortCircuit.Tower.States.Game.FriendlyState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -46,12 +46,12 @@ public class TowerControl extends AbstractControl {
     private Future future;
     private AudioNode emptySound;
     private boolean isGlobbed = false;
-    private HelperState HelperState;
+    private FriendlyState HelperState;
 
     public TowerControl(TowerState _tstate, Vector3f loc) {
         TowerState = _tstate;
         BeamState = TowerState.getApp().getStateManager().getState(BeamState.class);
-        HelperState = TowerState.getApp().getStateManager().getState(HelperState.class);
+        HelperState = TowerState.getApp().getStateManager().getState(FriendlyState.class);
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);

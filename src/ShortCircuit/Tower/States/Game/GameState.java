@@ -23,8 +23,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * PENDING: Clean up GameState
+ * PENDING: Implment allowedenemies
  * TODO: Implement Digger and Ranger 
- * TODO: Atlases and backgrounds for levels based on texture pack 
  * TODO: Retool main menu
  * @author Connor Rice
  */

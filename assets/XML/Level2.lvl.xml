@@ -25,7 +25,28 @@
             <bloomintensity>2.0f</bloomintensity>
             <glowmode>GlowMode.SceneAndObjects</glowmode>
         </param>
-        
+        <param id = "creepparams">
+            <smcreep>
+                <health>100</health>
+                <speed>0.85f</speed>
+                <size>0.125f, 0.125f, 0.20f</size>
+            </smcreep>
+            <mdcreep>
+                <health>200</health>
+                <speed>0.35f</speed>
+                <size>0.25f, 0.25f, 0.40f</size>
+            </mdcreep>
+            <lgcreep>
+                <health>400</health>
+                <speed>0.25f</speed>
+                <size>0.4f, 0.4f, 0.6f</size>
+            </lgcreep>
+            <xlcreep>
+                <health>800</health>
+                <speed>0.30f</speed>
+                <size>0.6f, 0.6f, 0.8f</size>
+            </xlcreep>                                    
+        </param>        
     </levelparams>
     <floor>
         <floor id = "floorscale">

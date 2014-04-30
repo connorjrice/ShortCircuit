@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Currently, the goal is the implementation of the Charger NPC.
  * @author Connor
  */
-public class HelperState extends AbstractAppState {
+public class FriendlyState extends AbstractAppState {
 
     private SimpleApplication app;
     private GameState GameState;

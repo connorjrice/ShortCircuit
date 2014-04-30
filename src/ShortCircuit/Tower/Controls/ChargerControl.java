@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.HelperState;
+import ShortCircuit.Tower.States.Game.FriendlyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -20,12 +20,12 @@ import java.io.IOException;
  * @author Connor
  */
 public class ChargerControl extends AbstractControl {
-    private HelperState HelperState;
+    private FriendlyState HelperState;
     private TowerControl destTower;
     private boolean isHome;
     private float moveamount;
 
-    public ChargerControl(HelperState _hs) {
+    public ChargerControl(FriendlyState _hs) {
         HelperState = _hs;
         moveamount = .04f;
         setIsHome(true);

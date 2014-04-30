@@ -55,7 +55,7 @@ public class CreepState extends AbstractAppState {
     private SimpleApplication app;
     private AssetManager assetManager;
     private GameState GameState;
-    private HelperState HelperState;
+    private FriendlyState HelperState;
     private int nextspawner;
     private int nextrandom = random.nextInt(50);
     private float randomCheck = 0;
@@ -79,7 +79,7 @@ public class CreepState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.HelperState = this.app.getStateManager().getState(HelperState.class);
+        this.HelperState = this.app.getStateManager().getState(FriendlyState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
         initLists();

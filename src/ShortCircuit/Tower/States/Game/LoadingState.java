@@ -32,7 +32,7 @@ public class LoadingState extends AbstractAppState {
     private AppStateManager stateManager;
     private float profileUpgradeTimer = 0f;
     private double profileBombTimer;
-    private HelperState HelperState;
+    private FriendlyState HelperState;
     private double profileEmptyTimer;
     private double profileChargerTimer;
     private float profileEndTimer;
@@ -51,7 +51,7 @@ public class LoadingState extends AbstractAppState {
         this.GameState = stateManager.getState(GameState.class);
         this.TowerState = stateManager.getState(TowerState.class);
         this.CreepState = stateManager.getState(CreepState.class);
-        this.HelperState = stateManager.getState(HelperState.class);
+        this.HelperState = stateManager.getState(FriendlyState.class);
         this.StartGUI = stateManager.getState(StartGUI.class);
         this.stateManager = stateManager;
         this.rootNode = this.app.getRootNode();

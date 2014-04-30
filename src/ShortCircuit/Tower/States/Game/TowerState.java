@@ -28,7 +28,7 @@ public class TowerState extends AbstractAppState {
     private AppStateManager stateManager;
     
     private GameState GameState;
-    private HelperState HelperState;
+    private FriendlyState HelperState;
     private AudioState AudioState;
     
     private Node towerNode = new Node("Tower");
@@ -66,7 +66,7 @@ public class TowerState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.GameState = this.stateManager.getState(GameState.class);
-        this.HelperState = this.stateManager.getState(HelperState.class);
+        this.HelperState = this.stateManager.getState(FriendlyState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
