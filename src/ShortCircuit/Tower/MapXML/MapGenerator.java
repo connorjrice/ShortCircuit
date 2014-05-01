@@ -1,5 +1,7 @@
 package ShortCircuit.Tower.MapXML;
 
+import ShortCircuit.Tower.Objects.CreepParams;
+import ShortCircuit.Tower.Objects.EnemyParams;
 import ShortCircuit.Tower.Objects.FilterParams;
 import ShortCircuit.Tower.Objects.GameplayParams;
 import ShortCircuit.Tower.Objects.LevelParams;
@@ -18,7 +20,10 @@ import java.util.ArrayList;
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
  * extensions
- *
+ * TODO: javax.xml.xpath
+ * TODO: org.w3c.dom.xpath
+ * 
+ * TODO: write psudeocode to do A* process
  * @author Connor Rice
  */
 public class MapGenerator {
@@ -28,7 +33,7 @@ public class MapGenerator {
     private Application app;
     private AssetManager assetManager;
     private NodeList bList;
-    private NodeList cList;
+    private NodeList csList;
     private NodeList fList;
     private NodeList pList;
 
@@ -42,7 +47,7 @@ public class MapGenerator {
     public void parseXML() {
         tList = doc.getElementsByTagName("tower");
         bList = doc.getElementsByTagName("base");
-        cList = doc.getElementsByTagName("creepspawn");
+        csList = doc.getElementsByTagName("creepspawn");
         fList = doc.getElementsByTagName("floor");
         pList = doc.getElementsByTagName("levelparams");
     }
@@ -60,8 +65,8 @@ public class MapGenerator {
 
     public ArrayList<Vector3f> getCreepSpawnVecs() {
         ArrayList<Vector3f> creepSpawnVecs = new ArrayList<Vector3f>();
-        for (int i = 0; i < cList.getLength(); i++) {
-            Element eElement = (Element) cList.item(i);
+        for (int i = 0; i < csList.getLength(); i++) {
+            Element eElement = (Element) csList.item(i);
             creepSpawnVecs.add(parseVector3f(getElement("x", eElement),
                     getElement("y", eElement), getElement("z", eElement)));
         }
@@ -71,8 +76,8 @@ public class MapGenerator {
 
     public ArrayList<String> getCreepSpawnDirs() {
         ArrayList<String> creepSpawnDirs = new ArrayList<String>();
-        for (int i = 0; i < cList.getLength(); i++) {
-            Element eElement = (Element) cList.item(i);
+        for (int i = 0; i < csList.getLength(); i++) {
+            Element eElement = (Element) csList.item(i);
             creepSpawnDirs.add(getElement("orientation", eElement));
         }
         return creepSpawnDirs;
@@ -130,8 +135,21 @@ public class MapGenerator {
         PlayerParams pp = createPlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
         LevelParams lp = createLevelParams(camLocation, numCreeps, creepMod , levelCap, levelMod, profile, tutorial, allowedenemies);
         MaterialParams mp = createMaterialParams(backgroundcolor, matdir);
-        // TODO: Implement PlayerParams in GameplayParams
         return new GameplayParams(pp, mp, lp);
+    }
+    
+    private void parseCreeps() {
+        Element eElement = (Element) pList.item(0);        
+        NodeList children = eElement.getChildNodes();
+        
+    }
+    
+    public CreepParams createCreepParams(int health, float speed, Vector3f size, String type) {
+        return new CreepParams(health, speed, size, type);
+    }
+    
+    public EnemyParams createEnemyParams(ArrayList<CreepParams> list) {
+        return new EnemyParams(list);
     }
 
     public LevelParams createLevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, 

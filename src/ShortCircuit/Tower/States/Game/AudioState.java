@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 
 /**
  * This class controls all audio manipulation and playing.
+ * Anamanaguci - Endless fantasy
  * @author Connor Rice
  */
 
@@ -113,7 +114,6 @@ public class AudioState extends AbstractAppState {
         globPop.setPitch(health
                 * 0.1f + 1f);
         globPop.setLocalTranslation(trans);
-
         globPop.playInstance();
     }
     

@@ -10,7 +10,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.LineWrapMode;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
@@ -24,6 +23,7 @@ import tonegod.gui.core.Screen;
  * upgrades work, how budget works, how bombs work.
  *
  * TODO: Make main menu unopenable while dialog boxes are up.
+ * TODO: Scaling for tutorial buttons
  * 
  * @author Connor
  */
