@@ -1,4 +1,4 @@
-package ShortCircuit.Tower.Objects;
+package ShortCircuit.Tower.Objects.Game;
 
 /**
  * Charge object. Type input determines the amount of beams are left and how

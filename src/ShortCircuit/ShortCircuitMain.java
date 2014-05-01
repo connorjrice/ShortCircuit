@@ -1,7 +1,6 @@
 package ShortCircuit;
 
 import ShortCircuit.GUI.StartGUI;
-import ShortCircuit.Tower.MainState.TowerMainState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
 
@@ -16,7 +15,6 @@ import java.util.logging.Logger;
 public class ShortCircuitMain extends SimpleApplication {
     
     private StartGUI sgui;
-    private TowerMainState tms;
 
     public static void main(String[] args) {
         //Logger.getLogger("").setLevel(Level.OFF);
@@ -34,20 +32,17 @@ public class ShortCircuitMain extends SimpleApplication {
         app.setSettings(sets);
         app.start();
     }
-
-
+    
     /**
      * Initialize camera, add input mapping, bring up start menu. Also adjust
      * statview/fps
      */
     @Override
     public void simpleInitApp() {
-        flyCam.setDragToRotate(true);
-        flyCam.setRotationSpeed(0.0f);
-        flyCam.setZoomSpeed(0.0f);
         setDisplayFps(false);
         setDisplayStatView(false);
         startGUI();
+        
     }
     
     public void startGUI() {

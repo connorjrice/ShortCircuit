@@ -1,4 +1,4 @@
-package ShortCircuit.Tower.Objects;
+package ShortCircuit.Tower.MapXML.Objects;
 
 import com.jme3.math.Vector3f;
 

@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * attach it's self to the tower. If it is not destroyed within a given time,
  * the tower is destroyed and must be rebuilt.
  * 
- * Handling of the selection of a built tower will be handled by CreepState.
+ * Handling of the selection of a built tower will be handled by EnemyState.
  * Movement will be done using interpolation.
  * 
  * The ranger will attach to a tower, which will sound some sort of alarm.
@@ -29,14 +29,14 @@ import java.io.IOException;
  * @author Connor
  */
 public class RangerControl extends AbstractControl {
-    private CreepState cs;
+    private EnemyState cs;
     private boolean attachedToTower = false;
     private float downgradeTimer = 0f;
     private final float downgradeDelay = 3.0f;
     private Spatial victimTower;
     private float moveAmount;
 
-    public RangerControl(CreepState _cs, Spatial _vt) {
+    public RangerControl(EnemyState _cs, Spatial _vt) {
         cs = _cs;
         victimTower = _vt;
         moveAmount = .04f;

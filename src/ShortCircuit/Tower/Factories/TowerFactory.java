@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Factories;
 
 import ShortCircuit.Tower.Controls.TowerControl;
-import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -11,9 +11,9 @@ import com.jme3.scene.Spatial;
  * @author Connor Rice
  */
 public class TowerFactory {
-    private GameState gs;
+    private GraphicsState gs;
     
-    public TowerFactory(GameState _gs){
+    public TowerFactory(GraphicsState _gs){
         gs = _gs;
     }
 
@@ -30,7 +30,7 @@ public class TowerFactory {
         tower.setUserData("Index", index);
         tower.setUserData("BeamWidth", 6.0f);
         tower.setUserData("BeamType", "beam1");
-        tower.addControl(new TowerControl(gs.getTowerState(), towervec));
+        tower.addControl(new TowerControl(gs.getFriendlyState(), towervec));
         return tower;
     }
     

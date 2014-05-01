@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -19,9 +19,9 @@ import java.io.IOException;
  */
 public class STDSpawnerControl extends AbstractControl {
     
-    private CreepState CreepState;
+    private EnemyState CreepState;
 
-    public STDSpawnerControl(CreepState _cstate) {
+    public STDSpawnerControl(EnemyState _cstate) {
         CreepState = _cstate;
     }
     

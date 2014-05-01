@@ -2,9 +2,8 @@ package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.STCCreepCompare;
-import ShortCircuit.Tower.States.Game.TowerState;
-import ShortCircuit.Tower.States.Game.BeamState;
-import ShortCircuit.Tower.Objects.Charges;
+import ShortCircuit.Tower.States.Game.GraphicsState;
+import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
@@ -31,12 +30,12 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 public class TowerControl extends AbstractControl {
 
-    protected BeamState BeamState;
+    protected GraphicsState GraphicsState;
     public int[] reachableSpawners;
     public STC<Spatial> reachable;
     public ArrayList<Charges> charges = new ArrayList<Charges>();
     private Vector3f towerloc;
-    protected TowerState TowerState;
+    protected FriendlyState FriendlyState;
     private ScheduledThreadPoolExecutor ex;
     private boolean isActive = false;
     private float searchTimer = .0f;
@@ -48,20 +47,20 @@ public class TowerControl extends AbstractControl {
     private boolean isGlobbed = false;
     private FriendlyState HelperState;
 
-    public TowerControl(TowerState _tstate, Vector3f loc) {
-        TowerState = _tstate;
-        BeamState = TowerState.getApp().getStateManager().getState(BeamState.class);
-        HelperState = TowerState.getApp().getStateManager().getState(FriendlyState.class);
+    public TowerControl(FriendlyState _tstate, Vector3f loc) {
+        FriendlyState = _tstate;
+        GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
+        HelperState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
         towerloc = loc;
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
-        this.ex = TowerState.getEx();
-        emptySound = new AudioNode(TowerState.getApp().getAssetManager(), "Audio/emptytower.wav");
+        this.ex = FriendlyState.getEx();
+        emptySound = new AudioNode(FriendlyState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (TowerState.isEnabled() && isActive) {
+        if (FriendlyState.isEnabled() && isActive) {
             if (searchTimer > searchDelay) {
                 decideShoot();
                 reachable = null;
@@ -92,7 +91,7 @@ public class TowerControl extends AbstractControl {
 
     public void globTower() {
         isActive = false;
-        TowerState.getGlobbedTowerList().add(getIndex());
+        FriendlyState.getGlobbedTowerList().add(getIndex());
         isGlobbed = true;
     }
 
@@ -107,13 +106,13 @@ public class TowerControl extends AbstractControl {
             isActive = true;
         }
         isGlobbed = false;
-        if (TowerState.getGlobbedTowerList().indexOf(getIndex()) != -1) {
-            TowerState.getGlobbedTowerList().remove(TowerState.getGlobbedTowerList().indexOf(getIndex()));
+        if (FriendlyState.getGlobbedTowerList().indexOf(getIndex()) != -1) {
+            FriendlyState.getGlobbedTowerList().remove(FriendlyState.getGlobbedTowerList().indexOf(getIndex()));
         }
     }
 
     public ArrayList<Integer> getGlobbedTowerIndices() {
-        return TowerState.getGlobbedTowerList();
+        return FriendlyState.getGlobbedTowerList();
     }
 
     public boolean getIsGlobbed() {
@@ -121,7 +120,7 @@ public class TowerControl extends AbstractControl {
     }
 
     private void excludeCreeps() {
-        ArrayList<Spatial> creepSpawners = TowerState.getCreepSpawnerList();
+        ArrayList<Spatial> creepSpawners = FriendlyState.getCreepSpawnerList();
         allowedSpawners = new int[creepSpawners.size()];
         for (int i = 0; i < creepSpawners.size(); i++) {
             if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
@@ -161,9 +160,9 @@ public class TowerControl extends AbstractControl {
     private Callable<STC<Spatial>> callableCreepFind = new Callable<STC<Spatial>>() {
         public STC<Spatial> call() throws Exception {
             STC<Spatial> reach = new STC<Spatial>(cc);
-            ArrayList<Spatial> creepClone = TowerState.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
+            ArrayList<Spatial> creepClone = FriendlyState.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
                 public ArrayList<Spatial> call() throws Exception {
-                    return (ArrayList<Spatial>) TowerState.getCreepList().clone();
+                    return (ArrayList<Spatial>) FriendlyState.getCreepList().clone();
                 }
             }).get();
 
@@ -181,7 +180,7 @@ public class TowerControl extends AbstractControl {
 
     protected void emptyTower() {
         emptySound.play();
-        TowerState.changeTowerTexture(TowerState.towEmMatLoc, this);
+        FriendlyState.changeTowerTexture("Empty", this);
         if (!HelperState.getEmptyTowers().contains(spatial)) {
             HelperState.addEmptyTower(spatial);
         }
@@ -190,7 +189,7 @@ public class TowerControl extends AbstractControl {
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
-                BeamState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
+                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
                 if (reachable.peek()
                         .getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();

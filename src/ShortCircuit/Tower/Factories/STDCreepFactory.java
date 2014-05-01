@@ -1,8 +1,8 @@
 package ShortCircuit.Tower.Factories;
 
 import ShortCircuit.Tower.Controls.STDCreepControl;
-import ShortCircuit.Tower.Objects.CreepTraits;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.Objects.Game.CreepTraits;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 
@@ -13,9 +13,9 @@ import com.jme3.scene.Spatial;
  */
 public class STDCreepFactory {
 
-    private CreepState cs;
+    private EnemyState cs;
 
-    public STDCreepFactory(CreepState _cs) {
+    public STDCreepFactory(EnemyState _cs) {
         cs = _cs;
     }
 

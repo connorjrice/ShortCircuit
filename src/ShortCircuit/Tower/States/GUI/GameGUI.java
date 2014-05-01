@@ -2,10 +2,9 @@ package ShortCircuit.Tower.States.GUI;
 
 import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.States.Game.GameState;
-import ShortCircuit.Tower.States.Game.TowerState;
 import ShortCircuit.Tower.MainState.TowerMainState;
-import ShortCircuit.Tower.States.Game.FilterState;
 import ShortCircuit.Tower.States.Game.FriendlyState;
+import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -49,7 +48,6 @@ public class GameGUI extends AbstractAppState {
     private Camera cam;
     private InputManager inputManager;
     private GameState GameState;
-    private TowerState TowerState;
     private Button Charge;
     private Screen screen;
     private Node guiNode;
@@ -87,7 +85,6 @@ public class GameGUI extends AbstractAppState {
     private AudioNode endTheme;
     private boolean end = false;
     private StartGUI StartGUI;
-    private FilterState FilterState;
     private ButtonAdapter soundToggle;
     private Slider SoundSlider;
     private Window PurchaseWindow;
@@ -95,10 +92,11 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter PurchaseChargerButton;
     private AssetManager assetManager;
     private Material oldbuttmat;
-    private FriendlyState HelperState;
+    private FriendlyState FriendlyState;
     private ButtonAdapter DowngradeButton;
     private float tenthHeight;
     private float tenthWidth;
+    private GraphicsState GraphicsState;
     
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -113,10 +111,9 @@ public class GameGUI extends AbstractAppState {
         this.inputManager = this.app.getInputManager();
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.TowerState = this.app.getStateManager().getState(TowerState.class);
         this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
-        this.FilterState = this.app.getStateManager().getState(FilterState.class);
-        this.HelperState = this.app.getStateManager().getState(FriendlyState.class);
+        this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
+        this.GraphicsState = this.app.getStateManager().getState(GraphicsState.class);
         width = tMS.getWidth();
         height = tMS.getHeight();
         inputManager.addListener(actionListener, new String[]{"Touch"});
@@ -138,7 +135,7 @@ public class GameGUI extends AbstractAppState {
     }
     
     public String getAtlas() {
-        return "Interface/" + GameState.getMatDir() + "Atlas.png";
+        return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
     }
     
     private void getScalingDimensions() {
@@ -183,13 +180,13 @@ public class GameGUI extends AbstractAppState {
      */
     private void frillsLoop(float tpf) {
         if (frillsTimer > .25 && isFrills) {
-            if (GameState.getPlrLvl() != internalLevel) {
-                FilterState.incBloomIntensity(.2f);
-                internalLevel = GameState.getPlrLvl();
+            if (GameState.getPlrLevel() != internalLevel) {
+                GraphicsState.incBloomIntensity(.2f);
+                internalLevel = GameState.getPlrLevel();
             }
             if (GameState.getFours() > 0 && !end) {
                 endTheme();
-                tMS.stopUnder();
+                tMS.stopTheme();
                 end = true;
             }
             updateFrills();
@@ -387,7 +384,7 @@ public class GameGUI extends AbstractAppState {
         PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger", new Vector2f(50, 50), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                HelperState.createCharger();
+                FriendlyState.createCharger();
             }
         };
         PurchaseChargerButton.setZOrder(1.0f);
@@ -400,7 +397,7 @@ public class GameGUI extends AbstractAppState {
         DowngradeButton = new ButtonAdapter(screen, "Downgrade", new Vector2f(50, 250), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                TowerState.downgradeTower();
+                // FriendlyState.downgradeTower(); TODO: Reimplement Downgrade
             }
         };
         DowngradeButton.setZOrder(1.0f);
@@ -500,9 +497,9 @@ public class GameGUI extends AbstractAppState {
             Score.setText("Score: " + GameState.getPlrScore());
             internalScore = GameState.getPlrScore();
         }
-        if (GameState.getPlrLvl() != internalLevel) {
-            Level.setText("Level: " + GameState.getPlrLvl());
-            internalLevel = GameState.getPlrLvl();
+        if (GameState.getPlrLevel() != internalLevel) {
+            Level.setText("Level: " + GameState.getPlrLevel());
+            internalLevel = GameState.getPlrLevel();
         }
     }
 
@@ -510,7 +507,7 @@ public class GameGUI extends AbstractAppState {
         Health.setText("Health: " + GameState.getPlrHealth());
         Budget.setText("Budget: " + GameState.getPlrBudget());
         Score.setText("Score: " + GameState.getPlrScore());
-        Level.setText("Level: " + GameState.getPlrLvl());
+        Level.setText("Level: " + GameState.getPlrLevel());
     }
 
     private void updateHealthColor() {
@@ -531,11 +528,11 @@ public class GameGUI extends AbstractAppState {
      * The selected tower number comes from GameState.
      */
     private void updateTowerInfo() {
-        if (GameState.getSelected() != -1) {
-            if (GameState.getTowerList().get(GameState.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
-                Modify.setText("Build: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
+        if (FriendlyState.getSelected() != -1) {
+            if (FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
+                Modify.setText("Build: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
             } else {
-                Modify.setText("Upgrade: " + GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")));
+                Modify.setText("Upgrade: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
             }
         }
     }
@@ -549,8 +546,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void updateTowerFrills() {
-        if (GameState.getSelected() != -1) {
-            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(GameState.getTowerList().get(GameState.getSelected()).getUserData("Type")))) {
+        if (FriendlyState.getSelected() != -1) {
+            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")))) {
                 Modify.setFontColor(ColorRGBA.Green);
             } else {
                 Modify.setFontColor(ColorRGBA.Red);
@@ -574,7 +571,7 @@ public class GameGUI extends AbstractAppState {
         BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                FilterState.toggleBloom();
+                GraphicsState.toggleBloom();
             }
         };
         BloomToggleButton.setIsToggleButton(true);
@@ -586,12 +583,12 @@ public class GameGUI extends AbstractAppState {
         BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
-                FilterState.setBloomIntensity(selectedIndex);
+                GraphicsState.setBloomIntensity(selectedIndex);
             }
         };
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
-        FilterState.setBloomIntensity(FilterState.bloomIntensity);
+        GraphicsState.setBloomIntensity(GraphicsState.bloomIntensity);
         SetWindow.addChild(BloomSlider);
     }
 
@@ -626,7 +623,7 @@ public class GameGUI extends AbstractAppState {
         Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, tenthHeight), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                TowerState.chargeTower();
+                FriendlyState.chargeTower();
             }
         };
         Charge.setText("Charge: 10");
@@ -638,7 +635,7 @@ public class GameGUI extends AbstractAppState {
         Modify = new ButtonAdapter(screen, "modify", new Vector2f(leftButtons, tenthHeight*2), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                TowerState.upgradeTower();
+                FriendlyState.upgradeTower();
             }
         };
         Modify.setButtonHoverInfo(null, null);
@@ -669,7 +666,7 @@ public class GameGUI extends AbstractAppState {
             app.getFlyByCamera().setRotationSpeed(1.0f);
         } else if (camlocation == 1) {
             camlocation = 0;
-            cam.setLocation(GameState.getCamLocation());
+            cam.setLocation(GraphicsState.getCamLocation());
             cam.setRotation(new Quaternion(0, 1, 0, 0));
             app.getFlyByCamera().setRotationSpeed(0.0f);
         }
@@ -728,7 +725,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     public void setCameraLocation() {
-        cam.setLocation(GameState.getCamLocation());
+        cam.setLocation(GraphicsState.getCamLocation());
     }
 
     public void getOldMat() {
@@ -769,7 +766,6 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(ProgressIndicator);
         if (endTheme != null) {
             endTheme.stop();
-            tMS.underPinning();
         }
         guiNode.removeControl(screen);
     }

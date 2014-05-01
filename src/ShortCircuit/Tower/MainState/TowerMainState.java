@@ -6,20 +6,17 @@ import ShortCircuit.Tower.Cheats.CheatState;
 import ShortCircuit.Tower.States.GUI.GameGUI;
 import ShortCircuit.Tower.States.GUI.GameOverGUI;
 import ShortCircuit.Tower.States.Game.AudioState;
-import ShortCircuit.Tower.States.Game.BeamState;
-import ShortCircuit.Tower.States.Game.CreepState;
-import ShortCircuit.Tower.States.Game.FilterState;
+import ShortCircuit.Tower.States.Game.GraphicsState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import ShortCircuit.Tower.States.Game.GameState;
-import ShortCircuit.Tower.States.Game.FriendlyState;
 import ShortCircuit.Tower.States.Game.LoadingState;
-import ShortCircuit.Tower.States.Game.TowerState;
+import ShortCircuit.Tower.States.Game.FriendlyState;
 import ShortCircuit.Tower.States.Game.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -33,10 +30,10 @@ import com.jme3.input.controls.Trigger;
 public class TowerMainState extends AbstractAppState {
 
     private GameState GameState;
-    private BeamState BeamState;
-    private CreepState CreepState;
-    private TowerState TowerState;
-    private LoadingState LevelState;
+    private GraphicsState GraphicsState;
+    private EnemyState CreepState;
+    private FriendlyState FriendlyState;
+    private LoadingState LoadingState;
     private CheatState CheatState;
     private AudioState AudioState;
     private GameGUI GameGUI;
@@ -48,7 +45,6 @@ public class TowerMainState extends AbstractAppState {
     public int height;
     private static final Trigger TRIGGER_ACTIVATE = new MouseButtonTrigger(
             MouseInput.BUTTON_LEFT);
-    private AudioNode theme;
     private final static String MAPPING_ACTIVATE = "Touch";
     private SimpleApplication app;
     private InputManager inputManager;
@@ -57,7 +53,6 @@ public class TowerMainState extends AbstractAppState {
     private StartGUI StartGUI;
     private final boolean profile;
     private final String level;
-    private FilterState FilterState;
     private TutorialState TutorialState;
     private FriendlyState HelperState;
 
@@ -78,7 +73,6 @@ public class TowerMainState extends AbstractAppState {
         height = app.getContext().getSettings().getHeight();
         inputManager.setCursorVisible(true);
         inputManager.addMapping(MAPPING_ACTIVATE, TRIGGER_ACTIVATE);
-        underPinning();
         attachStates();
     }
 
@@ -93,26 +87,24 @@ public class TowerMainState extends AbstractAppState {
         GameOverGUI = new GameOverGUI(this);
         
         AudioState = new AudioState();
-        LevelState = new LoadingState(profile, level);
-        FilterState = new FilterState();
+        LoadingState = new LoadingState(level);
         
         CheatState = new CheatState();
         CheatGUI = new CheatGUI();
 
         GameState = new GameState();
-        BeamState = new BeamState();
-        CreepState = new CreepState();
-        TowerState = new TowerState();
+        GraphicsState = new GraphicsState();
+        CreepState = new EnemyState();
+        FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
 
         stateManager.attach(AudioState);
-        stateManager.attach(FilterState);
         stateManager.attach(GameState);
-        stateManager.attach(TowerState);
+        stateManager.attach(FriendlyState);
         stateManager.attach(CreepState);
-        stateManager.attach(BeamState);
+        stateManager.attach(GraphicsState);
         stateManager.attach(CheatState);
-        stateManager.attach(LevelState);
+        stateManager.attach(LoadingState);
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
         stateManager.attach(HelperState);
@@ -124,34 +116,18 @@ public class TowerMainState extends AbstractAppState {
     public void detachStates() {
         stateManager.detach(GameGUI);
         stateManager.detach(GameState);
-        stateManager.detach(TowerState);
+        stateManager.detach(FriendlyState);
         stateManager.detach(CreepState);
-        stateManager.detach(BeamState);
-        stateManager.detach(LevelState);
+        stateManager.detach(GraphicsState);
+        stateManager.detach(LoadingState);
         stateManager.detach(CheatState);
         stateManager.detach(CheatGUI);
-        stateManager.detach(FilterState);
         stateManager.detach(HelperState);
         stateManager.detach(TutorialState);
         stateManager.detach(AudioState);
-        theme.stop();
     }
 
-    /**
-     * Initializes the theme that plays throughout the game. Sets volume, sets
-     * looping true, and begins playing.
-     */
-    public void underPinning() {
-        theme = new AudioNode(assetManager, "Audio/underpinning.wav");
-        theme.setVolume(1.0f);
-        theme.setPositional(false);
-        theme.setLooping(true);
-        theme.play();
-    }
 
-    public void stopUnder() {
-        theme.stop();
-    }
 
     /**
      * Changes global volume.
@@ -218,10 +194,10 @@ public class TowerMainState extends AbstractAppState {
      */
     public void disableTowerGameStates() {
         GameState.setEnabled(false);
-        LevelState.setEnabled(false);
-        BeamState.setEnabled(false);
+        LoadingState.setEnabled(false);
+        GraphicsState.setEnabled(false);
         CreepState.setEnabled(false);
-        TowerState.setEnabled(false);
+        FriendlyState.setEnabled(false);
         HelperState.setEnabled(false);
     }
 
@@ -231,9 +207,9 @@ public class TowerMainState extends AbstractAppState {
     public void enableTowerGameStates() {
         GameState.setEnabled(true);
         CreepState.setEnabled(true);
-        LevelState.setEnabled(true);
-        BeamState.setEnabled(true);
-        TowerState.setEnabled(true);
+        LoadingState.setEnabled(true);
+        GraphicsState.setEnabled(true);
+        FriendlyState.setEnabled(true);
         HelperState.setEnabled(true);
     }
 
@@ -262,22 +238,21 @@ public class TowerMainState extends AbstractAppState {
         GameGUI.toggleFrills();
     }
     
+    public void stopTheme() {
+        AudioState.stopTheme();
+    }
+    
     @Override
     public void stateDetached(AppStateManager asm) {
         asm.detach(GameGUI);
         asm.detach(GameState);
-        asm.detach(TowerState);
+        asm.detach(FriendlyState);
         asm.detach(CreepState);
-        asm.detach(BeamState);
-        asm.detach(LevelState);
+        asm.detach(GraphicsState);
+        asm.detach(LoadingState);
         asm.detach(CheatState);
         asm.detach(CheatGUI);
-        asm.detach(FilterState);
         asm.detach(HelperState);
-    }
-    
-    @Override
-    public void cleanup() {
-        theme.stop();
+        asm.detach(AudioState);
     }
 }

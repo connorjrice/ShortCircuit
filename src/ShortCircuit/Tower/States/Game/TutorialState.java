@@ -36,21 +36,25 @@ public class TutorialState extends AbstractAppState {
     private GameState GameState;
     private Material focusMaterial;
     private TowerMainState tMS;
-    private TowerState TowerState;
-    private CreepState CreepState;
+    private FriendlyState FriendlyState;
+    private EnemyState EnemyState;
     private GameGUI GameGUI;
     private boolean hasGlobbed = false;
+    private AppStateManager stateManager;
+    private GraphicsState GraphicsState;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.tMS = this.app.getStateManager().getState(TowerMainState.class);
+        this.stateManager = this.app.getStateManager();
+        this.tMS = this.stateManager.getState(TowerMainState.class);
         this.guiNode = this.app.getGuiNode();
-        this.GameGUI = this.app.getStateManager().getState(GameGUI.class);
+        this.GameGUI = this.stateManager.getState(GameGUI.class);
         this.GameState = stateManager.getState(GameState.class);
-        this.TowerState = this.app.getStateManager().getState(TowerState.class);
-        this.CreepState = this.app.getStateManager().getState(CreepState.class);
+        this.FriendlyState = this.stateManager.getState(FriendlyState.class);
+        this.EnemyState = this.stateManager.getState(EnemyState.class);
+        this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.assetManager = this.app.getAssetManager();
         initScreen();
         initMaterials();
@@ -71,7 +75,7 @@ public class TutorialState extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        if (CreepState.getGlobList().size() > 0 && !hasGlobbed) {
+        if (EnemyState.getGlobList().size() > 0 && !hasGlobbed) {
             globPopup();
             hasGlobbed = true;
         }
@@ -105,7 +109,8 @@ public class TutorialState extends AbstractAppState {
         ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base", new Vector2f(800, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                GameState.getWorldNode().getChild("Base").setMaterial(assetManager.loadMaterial(GameState.getBaseTexLoc()));
+                GameState.getWorldNode().getChild("Base")
+                        .setMaterial(assetManager.loadMaterial(GraphicsState.getBaseTexLoc()));
                 screen.removeElement(this);
                 towerPopup();
             }
@@ -134,17 +139,17 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void focusBuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(focusMaterial);
+        for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
+            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
     }
 
     private void unfocusBuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (!TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+        for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
+            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
     }
@@ -165,17 +170,17 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void focusUnbuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(focusMaterial);
+        for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
+            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
     }
 
     private void unfocusUnbuiltTowers() {
-        for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-            if (TowerState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                TowerState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+        for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
+            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
 
@@ -227,14 +232,14 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void focusCreeps() {
-        for (int i = 0; i < CreepState.creepList.size(); i++) {
-            CreepState.creepList.get(i).setMaterial(focusMaterial);
+        for (int i = 0; i < EnemyState.creepList.size(); i++) {
+            EnemyState.creepList.get(i).setMaterial(focusMaterial);
         }
     }
 
     private void unfocusCreeps() {
-        for (int i = 0; i < CreepState.creepList.size(); i++) {
-            CreepState.creepList.get(i).setMaterial(assetManager.loadMaterial(getCreepOrigMat(i)));
+        for (int i = 0; i < EnemyState.creepList.size(); i++) {
+            EnemyState.creepList.get(i).setMaterial(assetManager.loadMaterial(getCreepOrigMat(i)));
         }
     }
 
@@ -243,12 +248,12 @@ public class TutorialState extends AbstractAppState {
     }
 
     private String getTowerOrigMat(int i) {
-        return "Materials/" + GameState.getMatDir() + "/" + TowerState.getTowerList().get(i).getUserData("Type") + ".j3m";
+        return "Materials/" + GraphicsState.getMatDir() + "/" + FriendlyState.getTowerList().get(i).getUserData("Type") + ".j3m";
     }
 
     private String getCreepOrigMat(int i) {
-        String type = CreepState.getCreepList().get(i).getUserData("Name");
-        return "Materials/" + GameState.getMatDir() + "/" + type + "Creep.j3m";
+        String type = EnemyState.getCreepList().get(i).getUserData("Name");
+        return "Materials/" + GraphicsState.getMatDir() + "/" + type + "Creep.j3m";
     }
     
     @Override

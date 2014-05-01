@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Threading;
 
 import ShortCircuit.Tower.Controls.TowerControl;
-import ShortCircuit.Tower.States.Game.TowerState;
+import ShortCircuit.Tower.States.Game.FriendlyState;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
@@ -11,7 +11,7 @@ import ShortCircuit.Tower.States.Game.TowerState;
 public class TowerCharge implements Runnable {
 
     private final int chargeCost = 10;
-    private TowerState ts;
+    private FriendlyState fs;
     private TowerControl tower;
 
     /**
@@ -19,8 +19,8 @@ public class TowerCharge implements Runnable {
      *
      * @param _gs = GameState
      */
-    public TowerCharge(TowerState _ts) {
-        ts = _ts;
+    public TowerCharge(FriendlyState fs) {
+        this.fs = fs;
     }
 
     /**
@@ -28,11 +28,11 @@ public class TowerCharge implements Runnable {
      * the necessary operations to upgrade the tower.
      */
     public void run() {
-        if (ts.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("TowerUnbuilt")) {
-            ts.changeTowerTexture("Materials/" + ts.getMatDir() + "/" + tower.getTowerType() + ".j3m", tower);
+        if (fs.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("TowerUnbuilt")) {
+            fs.changeTowerTexture("Materials/" + fs.getMatDir() + "/" + tower.getTowerType() + ".j3m", tower);
             tower.addCharges();
-            ts.decPlrBudget(chargeCost);
-            ts.playChargeSound();
+            fs.decPlrBudget(chargeCost);
+            fs.playChargeSound();
             tower = null;
         }
 

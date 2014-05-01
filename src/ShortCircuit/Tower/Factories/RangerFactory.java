@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Factories;
 
 import ShortCircuit.Tower.Controls.RangerControl;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -12,9 +12,9 @@ import com.jme3.scene.Spatial;
  */
 public class RangerFactory {
     
-    private CreepState cs;
+    private EnemyState cs;
     
-    public RangerFactory(CreepState _cs) {
+    public RangerFactory(EnemyState _cs) {
         cs = _cs;
     }
  

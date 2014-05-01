@@ -1,12 +1,17 @@
 package ShortCircuit.Tower.MapXML;
 
-import ShortCircuit.Tower.Objects.CreepParams;
-import ShortCircuit.Tower.Objects.EnemyParams;
-import ShortCircuit.Tower.Objects.FilterParams;
-import ShortCircuit.Tower.Objects.GameplayParams;
-import ShortCircuit.Tower.Objects.LevelParams;
-import ShortCircuit.Tower.Objects.MaterialParams;
-import ShortCircuit.Tower.Objects.PlayerParams;
+import ShortCircuit.Tower.MapXML.Objects.BaseParams;
+import ShortCircuit.Tower.MapXML.Objects.CreepParams;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
+import ShortCircuit.Tower.Objects.Loading.EnemyParams;
+import ShortCircuit.Tower.MapXML.Objects.FilterParams;
+import ShortCircuit.Tower.Objects.Loading.GameplayParams;
+import ShortCircuit.Tower.MapXML.Objects.GeometryParams;
+import ShortCircuit.Tower.MapXML.Objects.LevelParams;
+import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
+import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
+import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
@@ -16,12 +21,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import java.util.ArrayList;
+import org.w3c.dom.Node;
 
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
  * extensions
- * TODO: javax.xml.xpath
- * TODO: org.w3c.dom.xpath
  * 
  * TODO: write psudeocode to do A* process
  * @author Connor Rice
@@ -29,13 +33,11 @@ import java.util.ArrayList;
 public class MapGenerator {
 
     private Document doc;
-    private NodeList tList;
     private Application app;
     private AssetManager assetManager;
-    private NodeList bList;
-    private NodeList csList;
-    private NodeList fList;
-    private NodeList pList;
+    private NodeList gameplayParamsChildren;
+    private NodeList graphicsParamsChildren;
+    private NodeList enemyParamsChildren;
 
     public MapGenerator(String level, Application app) {
         this.app = app;
@@ -45,148 +47,134 @@ public class MapGenerator {
     }
 
     public void parseXML() {
-        tList = doc.getElementsByTagName("tower");
-        bList = doc.getElementsByTagName("base");
-        csList = doc.getElementsByTagName("creepspawn");
-        fList = doc.getElementsByTagName("floor");
-        pList = doc.getElementsByTagName("levelparams");
+        gameplayParamsChildren = doc.getChildNodes().item(0).getChildNodes();
+        graphicsParamsChildren = doc.getChildNodes().item(1).getChildNodes();
+        enemyParamsChildren = doc.getChildNodes().item(2).getChildNodes();
     }
-
-    public ArrayList<Vector3f> getUnbuiltTowerVecs() {
-        ArrayList<Vector3f> unbuiltVecs = new ArrayList<Vector3f>();
-        for (int i = 0; i < tList.getLength(); i++) {
-            Element eElement = (Element) tList.item(i);
-            unbuiltVecs.add(parseVector3f(getElement("x", eElement),
-                    getElement("y", eElement), getElement("z", eElement)));
-        }
-        return unbuiltVecs;
-
+    
+    public GameplayParams getGameplayParams() {
+        return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseGeometryParams(), parseBaseParams(), parseTowerList());
     }
-
-    public ArrayList<Vector3f> getCreepSpawnVecs() {
-        ArrayList<Vector3f> creepSpawnVecs = new ArrayList<Vector3f>();
-        for (int i = 0; i < csList.getLength(); i++) {
-            Element eElement = (Element) csList.item(i);
-            creepSpawnVecs.add(parseVector3f(getElement("x", eElement),
-                    getElement("y", eElement), getElement("z", eElement)));
-        }
-        return creepSpawnVecs;
-
+    
+    public EnemyParams getEnemyParams() {
+        return new EnemyParams(parseCreepList(), parseCreepSpawnerList());
     }
-
-    public ArrayList<String> getCreepSpawnDirs() {
-        ArrayList<String> creepSpawnDirs = new ArrayList<String>();
-        for (int i = 0; i < csList.getLength(); i++) {
-            Element eElement = (Element) csList.item(i);
-            creepSpawnDirs.add(getElement("orientation", eElement));
-        }
-        return creepSpawnDirs;
+    
+    public GraphicsParams getGraphicsParams() {
+        return new GraphicsParams(parseMaterialParams(), parseFilterParams());
     }
-
-    public Vector3f getBaseVec() {
-        Element eElement = (Element) bList.item(0);
-        return parseVector3f(getElement("x", eElement),
-                getElement("y", eElement), getElement("z", eElement));
-    }
-
-    public Vector3f getBaseScale() {
-        Element eElement = (Element) bList.item(0);
-        return parseVector3f(getElement("x", eElement, 1),
-                getElement("y", eElement, 1), getElement("z", eElement, 1));
-    }
-
-    public Vector3f getFloorScale() {
-        Element eElement = (Element) fList.item(0);
-        return parseVector3f(getElement("x", eElement),
-                getElement("y", eElement), getElement("z", eElement));
-    }
-
-    public ArrayList<Integer> getStarterTowers() {
-        ArrayList<Integer> starterTowers = new ArrayList<Integer>();
-        for (int i = 0; i < tList.getLength(); i++) {
-            Element eElement = (Element) tList.item(i);
-            if (getElement("isStarter", eElement).equals("true")) {
-                starterTowers.add(parseInt(eElement.getAttribute("id")));
-            }
-        }
-        return starterTowers;
-    }
-
-    public GameplayParams getGameplayParams() {  //throws LevelParseException {
-        Element eElement = (Element) pList.item(0);
-        String camlocS = getElement("camLocation", eElement);
-        String profiles = getElement("profile", eElement);
-        String matdir = getElement("matdir", eElement);
-        String tutorials = getElement("tutorial", eElement);
-        String colors = getElement("backgroundcolor", eElement);
-        int numCreeps = parseInt(getElement("numCreeps", eElement));
-        int creepMod = parseInt(getElement("creepMod", eElement));
-        int levelCap = parseInt(getElement("levelCap", eElement));
-        int levelMod = parseInt(getElement("levelMod", eElement));
-        int plrHealth = parseInt(getElement("plrHealth", eElement));
-        int plrBudget = parseInt(getElement("plrBudget", eElement));
-        int plrLevel = parseInt(getElement("plrLevel", eElement));
-        int plrScore = parseInt(getElement("plrScore", eElement));
-        String allowedenemies = getElement("allowedenemies", eElement);
+    
+    private LevelParams parseLevelParams() {
+        Element levelElement = (Element) gameplayParamsChildren.item(0);
+        String camlocS = getElement("camLocation", levelElement);
+        String profiles = getElement("profile", levelElement);
+        String tutorials = getElement("tutorial", levelElement);
+        Vector3f camLocation = parseVector3f(camlocS);
+        int numCreeps = parseInt(getElement("numCreeps", levelElement));
+        int creepMod = parseInt(getElement("creepMod", levelElement));
+        int levelCap = parseInt(getElement("levelCap", levelElement));
+        int levelMod = parseInt(getElement("levelMod", levelElement));
+        String allowedenemies = getElement("allowedenemies", levelElement);
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
-        Vector3f camLocation = parseVector3f(camlocS);
+        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, 
+                levelMod, profile, tutorial, allowedenemies);
+    }
+    
+    private PlayerParams parsePlayerParams() {
+        Element playerElement = (Element) gameplayParamsChildren.item(1);
+        int plrHealth = parseInt(getElement("plrHealth", playerElement));
+        int plrBudget = parseInt(getElement("plrBudget", playerElement));
+        int plrLevel = parseInt(getElement("plrLevel", playerElement));
+        int plrScore = parseInt(getElement("plrScore", playerElement));
+        return new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
+    }
+    
+    private GeometryParams parseGeometryParams() {
+        Element geometryElement = (Element) gameplayParamsChildren.item(2);
+        Vector3f floorScale = parseVector3f(getElement("floorscale", geometryElement));
+        return new GeometryParams(floorScale);
+    }
+    
+    private BaseParams parseBaseParams() {
+        Element baseElement = (Element) gameplayParamsChildren.item(3);
+        Vector3f baseVec = parseVector3f(getElement("baseVec", baseElement));
+        Vector3f baseScale = parseVector3f(getElement("baseScale", baseElement));
+        return new BaseParams(baseVec, baseScale);
+    }
+    
+    private ArrayList<TowerParams> parseTowerList() {
+        ArrayList<TowerParams> towerList = new ArrayList<TowerParams>();
+        NodeList towerNodes = gameplayParamsChildren.item(4).getChildNodes();
+        for (int i = 0; i < towerNodes.getLength(); i++) {
+            NodeList curTower = towerNodes.item(i).getChildNodes();
+            float x = parseFloat(getContent(curTower.item(0)));
+            float y = parseFloat(getContent(curTower.item(1)));
+            float z = parseFloat(getContent(curTower.item(2)));
+            boolean starter = parseBoolean(getContent(curTower.item(3)));
+            towerList.add(new TowerParams(x, y, z, starter));
+        }
+        return towerList;
+    }
+
+    private MaterialParams parseMaterialParams() {
+        Element materialElement = (Element) gameplayParamsChildren.item(2);
+        String matdir = getElement("matdir", materialElement);
+        String colors = getElement("backgroundcolor", materialElement);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
-        PlayerParams pp = createPlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
-        LevelParams lp = createLevelParams(camLocation, numCreeps, creepMod , levelCap, levelMod, profile, tutorial, allowedenemies);
-        MaterialParams mp = createMaterialParams(backgroundcolor, matdir);
-        return new GameplayParams(pp, mp, lp);
+        return new MaterialParams(backgroundcolor, matdir);
     }
     
-    private void parseCreeps() {
-        Element eElement = (Element) pList.item(0);        
-        NodeList children = eElement.getChildNodes();
-        
-    }
-    
-    public CreepParams createCreepParams(int health, float speed, Vector3f size, String type) {
-        return new CreepParams(health, speed, size, type);
-    }
-    
-    public EnemyParams createEnemyParams(ArrayList<CreepParams> list) {
-        return new EnemyParams(list);
-    }
-
-    public LevelParams createLevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, 
-            int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
-            String _allowedenemies) {
-        return new LevelParams(_camLocation, _numCreeps, _creepMod, _levelCap,
-                _levelMod, _profile, _tutorial, _allowedenemies);
-    }
-    
-    public PlayerParams createPlayerParams(int _plrHealth, int _plrBudget, int _plrLevel, int _plrScore) {
-        return new PlayerParams(_plrHealth,_plrBudget,_plrLevel,_plrScore);
-    }
-    
-    public MaterialParams createMaterialParams(ColorRGBA _backgroundcolor, String _matdir) {
-        return new MaterialParams(_backgroundcolor, _matdir);
-    }
-
-
-    public FilterParams getFilterParams() {
-        Element eElement = (Element) pList.item(0);
-        String blooms = getElement("bloom", eElement);
+    private FilterParams parseFilterParams() {
+        Element filterElement = (Element) gameplayParamsChildren.item(3);
+        String blooms = getElement("bloom", filterElement);
         boolean bloom;
         if (blooms.equals("false")) {
             bloom = false;
         } else {
             bloom = true;
         }
-        float downsampling = parseFloat(getElement("downsampling", eElement));
-        float blurscale = parseFloat(getElement("blurscale", eElement));
-        float exposurepower = parseFloat(getElement("exposurepower", eElement));
-        float bloomintensity = parseFloat(getElement("bloomintensity", eElement));
-        String glowmodes = getElement("glowmode", eElement);
+        float downsampling = parseFloat(getElement("downsampling", filterElement));
+        float blurscale = parseFloat(getElement("blurscale", filterElement));
+        float exposurepower = parseFloat(getElement("exposurepower", filterElement));
+        float bloomintensity = parseFloat(getElement("bloomintensity", filterElement));
+        String glowmodes = getElement("glowmode", filterElement);
         GlowMode glowmode = parseGlowMode(glowmodes);
         return new FilterParams(bloom, downsampling, blurscale, 
                 exposurepower, bloomintensity, glowmode);
     }
     
+    public ArrayList<CreepParams> parseCreepList() {
+        Element eElement = (Element) enemyParamsChildren.item(0);        
+        NodeList creepNodes = eElement.getChildNodes();
+        ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
+        for (int i = 0; i < creepNodes.getLength(); i++) {
+            String type = creepNodes.item(i).getNodeName();
+            NodeList curCreep = creepNodes.item(i).getChildNodes();
+            int health = parseInt(curCreep.item(0).getTextContent());
+            float speed = parseFloat(curCreep.item(1).getTextContent());
+            Vector3f size = parseVector3f(curCreep.item(2).getTextContent());
+            creepList.add(new CreepParams(health, speed, size, type));
+        }
+        return creepList;
+    }
+    
+    public ArrayList<CreepSpawnerParams> parseCreepSpawnerList() {
+        Element eElement = (Element) enemyParamsChildren.item(0);        
+        NodeList creepSpawnerNodes = eElement.getChildNodes();
+        ArrayList<CreepSpawnerParams> creepList = new ArrayList<CreepSpawnerParams>();
+        for (int i = 0; i < creepSpawnerNodes.getLength(); i++) {
+            String type = creepSpawnerNodes.item(i).getNodeName();
+            NodeList curCreepSpawner = creepSpawnerNodes.item(i).getChildNodes();
+            float x = parseFloat(getContent(curCreepSpawner.item(0)));
+            float y = parseFloat(getContent(curCreepSpawner.item(1)));
+            float z = parseFloat(getContent(curCreepSpawner.item(2)));
+            String orientation = getContent(curCreepSpawner.item(3));
+            creepList.add(new CreepSpawnerParams(x, y, z, orientation));
+        }
+        return creepList;
+    }
+
     public ColorRGBA parseColorRGBA(String colors) {
         if (colors.equals("Black")) {
             return ColorRGBA.Black;
@@ -228,6 +216,10 @@ public class MapGenerator {
 
     public float parseFloat(String s) {
         return Float.parseFloat(s);
+    }
+    
+    public String getContent(Node n) {
+        return n.getTextContent();
     }
 
     public String getElement(String s, Element e) {

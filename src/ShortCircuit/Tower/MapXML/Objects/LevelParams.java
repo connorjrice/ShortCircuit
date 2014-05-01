@@ -1,4 +1,4 @@
-package ShortCircuit.Tower.Objects;
+package ShortCircuit.Tower.MapXML.Objects;
 
 import com.jme3.math.Vector3f;
 
@@ -74,6 +74,15 @@ public class LevelParams {
     public String getAllowedEnemies() {
         return allowedenemies;
     }
+    
+    public void incLevelCap() {
+        levelCap *= 2;
+    }
+    
+    public void updateNumCreeps() {
+        numCreeps += creepMod;
+    }
+    
     
     
     

@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Factories;
 
 import ShortCircuit.Tower.Controls.GlobControl;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -13,9 +13,9 @@ import com.jme3.scene.Spatial;
  * @author Connor
  */
 public class GlobFactory {
-    private CreepState cs;
+    private EnemyState cs;
     
-    public GlobFactory(CreepState _cs){
+    public GlobFactory(EnemyState _cs){
         cs = _cs;
     }
     

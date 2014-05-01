@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Factories;
 
 import ShortCircuit.Tower.Controls.STDSpawnerControl;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -13,9 +13,9 @@ import com.jme3.scene.shape.Box;
  */
 public class STDCreepSpawnerFactory {
 
-    private CreepState cs;
+    private EnemyState cs;
 
-    public STDCreepSpawnerFactory(CreepState _cs) {
+    public STDCreepSpawnerFactory(EnemyState _cs) {
         cs = _cs;
     }
 

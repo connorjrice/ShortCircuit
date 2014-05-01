@@ -10,13 +10,15 @@ import com.jme3.math.Vector3f;
 
 /**
  * This class controls all audio manipulation and playing.
- * Anamanaguci - Endless fantasy
  * @author Connor Rice
  */
 
 public class AudioState extends AbstractAppState {
     private SimpleApplication app;
     private AssetManager assetManager;
+    
+    
+    private AudioNode theme;
     
     /* BeamState Nodes */
     private AudioNode tower1audio;
@@ -41,6 +43,7 @@ public class AudioState extends AbstractAppState {
         initAudioNodes();
         setNodeVolumes();
         setNodePositional();
+        themeLoop();
     }
     
     /**
@@ -48,6 +51,7 @@ public class AudioState extends AbstractAppState {
      * 
      */
     private void initAudioNodes() {
+        theme = new AudioNode(assetManager, "Audio/theme.wav");
         tower1audio = new AudioNode(assetManager, "Audio/Tower1.wav");
         tower2audio = new AudioNode(assetManager, "Audio/Tower2.wav");
         tower3audio = new AudioNode(assetManager, "Audio/Tower3.wav");
@@ -60,6 +64,7 @@ public class AudioState extends AbstractAppState {
     }
     
     private void setNodeVolumes() {
+        theme.setVolume(1.0f);
         levelUpSound.setVolume(.6f);
         globPop.setVolume(.4f);
         chargeSound.setVolume(.8f);
@@ -67,6 +72,7 @@ public class AudioState extends AbstractAppState {
     }
     
     private void setNodePositional() {
+        theme.setPositional(false);
         levelUpSound.setPositional(false);
         chargeSound.setPositional(false);
         buildSound.setPositional(false);
@@ -137,10 +143,20 @@ public class AudioState extends AbstractAppState {
         buildSound.setPitch(pitch);
         buildSound.playInstance();
     }
+    
+    public void themeLoop() {
+        theme.setLooping(true);
+        theme.play();
+    }
+
+    public void stopTheme() {
+        theme.stop();
+    }
 
     
     @Override
     public void cleanup() {
         super.cleanup();
+        stopTheme();
     }
 }

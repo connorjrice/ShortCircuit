@@ -8,12 +8,12 @@ import com.jme3.system.AppSettings;
  *
  * @author Connor
  */
-public class TowerProfileMain extends SimpleApplication {
+public class ShortCircuitProfile extends SimpleApplication {
     private TowerMainState tms;
     
     
     public static void main(String[] args) {
-        TowerProfileMain app = new TowerProfileMain();
+        ShortCircuitProfile app = new ShortCircuitProfile();
         AppSettings sets = new AppSettings(true);
         sets.setResolution(1920,1080);
         sets.setFrequency(60);

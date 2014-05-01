@@ -1,6 +1,7 @@
 package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -29,14 +30,14 @@ public class BombControl extends AbstractControl {
     private int bombDMG = 200;
     private ArrayList<Spatial> reachable;
     private Future future;
-    private GameState gs;
+    private GraphicsState gs;
     private ScheduledThreadPoolExecutor ex;
     private AudioNode bombsound;
     
     
-    public BombControl(float size, GameState _gstate) {
+    public BombControl(float size, GraphicsState gs) {
         bombSize = size; // Initial size of bomb
-        gs = _gstate;    // Game state
+        this.gs = gs;    // Game state
         this.ex = gs.getEx();
         bombsound = new AudioNode(gs.getAssetManager(), "Audio/bomb.wav");
         playSound(); // We want to begin the sound when a control has been made

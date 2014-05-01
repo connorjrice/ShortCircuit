@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.Tower.Threading.MoveCreep;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -22,25 +22,25 @@ import java.io.IOException;
  */
 public class STDCreepControl extends AbstractControl {
 
-    protected CreepState CreepState;
+    protected EnemyState CreepState;
     protected int creepNum;
     protected Vector3f direction;
     private MoveCreep mc;
 
     /**
      * Initialization for Control Classes happens in Constructors.
-     * @param _state - our CreepState
-     * We need access to CreepState for certain methods.
+     * @param _state - our EnemyState
+     * We need access to EnemyState for certain methods.
      * 
-     * TODO: Implement standardized naming of passed states, (CreepState or cs)
+     * TODO: Implement standardized naming of passed states, (EnemyState or cs)
      */
-    public STDCreepControl(CreepState _state) {
+    public STDCreepControl(EnemyState _state) {
         CreepState = _state;
         mc = new MoveCreep(CreepState, this);
     }
 
     /**
-     * If CreepState is enabled, we create a new MoveCreep runnable to 
+     * If EnemyState is enabled, we create a new MoveCreep runnable to 
      * @param tpf 
      */
     @Override

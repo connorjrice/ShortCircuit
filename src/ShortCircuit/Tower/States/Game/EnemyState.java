@@ -2,10 +2,11 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.STDCreepFactory;
-import ShortCircuit.Tower.Objects.CreepTraits;
+import ShortCircuit.Tower.Objects.Game.CreepTraits;
 import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.GlobFactory;
 import ShortCircuit.Tower.Factories.RangerFactory;
+import ShortCircuit.Tower.Objects.Loading.EnemyParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -26,7 +27,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * TODO: Make spawning/direction/bounds more universal
  * @author Connor Rice
  */
-public class CreepState extends AbstractAppState {
+public class EnemyState extends AbstractAppState {
 
     private Box univ_box = new Box(1, 1, 1);
     private Sphere glob_sphere = new Sphere(32, 32, 1f);
@@ -47,15 +48,12 @@ public class CreepState extends AbstractAppState {
     private static final float MD_CREEP_SPEED = 0.000035f;
     private static final float LG_CREEP_SPEED = 0.000025f;
     private static final float XL_CREEP_SPEED = 0.000030f;
-    private String smCreepMatloc;
-    private String mdCreepMatloc;
-    private String lgCreepMatloc;
-    private String xlCreepMatloc;
+
     public Random random = new Random();
     private SimpleApplication app;
     private AssetManager assetManager;
     private GameState GameState;
-    private FriendlyState HelperState;
+    private FriendlyState FriendlyState;
     private int nextspawner;
     private int nextrandom = random.nextInt(50);
     private float randomCheck = 0;
@@ -72,6 +70,7 @@ public class CreepState extends AbstractAppState {
     private ArrayList<Spatial> rangerList;
     private ArrayList<Spatial> diggerList;
     private RangerFactory rf;
+    private EnemyParams ep;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -79,7 +78,7 @@ public class CreepState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.assetManager = this.app.getAssetManager();
         this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.HelperState = this.app.getStateManager().getState(FriendlyState.class);
+        this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
         initLists();
@@ -97,12 +96,9 @@ public class CreepState extends AbstractAppState {
         globList = new ArrayList<Spatial>();
         creepSpawners = new ArrayList<Spatial>();
     }
-
-    public void initMaterials() {
-        smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
-        mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
-        lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
-        xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
+    
+    public void setEnemyParams(EnemyParams ep) {
+        this.ep = ep;
     }
 
     @Override
@@ -138,12 +134,12 @@ public class CreepState extends AbstractAppState {
      * tower.
      */
     private void spawnGlob() {
-        if (GameState.getGlobbedTowerList().size() < GameState.getTowerList().size()) {
-            int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
-            if (!GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
-                Vector3f towerVictimLocation = GameState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+        if (FriendlyState.getGlobbedTowerList().size() < FriendlyState.getTowerList().size()) {
+            int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
+            if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
+                Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getLocalTranslation();
                 Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-                GameState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
+                FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
                 creepNode.attachChild(glob);
                 globList.add(glob);
             } else {
@@ -157,7 +153,7 @@ public class CreepState extends AbstractAppState {
     }
     
     private void spawnRanger() {
-        int towerVictimIndex = random.nextInt(GameState.getTowerList().size());
+        int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
         Spatial ranger = rf.getRanger(getRangerSpawnPoint(towerVictimIndex), 
                 towerVictimIndex);
         rangerList.add(ranger);
@@ -411,6 +407,8 @@ public class CreepState extends AbstractAppState {
     public void seedForProfile() {
         random = new Random(42);
     }
+    
+
 
     @Override
     public void cleanup() {

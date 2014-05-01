@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -20,9 +20,9 @@ import java.io.IOException;
  */
 public class GlobControl extends AbstractControl {
 
-    private CreepState cs;
+    private EnemyState cs;
 
-    public GlobControl(CreepState _cs) {
+    public GlobControl(EnemyState _cs) {
         cs = _cs;
     }
 

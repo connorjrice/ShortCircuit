@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.Threading;
 
 import ShortCircuit.Tower.Controls.STDCreepControl;
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 
 /**
  * Runnable for moving creeps.
@@ -9,11 +9,11 @@ import ShortCircuit.Tower.States.Game.CreepState;
  */
 public class MoveCreep implements Runnable {
 
-    private CreepState cs;
+    private EnemyState cs;
     private STDCreepControl cc;
     private float moveamount;
 
-    public MoveCreep(CreepState _cs, STDCreepControl _cc) {
+    public MoveCreep(EnemyState _cs, STDCreepControl _cc) {
         cs = _cs;
         cc = _cc;
         moveamount = .004f;

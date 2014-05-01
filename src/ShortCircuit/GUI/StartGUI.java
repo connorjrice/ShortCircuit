@@ -7,6 +7,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
@@ -48,6 +49,7 @@ public class StartGUI extends AbstractAppState {
     private TowerMainState tMS;
     private Menu levelMenu;
     private float scaler;
+    private FlyByCamera flyCam;
 
     public StartGUI() {
     }
@@ -59,6 +61,8 @@ public class StartGUI extends AbstractAppState {
         this.guiNode = this.app.getGuiNode();
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
+        this.flyCam = this.app.getFlyByCamera();
+        setCameraSets();
         height = this.app.getContext().getSettings().getHeight();
         width = this.app.getContext().getSettings().getWidth();
         buttonSize = new Vector2f(width / 8, height / 8);
@@ -94,6 +98,13 @@ public class StartGUI extends AbstractAppState {
         loadingpic();
         initLevelMenu();
     }
+    
+    private void setCameraSets() {
+        flyCam.setDragToRotate(true);
+        flyCam.setRotationSpeed(0.0f);
+        flyCam.setZoomSpeed(0.0f);
+    }
+    
 
     private void initLevelMenu() {
         levelMenu = new Menu(screen, "levelmenu", new Vector2f(), true) {

@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.CreepState;
+import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -24,13 +24,13 @@ import java.io.IOException;
  * @author Connor
  */
 public class DiggerControl extends AbstractControl {
-    private CreepState cs;
+    private EnemyState cs;
     private boolean doneDigging = false;
     private final float creepDelay = 3.0f;
     private float creepTimer = 0f;
     
     
-    public DiggerControl(CreepState _cs) {
+    public DiggerControl(EnemyState _cs) {
         cs = _cs;
     }
 
