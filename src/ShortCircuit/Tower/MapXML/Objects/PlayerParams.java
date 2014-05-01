@@ -64,6 +64,22 @@ public class PlayerParams {
     public void incScore(int s) {
         score += s;
     }
+    
+    public void decHealth(int h) {
+        health -= h;
+    }
+    
+    public void decBudget(int b) {
+        budget -= b;
+    }
+    
+    public void decLevel(int l) {
+        level -= l;
+    }
+    
+    public void decScore(int s) {
+        score -= s;
+    }
 
     
 }

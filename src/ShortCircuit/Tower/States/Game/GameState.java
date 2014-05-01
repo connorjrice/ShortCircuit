@@ -5,6 +5,7 @@ import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.MapXML.Objects.BaseParams;
 import ShortCircuit.Tower.MapXML.Objects.LevelParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -14,6 +15,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -76,6 +78,7 @@ public class GameState extends AbstractAppState {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
         this.bp = gp.getBaseParams();
+        
     }
 
     @Override
@@ -244,6 +247,26 @@ public class GameState extends AbstractAppState {
         pp.incLevel(l);
     }
     
+    public void incPlrScore(int s) {
+        pp.incScore(s);
+    }
+    
+    
+    public void decPlrHealth(int h) {
+        pp.decScore(h);
+    }
+    
+    public void decPlrBudget(int b) {
+        pp.decBudget(b);
+    }
+    
+    public void decPlrLevel(int l) {
+        pp.decLevel(l);
+    }
+    
+    public void decPlrScore(int s) {
+        pp.decScore(s);
+    }
 
     
     
@@ -251,6 +274,11 @@ public class GameState extends AbstractAppState {
     
     public void incLevelCap() {
         lp.incLevelCap();
+    }
+    
+    
+    public int getNumCreeps() {
+        return lp.getNumCreeps();
     }
     
  
@@ -289,6 +317,8 @@ public class GameState extends AbstractAppState {
         return ex;
     }
 
+    
+    
     public Vector3f getBaseVec() {
         return bp.getBaseVec();
     }
@@ -297,7 +327,9 @@ public class GameState extends AbstractAppState {
         return bp.getBaseScale();
     }
 
-
+    public ArrayList<TowerParams> getTowerParams() {
+        return gp.getTowerList();
+    }
     
     public String getAtlas() {
         return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";

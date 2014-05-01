@@ -97,6 +97,7 @@
                 <z>0.1</z>
                 <isStarter>false</isStarter>
             </tower>
+        </param>
     </gameplayparams>
     
     <graphicsparams>
@@ -113,7 +114,6 @@
             <backgroundcolor>Black</backgroundcolor>
         </param>
     </graphicsparams>
-    
     <enemyparams>
         <param id = "creepparams">
             <smcreep>

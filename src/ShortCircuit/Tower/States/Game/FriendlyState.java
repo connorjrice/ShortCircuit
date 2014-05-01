@@ -40,7 +40,7 @@ public class FriendlyState extends AbstractAppState {
     private Node towerNode = new Node("Tower");
     
     private ArrayList<Spatial> towerList = new ArrayList<Spatial>();
-    private ArrayList<Vector3f> unbuiltTowerVecs = new ArrayList<Vector3f>();
+    private ArrayList<TowerParams> towerParams = new ArrayList<TowerParams>();
     private ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
     
     private Vector3f unbuiltTowerSize = new Vector3f(0.5f, 0.5f, .1f);
@@ -103,7 +103,7 @@ public class FriendlyState extends AbstractAppState {
     }
     
     public void initAssets() {
-
+        towerParams = GameState.getTowerParams();
     }
     
 
@@ -111,9 +111,8 @@ public class FriendlyState extends AbstractAppState {
      * XXX: BuildTowers
      */
     public void buildTowers() {
-        unbuiltTowerVecs = GameState.getGameplayParams().getTowerVecs();
-        for (int i = 0; i < unbuiltTowerVecs.size(); i++) {
-            createTower(i, unbuiltTowerVecs.get(i), "TowerUnbuilt");
+        for (int i = 0; i < towerParams.size(); i++) {
+            createTower(towerParams.get(i));
         }
     }
 
@@ -124,7 +123,7 @@ public class FriendlyState extends AbstractAppState {
             tower.charges.add(new Charges("Tower1"));
             tower.setTowerType("Tower1");
             tower.setBuilt();
-            changeTowerTexture(tower);
+            changeTowerTextureCharged(tower);
             tower.setSize(builtTowerSize);
         }
     }
@@ -171,9 +170,9 @@ public class FriendlyState extends AbstractAppState {
             TowerControl tower = getTowerList().get(getSelected()).getControl(TowerControl.class);
             tcr.setTower(tower);
             tcr.run();
-            if (HelperState.getEmptyTowers().contains(tower.getSpatial())) {
+            if (getEmptyTowers().contains(tower.getSpatial())) {
                 // TODO: debug this (charger/empty towers)
-                HelperState.getEmptyTowers().remove(tower.getSpatial());
+                getEmptyTowers().remove(tower.getSpatial());
             }
         }
     }
@@ -208,8 +207,8 @@ public class FriendlyState extends AbstractAppState {
         return towerList.get(selectedTower).getUserData("Type");
     }
 
-    public void createTower(int index, Vector3f towervec, String type) {
-        towerList.add(tf.getTower(index, towervec, unbuiltTowerSize, type));
+    public void createTower(TowerParams tp) {
+        towerList.add(tf.getTower(tp));
         towerNode.attachChild(towerList.get(towerList.size() - 1));
     }
 
@@ -218,8 +217,8 @@ public class FriendlyState extends AbstractAppState {
         control.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
     }
     
-    public void changeTowerTexture(TowerControl control) {
-        control.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
+    public void changeTowerTextureCharged(TowerControl control) {
+        control.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+getMatDir()+"/"+control.getTowerType()));
     }
 
     public void playChargeSound() {
@@ -235,7 +234,7 @@ public class FriendlyState extends AbstractAppState {
      * level. Used internally and by runnables.
      */
     public String getMatDir() {
-        return GameState.getMatDir();
+        return GraphicsState.getMatDir();
     }
 
     /**
@@ -297,11 +296,11 @@ public class FriendlyState extends AbstractAppState {
     }
 
     public ArrayList<Spatial> getCreepList() {
-        return GameState.getCreepList();
+        return EnemyState.getCreepList();
     }
 
     public ArrayList<Spatial> getCreepSpawnerList() {
-        return GameState.getCreepSpawnerList();
+        return EnemyState.getCreepSpawnerList();
     }
 
     /**
@@ -378,17 +377,6 @@ public class FriendlyState extends AbstractAppState {
         worldNode.attachChild(charger);
     }
     
-    public void chargeTower(int index) {
-        TowerState.chargeTower(index);
-    }
-    
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-    
-    public String getMatDir() {
-        return GameState.getMatDir();
-    }
     
     @Override
     public void cleanup() {

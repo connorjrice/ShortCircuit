@@ -97,7 +97,7 @@ public class CheatState extends AbstractAppState {
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
             addPurptoPurp(control);
             control.setTowerType("tower4");
-            FriendlyState.changeTowerTexture(control);
+            FriendlyState.changeTowerTextureCharged(control);
         }
     }
     /**

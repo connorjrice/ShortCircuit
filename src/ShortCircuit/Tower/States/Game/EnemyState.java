@@ -71,14 +71,18 @@ public class EnemyState extends AbstractAppState {
     private ArrayList<Spatial> diggerList;
     private RangerFactory rf;
     private EnemyParams ep;
+    private AppStateManager stateManager;
+    private GraphicsState GraphicsState;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        this.stateManager = this.app.getStateManager();
         this.assetManager = this.app.getAssetManager();
-        this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
+        this.GameState = this.stateManager.getState(GameState.class);
+        this.FriendlyState = this.stateManager.getState(FriendlyState.class);
+        this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.worldNode = this.GameState.getWorldNode();
         initFactories();
         initLists();
@@ -95,6 +99,10 @@ public class EnemyState extends AbstractAppState {
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
         creepSpawners = new ArrayList<Spatial>();
+    }
+    
+    public void initAssets() {
+
     }
     
     public void setEnemyParams(EnemyParams ep) {
@@ -235,40 +243,40 @@ public class EnemyState extends AbstractAppState {
     private void prepareSmSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Small", SM_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, getCreepMatLoc("Small")));
         } else {
             createSTDCreep(new CreepTraits("Small", SM_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, smCreepMatloc));
+                    SM_CREEP_SIZE, SM_CREEP_SPEED, 1, getCreepMatLoc("Small")));
         }
     }
 
     private void prepareMdSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Medium", MD_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, getCreepMatLoc("Medium")));
         } else {
             createSTDCreep(new CreepTraits("Medium", MD_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, mdCreepMatloc));
+                    MD_CREEP_SIZE, MD_CREEP_SPEED, 2, getCreepMatLoc("Medium")));
         }
     }
 
     private void prepareLgSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Large", LG_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, getCreepMatLoc("Large")));
         } else {
             createSTDCreep(new CreepTraits("Large", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, lgCreepMatloc));
+                    LG_CREEP_SIZE, LG_CREEP_SPEED, 5, getCreepMatLoc("Large")));
         }
     }
 
     private void prepareXlSTDCreep(Vector3f spawnervec, int spawnIndex, boolean vertical) {
         if (vertical) {
             createSTDCreep(new CreepTraits("Giant", XL_CREEP_HEALTH, spawnIndex, getCreepVecVert(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, getCreepMatLoc("Giant")));
         } else {
             createSTDCreep(new CreepTraits("Giant", LG_CREEP_HEALTH, spawnIndex, getCreepVecHoriz(spawnervec),
-                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, xlCreepMatloc));
+                    XL_CREEP_SIZE, XL_CREEP_SPEED, 10, getCreepMatLoc("Giant")));
         }
     }
 
@@ -287,7 +295,7 @@ public class EnemyState extends AbstractAppState {
     }
 
     public String getMatDir() {
-        return GameState.getMatDir();
+        return GraphicsState.getMatDir();
     }
 
     private Vector3f getCreepVecVert(Vector3f spawnervec) {
@@ -311,6 +319,10 @@ public class EnemyState extends AbstractAppState {
         } else {
             return -random.nextFloat() * 1.2f;
         }
+    }
+    
+    public String getCreepMatLoc(String type) {
+        return "Materials/" + getMatDir() + "/" + type + "Creep.j3m";
     }
 
     /**
@@ -347,11 +359,11 @@ public class EnemyState extends AbstractAppState {
     }
 
     public ArrayList<Spatial> getTowerList() {
-        return GameState.getTowerList();
+        return FriendlyState.getTowerList();
     }
 
     public ArrayList<Integer> getGlobbedTowerList() {
-        return GameState.getGlobbedTowerList();
+        return FriendlyState.getGlobbedTowerList();
     }
 
     public ArrayList<Spatial> getGlobList() {

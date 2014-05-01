@@ -47,11 +47,11 @@ public class TowerControl extends AbstractControl {
     private boolean isGlobbed = false;
     private FriendlyState HelperState;
 
-    public TowerControl(FriendlyState _tstate, Vector3f loc) {
+    public TowerControl(FriendlyState _tstate) {
         FriendlyState = _tstate;
         GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
         HelperState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
-        towerloc = loc;
+        towerloc = spatial.getLocalTranslation();
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
         this.ex = FriendlyState.getEx();

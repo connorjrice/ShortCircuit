@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.TowerControl;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
@@ -14,7 +11,7 @@ import com.jme3.app.state.AppStateManager;
  * @author Development
  */
 public class ProfileState extends AbstractAppState {
-    private FriendlyState HelperState;
+    private FriendlyState FriendlyState;
     
     private float profileUpgradeTimer = 0f;
     private float profileBombTimer;
@@ -22,30 +19,36 @@ public class ProfileState extends AbstractAppState {
     private float profileEmptyTimer;
     private float profileChargerTimer;
     private float profileEndTimer;
+    private SimpleApplication app;
+    private AppStateManager stateManager;
+    private EnemyState EnemyState;
+    private GraphicsState GraphicsState;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        
-        this.HelperState = stateManager.getState(FriendlyState.class);
+        this.app = (SimpleApplication) app;
+        this.stateManager = this.app.getStateManager();
+        this.GraphicsState = this.stateManager.getState(GraphicsState.class);
+        this.FriendlyState = this.stateManager.getState(FriendlyState.class);
+        this.EnemyState = this.stateManager.getState(EnemyState.class);
 
     }
-        @Override
+    
+    @Override
     public void update(float tpf) {
-        if (isProfile) {
-            profileUpgradeTowers(tpf);
-            profileDropBombs(tpf);
-            profileEmptyTowers(tpf);
-            profileBuildCharger(tpf);
-            profileEndTimer(tpf);
-        }
+        profileUpgradeTowers(tpf);
+        profileDropBombs(tpf);
+        profileEmptyTowers(tpf);
+        profileBuildCharger(tpf);
+        profileEndTimer(tpf);
     }
     
     private void profileUpgradeTowers(float tpf) {
         if (profileUpgradeTimer > 7.0) {
-            for (int i = 0; i < TowerState.getTowerList().size(); i++) { 
-                TowerState.selectedTower = i;
-                TowerState.upgradeTower();
+            for (int i = 0; i < FriendlyState.getTowerList().size(); i++) { 
+                FriendlyState.selectedTower = i;
+                FriendlyState.upgradeTower();
             }
             profileUpgradeTimer = 0;
         }
@@ -56,7 +59,7 @@ public class ProfileState extends AbstractAppState {
     
     private void profileDropBombs(float tpf) {
         if (profileBombTimer > .5) {
-            GameState.dropBomb(EnemyState.getCreepList().get(0).getLocalTranslation(), .2f);
+            GraphicsState.dropBomb(EnemyState.getCreepList().get(0).getLocalTranslation(), .2f);
             profileBombTimer = 0;
         }
         else {
@@ -66,8 +69,8 @@ public class ProfileState extends AbstractAppState {
     
     private void profileEmptyTowers(float tpf) {
         if (profileEmptyTimer > 10.0) {
-            for (int i = 0; i < TowerState.getTowerList().size(); i++) {
-                TowerState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
+            for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
+                FriendlyState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
             }
             profileEmptyTimer = 0;
         }
@@ -78,7 +81,7 @@ public class ProfileState extends AbstractAppState {
     
     private void profileBuildCharger(float tpf) {
         if (profileChargerTimer > 1.0) {
-            HelperState.createCharger();
+            FriendlyState.createCharger();
             profileChargerTimer = 0;
         }
         else {

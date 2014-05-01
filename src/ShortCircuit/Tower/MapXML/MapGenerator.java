@@ -47,9 +47,11 @@ public class MapGenerator {
     }
 
     public void parseXML() {
-        gameplayParamsChildren = doc.getChildNodes().item(0).getChildNodes();
-        graphicsParamsChildren = doc.getChildNodes().item(1).getChildNodes();
-        enemyParamsChildren = doc.getChildNodes().item(2).getChildNodes();
+        NodeList nodeList = doc.getChildNodes();
+        gameplayParamsChildren = nodeList.item(0).getChildNodes();
+        System.out.println(gameplayParamsChildren.getLength());
+        graphicsParamsChildren = (NodeList) nodeList.item(1);
+        enemyParamsChildren = (NodeList) nodeList.item(2);
     }
     
     public GameplayParams getGameplayParams() {
@@ -118,7 +120,7 @@ public class MapGenerator {
     }
 
     private MaterialParams parseMaterialParams() {
-        Element materialElement = (Element) gameplayParamsChildren.item(2);
+        Element materialElement = (Element) graphicsParamsChildren.item(0);
         String matdir = getElement("matdir", materialElement);
         String colors = getElement("backgroundcolor", materialElement);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
@@ -126,7 +128,7 @@ public class MapGenerator {
     }
     
     private FilterParams parseFilterParams() {
-        Element filterElement = (Element) gameplayParamsChildren.item(3);
+        Element filterElement = (Element) graphicsParamsChildren.item(0);
         String blooms = getElement("bloom", filterElement);
         boolean bloom;
         if (blooms.equals("false")) {
