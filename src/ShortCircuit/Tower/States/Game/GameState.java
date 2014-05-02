@@ -77,8 +77,6 @@ public class GameState extends AbstractAppState {
         this.gp = gp;
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
-        this.bp = gp.getBaseParams();
-        
     }
 
     @Override

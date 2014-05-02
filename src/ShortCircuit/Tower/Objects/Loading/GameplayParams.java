@@ -23,12 +23,9 @@ public class GameplayParams {
     private TowerParams tp;
     private ArrayList<TowerParams> towerList;
 
-    public GameplayParams(LevelParams lp, PlayerParams pp, GeometryParams gp,
-            BaseParams bp, ArrayList<TowerParams> towerList) {
+    public GameplayParams(LevelParams lp, PlayerParams pp, ArrayList<TowerParams> towerList) {
         this.lp = lp;
         this.pp = pp;
-        this.gp = gp;
-        this.bp = bp;
         this.towerList = towerList;
         
     }
@@ -41,13 +38,7 @@ public class GameplayParams {
         return pp;
     }
     
-    public GeometryParams getGeometryParams() {
-        return gp;
-    }
-    
-    public BaseParams getBaseParams() {
-        return bp;
-    }
+
     
     public ArrayList<TowerParams> getTowerList() {
         return towerList;

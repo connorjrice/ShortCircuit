@@ -60,7 +60,7 @@ public class MapGenerator {
 
     
     public GameplayParams getGameplayParams() {
-        return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseGeometryParams(), parseBaseParams(), parseTowerList());
+        return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseTowerList());
     }
     
     public EnemyParams getEnemyParams() {
@@ -68,7 +68,7 @@ public class MapGenerator {
     }
     
     public GraphicsParams getGraphicsParams() {
-        return new GraphicsParams(parseMaterialParams(), parseFilterParams());
+        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), parseGeometryParams(), parseBaseParams());
     }
     
     private LevelParams parseLevelParams() {

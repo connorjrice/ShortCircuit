@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.States.Game;
 
+import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Factories.BeamFactory;
@@ -69,11 +70,15 @@ public class GraphicsState extends AbstractAppState {
     private BaseFactory BaseFactory;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
+    private StartGUI startGUI;
+    private String floortexloc;
+    private Node rootNode;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        this.rootNode = this.app.getRootNode();
         this.stateManager = this.app.getStateManager();
         this.viewPort = this.app.getViewPort();
         this.assetManager = this.app.getAssetManager();
@@ -83,10 +88,21 @@ public class GraphicsState extends AbstractAppState {
         this.GameState = this.stateManager.getState(GameState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
+        this.startGUI = this.stateManager.getState(StartGUI.class);
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
+    }
+    
+    public void setGraphicsParams(GraphicsParams gp) {
+        this.gp = gp;
+        this.mp = gp.getMaterialParams();
+        this.fp = gp.getFilterParams();
+        initFilters();
+        initAssets();
         setCameraSets();
-
+        createWorld();
+        setBackgroundColor(mp.getBackgroundColor());
+        startGUI.hideloading();
     }
     
     @Override
@@ -109,9 +125,14 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setZoomSpeed(0.0f);
     }
     
-    public void setMaterialParams(MaterialParams mp) {
-        this.mp = mp;
-        setBackgroundColor(mp.getBackgroundColor());
+    private void createWorld() {
+        createFloor();
+        createLight();
+        attachWorldNode();
+    }
+    
+    private void attachWorldNode() {
+        rootNode.attachChild(worldNode);
     }
     
     private void initAssets() {
@@ -126,18 +147,15 @@ public class GraphicsState extends AbstractAppState {
         mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
         lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
         xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
+        floortexloc = "Materials/" + getMatDir() + "/Floor.j3m";
     }
     
-    public void setGraphicsParams(GraphicsParams gp) {
-        this.gp = gp;
-        this.mp = gp.getMaterialParams();
-        this.fp = gp.getFilterParams();
-    }
+
         /**
      * Sets up the FilterPostProcessor and Bloom filter used by the game.
      * Called upon initialization of the game.
      */
-    public void initFilters(FilterParams fp) {
+    public void initFilters() {
         if (fp.getEnabled()) {
             fpp = new FilterPostProcessor(assetManager);
             if (fp.getGlowMode() != null) {
@@ -246,12 +264,12 @@ public class GraphicsState extends AbstractAppState {
      * Creates the floor for the game, calls FloorFactory to get the floor.
      * Called by LevelState
      */
-    public void createFloor(Vector3f floorscale, String floortexloc) {
+    public void createFloor() {
         Geometry floor_geom = new Geometry("Floor", univ_box);
         floor_geom.setMaterial(assetManager.loadMaterial(floortexloc));
-        floor_geom.setLocalScale(floorscale);
+        floor_geom.setLocalScale(gp.getGeometryParams().getFloorScale());
+        floor_geom.setLocalTranslation(new Vector3f(0,0,-10f));
         worldNode.attachChild(floor_geom);
-
     }
 
     /**
@@ -261,8 +279,6 @@ public class GraphicsState extends AbstractAppState {
     public void createBase(String texloc, Vector3f basevec, Vector3f basescale) {
         worldNode.attachChild(BaseFactory.getBase(texloc, basevec, basescale));
     }
-
-
     
     public Sphere getBombMesh() {
         return bombMesh;
