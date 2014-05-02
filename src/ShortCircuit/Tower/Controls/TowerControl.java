@@ -47,11 +47,10 @@ public class TowerControl extends AbstractControl {
     private boolean isGlobbed = false;
     private FriendlyState HelperState;
 
-    public TowerControl(FriendlyState _tstate) {
+    public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
         GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
         HelperState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
-        towerloc = spatial.getLocalTranslation();
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
         this.ex = FriendlyState.getEx();
@@ -180,7 +179,7 @@ public class TowerControl extends AbstractControl {
 
     protected void emptyTower() {
         emptySound.play();
-        FriendlyState.changeTowerTexture("Empty", this);
+        GraphicsState.changeTowerTexture(this, "TowerUnbuilt");
         if (!HelperState.getEmptyTowers().contains(spatial)) {
             HelperState.addEmptyTower(spatial);
         }

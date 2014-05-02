@@ -2,7 +2,6 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Controls.GlobControl;
-import ShortCircuit.Tower.MapXML.Objects.BaseParams;
 import ShortCircuit.Tower.MapXML.Objects.LevelParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
@@ -49,7 +48,6 @@ public class GameState extends AbstractAppState {
     private Node worldNode = new Node("World");
     private FriendlyState FriendlyState;
     private GraphicsState GraphicsState;
-    private BaseParams bp;
 
     public GameState() {}
 
@@ -313,20 +311,6 @@ public class GameState extends AbstractAppState {
 
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
-    }
-
-    
-    
-    public Vector3f getBaseVec() {
-        return bp.getBaseVec();
-    }
-    
-    public Vector3f getBaseScale() {
-        return bp.getBaseScale();
-    }
-
-    public ArrayList<TowerParams> getTowerParams() {
-        return gp.getTowerList();
     }
     
     public String getAtlas() {

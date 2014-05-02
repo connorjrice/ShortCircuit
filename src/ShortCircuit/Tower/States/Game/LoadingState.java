@@ -45,7 +45,6 @@ public class LoadingState extends AbstractAppState {
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
         EnemyState.setEnemyParams(mg.getEnemyParams());
         GameState.setGameplayParams(mg.getGameplayParams());
-
     }
 
     private void initMG(String levelname) {

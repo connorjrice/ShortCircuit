@@ -4,6 +4,7 @@ import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.FriendlyState;
+import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -26,6 +27,7 @@ public class CheatState extends AbstractAppState {
     private boolean levelOverload;
     
     private float slowItDownThere = 0f;
+    private GraphicsState GraphicsState;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -33,6 +35,7 @@ public class CheatState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.GameState = this.app.getStateManager().getState(GameState.class);
         this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
+        this.GraphicsState = this.app.getStateManager().getState(GraphicsState.class);
     }
     
     /**
@@ -96,8 +99,8 @@ public class CheatState extends AbstractAppState {
         for (int i = 0; i < towerList.size(); i++) {
             TowerControl control = towerList.get(i).getControl(TowerControl.class);
             addPurptoPurp(control);
-            control.setTowerType("tower4");
-            FriendlyState.changeTowerTextureCharged(control);
+            control.setTowerType("Tower4");
+            GraphicsState.changeTowerTexture(control, "Tower4");
         }
     }
     /**
@@ -106,7 +109,7 @@ public class CheatState extends AbstractAppState {
      */
     private void addPurptoPurp(TowerControl control) {
         for (int i = 0; i < 100; i++) {
-            control.charges.add(new Charges("tower4"));
+            control.charges.add(new Charges("Tower4"));
         }
     }
     
@@ -123,7 +126,7 @@ public class CheatState extends AbstractAppState {
             tower.setBuilt();                    
             tower.setTowerType("globpop");
             tower.setBeamType("Bomb");
-            FriendlyState.changeTowerTexture("Materials/Circuit/Bomb.j3m", tower);
+            GraphicsState.changeTowerTexture(tower, "Bomb");
         }
     }
     

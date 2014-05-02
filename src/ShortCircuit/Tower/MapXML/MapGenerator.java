@@ -1,6 +1,5 @@
 package ShortCircuit.Tower.MapXML;
 
-import ShortCircuit.Tower.MapXML.Objects.BaseParams;
 import ShortCircuit.Tower.MapXML.Objects.CreepParams;
 import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.Objects.Loading.EnemyParams;
@@ -60,7 +59,7 @@ public class MapGenerator {
 
     
     public GameplayParams getGameplayParams() {
-        return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseTowerList());
+        return new GameplayParams(parseLevelParams(), parsePlayerParams());
     }
     
     public EnemyParams getEnemyParams() {
@@ -68,15 +67,13 @@ public class MapGenerator {
     }
     
     public GraphicsParams getGraphicsParams() {
-        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), parseGeometryParams(), parseBaseParams());
+        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), parseGeometryParams(), parseTowerList());
     }
     
     private LevelParams parseLevelParams() {
         String levelElement = "gameplayparams/param[@id = 'levelParams']/";
-        String camlocS = getElement("camLocation", levelElement);
         String profiles = getElement("profile", levelElement);
         String tutorials = getElement("tutorial", levelElement);
-        Vector3f camLocation = parseVector3f(camlocS);
         int numCreeps = parseInt(getElement("numCreeps", levelElement));
         int creepMod = parseInt(getElement("creepMod", levelElement));
         int levelCap = parseInt(getElement("levelCap", levelElement));
@@ -84,8 +81,7 @@ public class MapGenerator {
         String allowedenemies = getElement("allowedenemies", levelElement);
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
-        return new LevelParams(camLocation, numCreeps, creepMod, levelCap, 
-                levelMod, profile, tutorial, allowedenemies);
+        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies);
     }
     
     private PlayerParams parsePlayerParams() {
@@ -98,16 +94,16 @@ public class MapGenerator {
     }
     
     private GeometryParams parseGeometryParams() {
-        String geometryElement = "gameplayparams/param[@id = 'geometryParams']/";     
+        String geometryElement = "gameplayparams/param[@id = 'geometryParams']/";
+        Vector3f camLoc = parseVector3f(getElement("/camera/camLocation", geometryElement));
         Vector3f floorScale = parseVector3f(getElement("/floor/scale", geometryElement));
-        return new GeometryParams(floorScale);
-    }
-    
-    private BaseParams parseBaseParams() {
-        String baseElement = "gameplayparams/param[@id = 'baseParams']/";
-        Vector3f baseVec = parseVector3f(getElement("baseVec", baseElement));
-        Vector3f baseScale = parseVector3f(getElement("baseScale", baseElement));
-        return new BaseParams(baseVec, baseScale);
+        Vector3f baseVec = parseVector3f(getElement("/base/baseVec", geometryElement));
+        Vector3f baseScale = parseVector3f(getElement("/base/baseScale", geometryElement));
+        Vector3f towerBuiltSize = parseVector3f(getElement("/tower/builtSize", geometryElement));
+        Vector3f towerUnbuiltSize = parseVector3f(getElement("/tower/unbuiltSize", geometryElement));
+        Vector3f towerBuiltSelected = parseVector3f(getElement("/tower/builtSelected", geometryElement));
+        Vector3f towerUnbuiltSelected = parseVector3f(getElement("/tower/unbuiltSelected", geometryElement));
+        return new GeometryParams(camLoc, floorScale, baseVec, baseScale, towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, towerUnbuiltSelected);
     }
     
     private ArrayList<TowerParams> parseTowerList() {

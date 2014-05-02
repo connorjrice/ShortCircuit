@@ -29,7 +29,7 @@ public class TowerCharge implements Runnable {
      */
     public void run() {
         if (fs.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("TowerUnbuilt")) {
-            fs.changeTowerTexture("Materials/" + fs.getMatDir() + "/" + tower.getTowerType() + ".j3m", tower);
+            fs.changeTowerTexture(tower, tower.getTowerType());
             tower.addCharges();
             fs.decPlrBudget(chargeCost);
             fs.playChargeSound();

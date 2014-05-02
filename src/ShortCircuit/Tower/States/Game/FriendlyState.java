@@ -43,10 +43,10 @@ public class FriendlyState extends AbstractAppState {
     private ArrayList<TowerParams> towerParams = new ArrayList<TowerParams>();
     private ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
     
-    private Vector3f unbuiltTowerSize = new Vector3f(0.5f, 0.5f, .1f);
-    private Vector3f builtTowerSize = new Vector3f(0.5f, 0.5f, 1.0f);
-    private Vector3f unbuiltTowerSelected = new Vector3f(0.6f, 0.6f, 1.5f);
-    private Vector3f builtTowerSelected = new Vector3f(0.7f, 0.7f, 2.5f);
+    private Vector3f unbuiltTowerSize = new Vector3f();
+    private Vector3f builtTowerSize = new Vector3f();
+    private Vector3f unbuiltTowerSelected = new Vector3f();
+    private Vector3f builtTowerSelected = new Vector3f();
     
     private TowerFactory tf;
     private TowerCharge tcr;
@@ -78,7 +78,6 @@ public class FriendlyState extends AbstractAppState {
         this.worldNode = this.GameState.getWorldNode();
         this.assetManager = this.app.getAssetManager();
         initLists();
-        initFactories();
         initRunnables();
     }
     
@@ -92,9 +91,7 @@ public class FriendlyState extends AbstractAppState {
 
     }
     
-    private void initFactories() {
-        tf = new TowerFactory(GraphicsState);
-    }
+
 
     private void initRunnables() {
         tur = new TowerUpgrade(this);
@@ -102,31 +99,8 @@ public class FriendlyState extends AbstractAppState {
         tdr = new TowerDowngrade(this);
     }
     
-    public void initAssets() {
-        towerParams = GameState.getTowerParams();
-    }
-    
 
-    /**
-     * XXX: BuildTowers
-     */
-    public void buildTowers() {
-        for (int i = 0; i < towerParams.size(); i++) {
-            createTower(towerParams.get(i));
-        }
-    }
 
-    public void buildStarterTowers(ArrayList<Integer> starterTowerIn) {
-
-        for (int i = 0; i < starterTowerIn.size(); i++) {
-            TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
-            tower.charges.add(new Charges("Tower1"));
-            tower.setTowerType("Tower1");
-            tower.setBuilt();
-            changeTowerTextureCharged(tower);
-            tower.setSize(builtTowerSize);
-        }
-    }
 
     public void attachTowerNode() {
         worldNode.attachChild(towerNode);
@@ -140,9 +114,9 @@ public class FriendlyState extends AbstractAppState {
     public void towerSelected(int tindex) {
         Spatial selTower = towerList.get(tindex);
         if (selTower.getUserData("Type").equals("TowerUnbuilt")) {
-            selTower.setLocalScale(unbuiltTowerSelected);
+            GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
-            selTower.setLocalScale(builtTowerSelected);
+            GraphicsState.setTowerScale(tindex, "BuiltSelected");
         }
         selectedTower = tindex;
     }
@@ -184,7 +158,7 @@ public class FriendlyState extends AbstractAppState {
     public void chargeTower(int index) {
         if (index != -1) {
             TowerControl tower = towerList.get(index).getControl(TowerControl.class);
-            changeTowerTexture("Materials/" + getMatDir() + "/" + tower.getTowerType() + ".j3m", tower);
+            GraphicsState.changeTowerTexture(tower, tower.getTowerType());
             tower.addCharges();
             playChargeSound();
         }
@@ -207,18 +181,9 @@ public class FriendlyState extends AbstractAppState {
         return towerList.get(selectedTower).getUserData("Type");
     }
 
-    public void createTower(TowerParams tp) {
-        towerList.add(tf.getTower(tp));
-        towerNode.attachChild(towerList.get(towerList.size() - 1));
-    }
 
-    public void changeTowerTexture(String matLoc, TowerControl control) {
-
-        control.getSpatial().setMaterial(assetManager.loadMaterial(matLoc));
-    }
-    
-    public void changeTowerTextureCharged(TowerControl control) {
-        control.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+getMatDir()+"/"+control.getTowerType()));
+    public void changeTowerTexture(TowerControl tower, String type) {
+        GraphicsState.changeTowerTexture(tower, type);
     }
 
     public void playChargeSound() {
@@ -322,7 +287,7 @@ public class FriendlyState extends AbstractAppState {
         charger.setUserData("RemainingCharges", 10);
         charger.setUserData("Health", 100);
         charger.setMaterial(assetManager.loadMaterial("Materials/Plain/Base.j3m"));
-        charger.setLocalTranslation(GameState.getBaseVec().add(0,0,1f));
+        charger.setLocalTranslation(GraphicsState.getBaseVec().add(0,0,1f));
         addNewCharger(charger);
     }
 
@@ -363,7 +328,7 @@ public class FriendlyState extends AbstractAppState {
     }
     
     public Vector3f getHomeVec() {
-        return GameState.getBaseVec().add(0f,0f,1f);
+        return GraphicsState.getBaseVec().add(0f,0f,1f);
     }
     
     /**

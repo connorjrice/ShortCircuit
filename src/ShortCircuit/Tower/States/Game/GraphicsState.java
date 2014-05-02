@@ -2,10 +2,15 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Controls.BombControl;
+import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Factories.BeamFactory;
+import ShortCircuit.Tower.Factories.TowerFactory;
 import ShortCircuit.Tower.MapXML.Objects.FilterParams;
+import ShortCircuit.Tower.MapXML.Objects.GeometryParams;
 import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
+import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -35,7 +40,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 public class GraphicsState extends AbstractAppState {
     private SimpleApplication app;
-    private GraphicsParams gp;
+    private GeometryParams gp;
     private Sphere bombMesh = new Sphere(16, 16, 1.0f);
     private Node worldNode = new Node("World");
     private Box univ_box = new Box(1, 1, 1);
@@ -73,6 +78,9 @@ public class GraphicsState extends AbstractAppState {
     private StartGUI startGUI;
     private String floortexloc;
     private Node rootNode;
+    private ArrayList<Spatial> towerList;
+    private ArrayList<TowerParams> towerParamsList;
+    private TowerFactory tf;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -89,16 +97,19 @@ public class GraphicsState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.startGUI = this.stateManager.getState(StartGUI.class);
+        this.towerList = this.FriendlyState.getTowerList();
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
     }
     
     public void setGraphicsParams(GraphicsParams gp) {
-        this.gp = gp;
+        this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
+        this.towerParamsList = gp.getTowerList();
         initFilters();
         initAssets();
+        initFactories();
         setCameraSets();
         createWorld();
         setBackgroundColor(mp.getBackgroundColor());
@@ -130,8 +141,12 @@ public class GraphicsState extends AbstractAppState {
         createLight();
         createFloor();
         createBase();
-
+        buildTowers();
         attachWorldNode();
+    }
+    
+    private void initFactories() {
+        tf = new TowerFactory(this);
     }
     
     private void attachWorldNode() {
@@ -238,21 +253,8 @@ public class GraphicsState extends AbstractAppState {
         shot = true;
     }
     
-        /**
-     * Drops a bomb at the given translation, with an initial size for the bomb
-     * to grow from.
-     *
-     * @param translation
-     * @param initialSize
-     */
-    public void dropBomb(Vector3f translation, float initialSize) {
-        Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
-        bomb_geom.setMaterial(bomb_mat);
-        bomb_geom.setLocalScale(initialSize);
-        bomb_geom.setLocalTranslation(translation);
-        bomb_geom.addControl(new BombControl(initialSize, this));
-        worldNode.attachChild(bomb_geom);
-    }
+    
+    /*** World Methods ***/
 
     /**
      * Creates an AmbientLight and attaches it to worldNode. Called by
@@ -271,28 +273,116 @@ public class GraphicsState extends AbstractAppState {
     public void createFloor() {
         Geometry floor_geom = new Geometry("Floor", univ_box);
         floor_geom.setMaterial(assetManager.loadMaterial(floortexloc));
-        floor_geom.setLocalScale(gp.getGeometryParams().getFloorScale());
+        floor_geom.setLocalScale(gp.getFloorScale());
         worldNode.attachChild(floor_geom);
     }
+    
+    /*** Base Methods ***/
 
     public void createBase() {
-        worldNode.attachChild(BaseFactory.getBase(basetexloc, gp.getBaseParams()
-                .getBaseVec(), gp.getBaseParams().getBaseScale()));
+        worldNode.attachChild(BaseFactory.getBase(basetexloc, gp.getBaseVec(), 
+        gp.getBaseScale()));
+    }
+    
+    public String getBaseTexLoc() {
+        return basetexloc;
+    }
+    
+    public Vector3f getBaseVec() {
+        return gp.getBaseVec();
+    }
+    
+    public Vector3f getBaseScale() {
+        return gp.getBaseScale();
+    }
+    
+    /*** Tower Methods ***/
+    
+    public void buildTowers() {
+        for (int i = 0; i < towerParamsList.size(); i++) {
+            createTower(towerParamsList.get(i));
+        }
+    }
+    
+    public void createTower(TowerParams tp) {
+        towerList.add(tf.getTower(tp));
+        worldNode.attachChild(towerList.get(towerList.size() - 1));
+    }
+
+    public void buildStarterTowers(ArrayList<Integer> starterTowerIn) {
+        for (int i = 0; i < starterTowerIn.size(); i++) {
+            TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
+            tower.charges.add(new Charges("Tower1"));
+            tower.setTowerType("Tower1");
+            tower.setBuilt();
+            changeTowerTexture(tower, "Tower1");
+            tower.setSize(getTowerBuiltSelected());
+        }
+    }
+    
+    public void setTowerScale(int tindex, String scaletype) {
+        if (scaletype.equals("BuiltSize")) {
+            towerList.get(tindex).setLocalScale(getTowerBuiltSize());
+        } else if (scaletype.equals("UnbuiltSize")) {
+            towerList.get(tindex).setLocalScale(getTowerUnbuiltSize());
+        } else if (scaletype.equals("BuiltSelected")) {
+            towerList.get(tindex).setLocalScale(getTowerBuiltSelected());
+        } else if (scaletype.equals("UnbuiltSelected")) {
+            towerList.get(tindex).setLocalScale(getTowerUnbuiltSelected());
+        }
+    }
+    
+    public void changeTowerTexture(TowerControl control, String type) {
+        control.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(type)));
+        
+    }
+    
+    public void changeTowerTextureCharged(TowerControl control) {
+        control.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+getMatDir()+"/"+control.getTowerType()));
+    }
+    
+    public String getTowerMatLoc(String type) {
+        return "Materials/" + getMatDir() + "/" + type;
+    }
+    
+    public Vector3f getTowerBuiltSize() {
+        return gp.getTowerBuiltSize();
+    }
+    
+    public Vector3f getTowerUnbuiltSize() {
+        return gp.getTowerUnbuiltSize();
+    }
+    
+    public Vector3f getTowerBuiltSelected() {
+        return gp.getTowerBuiltSelected();
+    }
+    
+    public Vector3f getTowerUnbuiltSelected() {
+        return gp.getTowerUnbuiltSelected();
+    }
+    
+    /*** Bomb Methods ***/
+    
+    public void dropBomb(Vector3f translation, float initialSize) {
+        Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
+        bomb_geom.setMaterial(bomb_mat);
+        bomb_geom.setLocalScale(initialSize);
+        bomb_geom.setLocalTranslation(translation);
+        bomb_geom.addControl(new BombControl(initialSize, this));
+        worldNode.attachChild(bomb_geom);
     }
     
     public Sphere getBombMesh() {
         return bombMesh;
     }
+
+
+    
+    /*** Global Methods ***/
     
     public Box getUnivBox() {
         return univ_box;
     }
-
-    public String getBaseTexLoc() {
-        return basetexloc;
-    }
-    
-    
     public String getMatDir() {
         return mp.getMatDir();
     }
@@ -307,7 +397,7 @@ public class GraphicsState extends AbstractAppState {
     public ScheduledThreadPoolExecutor getEx() {
         return GameState.getEx();
     }
-    
+        
     public SimpleApplication getApp() {
         return app;
     }

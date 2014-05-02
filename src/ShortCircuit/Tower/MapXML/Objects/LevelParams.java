@@ -1,13 +1,10 @@
 package ShortCircuit.Tower.MapXML.Objects;
 
-import com.jme3.math.Vector3f;
-
 /**
  *
  * @author Connor Rice
  */
 public class LevelParams {
-    private Vector3f camLocation;
     private int numCreeps;
     private int creepMod;
     private int levelCap;
@@ -30,10 +27,9 @@ public class LevelParams {
      */
     private String allowedenemies;
     
-    public LevelParams(Vector3f _camLocation, int _numCreeps, int _creepMod, 
+    public LevelParams(int _numCreeps, int _creepMod, 
             int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
             String _allowedenemies) {
-        camLocation = _camLocation;
         numCreeps = _numCreeps;
         creepMod = _creepMod;
         levelCap = _levelCap;
@@ -42,10 +38,7 @@ public class LevelParams {
         tutorial = _tutorial;
         allowedenemies = _allowedenemies;
     }
-    
-    public Vector3f getCamLocation() {
-        return camLocation;
-    }
+
 
     public int getNumCreeps() {
         return numCreeps;

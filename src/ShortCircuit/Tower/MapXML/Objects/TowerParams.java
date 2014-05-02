@@ -17,6 +17,7 @@ public class TowerParams {
     public TowerParams(Vector3f vec,  boolean starter) {
         this.vec = vec;
         this.starter = starter;
+        type = "unbuilt";
     }
     
     public void setScale(Vector3f s) {
@@ -39,9 +40,6 @@ public class TowerParams {
         return starter;
     }
        
-    public Vector3f getScale() {
-        return scale;
-    }
     
     public String getType() {
         return type;
