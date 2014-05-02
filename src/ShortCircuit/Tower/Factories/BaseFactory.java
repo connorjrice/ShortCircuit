@@ -14,9 +14,9 @@ public class BaseFactory {
     public BaseFactory(GraphicsState gs) {
         this.gs = gs;
     }
-    public Geometry getBase(String baseName, Vector3f basevec, Vector3f basescale) {
+    public Geometry getBase(String baseTexLoc, Vector3f basevec, Vector3f basescale) {
         Geometry base_geom = new Geometry("Base", new Box(1,1,1));
-        base_geom.setMaterial(gs.getAssetManager().loadMaterial("Materials/"+gs.getMatDir()+baseName+".j3m"));
+        base_geom.setMaterial(gs.getAssetManager().loadMaterial(baseTexLoc));
         base_geom.setLocalScale(basescale);
         base_geom.setLocalTranslation(basevec);
         return base_geom;

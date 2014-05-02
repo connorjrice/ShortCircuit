@@ -123,11 +123,14 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
+        cam.setLocation(new Vector3f(0,0,20f)); //TODO: Camera location into geometry
     }
     
     private void createWorld() {
-        createFloor();
         createLight();
+        createFloor();
+        createBase();
+
         attachWorldNode();
     }
     
@@ -148,6 +151,7 @@ public class GraphicsState extends AbstractAppState {
         lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
         xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
         floortexloc = "Materials/" + getMatDir() + "/Floor.j3m";
+        basetexloc = "Materials/" + getMatDir() + "/Base.j3m";
     }
     
 
@@ -268,16 +272,12 @@ public class GraphicsState extends AbstractAppState {
         Geometry floor_geom = new Geometry("Floor", univ_box);
         floor_geom.setMaterial(assetManager.loadMaterial(floortexloc));
         floor_geom.setLocalScale(gp.getGeometryParams().getFloorScale());
-        floor_geom.setLocalTranslation(new Vector3f(0,0,-10f));
         worldNode.attachChild(floor_geom);
     }
 
-    /**
-     * Creates the player's base. Called by LevelState. Pending: Multiple Bases
-     * (GUI additions as well)
-     */
-    public void createBase(String texloc, Vector3f basevec, Vector3f basescale) {
-        worldNode.attachChild(BaseFactory.getBase(texloc, basevec, basescale));
+    public void createBase() {
+        worldNode.attachChild(BaseFactory.getBase(basetexloc, gp.getBaseParams()
+                .getBaseVec(), gp.getBaseParams().getBaseScale()));
     }
     
     public Sphere getBombMesh() {
