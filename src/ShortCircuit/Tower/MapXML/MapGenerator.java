@@ -21,8 +21,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
@@ -36,25 +43,40 @@ public class MapGenerator {
     private Document doc;
     private Application app;
     private AssetManager assetManager;
-    private NodeList gameplayParamsChildren;
-    private NodeList graphicsParamsChildren;
-    private NodeList enemyParamsChildren;
+    private Node gameplayParamsChildren;
+    private Node graphicsParamsChildren;
+    private Node enemyParamsChildren;
 
     public MapGenerator(String level, Application app) {
         this.app = app;
         this.assetManager = this.app.getAssetManager();
-        assetManager.registerLoader(XMLLoader.class, "lvl.xml");
-        this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
+        
+        //assetManager.registerLoader(XMLLoader.class, "lvl.xml");
+        //this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
     }
 
     public void parseXML() {
-        NamedNodeMap nodeList = doc.getAttributes();
-        gameplayParamsChildren = (NodeList)nodeList.getNamedItem("gameplayparams");
-        graphicsParamsChildren = doc.getElementsByTagName("graphicsparams");
-        enemyParamsChildren = doc.getElementsByTagName("enemyparams");
+        /*Node rootNode = doc.getChildNodes().item(0);
+        NodeList rootChildren = rootNode.getChildNodes();
+        gameplayParamsChildren = rootChildren.item(1);
+        graphicsParamsChildren = rootChildren.item(3);
+        enemyParamsChildren = rootChildren.item(5);
+        System.out.println(gameplayParamsChildren.getNodeName());
+        System.out.println(graphicsParamsChildren.getNodeName());
+        System.out.println(enemyParamsChildren.getNodeName());*/
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        //String expression = "/level/gameplayparams/param[id = \"levelParams\"]/numCreeps/text()";
+        String expression = "/level/gameplayparams/param[@id = 'levelParams']/numCreeps/text()";
+        InputSource inputSource = new InputSource("assets/XML/Level1.lvl.xml");
+        try {
+            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, XPathConstants.NODESET);
+            System.out.println(nodes.item(0));
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public GameplayParams getGameplayParams() {
+    /*public GameplayParams getGameplayParams() {
         return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseGeometryParams(), parseBaseParams(), parseTowerList());
     }
     
@@ -175,7 +197,7 @@ public class MapGenerator {
             creepList.add(new CreepSpawnerParams(x, y, z, orientation));
         }
         return creepList;
-    }
+    }*/
 
     public ColorRGBA parseColorRGBA(String colors) {
         if (colors.equals("Black")) {
