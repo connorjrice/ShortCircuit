@@ -583,12 +583,11 @@ public class GameGUI extends AbstractAppState {
         BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
-                GraphicsState.setBloomIntensity(selectedIndex);
+                //GraphicsState.setBloomIntensity(selectedIndex);
             }
         };
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
-        GraphicsState.setBloomIntensity(GraphicsState.bloomIntensity);
         SetWindow.addChild(BloomSlider);
     }
 

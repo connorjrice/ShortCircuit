@@ -53,7 +53,7 @@ public class FriendlyState extends AbstractAppState {
     private TowerUpgrade tur;
     private TowerDowngrade tdr;
     
-    public int selectedTower = 0;
+    public int selectedTower = -1;
     
 
     private TowerParams tp;

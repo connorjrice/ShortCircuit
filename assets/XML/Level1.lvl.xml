@@ -17,91 +17,62 @@
             <plrLevel>0</plrLevel>
             <plrScore>0</plrScore>
         </param>
-        <param id = "geometryparams">
+        <param id = "geometryParams">
             <floor>
-                <x>8.6f</x>
-                <y>8.6f</y>
-                <z>-0.1f</z>         
+                <scale>8.6f, 8.6f, -0.1f</scale>     
             </floor>
         </param>
         <param id = "baseParams">
-            <baseVec>
-                <x>0.0f</x>
-                <y>-7.0f</y>
-                <z>0.0f</z>
-            </baseVec>
-            <baseScale>
-                <x>1.6f</x>
-                <y>1.6f</y>
-                <z>1.2f</z>                    
-            </baseScale>
+            <baseVec>0.0f, -7.0f, 0.0f</baseVec>
+            <baseScale>1.6f, 1.6f, 1.2f</baseScale>
         </param>
         <param id = "towerParams">
-            <tower id = "0" >
-                <x>-4.5f</x>
-                <y>-4.0f</y>
-                <z>0.1</z>
+            <numTowers>10</numTowers>
+            <tower id = "0">
+                <vec>-4.5f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
-            <tower id = "1" >
-                <x>4.5f</x>
-                <y>-4.0f</y>
-                <z>0.1</z>
+            <tower id = "1">
+                <vec>4.5f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
-            <tower id = "2" >
-                <x>-4.5f</x>
-                <y>-2.0f</y>
-                <z>0.1</z>
+            <tower id = "2">
+                <vec>4.5f, -2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "3" >
-                <x>4.5f</x>
-                <y>-2.0f</y>
-                <z>0.1</z>
+            <tower id = "3">
+                <vec>-4.5f, -2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "4" >
-                <x>-4.5f</x>
-                <y>0.0f</y>
-                <z>0.1</z>
+            <tower id = "4">
+                <vec>-4.5f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "5" >
-                <x>4.5f</x>
-                <y>0.0f</y>
-                <z>0.1</z>
+            <tower id = "5">
+                <vec>4.5f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "6" >
-                <x>-4.5f</x>
-                <y>2.0f</y>
-                <z>0.1</z>
+            <tower id = "6">
+                <vec>4.5f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "7" >
-                <x>4.5f</x>
-                <y>2.0f</y>
-                <z>0.1</z>
+            <tower id = "7">
+                <vec>-4.5f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "8" >
-                <x>-4.5f</x>
-                <y>4.0f</y>
-                <z>0.1</z>
+            <tower id = "8">
+                <vec>4.5f, 4.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            <tower id = "9" >
-                <x>4.5f</x>
-                <y>4.0f</y>
-                <z>0.1</z>
-                <isStarter>false</isStarter>
+            <tower id = "9">
+                <vec>-4.5f, 4.0f, 0.1f</vec>
+x                <isStarter>false</isStarter>
             </tower>
         </param>
     </gameplayparams>
     
     <graphicsparams>
-        <param id = "filterparams"> 
+        <param id = "filterParams"> 
             <bloom>true</bloom>
             <downsampling>2.0f</downsampling>
             <blurscale>5.0f</blurscale>
@@ -115,35 +86,35 @@
         </param>
     </graphicsparams>
     <enemyparams>
-        <param id = "creepparams">
-            <smcreep>
+        <param id = "creepParams">
+            <creepTypes>Small,Medium,Large,Giant</creepTypes>
+            <SmallCreep>
                 <health>100</health>
                 <speed>0.85f</speed>
                 <size>0.125f, 0.125f, 0.20f</size>
-            </smcreep>
-            <mdcreep>
+            </SmallCreep>
+            <MediumCreep>
                 <health>200</health>
                 <speed>0.35f</speed>
                 <size>0.25f, 0.25f, 0.40f</size>
-            </mdcreep>
-            <lgcreep>
+            </MediumCreep>
+            <LargeCreep>
                 <health>400</health>
                 <speed>0.25f</speed>
                 <size>0.4f, 0.4f, 0.6f</size>
-            </lgcreep>
-            <xlcreep>
+            </LargeCreep>
+            <GiantCreep>
                 <health>800</health>
                 <speed>0.30f</speed>
                 <size>0.6f, 0.6f, 0.8f</size>
-            </xlcreep>
+            </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <creepspawn id = "0">
-                <x>0.0f</x>
-                <y>7.0f</y>
-                <z>1.0f</z>
+            <numSpawners>1</numSpawners>
+            <creepSpawner id = "0">
+                <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
-            </creepspawn>
+            </creepSpawner>
         </param>
     </enemyparams>
 </level>

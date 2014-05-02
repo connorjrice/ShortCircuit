@@ -14,8 +14,8 @@ public class TowerParams {
     private String type;
     private Vector3f scale;
     
-    public TowerParams(float x, float y, float z, boolean starter) {
-        this.vec = new Vector3f(x, y, z);
+    public TowerParams(Vector3f vec,  boolean starter) {
+        this.vec = vec;
         this.starter = starter;
     }
     

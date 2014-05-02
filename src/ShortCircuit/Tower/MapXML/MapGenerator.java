@@ -46,37 +46,20 @@ public class MapGenerator {
     private Node gameplayParamsChildren;
     private Node graphicsParamsChildren;
     private Node enemyParamsChildren;
+    private XPath xpath;
+    private final String level;
+    private InputSource inputSource;
 
     public MapGenerator(String level, Application app) {
         this.app = app;
+        this.level = level;
         this.assetManager = this.app.getAssetManager();
-        
-        //assetManager.registerLoader(XMLLoader.class, "lvl.xml");
-        //this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
+        xpath = XPathFactory.newInstance().newXPath();  
+        inputSource = new InputSource("assets/XML/" + level+ ".lvl.xml");
     }
 
-    public void parseXML() {
-        /*Node rootNode = doc.getChildNodes().item(0);
-        NodeList rootChildren = rootNode.getChildNodes();
-        gameplayParamsChildren = rootChildren.item(1);
-        graphicsParamsChildren = rootChildren.item(3);
-        enemyParamsChildren = rootChildren.item(5);
-        System.out.println(gameplayParamsChildren.getNodeName());
-        System.out.println(graphicsParamsChildren.getNodeName());
-        System.out.println(enemyParamsChildren.getNodeName());*/
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        //String expression = "/level/gameplayparams/param[id = \"levelParams\"]/numCreeps/text()";
-        String expression = "/level/gameplayparams/param[@id = 'levelParams']/numCreeps/text()";
-        InputSource inputSource = new InputSource("assets/XML/Level1.lvl.xml");
-        try {
-            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, XPathConstants.NODESET);
-            System.out.println(nodes.item(0));
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
-    /*public GameplayParams getGameplayParams() {
+    public GameplayParams getGameplayParams() {
         return new GameplayParams(parseLevelParams(), parsePlayerParams(), parseGeometryParams(), parseBaseParams(), parseTowerList());
     }
     
@@ -89,7 +72,7 @@ public class MapGenerator {
     }
     
     private LevelParams parseLevelParams() {
-        Element levelElement = (Element) gameplayParamsChildren.item(0);
+        String levelElement = "gameplayparams/param[@id = 'levelParams']/";
         String camlocS = getElement("camLocation", levelElement);
         String profiles = getElement("profile", levelElement);
         String tutorials = getElement("tutorial", levelElement);
@@ -106,7 +89,7 @@ public class MapGenerator {
     }
     
     private PlayerParams parsePlayerParams() {
-        Element playerElement = (Element) gameplayParamsChildren.item(1);
+        String playerElement = "gameplayparams/param[@id = 'playerParams']/";
         int plrHealth = parseInt(getElement("plrHealth", playerElement));
         int plrBudget = parseInt(getElement("plrBudget", playerElement));
         int plrLevel = parseInt(getElement("plrLevel", playerElement));
@@ -115,13 +98,13 @@ public class MapGenerator {
     }
     
     private GeometryParams parseGeometryParams() {
-        Element geometryElement = (Element) gameplayParamsChildren.item(2);
-        Vector3f floorScale = parseVector3f(getElement("floorscale", geometryElement));
+        String geometryElement = "gameplayparams/param[@id = 'geometryParams']/";     
+        Vector3f floorScale = parseVector3f(getElement("/floor/scale", geometryElement));
         return new GeometryParams(floorScale);
     }
     
     private BaseParams parseBaseParams() {
-        Element baseElement = (Element) gameplayParamsChildren.item(3);
+        String baseElement = "gameplayparams/param[@id = 'baseParams']/";
         Vector3f baseVec = parseVector3f(getElement("baseVec", baseElement));
         Vector3f baseScale = parseVector3f(getElement("baseScale", baseElement));
         return new BaseParams(baseVec, baseScale);
@@ -129,20 +112,20 @@ public class MapGenerator {
     
     private ArrayList<TowerParams> parseTowerList() {
         ArrayList<TowerParams> towerList = new ArrayList<TowerParams>();
-        NodeList towerNodes = gameplayParamsChildren.item(4).getChildNodes();
-        for (int i = 0; i < towerNodes.getLength(); i++) {
-            NodeList curTower = towerNodes.item(i).getChildNodes();
-            float x = parseFloat(getContent(curTower.item(0)));
-            float y = parseFloat(getContent(curTower.item(1)));
-            float z = parseFloat(getContent(curTower.item(2)));
-            boolean starter = parseBoolean(getContent(curTower.item(3)));
-            towerList.add(new TowerParams(x, y, z, starter));
+        String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
+        int numTowers = parseInt(getElement("numTowers", towerExpression));
+        System.out.println(numTowers);
+        for (int i = 0; i < numTowers; i++) {
+            String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
+            Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
+            boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
+            towerList.add(new TowerParams(towerVec, starter));
         }
         return towerList;
     }
-
+  
     private MaterialParams parseMaterialParams() {
-        Element materialElement = (Element) graphicsParamsChildren.item(0);
+        String materialElement = "graphicsparams/param[@id = 'materialParams']/";
         String matdir = getElement("matdir", materialElement);
         String colors = getElement("backgroundcolor", materialElement);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
@@ -150,7 +133,7 @@ public class MapGenerator {
     }
     
     private FilterParams parseFilterParams() {
-        Element filterElement = (Element) graphicsParamsChildren.item(0);
+        String filterElement = "graphicsparams/param[@id = 'filterParams']/";
         String blooms = getElement("bloom", filterElement);
         boolean bloom;
         if (blooms.equals("false")) {
@@ -169,35 +152,36 @@ public class MapGenerator {
     }
     
     public ArrayList<CreepParams> parseCreepList() {
-        Element eElement = (Element) enemyParamsChildren.item(0);        
-        NodeList creepNodes = eElement.getChildNodes();
+        String creepExpression = "enemyparams/param[@id = 'creepParams']/";
+        String[] creepTypes = parseCreepTypes(getElement("creepTypes", creepExpression));
         ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
-        for (int i = 0; i < creepNodes.getLength(); i++) {
-            String type = creepNodes.item(i).getNodeName();
-            NodeList curCreep = creepNodes.item(i).getChildNodes();
-            int health = parseInt(curCreep.item(0).getTextContent());
-            float speed = parseFloat(curCreep.item(1).getTextContent());
-            Vector3f size = parseVector3f(curCreep.item(2).getTextContent());
-            creepList.add(new CreepParams(health, speed, size, type));
+        for (int i = 0; i < creepTypes.length; i++) {
+            String curCreepExpression = creepExpression+creepTypes[i]+"Creep/";
+            System.out.println(curCreepExpression);
+            int health = parseInt(getElement("health", curCreepExpression));
+            float speed = parseFloat(getElement("speed", curCreepExpression));
+            Vector3f size = parseVector3f(getElement("size", curCreepExpression));
+            creepList.add(new CreepParams(health, speed, size, creepTypes[i]));
         }
         return creepList;
     }
     
     public ArrayList<CreepSpawnerParams> parseCreepSpawnerList() {
-        Element eElement = (Element) enemyParamsChildren.item(0);        
-        NodeList creepSpawnerNodes = eElement.getChildNodes();
-        ArrayList<CreepSpawnerParams> creepList = new ArrayList<CreepSpawnerParams>();
-        for (int i = 0; i < creepSpawnerNodes.getLength(); i++) {
-            String type = creepSpawnerNodes.item(i).getNodeName();
-            NodeList curCreepSpawner = creepSpawnerNodes.item(i).getChildNodes();
-            float x = parseFloat(getContent(curCreepSpawner.item(0)));
-            float y = parseFloat(getContent(curCreepSpawner.item(1)));
-            float z = parseFloat(getContent(curCreepSpawner.item(2)));
-            String orientation = getContent(curCreepSpawner.item(3));
-            creepList.add(new CreepSpawnerParams(x, y, z, orientation));
+        String creepExpression = "enemyparams/param[@id = 'creepSpawnerParams']/";
+        int numSpawners = parseInt(getElement("numSpawners", creepExpression));
+        ArrayList<CreepSpawnerParams> creepSpawnerList = new ArrayList<CreepSpawnerParams>();
+        for (int i = 0; i < numSpawners; i++) {
+            String curCreepSpawnerExpression = creepExpression+ "creepSpawner[@id = '"+i+"']/";
+            Vector3f vec = parseVector3f(getElement("vec", curCreepSpawnerExpression));
+            String orientation = getElement("orientation", curCreepSpawnerExpression);
+            creepSpawnerList.add(new CreepSpawnerParams(vec, orientation));
         }
-        return creepList;
-    }*/
+        return creepSpawnerList;
+    }
+    
+    public String[] parseCreepTypes(String s) {
+        return s.split(",");
+    }
 
     public ColorRGBA parseColorRGBA(String colors) {
         if (colors.equals("Black")) {
@@ -242,16 +226,32 @@ public class MapGenerator {
         return Float.parseFloat(s);
     }
     
-    public String getContent(Node n) {
-        return n.getTextContent();
+    public String getElement(String value, String parentNode) {
+        return getValue(getExpression(value, parentNode));
     }
-
+    
+    public String getExpression(String value, String parentNode) {
+        return "/level/"+parentNode+value+"/text()";
+    }
+    
+    public String getValue(String expression) {
+        String returnvalue = "";
+        try {
+            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, XPathConstants.NODESET);
+            returnvalue = nodes.item(0).getTextContent();
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return returnvalue;
+    }
+ 
     public String getElement(String s, Element e) {
         return getElement(s, e, 0);
     }
 
     public String getElement(String s, Element e, int i) {
-        return e.getElementsByTagName(s).item(i).getTextContent();
+        return null;
     }
     
     public GlowMode parseGlowMode(String s) {

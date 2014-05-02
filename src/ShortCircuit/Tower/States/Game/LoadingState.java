@@ -50,7 +50,6 @@ public class LoadingState extends AbstractAppState {
 
     private void initMG(String levelname) {
         mg = new MapGenerator(levelname, app);
-        mg.parseXML();
     }
     
     private void updateStartGUI() {
