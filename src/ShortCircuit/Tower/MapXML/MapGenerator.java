@@ -21,6 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import java.util.ArrayList;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -47,11 +48,10 @@ public class MapGenerator {
     }
 
     public void parseXML() {
-        NodeList nodeList = doc.getChildNodes();
-        gameplayParamsChildren = nodeList.item(0).getChildNodes();
-        System.out.println(gameplayParamsChildren.getLength());
-        graphicsParamsChildren = (NodeList) nodeList.item(1);
-        enemyParamsChildren = (NodeList) nodeList.item(2);
+        NamedNodeMap nodeList = doc.getAttributes();
+        gameplayParamsChildren = (NodeList)nodeList.getNamedItem("gameplayparams");
+        graphicsParamsChildren = doc.getElementsByTagName("graphicsparams");
+        enemyParamsChildren = doc.getElementsByTagName("enemyparams");
     }
     
     public GameplayParams getGameplayParams() {
