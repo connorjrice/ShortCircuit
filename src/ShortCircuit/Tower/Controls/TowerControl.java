@@ -181,7 +181,7 @@ public class TowerControl extends AbstractControl {
     // XXX: EmptyTower()
     protected void emptyTower() {
         emptySound.play();
-        GraphicsState.changeTowerTexture(this);
+        GraphicsState.emptyTowerTexture(this);
         /*if (!FriendlyState.getEmptyTowers().contains(spatial)) {
             FriendlyState.addEmptyTower(spatial);
         }*/

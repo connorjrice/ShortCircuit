@@ -2,7 +2,6 @@
 <level>
     <gameplayparams>
         <param id = "levelParams">
-            <camLocation>0,0,20f</camLocation>
             <numCreeps>3</numCreeps>
             <creepMod>2</creepMod>
             <levelCap>50</levelCap>
@@ -21,13 +20,27 @@
             <floor>
                 <scale>8.6f, 8.6f, -0.1f</scale>     
             </floor>
-        </param>
-        <param id = "baseParams">
-            <baseVec>0.0f, 0.0f, 0.0f</baseVec>
-            <baseScale>1.6f, 1.6f, 1.2f</baseScale>
+            <tower>
+                <builtSize>0.5f, 0.5f, 1.0f</builtSize>
+                <unbuiltSize>0.5f, 0.5f, .1f</unbuiltSize>
+                <builtSelected>0.6f, 0.6f, 1.5f</builtSelected>
+                <unbuiltSelected>0.7f, 0.7f, 2.5f</unbuiltSelected>
+                <beamwidth>6.0f</beamwidth>
+            </tower>
+            <base>
+                <baseVec>0.0f, 0.0f, 0.0f</baseVec>
+                <baseScale>1.6f, 1.6f, 1.2f</baseScale>
+            </base>
+            <creepspawner>
+                <horizontalscale>1.0f, 0.5f, 0.25f</horizontalscale>
+                <verticalscale>0.5f, 1.0f, 0.25f</verticalscale>
+            </creepspawner>
+            <camera>
+                <camLocation>0,0,20f</camLocation>                
+            </camera>
         </param>
         <param id = "towerParams">
-            <numTowers>12</numTowers>
+                        <numTowers>12</numTowers>
             <tower id = "0">
                 <vec>2.25f, 2.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
@@ -119,6 +132,7 @@
         </param>
         <param id = "creepSpawnerParams">
             <numSpawners>1</numSpawners>
+
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>

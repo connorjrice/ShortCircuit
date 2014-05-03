@@ -314,6 +314,10 @@ public class GraphicsState extends AbstractAppState {
         tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tc.getTowerType())));
     }
     
+    public void emptyTowerTexture(TowerControl tc) {
+        tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc("TowerEmpty")));
+    }
+    
     
     public String getTowerMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";
