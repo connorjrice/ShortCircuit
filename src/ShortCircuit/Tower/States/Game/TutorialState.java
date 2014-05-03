@@ -140,16 +140,16 @@ public class TutorialState extends AbstractAppState {
 
     private void focusBuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
+            if (!FriendlyState.getTowerList().get(i).getType().equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).getSpatial().setMaterial(focusMaterial);
             }
         }
     }
 
     private void unfocusBuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            if (!FriendlyState.getTowerList().get(i).getType().equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).getSpatial().setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
     }
@@ -171,16 +171,16 @@ public class TutorialState extends AbstractAppState {
 
     private void focusUnbuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
+            if (FriendlyState.getTowerList().get(i).getType().equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).getSpatial().setMaterial(focusMaterial);
             }
         }
     }
 
     private void unfocusUnbuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            if (FriendlyState.getTowerList().get(i).getType().equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).getSpatial().setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
 
@@ -248,7 +248,7 @@ public class TutorialState extends AbstractAppState {
     }
 
     private String getTowerOrigMat(int i) {
-        return "Materials/" + GraphicsState.getMatDir() + "/" + FriendlyState.getTowerList().get(i).getUserData("Type") + ".j3m";
+        return "Materials/" + GraphicsState.getMatDir() + "/" + FriendlyState.getTowerList().get(i).getType() + ".j3m";
     }
 
     private String getCreepOrigMat(int i) {

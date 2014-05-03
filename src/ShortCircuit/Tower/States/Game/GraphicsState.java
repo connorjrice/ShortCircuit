@@ -10,7 +10,6 @@ import ShortCircuit.Tower.MapXML.Objects.FilterParams;
 import ShortCircuit.Tower.MapXML.Objects.GeometryParams;
 import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
-import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -78,8 +77,7 @@ public class GraphicsState extends AbstractAppState {
     private StartGUI startGUI;
     private String floortexloc;
     private Node rootNode;
-    private ArrayList<Spatial> towerList;
-    private ArrayList<TowerParams> towerParamsList;
+    private ArrayList<TowerParams> towerList;
     private TowerFactory tf;
     
     @Override
@@ -97,7 +95,6 @@ public class GraphicsState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.startGUI = this.stateManager.getState(StartGUI.class);
-        this.towerList = this.FriendlyState.getTowerList();
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
     }
@@ -106,7 +103,7 @@ public class GraphicsState extends AbstractAppState {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
-        this.towerParamsList = gp.getTowerList();
+        this.towerList = gp.getTowerList();
         initFilters();
         initAssets();
         initFactories();
@@ -299,50 +296,40 @@ public class GraphicsState extends AbstractAppState {
     /*** Tower Methods ***/
     
     public void buildTowers() {
-        for (int i = 0; i < towerParamsList.size(); i++) {
-            createTower(towerParamsList.get(i));
+        for (int i = 0; i < towerList.size(); i++) {
+            createTower(towerList.get(i));
         }
+        FriendlyState.setTowerList(towerList);
     }
     
     public void createTower(TowerParams tp) {
-        towerList.add(tf.getTower(tp));
-        worldNode.attachChild(towerList.get(towerList.size() - 1));
-    }
-
-    public void buildStarterTowers(ArrayList<Integer> starterTowerIn) {
-        for (int i = 0; i < starterTowerIn.size(); i++) {
-            TowerControl tower = towerList.get(starterTowerIn.get(i)).getControl(TowerControl.class);
-            tower.charges.add(new Charges("Tower1"));
-            tower.setTowerType("Tower1");
-            tower.setBuilt();
-            changeTowerTexture(tower, "Tower1");
-            tower.setSize(getTowerBuiltSelected());
-        }
+        towerList.set(tp.getIndex(), tf.getTower(tp));
+        worldNode.attachChild(towerList.get(tp.getIndex()).getSpatial());
     }
     
     public void setTowerScale(int tindex, String scaletype) {
         if (scaletype.equals("BuiltSize")) {
-            towerList.get(tindex).setLocalScale(getTowerBuiltSize());
+            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSize());
         } else if (scaletype.equals("UnbuiltSize")) {
-            towerList.get(tindex).setLocalScale(getTowerUnbuiltSize());
+            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSize());
         } else if (scaletype.equals("BuiltSelected")) {
-            towerList.get(tindex).setLocalScale(getTowerBuiltSelected());
+            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSelected());
         } else if (scaletype.equals("UnbuiltSelected")) {
-            towerList.get(tindex).setLocalScale(getTowerUnbuiltSelected());
+            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSelected());
         }
     }
     
-    public void changeTowerTexture(TowerControl control, String type) {
-        control.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(type)));
-        
+    public void changeTowerTexture(TowerParams tp) {
+        tp.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tp.getType())));
     }
     
-    public void changeTowerTextureCharged(TowerControl control) {
-        control.getSpatial().setMaterial(assetManager.loadMaterial("Materials/"+getMatDir()+"/"+control.getTowerType()));
+    public void changeTowerTexture(TowerControl tc) {
+        tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tc.getTowerType())));
     }
+    
     
     public String getTowerMatLoc(String type) {
-        return "Materials/" + getMatDir() + "/" + type;
+        return "Materials/" + getMatDir() + "/" + type + ".j3m";
     }
     
     public Vector3f getTowerBuiltSize() {
@@ -359,6 +346,10 @@ public class GraphicsState extends AbstractAppState {
     
     public Vector3f getTowerUnbuiltSelected() {
         return gp.getTowerUnbuiltSelected();
+    }
+    
+    public ArrayList<TowerParams> getTowerList() {
+        return towerList;
     }
     
     /*** Bomb Methods ***/

@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Control for user-controlled towers.
- * TODO: Documentation for TowerControl
+ * TODO: Documentation for TowerParams
  * @author Connor Rice
  */
 public class TowerControl extends AbstractControl {
@@ -45,12 +45,11 @@ public class TowerControl extends AbstractControl {
     private Future future;
     private AudioNode emptySound;
     private boolean isGlobbed = false;
-    private FriendlyState HelperState;
 
     public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
         GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
-        HelperState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
+        FriendlyState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
         cc = new STCCreepCompare(towerloc);
         reachable = new STC<Spatial>(cc);
         this.ex = FriendlyState.getEx();
@@ -177,12 +176,13 @@ public class TowerControl extends AbstractControl {
         }
     };
 
+    // XXX: EmptyTower()
     protected void emptyTower() {
         emptySound.play();
-        GraphicsState.changeTowerTexture(this, "TowerUnbuilt");
-        if (!HelperState.getEmptyTowers().contains(spatial)) {
-            HelperState.addEmptyTower(spatial);
-        }
+        GraphicsState.changeTowerTexture(this);
+        /*if (!FriendlyState.getEmptyTowers().contains(spatial)) {
+            FriendlyState.addEmptyTower(spatial);
+        }*/
     }
 
     protected void shootCreep() {

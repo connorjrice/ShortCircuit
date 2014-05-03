@@ -1,6 +1,5 @@
 package ShortCircuit.Tower.States.Game;
 
-import ShortCircuit.Tower.Controls.TowerControl;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -70,7 +69,7 @@ public class ProfileState extends AbstractAppState {
     private void profileEmptyTowers(float tpf) {
         if (profileEmptyTimer > 10.0) {
             for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-                FriendlyState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
+                FriendlyState.getTowerList().get(i).getControl().charges.clear();
             }
             profileEmptyTimer = 0;
         }

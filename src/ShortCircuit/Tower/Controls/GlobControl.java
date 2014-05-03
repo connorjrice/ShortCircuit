@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -41,14 +42,14 @@ public class GlobControl extends AbstractControl {
     }
 
     protected void enableVictimTower() {
-        getVictimTower().getControl(TowerControl.class).enableTower();
+        getVictimTower().getControl().enableTower();
     }
 
     protected void unglobTower() {
-        cs.getTowerList().get(getVictimTowerInd()).getControl(TowerControl.class).unglobTower();
+        cs.getTowerList().get(getVictimTowerInd()).getControl().unglobTower();
     }
     
-    protected Spatial getVictimTower() {
+    protected TowerParams getVictimTower() {
         return cs.getTowerList().get(getVictimTowerInd());
     }
 

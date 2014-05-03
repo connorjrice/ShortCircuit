@@ -1,6 +1,7 @@
 package ShortCircuit.Tower.Threading;
 
-import ShortCircuit.Tower.Controls.TowerControl;
+
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 
 /**
@@ -31,7 +32,7 @@ public class TowerDowngrade implements Runnable {
     public void run() {
         // Determine type of upgrade/validity
         if (victimIndex != -1) {
-            String type = fs.getTowerList().get(victimIndex).getUserData("Type");
+            String type = fs.getTowerList().get(victimIndex).getType();
             if (type.equals("Tower1")) {
                 type = "Unbuilt";
                 matLoc = "Materials/" + fs.getMatDir() + "/TowerUnbuilt.j3m";
@@ -51,20 +52,19 @@ public class TowerDowngrade implements Runnable {
             }
 
             if (valid) {
-                TowerControl tower = fs.getTowerList().get(victimIndex).getControl(TowerControl.class);
-                tower.setTowerType("Tower" + type);
-                tower.setBeamType("beam" + type);
+                TowerParams tower = fs.getTowerList().get(victimIndex);
+                tower.setType("Tower" + type);
                 if (type.equals("Unbuilt")) {
-                    tower.charges.clear();
-                    tower.setUnbuilt();
-                    tower.setSize(fs.getUnbuiltTowerSize());
+                    tower.getControl().charges.clear();
+                    tower.getControl().setUnbuilt();
+                    tower.setScale(fs.getTowerUnbuiltSize());
                 } else {
-                    int oldnumcharges = tower.charges.size();
-                    tower.charges.clear();
+                    int oldnumcharges = tower.getControl().charges.size();
+                    tower.getControl().charges.clear();
                     for (int i = 0; i < oldnumcharges; i++) {
-                        tower.addCharges();
+                        tower.getControl().addCharges();
                     }
-                    tower.setSize(fs.getBuiltTowerSize());
+                    tower.setScale(fs.getTowerBuiltSize());
                 }
                 tower.getSpatial().setMaterial(fs.getAssetManager().loadMaterial(matLoc));
 

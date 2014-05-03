@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Threading;
 
-import ShortCircuit.Tower.Controls.TowerControl;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 
 /**
@@ -12,7 +12,7 @@ public class TowerCharge implements Runnable {
 
     private final int chargeCost = 10;
     private FriendlyState fs;
-    private TowerControl tower;
+    private TowerParams tp;
 
     /**
      * Constructor, takes GameState class as input.
@@ -28,17 +28,17 @@ public class TowerCharge implements Runnable {
      * the necessary operations to upgrade the tower.
      */
     public void run() {
-        if (fs.getPlrBudget() >= chargeCost && !tower.getTowerType().equals("TowerUnbuilt")) {
-            fs.changeTowerTexture(tower, tower.getTowerType());
-            tower.addCharges();
+        if (fs.getPlrBudget() >= chargeCost && !tp.getType().equals("TowerUnbuilt")) {
+            fs.changeTowerTexture(tp);
+            tp.getControl().addCharges();
             fs.decPlrBudget(chargeCost);
             fs.playChargeSound();
-            tower = null;
+            tp = null;
         }
 
     }
 
-    public void setTower(TowerControl _tower) {
-        tower = _tower;
+    public void setTower(TowerParams _tp) {
+        tp = _tp;
     }
 }

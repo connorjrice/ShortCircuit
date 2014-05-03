@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -33,10 +34,10 @@ public class RangerControl extends AbstractControl {
     private boolean attachedToTower = false;
     private float downgradeTimer = 0f;
     private final float downgradeDelay = 3.0f;
-    private Spatial victimTower;
+    private TowerParams victimTower;
     private float moveAmount;
 
-    public RangerControl(EnemyState _cs, Spatial _vt) {
+    public RangerControl(EnemyState _cs, TowerParams _vt) {
         cs = _cs;
         victimTower = _vt;
         moveAmount = .04f;
@@ -81,9 +82,9 @@ public class RangerControl extends AbstractControl {
      * intersect, the boolean attachedToTower becomes true.
      */
     private void moveTowardsTower() {
-        if (!spatial.getWorldBound().intersects(victimTower.getWorldBound())) {
+        if (!spatial.getWorldBound().intersects(victimTower.getSpatial().getWorldBound())) {
             moveAmount += moveAmount;
-            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(victimTower.getLocalTranslation(), moveAmount));
+            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(victimTower.getSpatial().getLocalTranslation(), moveAmount));
         }
         else {
             attachedToTower = true;
@@ -98,7 +99,7 @@ public class RangerControl extends AbstractControl {
     }
     
     private void downgradeVictimTower() {
-        TowerControl tower = victimTower.getControl(TowerControl.class);
+        TowerControl tower = victimTower.getControl();
         //tower.downgrade()
     }
     
@@ -111,10 +112,10 @@ public class RangerControl extends AbstractControl {
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
     
-    public Control cloneForSpatial(Spatial spatial) {
+    /*public Control cloneForSpatial(Spatial spatial) {
         RangerControl control = new RangerControl(cs, spatial);
         return control;
-    }
+    }*/
     
     @Override
     public void read(JmeImporter im) throws IOException {

@@ -1,7 +1,8 @@
 package ShortCircuit.Tower.Cheats;
 
-import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
+import ShortCircuit.Tower.Objects.Game.Charges;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 import ShortCircuit.Tower.States.Game.GraphicsState;
@@ -10,7 +11,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 
 /**
@@ -56,9 +56,9 @@ public class CheatState extends AbstractAppState {
      * Adds 10 charges of type base to all towers fo FREE.
      */
     public void badassAmmoH4KX() {
-        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
+        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerControl control = towerList.get(i).getControl(TowerControl.class);
+            TowerControl control = towerList.get(i).getControl();
             for (int j = 0; i < 10; i++) {
                 control.charges.add(new Charges("Towerc"));
                 control.setBeamType("beam4");
@@ -84,10 +84,9 @@ public class CheatState extends AbstractAppState {
      * Makes towers quite large.
      */
     public void makeTowersHUGE() {
-        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
+        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            Spatial tower = towerList.get(i);
-            tower.setLocalScale(new Vector3f(10f,10f,10f));
+            towerList.get(i).setScale(new Vector3f(30f,30f,10f));
         }
     }
     
@@ -95,12 +94,12 @@ public class CheatState extends AbstractAppState {
      * Upgrades all of the towers to purple and adds a bunch of charges.
      */
     public void makeTowersPurp() {
-        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
+        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerControl control = towerList.get(i).getControl(TowerControl.class);
-            addPurptoPurp(control);
-            control.setTowerType("Tower4");
-            GraphicsState.changeTowerTexture(control, "Tower4");
+            TowerParams tp = towerList.get(i);
+            addPurptoPurp(tp.getControl());
+            tp.setType("Tower4");
+            GraphicsState.changeTowerTexture(tp);
         }
     }
     /**
@@ -119,14 +118,13 @@ public class CheatState extends AbstractAppState {
      * those super lasers.
      */
     public void makeTowersBadAss() {
-        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
+        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerControl tower = towerList.get(i).getControl(TowerControl.class);
-            addBadAsstoBadAss(tower);
-            tower.setBuilt();                    
-            tower.setTowerType("globpop");
-            tower.setBeamType("Bomb");
-            GraphicsState.changeTowerTexture(tower, "Bomb");
+            TowerParams tower = towerList.get(i);
+            addBadAsstoBadAss(tower.getControl());
+            tower.getControl().setBuilt();                    
+            tower.setType("globpop");
+            GraphicsState.changeTowerTexture(tower);
         }
     }
     

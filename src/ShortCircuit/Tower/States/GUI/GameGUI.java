@@ -446,7 +446,7 @@ public class GameGUI extends AbstractAppState {
         float blend = ProgressIndicator.getCurrentValue() * 0.01f;
         color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f, 0.0f, 0.2f, 0.4f), blend);
         ProgressIndicator.setIndicatorColor(color);
-        ProgressIndicator.setCurrentValue(GameState.getCurrentProgress());
+        //ProgressIndicator.setCurrentValue(GameState.getCurrentProgress());
     }
 
     private void updateText() {
@@ -529,10 +529,10 @@ public class GameGUI extends AbstractAppState {
      */
     private void updateTowerInfo() {
         if (FriendlyState.getSelected() != -1) {
-            if (FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
-                Modify.setText("Build: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
+            if (FriendlyState.getTowerList().get(FriendlyState.getSelected()).getType().equals("TowerUnbuilt")) {
+                Modify.setText("Build: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getType()));
             } else {
-                Modify.setText("Upgrade: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
+                Modify.setText("Upgrade: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getType()));
             }
         }
     }
@@ -547,7 +547,7 @@ public class GameGUI extends AbstractAppState {
 
     private void updateTowerFrills() {
         if (FriendlyState.getSelected() != -1) {
-            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")))) {
+            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getType()))) {
                 Modify.setFontColor(ColorRGBA.Green);
             } else {
                 Modify.setFontColor(ColorRGBA.Red);

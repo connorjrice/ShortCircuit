@@ -1,10 +1,8 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.ChargerControl;
-import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.TowerFactory;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
-import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Threading.TowerCharge;
 import ShortCircuit.Tower.Threading.TowerDowngrade;
 import ShortCircuit.Tower.Threading.TowerUpgrade;
@@ -34,19 +32,12 @@ public class FriendlyState extends AbstractAppState {
     private Node worldNode;
     private AssetManager assetManager;
     
-    private ArrayList<Spatial> emptyTowers;
+    private ArrayList<TowerParams> emptyTowers;
     private ArrayList<Spatial> activeChargers;
     
     private Node towerNode = new Node("Tower");
     
-    private ArrayList<Spatial> towerList = new ArrayList<Spatial>();
-    private ArrayList<TowerParams> towerParams = new ArrayList<TowerParams>();
     private ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
-    
-    private Vector3f unbuiltTowerSize = new Vector3f();
-    private Vector3f builtTowerSize = new Vector3f();
-    private Vector3f unbuiltTowerSelected = new Vector3f();
-    private Vector3f builtTowerSelected = new Vector3f();
     
     private TowerFactory tf;
     private TowerCharge tcr;
@@ -56,8 +47,6 @@ public class FriendlyState extends AbstractAppState {
     public int selectedTower = -1;
     
 
-    private TowerParams tp;
-    
     private Sphere chargerSphere = new Sphere(32,32,1f);
     
     private float updateTimer = 0f;
@@ -65,6 +54,7 @@ public class FriendlyState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private AudioState AudioState;
     private GraphicsState GraphicsState;
+    private ArrayList<TowerParams> towerList;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -82,7 +72,7 @@ public class FriendlyState extends AbstractAppState {
     }
     
     private void initLists() {
-        emptyTowers = new ArrayList<Spatial>();
+        emptyTowers = new ArrayList<TowerParams>();
         activeChargers = new ArrayList<Spatial>();
     }
     
@@ -91,7 +81,9 @@ public class FriendlyState extends AbstractAppState {
 
     }
     
-
+    public void setTowerList(ArrayList<TowerParams> listIn) {
+        towerList = listIn;
+    }
 
     private void initRunnables() {
         tur = new TowerUpgrade(this);
@@ -99,9 +91,6 @@ public class FriendlyState extends AbstractAppState {
         tdr = new TowerDowngrade(this);
     }
     
-
-
-
     public void attachTowerNode() {
         worldNode.attachChild(towerNode);
     }
@@ -112,8 +101,8 @@ public class FriendlyState extends AbstractAppState {
      * selectedTower to be tindex for other methods to access.
      */
     public void towerSelected(int tindex) {
-        Spatial selTower = towerList.get(tindex);
-        if (selTower.getUserData("Type").equals("TowerUnbuilt")) {
+        TowerParams tp = towerList.get(tindex);
+        if (tp.getType().equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
             GraphicsState.setTowerScale(tindex, "BuiltSelected");
@@ -127,11 +116,11 @@ public class FriendlyState extends AbstractAppState {
      */
     public void shortenTower() {
         if (selectedTower != -1) {
-            Spatial selTower = towerList.get(selectedTower);
-            if (selTower.getUserData("Type").equals("TowerUnbuilt")) {
-                selTower.setLocalScale(unbuiltTowerSize);
+            TowerParams tp = towerList.get(selectedTower);
+            if (tp.getType().equals("TowerUnbuilt")) {
+                tp.setScale(GraphicsState.getTowerUnbuiltSelected());
             } else {
-                selTower.setLocalScale(builtTowerSize);
+                tp.setScale(GraphicsState.getTowerBuiltSelected());
             }
         }
     }
@@ -141,12 +130,10 @@ public class FriendlyState extends AbstractAppState {
      */
     public void chargeTower() {
         if (getSelected() != -1) {
-            TowerControl tower = getTowerList().get(getSelected()).getControl(TowerControl.class);
-            tcr.setTower(tower);
+            tcr.setTower(towerList.get(getSelected()));
             tcr.run();
-            if (getEmptyTowers().contains(tower.getSpatial())) {
-                // TODO: debug this (charger/empty towers)
-                getEmptyTowers().remove(tower.getSpatial());
+            if (getEmptyTowers().contains(towerList.get(getSelected()))) {
+                getEmptyTowers().remove(towerList.get(getSelected()));
             }
         }
     }
@@ -157,9 +144,8 @@ public class FriendlyState extends AbstractAppState {
      */
     public void chargeTower(int index) {
         if (index != -1) {
-            TowerControl tower = towerList.get(index).getControl(TowerControl.class);
-            GraphicsState.changeTowerTexture(tower, tower.getTowerType());
-            tower.addCharges();
+            GraphicsState.changeTowerTexture(towerList.get(index));
+            towerList.get(index).getControl().addCharges();
             playChargeSound();
         }
     }
@@ -178,12 +164,12 @@ public class FriendlyState extends AbstractAppState {
     }
 
     public String getSelectedTowerType() {
-        return towerList.get(selectedTower).getUserData("Type");
+        return towerList.get(selectedTower).getType();
     }
 
 
-    public void changeTowerTexture(TowerControl tower, String type) {
-        GraphicsState.changeTowerTexture(tower, type);
+    public void changeTowerTexture(TowerParams tower) {
+        GraphicsState.changeTowerTexture(tower);
     }
 
     public void playChargeSound() {
@@ -201,15 +187,20 @@ public class FriendlyState extends AbstractAppState {
     public String getMatDir() {
         return GraphicsState.getMatDir();
     }
-
-    /**
-     * These methods return ArrayLists of Spatials.
-     * They are used by many states.
-     */
     
-    public ArrayList<Spatial> getTowerList() {
+    public ArrayList<TowerParams> getTowerList() {
         return towerList;
     }
+    
+    public Vector3f getTowerBuiltSize() {
+        return GraphicsState.getTowerBuiltSize();
+    }
+
+    public Vector3f getTowerUnbuiltSize() {
+        return GraphicsState.getTowerUnbuiltSize();
+    }
+
+
 
     public ArrayList<Integer> getGlobbedTowerList() {
         return globbedTowers;
@@ -240,15 +231,8 @@ public class FriendlyState extends AbstractAppState {
         return assetManager;
     }
 
-    public Vector3f getBuiltTowerSize() {
-        return builtTowerSize;
-    }
-
-    public Vector3f getUnbuiltTowerSize() {
-        return unbuiltTowerSize;
-    }
         /**
-     * These are methods that are used by TowerControl, 
+     * These are methods that are used by TowerParams, 
      * Not used internally.
      */
     
@@ -294,7 +278,7 @@ public class FriendlyState extends AbstractAppState {
     /*
      * Adds an empty tower to the list of towers that need to be charged.
      */
-    public void addEmptyTower(Spatial empty) {
+    public void addEmptyTower(TowerParams empty) {
         if (!emptyTowers.contains(empty)) {
             emptyTowers.add(empty);
         }
@@ -316,7 +300,7 @@ public class FriendlyState extends AbstractAppState {
         return activeChargers;
     }
     
-    public ArrayList<Spatial> getEmptyTowers() {
+    public ArrayList<TowerParams> getEmptyTowers() {
         return emptyTowers;
     }
     
@@ -349,8 +333,6 @@ public class FriendlyState extends AbstractAppState {
         clearActiveChargers();
         clearEmptyTowers();
         towerNode.detachAllChildren();
-        towerList.clear();
-        globbedTowers.clear();
 
     }
 }

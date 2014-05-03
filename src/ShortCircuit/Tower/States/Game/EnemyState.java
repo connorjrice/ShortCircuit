@@ -1,11 +1,11 @@
 package ShortCircuit.Tower.States.Game;
 
-import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.STDCreepFactory;
 import ShortCircuit.Tower.Objects.Game.CreepTraits;
 import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.GlobFactory;
 import ShortCircuit.Tower.Factories.RangerFactory;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.EnemyParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -144,10 +144,10 @@ public class EnemyState extends AbstractAppState {
     private void spawnGlob() {
         if (FriendlyState.getGlobbedTowerList().size() < FriendlyState.getTowerList().size()) {
             int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-            if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
-                Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+            if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl().getIsGlobbed()) {
+                Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getTowerVec();
                 Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-                FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
+                FriendlyState.getTowerList().get(towerVictimIndex).getControl().globTower();
                 creepNode.attachChild(glob);
                 globList.add(glob);
             } else {
@@ -358,7 +358,7 @@ public class EnemyState extends AbstractAppState {
         return assetManager;
     }
 
-    public ArrayList<Spatial> getTowerList() {
+    public ArrayList<TowerParams> getTowerList() {
         return FriendlyState.getTowerList();
     }
 

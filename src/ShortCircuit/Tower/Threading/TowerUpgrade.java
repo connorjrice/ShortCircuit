@@ -1,7 +1,8 @@
 package ShortCircuit.Tower.Threading;
 
-import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.Controls.TowerControl;
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
+import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 
 /**
@@ -20,7 +21,7 @@ public class TowerUpgrade implements Runnable {
      * Constructor, takes FriendlyState class as input.
      * @param _fs = FriendlyState
      */
-    public TowerUpgrade(FriendlyState _fs) {
+    public TowerUpgrade(FriendlyState fs) {
         this.fs = fs;
     }
 
@@ -30,7 +31,7 @@ public class TowerUpgrade implements Runnable {
      */
     public void run() {
         // Determine type of upgrade/validity
-        String type = fs.getTowerList().get(fs.getSelected()).getUserData("Type");
+        String type = fs.getTowerList().get(fs.getSelected()).getType();
         if (type.equals("TowerUnbuilt")) {
             cost = 100;
             type = "1";
@@ -59,17 +60,17 @@ public class TowerUpgrade implements Runnable {
         
         // Perform upgrade if valid
         if (fs.getSelected() != -1 && valid) {
-            TowerControl tower = fs.getTowerList().get(fs.getSelected()).getControl(TowerControl.class);
+            TowerParams tower = fs.getTowerList().get(fs.getSelected());
+            TowerControl tc = tower.getControl();
             if (fs.getPlrBudget() >= cost) {
-                tower.charges.add(new Charges("Tower" + type));
-                tower.setBuilt();
-                tower.setTowerType("Tower" + type);
-                tower.setBeamType("beam" + type);
+                tc.charges.add(new Charges("Tower" + type));
+                tc.setBuilt();
+                tower.setType("Tower" + type);
                 if (type.equals("4")) {
                     fs.incFours();
                 }
                 tower.getSpatial().setMaterial(fs.getAssetManager().loadMaterial(matLoc));
-                tower.setSize(fs.getBuiltTowerSize());
+                tower.setScale(fs.getTowerBuiltSize());
                 fs.decPlrBudget(cost);
                 fs.playBuildSound(pitch);
                 valid = false;

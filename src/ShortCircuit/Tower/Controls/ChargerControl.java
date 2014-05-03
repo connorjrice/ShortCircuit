@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.Controls;
 
+import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -20,13 +21,13 @@ import java.io.IOException;
  * @author Connor
  */
 public class ChargerControl extends AbstractControl {
-    private FriendlyState HelperState;
+    private FriendlyState FriendlyState;
     private TowerControl destTower;
     private boolean isHome;
     private float moveamount;
 
-    public ChargerControl(FriendlyState _hs) {
-        HelperState = _hs;
+    public ChargerControl(FriendlyState _fs) {
+        FriendlyState = _fs;
         moveamount = .04f;
         setIsHome(true);
     }
@@ -37,12 +38,12 @@ public class ChargerControl extends AbstractControl {
     }
     
     private void nextLocation() {
-        if (HelperState.getEmptyTowers().isEmpty()) {
+        if (FriendlyState.getEmptyTowers().isEmpty()) {
             moveTowardsHome();
         }
         else {
             if (destTower == null) {
-                destTower = HelperState.getEmptyTowers().get(0).getControl(TowerControl.class);
+                destTower = FriendlyState.getEmptyTowers().get(0).getControl();
                 moveTowardsTower();
             } else {
                 moveTowardsTower();
@@ -66,23 +67,23 @@ public class ChargerControl extends AbstractControl {
         }
         else {
             moveTowardsHome();
-            HelperState.getEmptyTowers().remove(destTower.getSpatial());
+            FriendlyState.getEmptyTowers().remove(destTower.getSpatial());
         }
     }
     
 
     private void chargeTower() {
-        HelperState.chargeTower(getTowerIndex());
-        HelperState.getEmptyTowers().remove(destTower.getSpatial());
+        FriendlyState.chargeTower(getTowerIndex());
+        FriendlyState.getEmptyTowers().remove(destTower.getSpatial());
         decRemCharges();
         moveamount = .04f;
         destTower = null;
     }
     
     private void moveTowardsHome() {
-        if (spatial.getWorldBound().distanceTo(HelperState.getHomeVec()) > .2) {
+        if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .2) {
             moveamount += .0003f;
-            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(HelperState.getHomeVec(), moveamount));
+            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(FriendlyState.getHomeVec(), moveamount));
         }
         else {
             moveamount = .04f;
@@ -92,9 +93,9 @@ public class ChargerControl extends AbstractControl {
     
     
 
-    public void startToTower(Spatial tower) {
+    public void startToTower(TowerParams tower) {
         setIsHome(false);
-        destTower = tower.getControl(TowerControl.class);
+        destTower = tower.getControl();
     }
     
     public boolean getIsHome() {
@@ -132,7 +133,7 @@ public class ChargerControl extends AbstractControl {
     
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        ChargerControl control = new ChargerControl(HelperState);
+        ChargerControl control = new ChargerControl(FriendlyState);
         control.setSpatial(spatial);
         return control;
     }
