@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.States.Game;
 
+import ShortCircuit.GUI.StartGUI;
 import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.MapXML.Objects.LevelParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
@@ -42,6 +43,7 @@ public class GameState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private GraphicsState GraphicsState;
     private BoundingVolume baseBounds;
+    private StartGUI startGUI;
 
     public GameState() {}
 
@@ -57,6 +59,7 @@ public class GameState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
+        this.startGUI = this.stateManager.getState(StartGUI.class);
     }
     
     /**
@@ -67,6 +70,9 @@ public class GameState extends AbstractAppState {
     public void setGameplayParams(GameplayParams gp) {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
+        if (!lp.getProfile()) {
+            startGUI.hideloading();
+        }
     }
 
     @Override

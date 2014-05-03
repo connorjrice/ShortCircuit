@@ -104,7 +104,6 @@ public class GraphicsState extends AbstractAppState {
         setCameraSets();
         createWorld();
         setBackgroundColor(mp.getBackgroundColor());
-        startGUI.hideloading();
     }
     
     @Override

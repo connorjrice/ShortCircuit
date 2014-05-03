@@ -103,6 +103,7 @@ public class FriendlyState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         TowerParams tp = towerList.get(tindex);
+        System.out.println(tindex);
         if (tp.getType().equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {

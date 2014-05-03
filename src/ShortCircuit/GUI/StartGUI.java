@@ -116,8 +116,6 @@ public class StartGUI extends AbstractAppState {
                     onStart("Level3", false);
                 } else if (value.equals("Start4")) {
                     onStart("Level4", false);
-                } else if (value.equals("StartTest")) {
-                    onStart("TestLevel", true);
                 } else if (value.equals("StartProfile")) {
                     onStart("profilelevel", false);
                 } else if (value.equals("GameOverTest")) {
@@ -129,7 +127,6 @@ public class StartGUI extends AbstractAppState {
         levelMenu.addMenuItem("Level2", "Start2", null);
         levelMenu.addMenuItem("Level3", "Start3", null);
         levelMenu.addMenuItem("Level4", "Start4", null);
-        levelMenu.addMenuItem("TestLevel", "StartTest", null);
         levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
         levelMenu.addMenuItem("TestGameOver", "GameOverTest", null);
         levelMenu.setPreferredSize(new Vector2f(300,300));

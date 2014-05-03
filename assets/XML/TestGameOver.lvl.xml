@@ -2,7 +2,7 @@
 <level>
     <gameplayparams>
         <param id = "levelParams">
-            <numCreeps>3</numCreeps>
+            <numCreeps>30</numCreeps>
             <creepMod>2</creepMod>
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
@@ -28,7 +28,7 @@
                 <beamwidth>6.0f</beamwidth>
             </tower>
             <base>
-                <baseVec>0.0f, 0.0f, 0.0f</baseVec>
+                <baseVec>0.0f, -7.0f, 0.0f</baseVec>
                 <baseScale>1.6f, 1.6f, 1.2f</baseScale>
             </base>
             <creepspawner>
@@ -40,87 +40,47 @@
             </camera>
         </param>
         <param id = "towerParams">
-            <numTowers>20</numTowers>
+            <numTowers>10</numTowers>
             <tower id = "0">
-                <vec>2.25f, 2.0f, 0.1f</vec>
+                <vec>-4.5f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "1">
-                <vec>-2.25f, 2.0f, 0.1f</vec>
+                <vec>4.5f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "2">
-                <vec>2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>4.5f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "3">
-                <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-4.5f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "4">
-                <vec>-2.25f, 4.25f, 0.1f</vec>
+                <vec>-4.5f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "5">
-                <vec>2.25f, 4.25f, 0.1f</vec>
+                <vec>4.5f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "6">
-                <vec>2.25f, -4.25f, 0.1f</vec>
+                <vec>4.5f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "7">
-                <vec>-2.25f, -4.25f, 0.1f</vec>
+                <vec>-4.5f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "8">
-                <vec>2.25f, 6.50f, 0.1f</vec>
+                <vec>4.5f, 4.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "9">
-                <vec>-2.25f, 6.50f, 0.1f</vec>
-                <isStarter>false</isStarter>
+                <vec>-4.5f, 4.0f, 0.1f</vec>
+x                <isStarter>false</isStarter>
             </tower>
-            <tower id = "10">
-                <vec>2.25f, -6.50f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "11">
-                <vec>6.75f, 2.0f,0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "12">
-                <vec>-6.75f, 2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "13">
-                <vec>6.75f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "14">
-                <vec>-6.75f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "15">
-                <vec>4.5f, 2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "16">
-                <vec>-4.5f, -2.0f, 0.1</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "17">
-                <vec>4.5f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "18">
-                <vec>-4.5f, 2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>
-            <tower id = "19">
-                <vec>-2.25f, -6.50f, 0.1f</vec>
-                <isStarter>false</isStarter>                
-            </tower>            
         </param>
     </gameplayparams>
     
@@ -135,7 +95,7 @@
         </param>
         <param id = "materialParams">
             <matdir>Neon</matdir>
-            <backgroundcolor>Blue</backgroundcolor>
+            <backgroundcolor>Black</backgroundcolor>
         </param>
     </graphicsparams>
     <enemyparams>
@@ -163,22 +123,11 @@
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <numSpawners>4</numSpawners>
+            <numSpawners>1</numSpawners>
+
             <creepSpawner id = "0">
-                <vec>0.0f, 8.0f, 1.0f</vec>
+                <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
-            </creepSpawner>
-            <creepSpawner id = "1">
-                <vec>0.0f, -8.0f, 1.0f</vec>
-                <orientation>horizontal</orientation>
-            </creepSpawner>
-            <creepSpawner id = "2">
-                <vec>8.0f, 0.0f, 1.0f</vec>
-                <orientation>vertical</orientation>
-            </creepSpawner>
-            <creepSpawner id = "3">
-                <vec>-8.0f, 0.0f, 1.0f</vec>
-                <orientation>vertical</orientation>
             </creepSpawner>
         </param>
     </enemyparams>
