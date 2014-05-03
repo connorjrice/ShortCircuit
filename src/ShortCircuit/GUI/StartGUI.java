@@ -24,8 +24,6 @@ import tonegod.gui.controls.windows.DialogBox;
 
 /**
  * Start menu
- * TODO: Scaling
- * TODO: Create theme
  * @author Connor Rice
  */
 public class StartGUI extends AbstractAppState {

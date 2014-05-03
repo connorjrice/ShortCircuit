@@ -178,7 +178,6 @@ public class TowerControl extends AbstractControl {
         }
     };
 
-    // XXX: EmptyTower()
     protected void emptyTower() {
         emptySound.play();
         GraphicsState.emptyTowerTexture(this);
@@ -192,7 +191,6 @@ public class TowerControl extends AbstractControl {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
                 GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), 
                         getTowerType(), getBeamWidth());
-                System.out.println("shooting");
                 if (reachable.peek()
                         .getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();

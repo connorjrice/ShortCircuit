@@ -22,30 +22,19 @@ import java.io.IOException;
  */
 public class STDCreepControl extends AbstractControl {
 
-    protected EnemyState CreepState;
+    protected EnemyState EnemyState;
     protected int creepNum;
     protected Vector3f direction;
     private MoveCreep mc;
 
-    /**
-     * Initialization for Control Classes happens in Constructors.
-     * @param _state - our EnemyState
-     * We need access to EnemyState for certain methods.
-     * 
-     * TODO: Implement standardized naming of passed states, (EnemyState or cs)
-     */
     public STDCreepControl(EnemyState _state) {
-        CreepState = _state;
-        mc = new MoveCreep(CreepState, this);
+        EnemyState = _state;
+        mc = new MoveCreep(EnemyState, this);
     }
 
-    /**
-     * If EnemyState is enabled, we create a new MoveCreep runnable to 
-     * @param tpf 
-     */
     @Override
     protected void controlUpdate(float tpf) {
-        if (CreepState.isEnabled()) {
+        if (EnemyState.isEnabled()) {
             mc.run();
         }
     }
@@ -67,9 +56,9 @@ public class STDCreepControl extends AbstractControl {
         int health = getCreepHealth();
         spatial.setUserData("Health", health - damage);
         if (health - damage <= 0) {
-            CreepState.incPlrBudget(getValue());
-            CreepState.incPlrScore(1);
-            CreepState.creepList.remove(getSpatial());
+            EnemyState.incPlrBudget(getValue());
+            EnemyState.incPlrScore(1);
+            EnemyState.creepList.remove(getSpatial());
             getSpatial().removeFromParent();
             getSpatial().removeControl(this);
         }
@@ -85,9 +74,9 @@ public class STDCreepControl extends AbstractControl {
     }
 
     public void removeCreep() {
-        CreepState.creepList.remove(spatial);
-        CreepState.incPlrBudget(getValue());
-        CreepState.incPlrScore(1);
+        EnemyState.creepList.remove(spatial);
+        EnemyState.incPlrBudget(getValue());
+        EnemyState.incPlrScore(1);
         spatial.removeFromParent();
         spatial.removeControl(this);
     }
@@ -99,7 +88,7 @@ public class STDCreepControl extends AbstractControl {
 
     @Override
     public STDCreepControl cloneForSpatial(Spatial spatial) {
-        STDCreepControl control = new STDCreepControl(CreepState);
+        STDCreepControl control = new STDCreepControl(EnemyState);
         control.setSpatial(spatial);
         return control;
     }

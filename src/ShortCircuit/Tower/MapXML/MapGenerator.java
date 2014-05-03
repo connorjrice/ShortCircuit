@@ -116,7 +116,6 @@ public class MapGenerator {
         ArrayList<TowerParams> towerList = new ArrayList<TowerParams>();
         String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
         int numTowers = parseInt(getElement("numTowers", towerExpression));
-        System.out.println(numTowers);
         for (int i = 0; i < numTowers; i++) {
             String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
@@ -159,7 +158,6 @@ public class MapGenerator {
         ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
         for (int i = 0; i < creepTypes.length; i++) {
             String curCreepExpression = creepExpression+creepTypes[i]+"Creep/";
-            System.out.println(curCreepExpression);
             int health = parseInt(getElement("health", curCreepExpression));
             float speed = parseFloat(getElement("speed", curCreepExpression));
             Vector3f size = parseVector3f(getElement("size", curCreepExpression));

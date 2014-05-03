@@ -38,7 +38,6 @@ import tonegod.gui.core.Screen;
 
 /**
  * Gameplay GUI for ShortCircuit
- * PENDING: Better color matching for level atlases.
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {

@@ -129,7 +129,7 @@ public class BombControl extends AbstractControl {
                 }
             }
         } catch (Exception excpt) {
-            System.out.println("copout");
+            System.out.println("BombControl.searchForVictims()");
         }
     }
     

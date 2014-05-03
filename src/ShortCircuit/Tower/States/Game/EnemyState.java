@@ -2,7 +2,6 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Factories.STDCreepFactory;
 import ShortCircuit.Tower.Objects.Game.CreepTraits;
-import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.GlobFactory;
 import ShortCircuit.Tower.Factories.RangerFactory;
 import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
@@ -62,7 +61,6 @@ public class EnemyState extends AbstractAppState {
     private STDCreepFactory cf;
     private GlobFactory gf;
 
-    private BoundingVolume basebounds;
     public ArrayList<Spatial> creepList;
     private ArrayList<Spatial> globList;
     private ArrayList<Spatial> rangerList;
@@ -339,7 +337,6 @@ public class EnemyState extends AbstractAppState {
     }
 
     public ArrayList<Spatial> getCreepList() {
-        System.out.println(getCreepListSize());
         return creepList;
     }
     
@@ -405,10 +402,6 @@ public class EnemyState extends AbstractAppState {
 
     public SimpleApplication getApp() {
         return app;
-    }
-
-    public void setBaseBounds() {
-        basebounds = worldNode.getChild("Base").getWorldBound();
     }
 
     public void seedForProfile() {

@@ -26,7 +26,6 @@ public class STDCreepSpawnerFactory {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1, 1, 1));
         spawner_geom.setMaterial(assetManager.loadMaterial(gs.getCreepSpawnerMatLoc()));
         spawner_geom.setLocalTranslation(csp.getVec());
-        System.out.println("here");
         if (csp.getOrientation().equals("horizontal")) {
             spawner_geom.setLocalScale(gs.getCreepSpawnerHorizontalScale());            
         } else if (csp.getOrientation().equals("vertical")) {

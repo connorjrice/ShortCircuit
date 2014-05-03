@@ -125,7 +125,7 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
-        cam.setLocation(new Vector3f(0,0,20f)); //TODO: Camera location into geometry
+        cam.setLocation(gp.getCamLoc());
     }
     
     private void createWorld() {
@@ -234,7 +234,6 @@ public class GraphicsState extends AbstractAppState {
     }
     
     public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
-        System.out.println("laserbeam");
         AudioState.beamSound(towertype, origin);
         beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, towertype, beamwidth));
         shot = true;
@@ -345,7 +344,6 @@ public class GraphicsState extends AbstractAppState {
     
     /*** CreepSpawner Methods ***/
     public void createCreepSpawner(CreepSpawnerParams curSpawner) {
-        System.out.println(curSpawner.getIndex());
         creepSpawnerList.set(curSpawner.getIndex(), csf.getSpawner(curSpawner));
         worldNode.attachChild(creepSpawnerList.get(curSpawner.getIndex()).getSpatial());
     }

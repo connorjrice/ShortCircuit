@@ -84,7 +84,7 @@ public class AudioState extends AbstractAppState {
      */
     public void beamSound(String towertype, Vector3f origin) {
         if (towertype.equals("Tower1")) {
-            //hashmap/arraylist for tower audio nodes
+            //TODO: hashmap/arraylist for tower audio nodes
             tower1audio.setVolume(.3f);
             tower1audio.setLocalTranslation(origin);
             tower1audio.playInstance();

@@ -1,6 +1,5 @@
 package ShortCircuit.Tower.States.Game;
 
-import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.MapXML.Objects.LevelParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
@@ -9,7 +8,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -17,7 +15,6 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * PENDING: Clean up GameState
  * PENDING: Implment allowedenemies
  * TODO: Implement Digger and Ranger 
  * TODO: Retool main menu
@@ -27,21 +24,18 @@ public class GameState extends AbstractAppState {
 
     private EnemyState EnemyState;
     private SimpleApplication app;
-    private AssetManager assetManager;
     private Node rootNode;
 
 
     private float updateTimer = 0;
     public ScheduledThreadPoolExecutor ex;
     public int fours;
-    private BaseFactory bf;
 
 
     private AppStateManager stateManager;
     private AudioState AudioState;
     private GameplayParams GameplayParams;
     private LevelParams lp;
-    private GameplayParams gp;
     private PlayerParams pp;
     
     private Node worldNode = new Node("World");
@@ -58,7 +52,6 @@ public class GameState extends AbstractAppState {
         this.ex = new ScheduledThreadPoolExecutor(8);
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
@@ -72,7 +65,6 @@ public class GameState extends AbstractAppState {
      * @param gp 
      */
     public void setGameplayParams(GameplayParams gp) {
-        this.gp = gp;
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
     }
@@ -97,8 +89,6 @@ public class GameState extends AbstractAppState {
     public void attachWorldNode() {
         rootNode.attachChild(worldNode);
     }
-
-
 
     /**
      * Increments level. Called by update loop when conditions are met.
@@ -294,14 +284,9 @@ public class GameState extends AbstractAppState {
         return FriendlyState.getTowerList().size();
     }
 
-
-    
     public GameplayParams getGameplayParams() {
         return GameplayParams;
     }
-
-
-
 
     public void incFours() {
         fours += 1;

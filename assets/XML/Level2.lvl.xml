@@ -40,14 +40,14 @@
             </camera>
         </param>
         <param id = "towerParams">
-                        <numTowers>12</numTowers>
+            <numTowers>12</numTowers>
             <tower id = "0">
                 <vec>2.25f, 2.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "1">
-                <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-2.25f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "2">
                 <vec>2.25f, -2.0f, 0.1f</vec>
@@ -55,7 +55,7 @@
             </tower>
             <tower id = "3">
                 <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
+                <isStarter>true</isStarter>
             </tower>
             <tower id = "4">
                 <vec>-2.25f, 4.25f, 0.1f</vec>
@@ -131,10 +131,14 @@
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <numSpawners>1</numSpawners>
+            <numSpawners>2</numSpawners>
 
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
+                <orientation>horizontal</orientation>
+            </creepSpawner>
+            <creepSpawner id = "1">
+                <vec>0.0f, -7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
             </creepSpawner>
         </param>
