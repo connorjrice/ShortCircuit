@@ -9,21 +9,21 @@ import ShortCircuit.Tower.States.Game.EnemyState;
  */
 public class MoveCreep implements Runnable {
 
-    private EnemyState cs;
+    private EnemyState es;
     private STDCreepControl cc;
     private float moveamount;
 
-    public MoveCreep(EnemyState _cs, STDCreepControl _cc) {
-        cs = _cs;
-        cc = _cc;
+    public MoveCreep(EnemyState es, STDCreepControl cc) {
+        this.es = es;
+        this.cc = cc;
         moveamount = .004f;
         ///TODO: Make moveamount something more modifiable.
     }
 
     public void run() {
-        if (cc.getSpatial().getWorldBound().intersects(cs.getBaseBounds())) {
-            cs.decPlrHealth(cc.getValue());
-            cs.creepList.remove(cc.getSpatial());
+        if (cc.getSpatial().getWorldBound().intersects(es.getBaseBounds())) {
+            es.decPlrHealth(cc.getValue());
+            es.creepList.remove(cc.getSpatial());
             cc.getSpatial().removeFromParent();
             cc.getSpatial().removeControl(cc);
         } else {
@@ -32,7 +32,7 @@ public class MoveCreep implements Runnable {
              */
             moveamount += cc.getCreepSpeed();
             cc.getSpatial().setLocalTranslation(cc.getCreepLocation().
-                    interpolate(cs.getBaseBounds().getCenter(), moveamount));
+                    interpolate(es.getBaseBounds().getCenter(), moveamount));
         }
     }
 }

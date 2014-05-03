@@ -4,17 +4,16 @@ import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Controls.GlobControl;
 import ShortCircuit.Tower.MapXML.Objects.LevelParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
-import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -48,6 +47,7 @@ public class GameState extends AbstractAppState {
     private Node worldNode = new Node("World");
     private FriendlyState FriendlyState;
     private GraphicsState GraphicsState;
+    private BoundingVolume baseBounds;
 
     public GameState() {}
 
@@ -55,7 +55,7 @@ public class GameState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        ex = new ScheduledThreadPoolExecutor(8);
+        this.ex = new ScheduledThreadPoolExecutor(8);
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
@@ -265,7 +265,13 @@ public class GameState extends AbstractAppState {
     }
 
     
+    public BoundingVolume getBaseBounds() {
+        return baseBounds;
+    }
     
+    public void setBaseBounds(BoundingVolume baseBounds) {
+        this.baseBounds = baseBounds;
+    }
     
     
     public void incLevelCap() {

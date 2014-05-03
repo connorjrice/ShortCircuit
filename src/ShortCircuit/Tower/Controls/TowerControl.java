@@ -46,13 +46,14 @@ public class TowerControl extends AbstractControl {
     private Future future;
     private AudioNode emptySound;
     private boolean isGlobbed = false;
+    private float beamwidth;
 
     public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
         GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
         FriendlyState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
         cc = new STCCreepCompare(towerloc);
-        reachable = new STC<Spatial>(cc);
+        this.towerloc = towerloc;
         this.ex = FriendlyState.getEx();
         emptySound = new AudioNode(FriendlyState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
@@ -145,7 +146,7 @@ public class TowerControl extends AbstractControl {
                 }
             }
         } catch (Exception excpt) {
-            System.out.println("copout");
+            System.out.println("TowerControl.searchForCreeps()" + excpt.getLocalizedMessage());
         }
     }
     /**
@@ -189,7 +190,9 @@ public class TowerControl extends AbstractControl {
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(STDCreepControl.class) != null) {
-                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), getTowerType(), getBeamType(), getBeamWidth());
+                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), 
+                        getTowerType(), getBeamWidth());
+                System.out.println("shooting");
                 if (reachable.peek()
                         .getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
@@ -213,9 +216,13 @@ public class TowerControl extends AbstractControl {
     public void addInitialCharges() {
         charges.add(new Charges("tower1"));
     }
+    
+    public void setBeamWidth(float beamwidth) {
+        this.beamwidth = beamwidth;
+    }
 
     public float getBeamWidth() {
-        return spatial.getUserData("BeamWidth");
+        return beamwidth;
     }
 
     public int getIndex() {

@@ -331,7 +331,7 @@ public class EnemyState extends AbstractAppState {
     }
 
     public BoundingVolume getBaseBounds() {
-        return basebounds;
+        return GameState.getBaseBounds();
     }
 
     public Node getCreepNode() {
@@ -339,6 +339,7 @@ public class EnemyState extends AbstractAppState {
     }
 
     public ArrayList<Spatial> getCreepList() {
+        System.out.println(getCreepListSize());
         return creepList;
     }
     

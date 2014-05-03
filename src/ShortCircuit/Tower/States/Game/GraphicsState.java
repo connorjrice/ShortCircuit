@@ -55,7 +55,7 @@ public class GraphicsState extends AbstractAppState {
     private boolean shot = false;
     private BeamFactory BeamFactory;
     private AudioState AudioState;
-    public Node beamNode = new Node("Beams");
+    private Node beamNode = new Node("Beams");
     private float updateTimer = 0.0f;
     private MaterialParams mp;
     private Material bomb_mat;
@@ -134,6 +134,7 @@ public class GraphicsState extends AbstractAppState {
         createBase();
         buildTowers();
         buildCreepSpawners();
+        attachBeamNode();
         attachWorldNode();
     }
     
@@ -144,6 +145,10 @@ public class GraphicsState extends AbstractAppState {
     
     private void attachWorldNode() {
         rootNode.attachChild(worldNode);
+    }
+    
+    private void attachBeamNode() {
+        rootNode.attachChild(beamNode);
     }
     
     private void initAssets() {
@@ -228,9 +233,10 @@ public class GraphicsState extends AbstractAppState {
         return bloom;
     }
     
-    public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, String beamtype, float beamwidth) {
+    public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
+        System.out.println("laserbeam");
         AudioState.beamSound(towertype, origin);
-        beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, beamtype, beamwidth));
+        beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, towertype, beamwidth));
         shot = true;
     }
     
@@ -257,8 +263,9 @@ public class GraphicsState extends AbstractAppState {
     /*** Base Methods ***/
 
     public void createBase() {
-        worldNode.attachChild(BaseFactory.getBase(getBaseTexLoc(), gp.getBaseVec(), 
-        gp.getBaseScale()));
+        Spatial base = BaseFactory.getBase(getBaseTexLoc(), gp.getBaseVec(), gp.getBaseScale());
+        worldNode.attachChild(base);
+        GameState.setBaseBounds(base.getWorldBound());
     }
     
     public String getBaseTexLoc() {
@@ -411,6 +418,10 @@ public class GraphicsState extends AbstractAppState {
         return EnemyState.getCreepList();
     }
     
+    
+    public GeometryParams getGeometryParams() {
+        return gp;
+    }
     
     public Vector3f getCamLocation() {
         return cam.getLocation();

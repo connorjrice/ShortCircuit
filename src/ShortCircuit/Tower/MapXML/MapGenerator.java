@@ -106,9 +106,10 @@ public class MapGenerator {
         Vector3f towerUnbuiltSelected = parseVector3f(getElement("/tower/unbuiltSelected", geometryExpression));
         Vector3f horizontalScale = parseVector3f(getElement("/creepspawner/horizontalscale", geometryExpression));
         Vector3f verticalScale = parseVector3f(getElement("/creepspawner/verticalscale", geometryExpression));
+        float beamwidth = parseFloat(getElement("/tower/beamwidth", geometryExpression));
         return new GeometryParams(camLoc, floorScale, baseVec, baseScale, 
                 towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, 
-                towerUnbuiltSelected, horizontalScale, verticalScale);
+                towerUnbuiltSelected, horizontalScale, verticalScale, beamwidth);
     }
     
     private ArrayList<TowerParams> parseTowerList() {

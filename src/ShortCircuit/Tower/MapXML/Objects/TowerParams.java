@@ -17,6 +17,7 @@ public class TowerParams {
     private Vector3f scale;
     private Spatial towerSpatial;
     private TowerControl towerControl;
+    private float beamwidth;
     
     public TowerParams(Vector3f vec,  boolean starter, int index) {
         this.vec = vec;
@@ -44,6 +45,15 @@ public class TowerParams {
     
     public boolean getIsStarter() {
         return starter;
+    }
+    
+    public void setBeamWidth(float beamwidth) {
+        this.beamwidth = beamwidth;
+        towerControl.setBeamWidth(beamwidth);
+    }
+    
+    public float getBeamWidth() {
+        return beamwidth;
     }
     
     public void setSpatial(Spatial s) {

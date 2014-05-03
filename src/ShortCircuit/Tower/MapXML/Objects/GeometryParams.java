@@ -17,12 +17,13 @@ public class GeometryParams {
     private Vector3f towerUnbuiltSelected;
     private Vector3f creepSpawnerHorizontalScale;
     private Vector3f creepSpawnerVerticalScale;
+    private float beamwidth;
 
     
     public GeometryParams(Vector3f camLoc, Vector3f floorscale, Vector3f baseVec, 
             Vector3f baseScale, Vector3f towerBuiltSize, Vector3f towerUnbuiltSize,
             Vector3f towerBuiltSelected, Vector3f towerUnbuiltSelected, 
-            Vector3f creepSpawnerHorizontalScale, Vector3f creepSpawnerVerticalScale) {
+            Vector3f creepSpawnerHorizontalScale, Vector3f creepSpawnerVerticalScale, float beamwidth) {
         this.camLoc = camLoc;
         this.floorscale = floorscale;
         this.baseVec = baseVec;
@@ -33,6 +34,7 @@ public class GeometryParams {
         this.towerUnbuiltSelected = towerUnbuiltSelected;
         this.creepSpawnerHorizontalScale = creepSpawnerHorizontalScale;
         this.creepSpawnerVerticalScale = creepSpawnerVerticalScale;
+        this.beamwidth = beamwidth;
     }
     
     public Vector3f getCamLoc() {
@@ -73,6 +75,10 @@ public class GeometryParams {
     
     public Vector3f getCreepSpawnerVerticalScale() {
         return creepSpawnerVerticalScale;
+    }
+    
+    public float getBeamWidth() {
+        return beamwidth;
     }
     
 }
