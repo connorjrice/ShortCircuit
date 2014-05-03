@@ -118,9 +118,9 @@ public class FriendlyState extends AbstractAppState {
         if (selectedTower != -1) {
             TowerParams tp = towerList.get(selectedTower);
             if (tp.getType().equals("TowerUnbuilt")) {
-                tp.setScale(GraphicsState.getTowerUnbuiltSelected());
+                tp.setScale(GraphicsState.getTowerUnbuiltSize());
             } else {
-                tp.setScale(GraphicsState.getTowerBuiltSelected());
+                tp.setScale(GraphicsState.getTowerBuiltSize());
             }
         }
     }

@@ -18,10 +18,10 @@ public class TowerParams {
     private Spatial towerSpatial;
     private TowerControl towerControl;
     
-    public TowerParams(Vector3f vec,  boolean starter) {
+    public TowerParams(Vector3f vec,  boolean starter, int index) {
         this.vec = vec;
         this.starter = starter;
-        type = "TowerUnbuilt";
+        this.index = index;
     }
     
     public void setScale(Vector3f s) {
@@ -29,13 +29,13 @@ public class TowerParams {
         getSpatial().setLocalScale(scale);
     }
     
-    public void setIndex(int i) {
-        index = i;
-        getSpatial().setUserData("Index", i);
+    public void setIndex() {
+        getSpatial().setUserData("Index", index);
     }
     
     public void setType(String t) {
         type = t;
+        getSpatial().setUserData("Type", t);
     }
     
     public Vector3f getTowerVec() {

@@ -115,7 +115,7 @@ public class MapGenerator {
             String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
             boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
-            towerList.add(new TowerParams(towerVec, starter));
+            towerList.add(new TowerParams(towerVec, starter, i));
         }
         return towerList;
     }
