@@ -14,13 +14,8 @@ import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
-import org.w3c.dom.NodeList;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.xml.sax.InputSource;
 
@@ -227,19 +222,14 @@ public class MapGenerator {
     }
     
     public String getExpression(String value, String parentNode) {
-        return "/level/"+parentNode+value+"/text()";
+        return "/level/"+parentNode + value+ "/text()";
     }
     
     public String getValue(String expression) {
         String returnvalue = "";
         try {
-            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, 
-                    XPathConstants.NODESET);
-            returnvalue = nodes.item(0).getTextContent();
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            returnvalue = xpath.evaluate(expression, inputSource);
+        } catch (Exception e) {}
         return returnvalue;
     }
  
