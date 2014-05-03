@@ -48,7 +48,7 @@ public class LoadingState extends AbstractAppState {
     }
 
     private void initMG(String levelname) {
-        mg = new MapGenerator(levelname, app);
+        mg = new MapGenerator(levelname);
     }
     
     private void updateStartGUI() {

@@ -11,14 +11,10 @@ import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
-import com.jme3.app.Application;
-import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
-import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +22,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 /**
@@ -39,22 +33,12 @@ import org.xml.sax.InputSource;
  */
 public class MapGenerator {
 
-    private Document doc;
-    private Application app;
-    private AssetManager assetManager;
-    private Node gameplayParamsChildren;
-    private Node graphicsParamsChildren;
-    private Node enemyParamsChildren;
     private XPath xpath;
-    private final String level;
     private InputSource inputSource;
 
-    public MapGenerator(String level, Application app) {
-        this.app = app;
-        this.level = level;
-        this.assetManager = this.app.getAssetManager();
+    public MapGenerator(String level) {
         xpath = XPathFactory.newInstance().newXPath();  
-        inputSource = new InputSource("assets/XML/" + level+ ".lvl.xml");
+        inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
     }
 
     
@@ -72,25 +56,25 @@ public class MapGenerator {
     }
     
     private LevelParams parseLevelParams() {
-        String levelElement = "gameplayparams/param[@id = 'levelParams']/";
-        String profiles = getElement("profile", levelElement);
-        String tutorials = getElement("tutorial", levelElement);
-        int numCreeps = parseInt(getElement("numCreeps", levelElement));
-        int creepMod = parseInt(getElement("creepMod", levelElement));
-        int levelCap = parseInt(getElement("levelCap", levelElement));
-        int levelMod = parseInt(getElement("levelMod", levelElement));
-        String allowedenemies = getElement("allowedenemies", levelElement);
+        String levelExpression = "gameplayparams/param[@id = 'levelParams']/";
+        String profiles = getElement("profile", levelExpression);
+        String tutorials = getElement("tutorial", levelExpression);
+        int numCreeps = parseInt(getElement("numCreeps", levelExpression));
+        int creepMod = parseInt(getElement("creepMod", levelExpression));
+        int levelCap = parseInt(getElement("levelCap", levelExpression));
+        int levelMod = parseInt(getElement("levelMod", levelExpression));
+        String allowedenemies = getElement("allowedenemies", levelExpression);
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
         return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies);
     }
     
     private PlayerParams parsePlayerParams() {
-        String playerElement = "gameplayparams/param[@id = 'playerParams']/";
-        int plrHealth = parseInt(getElement("plrHealth", playerElement));
-        int plrBudget = parseInt(getElement("plrBudget", playerElement));
-        int plrLevel = parseInt(getElement("plrLevel", playerElement));
-        int plrScore = parseInt(getElement("plrScore", playerElement));
+        String playerExpression = "gameplayparams/param[@id = 'playerParams']/";
+        int plrHealth = parseInt(getElement("plrHealth", playerExpression));
+        int plrBudget = parseInt(getElement("plrBudget", playerExpression));
+        int plrLevel = parseInt(getElement("plrLevel", playerExpression));
+        int plrScore = parseInt(getElement("plrScore", playerExpression));
         return new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
     }
     
@@ -226,34 +210,6 @@ public class MapGenerator {
         return Float.parseFloat(s);
     }
     
-    public String getElement(String value, String parentNode) {
-        return getValue(getExpression(value, parentNode));
-    }
-    
-    public String getExpression(String value, String parentNode) {
-        return "/level/"+parentNode+value+"/text()";
-    }
-    
-    public String getValue(String expression) {
-        String returnvalue = "";
-        try {
-            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, XPathConstants.NODESET);
-            returnvalue = nodes.item(0).getTextContent();
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return returnvalue;
-    }
- 
-    public String getElement(String s, Element e) {
-        return getElement(s, e, 0);
-    }
-
-    public String getElement(String s, Element e, int i) {
-        return null;
-    }
-    
     public GlowMode parseGlowMode(String s) {
         if (s.equals("GlowMode.SceneAndObjects")) {
             return GlowMode.SceneAndObjects;
@@ -265,5 +221,29 @@ public class MapGenerator {
             return null;
         }
     }
+    
+    public String getElement(String value, String parentNode) {
+        return getValue(getExpression(value, parentNode));
+    }
+    
+    public String getExpression(String value, String parentNode) {
+        return "/level/"+parentNode+value+"/text()";
+    }
+    
+    public String getValue(String expression) {
+        String returnvalue = "";
+        try {
+            NodeList nodes = (NodeList) xpath.evaluate(expression, inputSource, 
+                    XPathConstants.NODESET);
+            returnvalue = nodes.item(0).getTextContent();
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(MapGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return returnvalue;
+    }
+ 
+    
+
 
 }
