@@ -188,11 +188,11 @@ public class TowerControl extends AbstractControl {
 
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
-            if (reachable.peek().getControl(STDCreepControl.class) != null) {
+            if (reachable.peek().getControl(RegCreepControl.class) != null) {
                 GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), 
                         getTowerType(), getBeamWidth());
                 if (reachable.peek()
-                        .getControl(STDCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
+                        .getControl(RegCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
             } else {

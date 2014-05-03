@@ -12,12 +12,12 @@ import com.jme3.scene.shape.Box;
  * Factory for standard creep spawners.
  * @author Connor Rice
  */
-public class STDCreepSpawnerFactory {
+public class CreepSpawnerFactory {
 
     private GraphicsState gs;
     private AssetManager assetManager;
 
-    public STDCreepSpawnerFactory(GraphicsState gs) {
+    public CreepSpawnerFactory(GraphicsState gs) {
         this.gs = gs;
         this.assetManager = this.gs.getAssetManager();
     }

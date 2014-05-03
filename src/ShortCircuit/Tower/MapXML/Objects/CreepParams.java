@@ -13,12 +13,14 @@ public class CreepParams {
     private final float speed;
     private final Vector3f size;
     private final String type;
+    private final int value;
 
-    public CreepParams(int health, float speed, Vector3f size, String type) {
+    public CreepParams(int health, float speed, Vector3f size, String type, int value) {
         this.health = health;
         this.speed = speed;
         this.size = size;
         this.type = type;
+        this.value = value;
     }
     
     public int getHealth() {
@@ -26,7 +28,7 @@ public class CreepParams {
     }
     
     public float getSpeed() {
-        return speed;
+        return speed * .00001f;
     }
     
     public Vector3f getSize() {
@@ -35,6 +37,10 @@ public class CreepParams {
     
     public String getType() {
         return type;
+    }
+    
+    public int getValue() {
+        return value;
     }
     
 }

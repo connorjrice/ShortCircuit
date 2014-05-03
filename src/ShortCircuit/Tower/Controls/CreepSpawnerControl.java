@@ -35,7 +35,7 @@ public class CreepSpawnerControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (EnemyState.getNextSpawner() == getIndex()) {
             if (EnemyState.getCreepListSize() < EnemyState.getNumCreepsByLevel()) {
-                EnemyState.startSTDCreep(spatial.getLocalTranslation(), getIndex());
+                EnemyState.spawnRegCreep(spatial.getLocalTranslation());
                 EnemyState.goToNextSpawner();
             }
         }

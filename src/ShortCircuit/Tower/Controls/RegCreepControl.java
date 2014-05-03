@@ -20,14 +20,14 @@ import java.io.IOException;
  *
  * @author Connor Rice
  */
-public class STDCreepControl extends AbstractControl {
+public class RegCreepControl extends AbstractControl {
 
     protected EnemyState EnemyState;
     protected int creepNum;
     protected Vector3f direction;
     private MoveCreep mc;
 
-    public STDCreepControl(EnemyState _state) {
+    public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         mc = new MoveCreep(EnemyState, this);
     }
@@ -87,8 +87,8 @@ public class STDCreepControl extends AbstractControl {
     }
 
     @Override
-    public STDCreepControl cloneForSpatial(Spatial spatial) {
-        STDCreepControl control = new STDCreepControl(EnemyState);
+    public RegCreepControl cloneForSpatial(Spatial spatial) {
+        RegCreepControl control = new RegCreepControl(EnemyState);
         control.setSpatial(spatial);
         return control;
     }

@@ -1,6 +1,6 @@
 package ShortCircuit.Tower.Threading;
 
-import ShortCircuit.Tower.Controls.STDCreepControl;
+import ShortCircuit.Tower.Controls.RegCreepControl;
 import ShortCircuit.Tower.States.Game.EnemyState;
 
 /**
@@ -10,10 +10,10 @@ import ShortCircuit.Tower.States.Game.EnemyState;
 public class MoveCreep implements Runnable {
 
     private EnemyState es;
-    private STDCreepControl cc;
+    private RegCreepControl cc;
     private float moveamount;
 
-    public MoveCreep(EnemyState es, STDCreepControl cc) {
+    public MoveCreep(EnemyState es, RegCreepControl cc) {
         this.es = es;
         this.cc = cc;
         moveamount = .004f;

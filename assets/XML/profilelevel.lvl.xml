@@ -145,21 +145,25 @@
                 <health>100</health>
                 <speed>0.85f</speed>
                 <size>0.125f, 0.125f, 0.20f</size>
+                <value>1</value>
             </SmallCreep>
             <MediumCreep>
                 <health>200</health>
                 <speed>0.35f</speed>
                 <size>0.25f, 0.25f, 0.40f</size>
+                <value>2</value>
             </MediumCreep>
             <LargeCreep>
                 <health>400</health>
                 <speed>0.25f</speed>
                 <size>0.4f, 0.4f, 0.6f</size>
+                <value>5</value>
             </LargeCreep>
             <GiantCreep>
                 <health>800</health>
                 <speed>0.30f</speed>
                 <size>0.6f, 0.6f, 0.8f</size>
+                <value>10</value>
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">

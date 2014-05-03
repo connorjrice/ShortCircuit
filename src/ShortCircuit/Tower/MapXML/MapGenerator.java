@@ -140,7 +140,8 @@ public class MapGenerator {
             int health = parseInt(getElement("health", curCreepExpression));
             float speed = parseFloat(getElement("speed", curCreepExpression));
             Vector3f size = parseVector3f(getElement("size", curCreepExpression));
-            creepList.add(new CreepParams(health, speed, size, creepTypes[i]));
+            int value = parseInt(getElement("value", curCreepExpression));
+            creepList.add(new CreepParams(health, speed, size, creepTypes[i], value));
         }
         return creepList;
     }

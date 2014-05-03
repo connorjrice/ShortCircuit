@@ -5,7 +5,7 @@ import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Factories.BeamFactory;
-import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
+import ShortCircuit.Tower.Factories.CreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.TowerFactory;
 import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.FilterParams;
@@ -71,7 +71,7 @@ public class GraphicsState extends AbstractAppState {
     private ArrayList<TowerParams> towerList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private TowerFactory tf;
-    private STDCreepSpawnerFactory csf;
+    private CreepSpawnerFactory csf;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -139,7 +139,7 @@ public class GraphicsState extends AbstractAppState {
     
     private void initFactories() {
         tf = new TowerFactory(this);
-        csf = new STDCreepSpawnerFactory(this);
+        csf = new CreepSpawnerFactory(this);
     }
     
     private void attachWorldNode() {
