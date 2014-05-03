@@ -226,14 +226,9 @@ public class MapGenerator {
     }
     
     public String getValue(String expression) {
-        String returnvalue = "";
         try {
-            returnvalue = xpath.evaluate(expression, inputSource);
-        } catch (Exception e) {}
-        return returnvalue;
+            return xpath.evaluate(expression, inputSource);
+        } catch (Exception e) { return null; }
     }
- 
-    
-
 
 }

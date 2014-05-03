@@ -11,6 +11,7 @@ import ShortCircuit.Tower.States.Game.EnemyState;
 import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.LoadingState;
 import ShortCircuit.Tower.States.Game.FriendlyState;
+import ShortCircuit.Tower.States.Game.ProfileState;
 import ShortCircuit.Tower.States.Game.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -96,6 +97,8 @@ public class TowerMainState extends AbstractAppState {
         CreepState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
+        
+
 
         stateManager.attach(AudioState);
         stateManager.attach(GameState);
@@ -107,6 +110,10 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
         stateManager.attach(HelperState);
+        if (profile) {
+            ProfileState ps = new ProfileState();
+            stateManager.attach(ps);
+        }
     }
 
     /**
