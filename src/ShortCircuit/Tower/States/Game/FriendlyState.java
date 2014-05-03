@@ -2,6 +2,7 @@ package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.ChargerControl;
 import ShortCircuit.Tower.Factories.TowerFactory;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Threading.TowerCharge;
 import ShortCircuit.Tower.Threading.TowerDowngrade;
@@ -248,7 +249,7 @@ public class FriendlyState extends AbstractAppState {
         return EnemyState.getCreepList();
     }
 
-    public ArrayList<Spatial> getCreepSpawnerList() {
+    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
         return EnemyState.getCreepSpawnerList();
     }
 

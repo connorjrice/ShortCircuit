@@ -5,6 +5,7 @@ import ShortCircuit.Tower.Objects.Game.CreepTraits;
 import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.GlobFactory;
 import ShortCircuit.Tower.Factories.RangerFactory;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.EnemyParams;
 import com.jme3.app.Application;
@@ -60,12 +61,9 @@ public class EnemyState extends AbstractAppState {
     private Node worldNode;
     private STDCreepFactory cf;
     private GlobFactory gf;
-    private STDCreepSpawnerFactory csf;
+
     private BoundingVolume basebounds;
     public ArrayList<Spatial> creepList;
-    private ArrayList<Vector3f> creepSpawnerVecs;
-    private ArrayList<String> creepSpawnerDirs;
-    private ArrayList<Spatial> creepSpawners;
     private ArrayList<Spatial> globList;
     private ArrayList<Spatial> rangerList;
     private ArrayList<Spatial> diggerList;
@@ -73,6 +71,8 @@ public class EnemyState extends AbstractAppState {
     private EnemyParams ep;
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
+    private Node rootNode;
+    private ArrayList<CreepSpawnerParams> creepSpawnerList;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -84,6 +84,7 @@ public class EnemyState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.worldNode = this.GameState.getWorldNode();
+        this.rootNode = this.app.getRootNode();
         initFactories();
         initLists();
     }
@@ -91,14 +92,13 @@ public class EnemyState extends AbstractAppState {
     private void initFactories() {
         cf = new STDCreepFactory(this);
         gf = new GlobFactory(this);
-        csf = new STDCreepSpawnerFactory(this);
+
         rf = new RangerFactory(this);
     }
 
     private void initLists() {
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
-        creepSpawners = new ArrayList<Spatial>();
     }
     
     public void initAssets() {
@@ -107,7 +107,14 @@ public class EnemyState extends AbstractAppState {
     
     public void setEnemyParams(EnemyParams ep) {
         this.ep = ep;
+        attachCreepNode();
     }
+    
+    public void setCreepSpawnerList(ArrayList<CreepSpawnerParams> creepSpawnerList) {
+        this.creepSpawnerList = creepSpawnerList;
+    }
+    
+
 
     @Override
     public void update(float tpf) {
@@ -122,6 +129,7 @@ public class EnemyState extends AbstractAppState {
         }
 
     }
+    
 
     /**
      * Determines how many seconds have to pass before another random enemy (non
@@ -183,23 +191,10 @@ public class EnemyState extends AbstractAppState {
     }
 
     public void attachCreepNode() {
-        worldNode.attachChild(creepNode);
+        rootNode.attachChild(creepNode);
     }
 
-    public void createCreepSpawner(int index, Vector3f spawnervec) {
-        creepSpawners.add(csf.getSpawner(index,
-                "CreepSpawner", spawnervec, getCreepSpawnerDir(index)));
-        creepNode.attachChild(creepSpawners.get(creepSpawners.size() - 1));
-    }
 
-    public void buildCreepSpawners(ArrayList<Vector3f> _creepSpawnerVecs,
-            ArrayList<String> _creepSpawnerDirs) {
-        creepSpawnerVecs = _creepSpawnerVecs;
-        creepSpawnerDirs = _creepSpawnerDirs;
-        for (int i = 0; i < creepSpawnerVecs.size(); i++) {
-            createCreepSpawner(i, creepSpawnerVecs.get(i));
-        }
-    }
 
     /**
      * This is where the process of building a standard creep begins. The flow
@@ -290,9 +285,6 @@ public class EnemyState extends AbstractAppState {
         creepNode.attachChild(creepList.get(creepList.size() - 1));
     }
 
-    public String getCreepSpawnerDir(int index) {
-        return creepSpawnerDirs.get(index);
-    }
 
     public String getMatDir() {
         return GraphicsState.getMatDir();
@@ -334,8 +326,8 @@ public class EnemyState extends AbstractAppState {
         return GameState.getNumCreeps();
     }
 
-    public ArrayList<Spatial> getCreepSpawnerList() {
-        return creepSpawners;
+    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
+        return creepSpawnerList;
     }
 
     public BoundingVolume getBaseBounds() {
@@ -349,6 +341,8 @@ public class EnemyState extends AbstractAppState {
     public ArrayList<Spatial> getCreepList() {
         return creepList;
     }
+    
+
 
     public int getCreepListSize() {
         return creepList.size();
@@ -387,8 +381,8 @@ public class EnemyState extends AbstractAppState {
     }
 
     public void goToNextSpawner() {
-        if (creepSpawners.size() > 1) {
-            if (nextspawner < creepSpawners.size() - 1) {
+        if (creepSpawnerList.size() > 1) {
+            if (nextspawner < creepSpawnerList.size() - 1) {
 
                 nextspawner += 1;
             } else {

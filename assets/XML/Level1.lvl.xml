@@ -30,6 +30,10 @@
                 <baseVec>0.0f, -7.0f, 0.0f</baseVec>
                 <baseScale>1.6f, 1.6f, 1.2f</baseScale>
             </base>
+            <creepspawner>
+                <horizontalscale>1.0f, 0.5f, 0.25f</horizontalscale>
+                <verticalscale>0.5f, 1.0f, 0.25f</verticalscale>
+            </creepspawner>
             <camera>
                 <camLocation>0,0,20f</camLocation>                
             </camera>
@@ -119,6 +123,7 @@ x                <isStarter>false</isStarter>
         </param>
         <param id = "creepSpawnerParams">
             <numSpawners>1</numSpawners>
+
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>

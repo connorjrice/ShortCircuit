@@ -2,6 +2,7 @@ package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.STCCreepCompare;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.States.Game.GraphicsState;
 import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.States.Game.FriendlyState;
@@ -117,15 +118,15 @@ public class TowerControl extends AbstractControl {
         return isGlobbed;
     }
 
-    private void excludeCreeps() {
-        ArrayList<Spatial> creepSpawners = FriendlyState.getCreepSpawnerList();
+    /*private void excludeCreeps() {
+        ArrayList<CreepSpawnerParams> creepSpawners = FriendlyState.getCreepSpawnerList();
         allowedSpawners = new int[creepSpawners.size()];
         for (int i = 0; i < creepSpawners.size(); i++) {
             if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
                 allowedSpawners[i] = creepSpawners.get(i).getUserData("Parent");
             }
         }
-    }
+    }*/
 
     public int[] getAllowedSpawners() {
         return allowedSpawners;

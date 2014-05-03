@@ -63,11 +63,12 @@ public class MapGenerator {
     }
     
     public EnemyParams getEnemyParams() {
-        return new EnemyParams(parseCreepList(), parseCreepSpawnerList());
+        return new EnemyParams(parseCreepList());
     }
     
     public GraphicsParams getGraphicsParams() {
-        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), parseGeometryParams(), parseTowerList());
+        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), 
+                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList());
     }
     
     private LevelParams parseLevelParams() {
@@ -94,16 +95,20 @@ public class MapGenerator {
     }
     
     private GeometryParams parseGeometryParams() {
-        String geometryElement = "gameplayparams/param[@id = 'geometryParams']/";
-        Vector3f camLoc = parseVector3f(getElement("/camera/camLocation", geometryElement));
-        Vector3f floorScale = parseVector3f(getElement("/floor/scale", geometryElement));
-        Vector3f baseVec = parseVector3f(getElement("/base/baseVec", geometryElement));
-        Vector3f baseScale = parseVector3f(getElement("/base/baseScale", geometryElement));
-        Vector3f towerBuiltSize = parseVector3f(getElement("/tower/builtSize", geometryElement));
-        Vector3f towerUnbuiltSize = parseVector3f(getElement("/tower/unbuiltSize", geometryElement));
-        Vector3f towerBuiltSelected = parseVector3f(getElement("/tower/builtSelected", geometryElement));
-        Vector3f towerUnbuiltSelected = parseVector3f(getElement("/tower/unbuiltSelected", geometryElement));
-        return new GeometryParams(camLoc, floorScale, baseVec, baseScale, towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, towerUnbuiltSelected);
+        String geometryExpression = "gameplayparams/param[@id = 'geometryParams']/";
+        Vector3f camLoc = parseVector3f(getElement("/camera/camLocation", geometryExpression));
+        Vector3f floorScale = parseVector3f(getElement("/floor/scale", geometryExpression));
+        Vector3f baseVec = parseVector3f(getElement("/base/baseVec", geometryExpression));
+        Vector3f baseScale = parseVector3f(getElement("/base/baseScale", geometryExpression));
+        Vector3f towerBuiltSize = parseVector3f(getElement("/tower/builtSize", geometryExpression));
+        Vector3f towerUnbuiltSize = parseVector3f(getElement("/tower/unbuiltSize", geometryExpression));
+        Vector3f towerBuiltSelected = parseVector3f(getElement("/tower/builtSelected", geometryExpression));
+        Vector3f towerUnbuiltSelected = parseVector3f(getElement("/tower/unbuiltSelected", geometryExpression));
+        Vector3f horizontalScale = parseVector3f(getElement("/creepspawner/horizontalscale", geometryExpression));
+        Vector3f verticalScale = parseVector3f(getElement("/creepspawner/verticalscale", geometryExpression));
+        return new GeometryParams(camLoc, floorScale, baseVec, baseScale, 
+                towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, 
+                towerUnbuiltSelected, horizontalScale, verticalScale);
     }
     
     private ArrayList<TowerParams> parseTowerList() {
@@ -170,7 +175,7 @@ public class MapGenerator {
             String curCreepSpawnerExpression = creepExpression+ "creepSpawner[@id = '"+i+"']/";
             Vector3f vec = parseVector3f(getElement("vec", curCreepSpawnerExpression));
             String orientation = getElement("orientation", curCreepSpawnerExpression);
-            creepSpawnerList.add(new CreepSpawnerParams(vec, orientation));
+            creepSpawnerList.add(new CreepSpawnerParams(vec, orientation, i));
         }
         return creepSpawnerList;
     }

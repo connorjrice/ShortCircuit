@@ -1,5 +1,6 @@
 package ShortCircuit.Tower.Objects.Loading;
 
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.FilterParams;
 import ShortCircuit.Tower.MapXML.Objects.GeometryParams;
 import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
@@ -15,12 +16,15 @@ public class GraphicsParams {
     private FilterParams fp;
     private GeometryParams gp;
     private ArrayList<TowerParams> towerList;
+    private ArrayList<CreepSpawnerParams> creepSpawnerList;
     
-    public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp, ArrayList<TowerParams> towerList) {
+    public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp, 
+            ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList) {
         this.mp = mp;
         this.fp = fp;
         this.gp = gp;
         this.towerList = towerList;
+        this.creepSpawnerList = creepSpawnerList;
     }
     
     public FilterParams getFilterParams() {
@@ -37,6 +41,10 @@ public class GraphicsParams {
     
     public ArrayList<TowerParams> getTowerList() {
         return towerList;
+    }
+    
+    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
+        return creepSpawnerList;
     }
     
     

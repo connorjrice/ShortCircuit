@@ -5,7 +5,9 @@ import ShortCircuit.Tower.Controls.BombControl;
 import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.Factories.BaseFactory;
 import ShortCircuit.Tower.Factories.BeamFactory;
+import ShortCircuit.Tower.Factories.STDCreepSpawnerFactory;
 import ShortCircuit.Tower.Factories.TowerFactory;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.FilterParams;
 import ShortCircuit.Tower.MapXML.Objects.GeometryParams;
 import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
@@ -56,17 +58,6 @@ public class GraphicsState extends AbstractAppState {
     public Node beamNode = new Node("Beams");
     private float updateTimer = 0.0f;
     private MaterialParams mp;
-    private String basetexloc;
-    public String tow1MatLoc;
-    public String tow2MatLoc;
-    public String tow3MatLoc;
-    public String tow4MatLoc;
-    public String towUnMatLoc;
-    public String towEmMatLoc;
-    private String smCreepMatloc;
-    private String mdCreepMatloc;
-    private String lgCreepMatloc;
-    private String xlCreepMatloc;
     private Material bomb_mat;
     private FilterParams fp;
     private AppStateManager stateManager;
@@ -78,7 +69,9 @@ public class GraphicsState extends AbstractAppState {
     private String floortexloc;
     private Node rootNode;
     private ArrayList<TowerParams> towerList;
+    private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private TowerFactory tf;
+    private STDCreepSpawnerFactory csf;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -104,6 +97,7 @@ public class GraphicsState extends AbstractAppState {
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
         this.towerList = gp.getTowerList();
+        this.creepSpawnerList = gp.getCreepSpawnerList();
         initFilters();
         initAssets();
         initFactories();
@@ -139,11 +133,13 @@ public class GraphicsState extends AbstractAppState {
         createFloor();
         createBase();
         buildTowers();
+        buildCreepSpawners();
         attachWorldNode();
     }
     
     private void initFactories() {
         tf = new TowerFactory(this);
+        csf = new STDCreepSpawnerFactory(this);
     }
     
     private void attachWorldNode() {
@@ -152,18 +148,6 @@ public class GraphicsState extends AbstractAppState {
     
     private void initAssets() {
         bomb_mat = assetManager.loadMaterial("Materials/" + getMatDir() + "/Bomb.j3m");
-        tow1MatLoc = "Materials/" + getMatDir() + "/Tower1.j3m";
-        tow2MatLoc = "Materials/" + getMatDir() + "/Tower2.j3m";
-        tow3MatLoc = "Materials/" + getMatDir() + "/Tower3.j3m";
-        tow4MatLoc = "Materials/" + getMatDir() + "/Tower4.j3m";
-        towUnMatLoc = "Materials/" + getMatDir() + "/TowerUnbuilt.j3m";
-        towEmMatLoc = "Materials/" + getMatDir() + "/EmptyTower.j3m";
-        smCreepMatloc = "Materials/" + getMatDir() + "/SmallCreep.j3m";
-        mdCreepMatloc = "Materials/" + getMatDir() + "/MediumCreep.j3m";
-        lgCreepMatloc = "Materials/" + getMatDir() + "/LargeCreep.j3m";
-        xlCreepMatloc = "Materials/" + getMatDir() + "/GiantCreep.j3m";
-        floortexloc = "Materials/" + getMatDir() + "/Floor.j3m";
-        basetexloc = "Materials/" + getMatDir() + "/Base.j3m";
     }
     
 
@@ -253,36 +237,32 @@ public class GraphicsState extends AbstractAppState {
     
     /*** World Methods ***/
 
-    /**
-     * Creates an AmbientLight and attaches it to worldNode. Called by
-     * LevelState.
-     */
     public void createLight() {
         AmbientLight ambient = new AmbientLight();
         ambient.setColor(ColorRGBA.White.mult(128f));
         worldNode.addLight(ambient);
     }
 
-    /**
-     * Creates the floor for the game, calls FloorFactory to get the floor.
-     * Called by LevelState
-     */
     public void createFloor() {
         Geometry floor_geom = new Geometry("Floor", univ_box);
-        floor_geom.setMaterial(assetManager.loadMaterial(floortexloc));
+        floor_geom.setMaterial(assetManager.loadMaterial(getFloorTexLoc()));
         floor_geom.setLocalScale(gp.getFloorScale());
         worldNode.attachChild(floor_geom);
+    }
+    
+    private String getFloorTexLoc() {
+        return "Materials/" + getMatDir() + "/Floor.j3m";
     }
     
     /*** Base Methods ***/
 
     public void createBase() {
-        worldNode.attachChild(BaseFactory.getBase(basetexloc, gp.getBaseVec(), 
+        worldNode.attachChild(BaseFactory.getBase(getBaseTexLoc(), gp.getBaseVec(), 
         gp.getBaseScale()));
     }
     
     public String getBaseTexLoc() {
-        return basetexloc;
+        return "Materials/" +getMatDir()+"/Base.j3m";
     }
     
     public Vector3f getBaseVec() {
@@ -352,6 +332,32 @@ public class GraphicsState extends AbstractAppState {
         return towerList;
     }
     
+    /*** CreepSpawner Methods ***/
+    public void createCreepSpawner(CreepSpawnerParams curSpawner) {
+        System.out.println(curSpawner.getIndex());
+        creepSpawnerList.set(curSpawner.getIndex(), csf.getSpawner(curSpawner));
+        worldNode.attachChild(creepSpawnerList.get(curSpawner.getIndex()).getSpatial());
+    }
+
+    public void buildCreepSpawners() {
+        for (int i = 0; i < creepSpawnerList.size(); i++) {
+            createCreepSpawner(creepSpawnerList.get(i));
+        }
+        EnemyState.setCreepSpawnerList(creepSpawnerList);
+    }
+    
+    public String getCreepSpawnerMatLoc() {
+        return "Materials/" + getMatDir() + "/CreepSpawner.j3m";
+    }
+    
+    public Vector3f getCreepSpawnerHorizontalScale() {
+        return gp.getCreepSpawnerHorizontalScale();
+    }
+    
+    public Vector3f getCreepSpawnerVerticalScale() {
+        return gp.getCreepSpawnerVerticalScale();
+    }
+    
     /*** Bomb Methods ***/
     
     public void dropBomb(Vector3f translation, float initialSize) {
@@ -395,6 +401,10 @@ public class GraphicsState extends AbstractAppState {
     
     public FriendlyState getFriendlyState() {
         return FriendlyState;
+    }
+    
+    public EnemyState getEnemyState() {
+        return EnemyState;
     }
     
     public ArrayList<Spatial> getCreepList() {

@@ -15,11 +15,14 @@ public class GeometryParams {
     private Vector3f towerUnbuiltSize;
     private Vector3f towerBuiltSelected;
     private Vector3f towerUnbuiltSelected;
+    private Vector3f creepSpawnerHorizontalScale;
+    private Vector3f creepSpawnerVerticalScale;
 
     
     public GeometryParams(Vector3f camLoc, Vector3f floorscale, Vector3f baseVec, 
             Vector3f baseScale, Vector3f towerBuiltSize, Vector3f towerUnbuiltSize,
-            Vector3f towerBuiltSelected, Vector3f towerUnbuiltSelected) {
+            Vector3f towerBuiltSelected, Vector3f towerUnbuiltSelected, 
+            Vector3f creepSpawnerHorizontalScale, Vector3f creepSpawnerVerticalScale) {
         this.camLoc = camLoc;
         this.floorscale = floorscale;
         this.baseVec = baseVec;
@@ -28,7 +31,8 @@ public class GeometryParams {
         this.towerUnbuiltSize = towerUnbuiltSize;
         this.towerBuiltSelected = towerBuiltSelected;
         this.towerUnbuiltSelected = towerUnbuiltSelected;
-
+        this.creepSpawnerHorizontalScale = creepSpawnerHorizontalScale;
+        this.creepSpawnerVerticalScale = creepSpawnerVerticalScale;
     }
     
     public Vector3f getCamLoc() {
@@ -61,6 +65,14 @@ public class GeometryParams {
     
     public Vector3f getTowerUnbuiltSelected() {
         return towerUnbuiltSelected;
+    }
+    
+    public Vector3f getCreepSpawnerHorizontalScale() {
+        return creepSpawnerHorizontalScale;
+    }
+    
+    public Vector3f getCreepSpawnerVerticalScale() {
+        return creepSpawnerVerticalScale;
     }
     
 }

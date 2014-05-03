@@ -1,8 +1,9 @@
 package ShortCircuit.Tower.Factories;
 
-import ShortCircuit.Tower.Controls.STDSpawnerControl;
-import ShortCircuit.Tower.States.Game.EnemyState;
-import com.jme3.math.Vector3f;
+import ShortCircuit.Tower.Controls.CreepSpawnerControl;
+import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
+import ShortCircuit.Tower.States.Game.GraphicsState;
+import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
@@ -13,27 +14,30 @@ import com.jme3.scene.shape.Box;
  */
 public class STDCreepSpawnerFactory {
 
-    private EnemyState cs;
+    private GraphicsState gs;
+    private AssetManager assetManager;
 
-    public STDCreepSpawnerFactory(EnemyState _cs) {
-        cs = _cs;
+    public STDCreepSpawnerFactory(GraphicsState gs) {
+        this.gs = gs;
+        this.assetManager = this.gs.getAssetManager();
     }
 
-    public Spatial getSpawner(int index, String creepSpawnerMat,
-            Vector3f spawnervec, String direction) {
+    public CreepSpawnerParams getSpawner(CreepSpawnerParams csp) {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1, 1, 1));
-        spawner_geom.setMaterial(cs.getAssetManager().loadMaterial(
-                "Materials/" + cs.getMatDir() + "/" + creepSpawnerMat + ".j3m"));
-        if (spawnervec.getY() == 0) {
-            spawner_geom.setLocalScale(0.5f, 1.0f, 0.25f);
-        } else {
-            spawner_geom.setLocalScale(1.0f, 0.5f, 0.25f);
+        spawner_geom.setMaterial(assetManager.loadMaterial(gs.getCreepSpawnerMatLoc()));
+        spawner_geom.setLocalTranslation(csp.getVec());
+        System.out.println("here");
+        if (csp.getOrientation().equals("horizontal")) {
+            spawner_geom.setLocalScale(gs.getCreepSpawnerHorizontalScale());            
+        } else if (csp.getOrientation().equals("vertical")) {
+            spawner_geom.setLocalScale(gs.getCreepSpawnerVerticalScale());            
         }
-        spawner_geom.setLocalTranslation(spawnervec);
-
         Spatial spawner = spawner_geom;
-        spawner.addControl(new STDSpawnerControl(cs));
-        spawner.setUserData("Index", index);
-        return spawner;
+        csp.setSpatial(spawner);
+        csp.setIndex();
+        CreepSpawnerControl csc = new CreepSpawnerControl(gs.getEnemyState());
+        spawner.addControl(csc);
+        csp.setControl(csc);
+        return csp;
     }
 }

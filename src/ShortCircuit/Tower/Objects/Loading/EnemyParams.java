@@ -21,11 +21,9 @@ public class EnemyParams {
     private HashMap<String, CreepSpawnerParams> creepSpawnerMap;
 
 
-    public EnemyParams(ArrayList<CreepParams> creepList, ArrayList<CreepSpawnerParams> creepSpawnerList) {
+    public EnemyParams(ArrayList<CreepParams> creepList) {
         this.creepList = creepList;
         this.creepMap = new HashMap<String, CreepParams>();
-        this.creepSpawnerList = creepSpawnerList;
-        this.creepSpawnerMap = new HashMap<String, CreepSpawnerParams>();
         parseCreeps();
     }
     
@@ -43,7 +41,4 @@ public class EnemyParams {
         return creepMap.keySet();
     }
     
-    public ArrayList<Vector3f> getCreepSpawnerVecs() {
-        return null;
-    }
 }

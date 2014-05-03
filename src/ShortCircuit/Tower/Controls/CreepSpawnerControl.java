@@ -17,12 +17,12 @@ import java.io.IOException;
  * down other spawners (Juliya's idea)
  * @author Connor Rice
  */
-public class STDSpawnerControl extends AbstractControl {
+public class CreepSpawnerControl extends AbstractControl {
     
-    private EnemyState CreepState;
+    private EnemyState EnemyState;
 
-    public STDSpawnerControl(EnemyState _cstate) {
-        CreepState = _cstate;
+    public CreepSpawnerControl(EnemyState _cstate) {
+        EnemyState = _cstate;
     }
     
     /**
@@ -33,10 +33,10 @@ public class STDSpawnerControl extends AbstractControl {
      */
     @Override
     protected void controlUpdate(float tpf) {
-        if (CreepState.getNextSpawner() == getIndex()) {
-            if (CreepState.getCreepListSize() < CreepState.getNumCreepsByLevel()) {
-                CreepState.startSTDCreep(spatial.getLocalTranslation(), getIndex());
-                CreepState.goToNextSpawner();
+        if (EnemyState.getNextSpawner() == getIndex()) {
+            if (EnemyState.getCreepListSize() < EnemyState.getNumCreepsByLevel()) {
+                EnemyState.startSTDCreep(spatial.getLocalTranslation(), getIndex());
+                EnemyState.goToNextSpawner();
             }
         }
     }
@@ -55,7 +55,7 @@ public class STDSpawnerControl extends AbstractControl {
     
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        STDSpawnerControl control = new STDSpawnerControl(CreepState);
+        CreepSpawnerControl control = new CreepSpawnerControl(EnemyState);
         return control;
     }
     
