@@ -22,7 +22,7 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter MillionDollars;
     private Screen screen;
     private Window CheatWindow;
-    private Vector2f buttonSize = new Vector2f(200, 100);
+    private Vector2f buttonSize;
     public int width;
     public int height;
     private ButtonAdapter BillionDollars;
@@ -32,18 +32,13 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter DollaBillz;
     private ButtonAdapter SuperMedic;
     private ButtonAdapter SuperDeath;
+    private int tenthHeight;
+    private int tenthWidth;
+    private int leftButtons;
+    private float rightButtons;
 
-    /**
-     * Constructor takes no input parameters.
-     */
-    public CheatGUI() {
-    }
+    public CheatGUI() {}
 
-    /**
-     * Initialize CheatGUI State.
-     * @param stateManager
-     * @param app 
-     */
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -53,12 +48,10 @@ public class CheatGUI extends AbstractAppState {
         width = this.app.getContext().getSettings().getWidth();
         height = this.app.getContext().getSettings().getHeight();
         initScreen();
+        getScalingDimensions();
         setupGUI();
     }
 
-    /**
-     * Initializes ToneGodGUI Screen and attaches to guiNode.
-     */
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
@@ -78,6 +71,14 @@ public class CheatGUI extends AbstractAppState {
         dollaBillz();
         superMedic();
         superDeath();
+    }
+    
+    private void getScalingDimensions() {
+        tenthHeight = height/10;
+        tenthWidth = width/10;
+        buttonSize = new Vector2f(tenthWidth*1.75f, tenthHeight);
+        leftButtons = 10;
+        rightButtons = width - tenthWidth*1.75f - 10;
     }
 
     /**
