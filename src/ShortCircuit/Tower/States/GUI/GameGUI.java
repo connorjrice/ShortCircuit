@@ -143,8 +143,6 @@ public class GameGUI extends AbstractAppState {
         buttonSize = new Vector2f(tenthWidth*1.75f, tenthHeight);
         leftButtons = 10;
         rightButtons = width - tenthWidth*1.75f - 10;
-        
-        
     }
 
     

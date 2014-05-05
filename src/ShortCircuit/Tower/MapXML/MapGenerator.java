@@ -41,8 +41,8 @@ public class MapGenerator {
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
         this.level = level;
-        //this.inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
-        this.inputSource = getInputSource();
+        this.inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
+        //this.inputSource = getInputSource();
     }
     
     private InputSource getInputSource() {
