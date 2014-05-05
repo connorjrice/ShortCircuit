@@ -23,8 +23,5 @@ public class STCNode<E>{
     public STCNode<E> getBottom() {
         return bottom;
     }
-    public void nullify() {
-        element = null;
-    }
     
 }

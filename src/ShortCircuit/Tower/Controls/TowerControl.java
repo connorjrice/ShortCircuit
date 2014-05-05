@@ -2,7 +2,6 @@ package ShortCircuit.Tower.Controls;
 
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.STCCreepCompare;
-import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.States.Game.GraphicsState;
 import ShortCircuit.Tower.Objects.Game.Charges;
 import ShortCircuit.Tower.States.Game.FriendlyState;
@@ -25,8 +24,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * Control for user-controlled towers.
- * TODO: Documentation for TowerParams
+ * Control for user-controlled towers. TODO: Documentation for TowerParams
+ *
  * @author Connor Rice
  */
 public class TowerControl extends AbstractControl {
@@ -55,6 +54,7 @@ public class TowerControl extends AbstractControl {
         cc = new STCCreepCompare(towerloc);
         this.towerloc = towerloc;
         this.ex = FriendlyState.getEx();
+        // TODO: Remove emptySound from TowerControl
         emptySound = new AudioNode(FriendlyState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
 
@@ -80,30 +80,24 @@ public class TowerControl extends AbstractControl {
                 }
             }
         } else {
-            emptyTower();
+            setTowerEmpty();
         }
 
     }
 
-    public void disableTower() {
-        isActive = false;
-    }
-
     public void globTower() {
-        isActive = false;
+        setInactive();
         FriendlyState.getGlobbedTowerList().add(getIndex());
         isGlobbed = true;
     }
 
-    public void enableTower() {
-        if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
-            isActive = true;
-        }
+    public void setActive() {
+        isActive = true;
     }
 
     public void unglobTower() {
         if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
-            isActive = true;
+            setActive();
         }
         isGlobbed = false;
         if (FriendlyState.getGlobbedTowerList().indexOf(getIndex()) != -1) {
@@ -120,15 +114,14 @@ public class TowerControl extends AbstractControl {
     }
 
     /*private void excludeCreeps() {
-        ArrayList<CreepSpawnerParams> creepSpawners = FriendlyState.getCreepSpawnerList();
-        allowedSpawners = new int[creepSpawners.size()];
-        for (int i = 0; i < creepSpawners.size(); i++) {
-            if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
-                allowedSpawners[i] = creepSpawners.get(i).getUserData("Parent");
-            }
-        }
-    }*/
-
+     ArrayList<CreepSpawnerParams> creepSpawners = FriendlyState.getCreepSpawnerList();
+     allowedSpawners = new int[creepSpawners.size()];
+     for (int i = 0; i < creepSpawners.size(); i++) {
+     if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
+     allowedSpawners[i] = creepSpawners.get(i).getUserData("Parent");
+     }
+     }
+     }*/
     public int[] getAllowedSpawners() {
         return allowedSpawners;
     }
@@ -178,18 +171,19 @@ public class TowerControl extends AbstractControl {
         }
     };
 
-    protected void emptyTower() {
+    protected void setTowerEmpty() {
+        setInactive();
         emptySound.play();
-        GraphicsState.emptyTowerTexture(this);
-        /*if (!FriendlyState.getEmptyTowers().contains(spatial)) {
-            FriendlyState.addEmptyTower(spatial);
-        }*/
+        GraphicsState.towerTextureEmpty(this);
+        if (!FriendlyState.getEmptyTowers().contains(this)) {
+            FriendlyState.addEmptyTower(this);
+        }
     }
 
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(RegCreepControl.class) != null) {
-                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(), 
+                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(),
                         getTowerType(), getBeamWidth());
                 if (reachable.peek()
                         .getControl(RegCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
@@ -206,15 +200,11 @@ public class TowerControl extends AbstractControl {
     public void setBuilt() {
         isActive = true;
     }
-    
-    public void setUnbuilt() {
+
+    public void setInactive() {
         isActive = false;
     }
 
-    public void addInitialCharges() {
-        charges.add(new Charges("tower1"));
-    }
-    
     public void setBeamWidth(float beamwidth) {
         this.beamwidth = beamwidth;
     }
@@ -226,9 +216,9 @@ public class TowerControl extends AbstractControl {
     public int getIndex() {
         return spatial.getUserData("Index");
     }
-    
-    public boolean getIsEmpty() {
-        return charges.isEmpty();
+
+    public boolean getIsActive() {
+        return isActive;
     }
 
     public String getBeamType() {
@@ -247,12 +237,11 @@ public class TowerControl extends AbstractControl {
         spatial.setUserData("Type", newtype);
     }
 
-    public void setSize(Vector3f size) {
-        spatial.setLocalScale(size);
-    }
-    
     public void addCharges() {
         charges.add(new Charges(getTowerType()));
+        if (!isGlobbed) {
+            setActive();
+        }
     }
 
     @Override
@@ -261,7 +250,8 @@ public class TowerControl extends AbstractControl {
 
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        TowerControl control = new TowerControl(FriendlyState, towerloc);
+        return control;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class TowerDowngrade implements Runnable {
                 tower.setType("Tower" + type);
                 if (type.equals("Unbuilt")) {
                     tower.getControl().charges.clear();
-                    tower.getControl().setUnbuilt();
+                    tower.getControl().setInactive();
                     tower.setScale(fs.getTowerUnbuiltSize());
                 } else {
                     int oldnumcharges = tower.getControl().charges.size();
@@ -66,7 +66,7 @@ public class TowerDowngrade implements Runnable {
                     }
                     tower.setScale(fs.getTowerBuiltSize());
                 }
-                tower.getSpatial().setMaterial(fs.getAssetManager().loadMaterial(matLoc));
+                fs.towerTextureCharged(tower);
 
                 valid = false;
                 victimIndex = -1;

@@ -1,12 +1,13 @@
 package ShortCircuit.Tower.Controls;
 
-import ShortCircuit.Tower.States.Game.GameState;
+import ShortCircuit.Tower.States.Game.AudioState;
 import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -32,15 +33,15 @@ public class BombControl extends AbstractControl {
     private Future future;
     private GraphicsState gs;
     private ScheduledThreadPoolExecutor ex;
-    private AudioNode bombsound;
+
+    private AudioState as;
     
     
-    public BombControl(float size, GraphicsState gs) {
+    public BombControl(float size, GraphicsState gs, AudioState as) {
         bombSize = size; // Initial size of bomb
         this.gs = gs;    // Game state
+        this.as = as;
         this.ex = gs.getEx();
-        bombsound = new AudioNode(gs.getAssetManager(), "Audio/bomb.wav");
-        playSound(); // We want to begin the sound when a control has been made
     }
     
     /**
@@ -81,26 +82,15 @@ public class BombControl extends AbstractControl {
          * the bomb's spatial, and remove this control.
          */
         else {
-            stopSound();
+            as.stopBombSound();
             spatial.removeFromParent();
             spatial.removeControl(this);
         }
     }
     
-    /**
-     * Plays the bomb sound. Not an instance, because each bomb has it's own
-     * control.
-     */
-    private void playSound() {
-        bombsound.play();
-    }
 
-    /**
-     * Stop the bomb sound.
-     */
-    private void stopSound() {
-        bombsound.stop();
-    }
+
+
     
     /**
      * Uses threading to find collisions between the bomb and the creeps.
@@ -179,13 +169,11 @@ public class BombControl extends AbstractControl {
     
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        //Only needed for rendering-related operations,
-        //not called when spatial is culled.
     }
     
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        BombControl control = new BombControl(.1f, gs);
+        BombControl control = new BombControl(.1f, gs, as);
         control.setSpatial(spatial);
         return control;
     }

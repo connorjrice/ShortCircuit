@@ -10,9 +10,10 @@ import ShortCircuit.Tower.States.Game.FriendlyState;
  */
 public class TowerCharge implements Runnable {
 
-    private final int chargeCost = 10;
+    private int chargeCost = 10;
     private FriendlyState fs;
     private TowerParams tp;
+    private boolean free;
 
     /**
      * Constructor, takes GameState class as input.
@@ -28,17 +29,23 @@ public class TowerCharge implements Runnable {
      * the necessary operations to upgrade the tower.
      */
     public void run() {
-        if (fs.getPlrBudget() >= chargeCost && !tp.getType().equals("TowerUnbuilt")) {
-            fs.changeTowerTexture(tp);
+        if (free) {
+            fs.towerTextureCharged(tp);
             tp.getControl().addCharges();
-            fs.decPlrBudget(chargeCost);
             fs.playChargeSound();
-            tp = null;
-        }
+        } else {
+            if (fs.getPlrBudget() >= chargeCost && !tp.getType().equals("TowerUnbuilt")) {
+                fs.towerTextureCharged(tp);
+                tp.getControl().addCharges();              
+                fs.decPlrBudget(chargeCost);
+                fs.playChargeSound();
 
+            }
+        }
     }
 
-    public void setTower(TowerParams _tp) {
+    public void setTower(TowerParams _tp, boolean free) {
         tp = _tp;
+        this.free = free;
     }
 }

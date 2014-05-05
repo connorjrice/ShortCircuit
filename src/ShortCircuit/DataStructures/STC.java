@@ -47,11 +47,9 @@ public class STC<E extends Spatial> {
                 size += 1;
             } else {
                 if (creepComp.compare(root.getElement(), newNode.getElement()) == 1) {
-                    root.getBottom().getBottom().nullify();
                     newNode.setBottom(root);
                     root = newNode;
                 } else if (creepComp.compare(root.getBottom().getElement(), newNode.getElement()) == 1) {
-                    root.getBottom().getBottom().nullify();
                     newNode.setBottom(root.getBottom());
                     root.setBottom(newNode);
                 } else if (creepComp.compare(root.getBottom().getBottom().getElement(), newNode.getElement()) == 1) {

@@ -6,7 +6,9 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioSource;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
  * This class controls all audio manipulation and playing.
@@ -30,10 +32,13 @@ public class AudioState extends AbstractAppState {
     /* GameState Nodes */
     private AudioNode levelUpSound;
     private AudioNode globPop;
+    private AudioNode bombsound;
 
     /* TowerState Nodes */
     private AudioNode chargeSound;
     private AudioNode buildSound;
+    private AudioNode bombsound2;
+    
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -60,6 +65,8 @@ public class AudioState extends AbstractAppState {
         globPop = new AudioNode(assetManager, "Audio/globpop.wav");
         chargeSound = new AudioNode(assetManager, "Audio/chargegam.wav");
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
+        bombsound = new AudioNode(assetManager, "Audio/bomb.wav");
+        bombsound2 = new AudioNode(assetManager, "Audio/bomb.wav");
 
     }
     
@@ -142,6 +149,30 @@ public class AudioState extends AbstractAppState {
     public void buildSound(float pitch) {
         buildSound.setPitch(pitch);
         buildSound.playInstance();
+    }
+    
+    /**
+     * Plays the bomb sound.
+     */
+    public void playBombSound(Vector3f trans) {
+        if (bombsound.getStatus().equals(AudioSource.Status.Playing)) {
+            bombsound2.setLocalTranslation(trans);
+            bombsound2.play();
+        } else {
+            bombsound.setLocalTranslation(trans);
+            bombsound.play();
+        }
+    }
+    
+    /**
+     * Stop the bomb sound.
+     */
+    public void stopBombSound() {
+        if (bombsound.getStatus().equals(AudioSource.Status.Playing)) {
+            bombsound.stop();
+        } else {
+            bombsound2.stop();
+        }
     }
     
     public void themeLoop() {

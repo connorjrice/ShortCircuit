@@ -1,7 +1,7 @@
 package ShortCircuit.Tower.States.Game;
 
 import ShortCircuit.Tower.Controls.ChargerControl;
-import ShortCircuit.Tower.Factories.TowerFactory;
+import ShortCircuit.Tower.Controls.TowerControl;
 import ShortCircuit.Tower.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Threading.TowerCharge;
@@ -21,67 +21,53 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * This state controls the spawning and operation of friendly NPCS.
- * Currently, the goal is the implementation of the Charger NPC.
+ * This state controls the spawning and operation of friendly NPCS. Currently,
+ * the goal is the implementation of the Charger NPC.
+ *
  * @author Connor
  */
 public class FriendlyState extends AbstractAppState {
 
     private SimpleApplication app;
-    private GameState GameState;
     private EnemyState EnemyState;
     private Node worldNode;
     private AssetManager assetManager;
-    
-    private ArrayList<TowerParams> emptyTowers;
+    private ArrayList<TowerControl> emptyTowers;
     private ArrayList<Spatial> activeChargers;
-    
-    private Node towerNode = new Node("Tower");
-    
-    private ArrayList<Integer> globbedTowers = new ArrayList<Integer>();
-    
-    private TowerFactory tf;
+    private ArrayList<Integer> globbedTowers; 
     private TowerCharge tcr;
     private TowerUpgrade tur;
     private TowerDowngrade tdr;
-    
     public int selectedTower = -1;
-    
-
-    private Sphere chargerSphere = new Sphere(32,32,1f);
-    
-    private float updateTimer = 0f;
+    private Sphere chargerSphere = new Sphere(32, 32, 1f);
     private AppStateManager stateManager;
-    private FriendlyState FriendlyState;
     private AudioState AudioState;
     private GraphicsState GraphicsState;
     private ArrayList<TowerParams> towerList;
-    
+    private GameState GameState;
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.stateManager = this.app.getStateManager();
-        this.GameState = this.stateManager.getState(GameState.class);
+        this.assetManager = this.app.getAssetManager();
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
-        this.worldNode = this.GameState.getWorldNode();
-        this.assetManager = this.app.getAssetManager();
+        this.GameState = this.stateManager.getState(GameState.class);
+        this.worldNode = this.GraphicsState.getWorldNode();
+
         initLists();
         initRunnables();
     }
-    
-    private void initLists() {
-        emptyTowers = new ArrayList<TowerParams>();
-        activeChargers = new ArrayList<Spatial>();
-    }
-    
-    @Override
-    public void update(float tpf) {
 
+    private void initLists() {
+        emptyTowers = new ArrayList<TowerControl>();
+        activeChargers = new ArrayList<Spatial>();
+        globbedTowers = new ArrayList<Integer>();
     }
-    
+
     public void setTowerList(ArrayList<TowerParams> listIn) {
         towerList = listIn;
     }
@@ -91,13 +77,10 @@ public class FriendlyState extends AbstractAppState {
         tcr = new TowerCharge(this);
         tdr = new TowerDowngrade(this);
     }
-    
-    public void attachTowerNode() {
-        worldNode.attachChild(towerNode);
-    }
 
     /**
      * Modifies the size of a tower at tindex.
+     *
      * @param tindex - index of the tower to be modified. Then, sets
      * selectedTower to be tindex for other methods to access.
      */
@@ -132,23 +115,24 @@ public class FriendlyState extends AbstractAppState {
      */
     public void chargeTower() {
         if (getSelected() != -1) {
-            tcr.setTower(towerList.get(getSelected()));
+            tcr.setTower(towerList.get(getSelected()), false);
             tcr.run();
-            if (getEmptyTowers().contains(towerList.get(getSelected()))) {
-                getEmptyTowers().remove(towerList.get(getSelected()));
-            }
+
         }
     }
 
     /**
      * Charging method used by player-friendly charger NPC.
+     *
      * @param index - index of tower being charged by charger.
      */
     public void chargeTower(int index) {
         if (index != -1) {
-            GraphicsState.changeTowerTexture(towerList.get(index));
-            towerList.get(index).getControl().addCharges();
-            playChargeSound();
+            tcr.setTower(towerList.get(index), true);
+            tcr.run();
+            if (getEmptyTowers().contains(towerList.get(index).getControl())) {
+                getEmptyTowers().remove(towerList.get(index).getControl());
+            }
         }
     }
 
@@ -156,6 +140,11 @@ public class FriendlyState extends AbstractAppState {
         if (selectedTower != -1) {
             tur.run();
         }
+    }
+
+    public void upgradeTower(TowerParams tp) {
+        tur.setManualTower(tp);
+        tur.run();
     }
 
     public void downgradeTower() {
@@ -169,9 +158,12 @@ public class FriendlyState extends AbstractAppState {
         return towerList.get(selectedTower).getType();
     }
 
+    public void towerTextureCharged(TowerControl tower) {
+        GraphicsState.towerTextureCharged(tower);
+    }
 
-    public void changeTowerTexture(TowerParams tower) {
-        GraphicsState.changeTowerTexture(tower);
+    public void towerTextureCharged(TowerParams tower) {
+        GraphicsState.towerTextureCharged(tower);
     }
 
     public void playChargeSound() {
@@ -189,11 +181,11 @@ public class FriendlyState extends AbstractAppState {
     public String getMatDir() {
         return GraphicsState.getMatDir();
     }
-    
+
     public ArrayList<TowerParams> getTowerList() {
         return towerList;
     }
-    
+
     public Vector3f getTowerBuiltSize() {
         return GraphicsState.getTowerBuiltSize();
     }
@@ -202,17 +194,14 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getTowerUnbuiltSize();
     }
 
-
-
     public ArrayList<Integer> getGlobbedTowerList() {
         return globbedTowers;
     }
 
     /**
-     * These are methods that are needed by factories to access GameState,
-     * Not Used internally.
+     * These are methods that are needed by factories to access GameState, Not
+     * Used internally.
      */
-    
     public int getSelected() {
         return selectedTower;
     }
@@ -229,17 +218,11 @@ public class FriendlyState extends AbstractAppState {
         GameState.decPlrBudget(cost);
     }
 
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-
-        /**
-     * These are methods that are used by TowerParams, 
-     * Not used internally.
+    /**
+     * These are methods that are used by TowerParams, Not used internally.
      */
-    
     public ScheduledThreadPoolExecutor getEx() {
-        return GameState.getEx();
+        return GraphicsState.getEx();
     }
 
     public SimpleApplication getApp() {
@@ -255,86 +238,77 @@ public class FriendlyState extends AbstractAppState {
     }
 
     /**
-     * These are methods that are used by GameState, 
-     * Not used internally.
-     */
-    
-    public int getSelectedTowerIndex() {
-        return selectedTower;
-    }
-    
-    /**
      * Creates the charger spatial and adds the user data to it. Assigns
-     * material and translation, then calls addNewCharger() to finish adding
-     * it to the game.
+     * material and translation, then calls addNewCharger() to finish adding it
+     * to the game.
      */
     public void createCharger() {
         Spatial charger = new Geometry("Charger", chargerSphere);
         charger.setUserData("RemainingCharges", 10);
         charger.setUserData("Health", 100);
-        charger.setMaterial(assetManager.loadMaterial("Materials/Plain/Base.j3m"));
-        charger.setLocalTranslation(GraphicsState.getBaseVec().add(0,0,1f));
+        charger.setMaterial(assetManager.loadMaterial("Materials/Neon/Tower4.j3m"));
+        charger.setLocalTranslation(GraphicsState.getBaseVec().add(0, 0, 2f));
+        //charger.setLocalTranslation(new Vector3f(0,0,2f));
         addNewCharger(charger);
     }
 
     /*
      * Adds an empty tower to the list of towers that need to be charged.
      */
-    public void addEmptyTower(TowerParams empty) {
+    public void addEmptyTower(TowerControl empty) {
         if (!emptyTowers.contains(empty)) {
             emptyTowers.add(empty);
         }
-
     }
-    
+
     /**
      * Clears the list of empty towers.
      */
     public void clearEmptyTowers() {
         emptyTowers.clear();
     }
-    
+
     /**
      * Returns the list of all active chargers as an arraylist of spatials.
+     *
      * @return activeChargers, the list of active charger NPC's
      */
     public ArrayList<Spatial> getActiveChargers() {
         return activeChargers;
     }
-    
-    public ArrayList<TowerParams> getEmptyTowers() {
+
+    public ArrayList<TowerControl> getEmptyTowers() {
         return emptyTowers;
     }
-    
+
     /**
      * Clears the list of all active chargers.
      */
     public void clearActiveChargers() {
         activeChargers.clear();
     }
-    
+
     public Vector3f getHomeVec() {
-        return GraphicsState.getBaseVec().add(0f,0f,1f);
+        return GraphicsState.getBaseVec().add(0f, 0f, 1f);
     }
-    
+
     /**
-     * Adds a new charger to the worldNode after adding control and creating
-     * a reference to the charger in the active charger list.
-     * @param charger 
+     * Adds a new charger to the worldNode after adding control and creating a
+     * reference to the charger in the active charger list.
+     *
+     * @param charger
      */
     private void addNewCharger(Spatial charger) {
+        System.out.println("Charger added: " + charger.getName());
         charger.addControl(new ChargerControl(this));
         activeChargers.add(charger);
         worldNode.attachChild(charger);
     }
-    
-    
+
     @Override
     public void cleanup() {
         super.cleanup();
         clearActiveChargers();
         clearEmptyTowers();
-        towerNode.detachAllChildren();
-
     }
 }

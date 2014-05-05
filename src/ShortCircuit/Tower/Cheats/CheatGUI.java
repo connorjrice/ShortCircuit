@@ -22,7 +22,7 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter MillionDollars;
     private Screen screen;
     private Window CheatWindow;
-    private Vector2f buttonSize;
+    private Vector2f menuButtonSize;
     public int width;
     public int height;
     private ButtonAdapter BillionDollars;
@@ -34,8 +34,6 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter SuperDeath;
     private int tenthHeight;
     private int tenthWidth;
-    private int leftButtons;
-    private float rightButtons;
 
     public CheatGUI() {}
 
@@ -76,9 +74,7 @@ public class CheatGUI extends AbstractAppState {
     private void getScalingDimensions() {
         tenthHeight = height/10;
         tenthWidth = width/10;
-        buttonSize = new Vector2f(tenthWidth*1.75f, tenthHeight);
-        leftButtons = 10;
-        rightButtons = width - tenthWidth*1.75f - 10;
+        menuButtonSize = new Vector2f(tenthWidth*1.75f, tenthHeight).divide(1.5f);
     }
 
     /**
@@ -99,7 +95,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void millionButton() {
         MillionDollars = new ButtonAdapter(screen, "Millions",
-                new Vector2f(10, 35), buttonSize) {
+                new Vector2f(10, 35), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -116,7 +112,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void billionButton() {
         BillionDollars = new ButtonAdapter(screen, "Billions",
-                new Vector2f(210, 35), buttonSize) {
+                new Vector2f(210, 35), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -133,7 +129,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void ammoH4KZ() {
         AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ",
-                new Vector2f(410, 35), buttonSize) {
+                new Vector2f(410, 35), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -149,7 +145,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void hackyTowers() {
         TowerHack = new ButtonAdapter(screen, "TowerHack",
-                new Vector2f(610, 35), buttonSize) {
+                new Vector2f(610, 35), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -165,7 +161,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void dollaBillz() {
         DollaBillz = new ButtonAdapter(screen, "MoneyGack",
-                new Vector2f(10, 135), buttonSize) {
+                new Vector2f(10, 135), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -181,7 +177,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void superMedic() {
         SuperMedic = new ButtonAdapter(screen, "MuchMedic",
-                new Vector2f(210, 135), buttonSize) {
+                new Vector2f(210, 135), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -197,7 +193,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void superDeath() {
         SuperDeath = new ButtonAdapter(screen, "MuchHurt",
-                new Vector2f(410, 135), buttonSize) {
+                new Vector2f(410, 135), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {

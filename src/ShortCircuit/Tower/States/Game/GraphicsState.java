@@ -304,16 +304,20 @@ public class GraphicsState extends AbstractAppState {
         }
     }
     
-    public void changeTowerTexture(TowerParams tp) {
+    public void towerTextureCharged(TowerParams tp) {
         tp.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tp.getType())));
     }
     
-    public void changeTowerTexture(TowerControl tc) {
+    public void towerTextureCharged(TowerControl tc) {
         tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tc.getTowerType())));
     }
     
-    public void emptyTowerTexture(TowerControl tc) {
+    public void towerTextureEmpty(TowerControl tc) {
         tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc("TowerEmpty")));
+    }
+    
+    public void towerUpgradeStarter(TowerParams tp) {
+        FriendlyState.upgradeTower(tp);
     }
     
     
@@ -373,8 +377,11 @@ public class GraphicsState extends AbstractAppState {
         bomb_geom.setMaterial(bomb_mat);
         bomb_geom.setLocalScale(initialSize);
         bomb_geom.setLocalTranslation(translation);
-        bomb_geom.addControl(new BombControl(initialSize, this));
+
+        bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
         worldNode.attachChild(bomb_geom);
+        AudioState.playBombSound(translation);
+
     }
     
     public Sphere getBombMesh() {
@@ -426,6 +433,10 @@ public class GraphicsState extends AbstractAppState {
     
     public Vector3f getCamLocation() {
         return cam.getLocation();
+    }
+    
+    public Node getWorldNode() {
+        return worldNode;
     }
     
     @Override

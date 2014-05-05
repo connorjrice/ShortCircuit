@@ -7,7 +7,6 @@ import ShortCircuit.Tower.States.Game.GameState;
 import ShortCircuit.Tower.States.Game.FriendlyState;
 import ShortCircuit.Tower.States.Game.GraphicsState;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
  * @author Connor Rice
  */
 public class CheatState extends AbstractAppState {
-    private SimpleApplication app;
     private GameState GameState;
     private FriendlyState FriendlyState;
     
@@ -32,10 +30,9 @@ public class CheatState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
-        this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
-        this.GraphicsState = this.app.getStateManager().getState(GraphicsState.class);
+        this.GameState = stateManager.getState(GameState.class);
+        this.FriendlyState = stateManager.getState(FriendlyState.class);
+        this.GraphicsState = stateManager.getState(GraphicsState.class);
     }
     
     /**
@@ -99,7 +96,7 @@ public class CheatState extends AbstractAppState {
             TowerParams tp = towerList.get(i);
             addPurptoPurp(tp.getControl());
             tp.setType("Tower4");
-            GraphicsState.changeTowerTexture(tp);
+            GraphicsState.towerTextureCharged(tp);
         }
     }
     /**
@@ -123,8 +120,8 @@ public class CheatState extends AbstractAppState {
             TowerParams tower = towerList.get(i);
             addBadAsstoBadAss(tower.getControl());
             tower.getControl().setBuilt();                    
-            tower.setType("globpop");
-            GraphicsState.changeTowerTexture(tower);
+            tower.setType("Tower4");
+            GraphicsState.towerTextureCharged(tower);
         }
     }
     

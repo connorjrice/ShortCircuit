@@ -22,40 +22,21 @@ public class TowerFactory {
 
     public TowerParams getTower(TowerParams tp) {
         Geometry tower_geom = new Geometry("Tower", gs.getUnivBox());
+        String matloc = gs.getTowerMatLoc("TowerUnbuilt");
+        tower_geom.setMaterial(assetManager.loadMaterial(matloc));
+        tower_geom.setLocalScale(gs.getTowerUnbuiltSize());
+        tower_geom.setLocalTranslation(tp.getTowerVec());
+        Spatial tower = tower_geom;
+        tp.setSpatial(tower);
+        tp.setType("TowerUnbuilt");
+        tp.setIndex();
+        TowerControl control = new TowerControl(gs.getFriendlyState(), tp.getTowerVec());
+        tower.addControl(control);
+        control.setBeamWidth(gs.getGeometryParams().getBeamWidth());
+        tp.setControl(control);
         if (tp.getIsStarter()) {
-            String matloc = gs.getTowerMatLoc("Tower1");
-            tower_geom.setMaterial(assetManager.loadMaterial(matloc));
-            tower_geom.setLocalScale(gs.getTowerBuiltSize());
-            tower_geom.setLocalTranslation(tp.getTowerVec());
-            Spatial tower = tower_geom;
-            tp.setSpatial(tower);
-            tp.setType("Tower1");
-            tp.setIndex();
-            TowerControl control = new TowerControl(gs.getFriendlyState(), tp.getTowerVec());
-            tower.addControl(control);
-            control.addCharges();
-            control.setBuilt();
-            control.setBeamWidth(gs.getGeometryParams().getBeamWidth());
-            tp.setControl(control);
-
-        } else {
-            String matloc = gs.getTowerMatLoc("TowerUnbuilt");
-            tower_geom.setMaterial(assetManager.loadMaterial(matloc));
-            tower_geom.setLocalScale(gs.getTowerUnbuiltSize());
-            tower_geom.setLocalTranslation(tp.getTowerVec());
-            Spatial tower = tower_geom;
-            tp.setSpatial(tower);
-            tp.setType("TowerUnbuilt");
-            tp.setIndex();
-            TowerControl control = new TowerControl(gs.getFriendlyState(), tp.getTowerVec());
-            tower.addControl(control);
-            control.setBeamWidth(gs.getGeometryParams().getBeamWidth());
-            tp.setControl(control);
+            gs.towerUpgradeStarter(tp);
         }
-
-
-
-
         return tp;
     }
     

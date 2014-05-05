@@ -29,7 +29,6 @@ public class ChargerControl extends AbstractControl {
     public ChargerControl(FriendlyState _fs) {
         FriendlyState = _fs;
         moveamount = .04f;
-        setIsHome(true);
     }
     
     @Override
@@ -43,7 +42,7 @@ public class ChargerControl extends AbstractControl {
         }
         else {
             if (destTower == null) {
-                destTower = FriendlyState.getEmptyTowers().get(0).getControl();
+                destTower = FriendlyState.getEmptyTowers().get(0);
                 moveTowardsTower();
             } else {
                 moveTowardsTower();
@@ -53,7 +52,7 @@ public class ChargerControl extends AbstractControl {
     
     
     private void moveTowardsTower() {
-        if (destTower.getIsEmpty()) {
+        if (!destTower.getIsActive()) {
             if (!spatial.getWorldBound().intersects(destTower.getSpatial()
                     .getWorldBound())) {
                 
@@ -67,14 +66,14 @@ public class ChargerControl extends AbstractControl {
         }
         else {
             moveTowardsHome();
-            FriendlyState.getEmptyTowers().remove(destTower.getSpatial());
+            FriendlyState.getEmptyTowers().remove(destTower);
         }
     }
     
 
     private void chargeTower() {
         FriendlyState.chargeTower(getTowerIndex());
-        FriendlyState.getEmptyTowers().remove(destTower.getSpatial());
+        FriendlyState.getEmptyTowers().remove(destTower);
         decRemCharges();
         moveamount = .04f;
         destTower = null;

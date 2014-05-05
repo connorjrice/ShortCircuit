@@ -42,7 +42,7 @@ public class GlobControl extends AbstractControl {
     }
 
     protected void enableVictimTower() {
-        getVictimTower().getControl().enableTower();
+        getVictimTower().getControl().setActive();
     }
 
     protected void unglobTower() {

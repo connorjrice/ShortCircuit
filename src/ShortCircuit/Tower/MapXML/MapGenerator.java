@@ -243,7 +243,7 @@ public class MapGenerator {
     
     public String getValue(String expression) {
         try {
-            return xpath.evaluate(expression, getInputSource());
+            return xpath.evaluate(expression, inputSource);
         } catch (XPathExpressionException ex) {
             System.out.println(ex.getCause());
             return null;
