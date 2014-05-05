@@ -178,6 +178,7 @@ public class MapGenerator {
     }
 
     public ColorRGBA parseColorRGBA(String colors) {
+        System.out.println(colors);
         if (colors.equals("Black")) {
             return ColorRGBA.Black;
         } else if (colors.equals("DarkGrey")) {
@@ -242,7 +243,7 @@ public class MapGenerator {
     
     public String getValue(String expression) {
         try {
-            return xpath.evaluate(expression, inputSource);
+            return xpath.evaluate(expression, getInputSource());
         } catch (XPathExpressionException ex) {
             System.out.println(ex.getCause());
             return null;
