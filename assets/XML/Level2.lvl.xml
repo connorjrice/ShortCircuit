@@ -103,7 +103,7 @@
         </param>
         <param id = "materialParams">
             <matdir>Circuit</matdir>
-            <backgroundcolor>Red</backgroundcolor>
+            <bgcolor>Red</bgcolor>
         </param>
     </graphicsparams>
     <enemyparams>
@@ -136,7 +136,6 @@
         </param>
         <param id = "creepSpawnerParams">
             <numSpawners>2</numSpawners>
-
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>

@@ -16,9 +16,9 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * PENDING: Implment allowedenemies
- * TODO: Implement Digger and Ranger 
- * TODO: Retool main menu
+ * PENDING: Implment allowedenemies TODO: Implement Digger and Ranger TODO:
+ * Retool main menu
+ *
  * @author Connor Rice
  */
 public class GameState extends AbstractAppState {
@@ -26,27 +26,22 @@ public class GameState extends AbstractAppState {
     private EnemyState EnemyState;
     private SimpleApplication app;
     private Node rootNode;
-
-
     private float updateTimer = 0;
     public ScheduledThreadPoolExecutor ex;
     public int fours;
-
-
     private AppStateManager stateManager;
     private AudioState AudioState;
     private GameplayParams GameplayParams;
     private LevelParams lp;
     private PlayerParams pp;
-    
     private Node worldNode = new Node("World");
     private FriendlyState FriendlyState;
     private GraphicsState GraphicsState;
     private BoundingVolume baseBounds;
     private StartGUI startGUI;
 
-    public GameState() {}
-
+    public GameState() {
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -61,11 +56,12 @@ public class GameState extends AbstractAppState {
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.startGUI = this.stateManager.getState(StartGUI.class);
     }
-    
+
     /**
-     * This method assigns values to gameplay variables, and initializes
-     * the assets and factories for the game.
-     * @param gp 
+     * This method assigns values to gameplay variables, and initializes the
+     * assets and factories for the game.
+     *
+     * @param gp
      */
     public void setGameplayParams(GameplayParams gp) {
         this.lp = gp.getLevelParams();
@@ -90,8 +86,6 @@ public class GameState extends AbstractAppState {
         }
     }
 
-
-    
     public void attachWorldNode() {
         rootNode.attachChild(worldNode);
     }
@@ -188,99 +182,87 @@ public class GameState extends AbstractAppState {
         }
         return health;
     }
-    
-    
-    
-    
+
     public int getPlrHealth() {
         return pp.getHealth();
     }
-    
+
     public int getPlrBudget() {
         return pp.getBudget();
     }
-    
+
     public int getPlrLevel() {
         return pp.getLevel();
     }
-    
+
     public int getPlrScore() {
         return pp.getScore();
     }
 
-    
-    
     public void setPlrHealth(int h) {
         pp.setHealth(h);
     }
-    
+
     public void setPlrBudget(int b) {
         pp.setBudget(b);
     }
-    
+
     public void setPlrLevel(int l) {
         pp.setLevel(l);
     }
-    
+
     public void setPlrScore(int s) {
         pp.setScore(s);
     }
-    
-    
+
     public void incPlrHealth(int h) {
         pp.incHealth(h);
     }
-    
+
     public void incPlrBudget(int b) {
         pp.incBudget(b);
     }
-    
+
     public void incPlrLevel(int l) {
         pp.incLevel(l);
     }
-    
+
     public void incPlrScore(int s) {
         pp.incScore(s);
     }
-    
-    
+
     public void decPlrHealth(int h) {
         pp.decScore(h);
     }
-    
+
     public void decPlrBudget(int b) {
         pp.decBudget(b);
     }
-    
+
     public void decPlrLevel(int l) {
         pp.decLevel(l);
     }
-    
+
     public void decPlrScore(int s) {
         pp.decScore(s);
     }
 
-    
     public BoundingVolume getBaseBounds() {
         return baseBounds;
     }
-    
+
     public void setBaseBounds(BoundingVolume baseBounds) {
         this.baseBounds = baseBounds;
     }
-    
-    
+
     public void incLevelCap() {
         lp.incLevelCap();
     }
-    
-    
+
     public int getNumCreeps() {
         return lp.getNumCreeps();
     }
-    
- 
-    
+
     /**
      * TODO: Progress indication
      *
@@ -309,11 +291,11 @@ public class GameState extends AbstractAppState {
     public ScheduledThreadPoolExecutor getEx() {
         return ex;
     }
-    
+
     public String getAtlas() {
         return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
     }
-    
+
     public Node getWorldNode() {
         return worldNode;
     }

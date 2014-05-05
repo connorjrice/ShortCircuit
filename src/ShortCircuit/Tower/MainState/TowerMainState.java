@@ -31,7 +31,7 @@ public class TowerMainState extends AbstractAppState {
 
     private GameState GameState;
     private GraphicsState GraphicsState;
-    private EnemyState CreepState;
+    private EnemyState EnemyState;
     private FriendlyState FriendlyState;
     private LoadingState LoadingState;
     private CheatState CheatState;
@@ -94,7 +94,7 @@ public class TowerMainState extends AbstractAppState {
 
         GameState = new GameState();
         GraphicsState = new GraphicsState();
-        CreepState = new EnemyState();
+        EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
         
@@ -103,7 +103,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(AudioState);
         stateManager.attach(GameState);
         stateManager.attach(FriendlyState);
-        stateManager.attach(CreepState);
+        stateManager.attach(EnemyState);
         stateManager.attach(GraphicsState);
         stateManager.attach(CheatState);
         stateManager.attach(LoadingState);
@@ -113,6 +113,7 @@ public class TowerMainState extends AbstractAppState {
         if (profile) {
             ProfileState ps = new ProfileState();
             stateManager.attach(ps);
+            EnemyState.seedForProfile();
         }
     }
 
@@ -123,7 +124,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(GameGUI);
         stateManager.detach(GameState);
         stateManager.detach(FriendlyState);
-        stateManager.detach(CreepState);
+        stateManager.detach(EnemyState);
         stateManager.detach(GraphicsState);
         stateManager.detach(LoadingState);
         stateManager.detach(CheatState);
@@ -202,7 +203,7 @@ public class TowerMainState extends AbstractAppState {
         GameState.setEnabled(false);
         LoadingState.setEnabled(false);
         GraphicsState.setEnabled(false);
-        CreepState.setEnabled(false);
+        EnemyState.setEnabled(false);
         FriendlyState.setEnabled(false);
         HelperState.setEnabled(false);
     }
@@ -212,7 +213,7 @@ public class TowerMainState extends AbstractAppState {
      */
     public void enableTowerGameStates() {
         GameState.setEnabled(true);
-        CreepState.setEnabled(true);
+        EnemyState.setEnabled(true);
         LoadingState.setEnabled(true);
         GraphicsState.setEnabled(true);
         FriendlyState.setEnabled(true);
@@ -253,7 +254,7 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(GameGUI);
         asm.detach(GameState);
         asm.detach(FriendlyState);
-        asm.detach(CreepState);
+        asm.detach(EnemyState);
         asm.detach(GraphicsState);
         asm.detach(LoadingState);
         asm.detach(CheatState);

@@ -135,7 +135,7 @@
         </param>
         <param id = "materialParams">
             <matdir>Neon</matdir>
-            <backgroundcolor>Blue</backgroundcolor>
+            <bgcolor>Blue</bgcolor>
         </param>
     </graphicsparams>
     <enemyparams>

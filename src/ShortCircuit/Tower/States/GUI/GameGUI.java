@@ -225,7 +225,7 @@ public class GameGUI extends AbstractAppState {
      * button probably.
      */
     private void cheatToggleButton() {
-        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize) {
+        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize.divide(1.5f)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 toggleCheats();
@@ -337,7 +337,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void settingsWindow() {
-        SetWindow = new Window(screen, new Vector2f(400, 800), new Vector2f(width / 2, height / 4));
+        SetWindow = new Window(screen, new Vector2f(tenthWidth*2, tenthHeight*5), new Vector2f(width / 2, height / 4));
         SetWindow.setIgnoreMouse(true);
         SetWindow.setIsMovable(false);
         screen.addElement(SetWindow);
@@ -345,7 +345,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void purchaseWindow() {
-        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, 650), new Vector2f(300, 500));
+        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, tenthHeight*6), new Vector2f(300, 500));
         PurchaseWindow.setIgnoreMouse(true);
         PurchaseWindow.setWindowIsMovable(false);
         PurchaseWindow.setWindowTitle("Purchasables");
@@ -553,7 +553,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void textColorToggleButton() {
-        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize) {
+        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize.divide(1.5f)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 tMS.toggleFrills();
@@ -565,7 +565,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void bloomToggleButton() {
-        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize) {
+        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize.divide(1.5f)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 GraphicsState.toggleBloom();
@@ -589,7 +589,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void soundToggleButton() {
-        soundToggle = new ButtonAdapter(screen, "SoundToggle", new Vector2f(640, 100), buttonSize) {
+        soundToggle = new ButtonAdapter(screen, "SoundToggle", new Vector2f(640, 100), buttonSize.divide(1.5f)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (app.getListener().getVolume() == 0) {

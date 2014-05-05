@@ -49,6 +49,7 @@ public class TowerFactory {
             tp.setIndex();
             TowerControl control = new TowerControl(gs.getFriendlyState(), tp.getTowerVec());
             tower.addControl(control);
+            control.setBeamWidth(gs.getGeometryParams().getBeamWidth());
             tp.setControl(control);
         }
 
