@@ -1,7 +1,6 @@
 package ShortCircuit.GUI;
 
 import ShortCircuit.Tower.MainState.TowerMainState;
-import ShortCircuit.Tower.States.GUI.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -114,10 +113,6 @@ public class StartGUI extends AbstractAppState {
                     onStart("Level2", false);
                 } else if (value.equals("Start3")) {
                     onStart("Level3", false);
-                } else if (value.equals("Start4")) {
-                    onStart("Level4", false);
-                } else if (value.equals("StartProfile")) {
-                    onStart("profilelevel", false);
                 } else if (value.equals("GameOverTest")) {
                     onStart("TestGameOver", false);
                 }
@@ -126,8 +121,6 @@ public class StartGUI extends AbstractAppState {
         levelMenu.addMenuItem("Level1", "Start1", null);
         levelMenu.addMenuItem("Level2", "Start2", null);
         levelMenu.addMenuItem("Level3", "Start3", null);
-        levelMenu.addMenuItem("Level4", "Start4", null);
-        levelMenu.addMenuItem("ProfileLevel", "StartProfile", null);
         levelMenu.addMenuItem("TestGameOver", "GameOverTest", null);
         levelMenu.setPreferredSize(new Vector2f(300,300));
         levelMenu.hide();

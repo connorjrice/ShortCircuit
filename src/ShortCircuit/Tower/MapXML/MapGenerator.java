@@ -11,29 +11,42 @@ import ShortCircuit.Tower.MapXML.Objects.MaterialParams;
 import ShortCircuit.Tower.MapXML.Objects.PlayerParams;
 import ShortCircuit.Tower.MapXML.Objects.TowerParams;
 import ShortCircuit.Tower.Objects.Loading.GraphicsParams;
+import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import java.util.ArrayList;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.xml.sax.InputSource;
 
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
  * extensions
- * 
- * TODO: write psudeocode to do A* process
+ *
+ * TODO: Fix inputSource bug (won't load outside IDE)
  * @author Connor Rice
  */
 public class MapGenerator {
 
     private XPath xpath;
     private InputSource inputSource;
+    private AssetManager assetManager;
+    private String level;
 
-    public MapGenerator(String level) {
-        xpath = XPathFactory.newInstance().newXPath();  
-        inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
+    public MapGenerator(String level, SimpleApplication app) {
+        xpath = XPathFactory.newInstance().newXPath();
+        this.assetManager = app.getAssetManager();
+        assetManager.registerLoader(XMLLoader.class, "lvl.xml");
+        this.level = level;
+        //this.inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
+        this.inputSource = getInputSource();
+    }
+    
+    private InputSource getInputSource() {
+        return (InputSource) assetManager.loadAsset("XML/" + level + ".lvl.xml");
     }
 
     
@@ -107,7 +120,8 @@ public class MapGenerator {
     private MaterialParams parseMaterialParams() {
         String materialElement = "graphicsparams/param[@id = 'materialParams']/";
         String matdir = getElement("matdir", materialElement);
-        String colors = getElement("backgroundcolor", materialElement);
+        String colors = getElement("bgcolor", materialElement);
+        System.out.println(matdir);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
         return new MaterialParams(backgroundcolor, matdir);
     }
@@ -229,7 +243,10 @@ public class MapGenerator {
     public String getValue(String expression) {
         try {
             return xpath.evaluate(expression, inputSource);
-        } catch (Exception e) { return null; }
+        } catch (XPathExpressionException ex) {
+            System.out.println(ex.getCause());
+            return null;
+        }
     }
 
 }

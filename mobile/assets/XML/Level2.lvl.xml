@@ -28,7 +28,7 @@
                 <beamwidth>6.0f</beamwidth>
             </tower>
             <base>
-                <baseVec>0.0f, -7.0f, 0.0f</baseVec>
+                <baseVec>0.0f, 0.0f, 0.0f</baseVec>
                 <baseScale>1.6f, 1.6f, 1.2f</baseScale>
             </base>
             <creepspawner>
@@ -40,14 +40,14 @@
             </camera>
         </param>
         <param id = "towerParams">
-                        <numTowers>12</numTowers>
+            <numTowers>12</numTowers>
             <tower id = "0">
                 <vec>2.25f, 2.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "1">
-                <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-2.25f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "2">
                 <vec>2.25f, -2.0f, 0.1f</vec>
@@ -55,7 +55,7 @@
             </tower>
             <tower id = "3">
                 <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
+                <isStarter>true</isStarter>
             </tower>
             <tower id = "4">
                 <vec>-2.25f, 4.25f, 0.1f</vec>
@@ -89,7 +89,6 @@
                 <vec>-2.25f, -6.50f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
-            </tower>
         </param>
     </gameplayparams>
     
@@ -103,8 +102,8 @@
             <glowmode>GlowMode.SceneAndObjects</glowmode>
         </param>
         <param id = "materialParams">
-            <matdir>Neon</matdir>
-            <backgroundcolor>Black</backgroundcolor>
+            <matdir>Circuit</matdir>
+            <backgroundcolor>Red</backgroundcolor>
         </param>
     </graphicsparams>
     <enemyparams>
@@ -114,28 +113,36 @@
                 <health>100</health>
                 <speed>0.85f</speed>
                 <size>0.125f, 0.125f, 0.20f</size>
+                <value>1</value>
             </SmallCreep>
             <MediumCreep>
                 <health>200</health>
                 <speed>0.35f</speed>
                 <size>0.25f, 0.25f, 0.40f</size>
+                <value>2</value>
             </MediumCreep>
             <LargeCreep>
                 <health>400</health>
                 <speed>0.25f</speed>
                 <size>0.4f, 0.4f, 0.6f</size>
+                <value>5</value>
             </LargeCreep>
             <GiantCreep>
                 <health>800</health>
                 <speed>0.30f</speed>
                 <size>0.6f, 0.6f, 0.8f</size>
+                <value>10</value>
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <numSpawners>1</numSpawners>
+            <numSpawners>2</numSpawners>
 
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
+                <orientation>horizontal</orientation>
+            </creepSpawner>
+            <creepSpawner id = "1">
+                <vec>0.0f, -7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
             </creepSpawner>
         </param>

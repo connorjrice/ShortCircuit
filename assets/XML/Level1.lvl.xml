@@ -94,8 +94,8 @@
             <glowmode>GlowMode.SceneAndObjects</glowmode>
         </param>
         <param id = "materialParams">
+            <bgcolor>Black</bgcolor>
             <matdir>Neon</matdir>
-            <backgroundcolor>Black</backgroundcolor>
         </param>
     </graphicsparams>
     <enemyparams>
