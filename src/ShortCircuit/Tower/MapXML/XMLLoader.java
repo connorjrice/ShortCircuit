@@ -3,20 +3,23 @@ package ShortCircuit.Tower.MapXML;
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetLoader;
 import java.io.InputStream;
-import org.xml.sax.InputSource;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
 
 /**
  * @author Connor Rice
  */
 public class XMLLoader implements AssetLoader {   
 
-    public InputSource load(AssetInfo assetInfo) {
-        return createSourceFromStream(assetInfo.openStream());
+    public Document load(AssetInfo assetInfo) {
+        return createDocFromStream(assetInfo.openStream());
     }
  
-    public static InputSource createSourceFromStream(InputStream inputStream) {
+    public static Document createDocFromStream(InputStream inputStream) {
         try {
-            return new InputSource(inputStream);
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            return builder.parse(inputStream);
         } catch (Exception ex) {
             return null;
         }

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
@@ -32,7 +33,7 @@ import org.xml.sax.InputSource;
 public class MapGenerator {
 
     private XPath xpath;
-    private InputSource inputSource;
+    private Document inputSource;
     private AssetManager assetManager;
     private String level;
 
@@ -41,7 +42,7 @@ public class MapGenerator {
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
         this.level = level;
-        this.inputSource = new InputSource("assets/XML/" + level + ".lvl.xml");
+        this.inputSource = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
         //this.inputSource = getInputSource();
     }
     
