@@ -1,6 +1,6 @@
 package ShortCircuit;
 
-import ShortCircuit.Tower.MainState.TowerMainState;
+import ShortCircuit.MainState.TowerMainState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
 
