@@ -13,6 +13,12 @@ public class Queue<T> {
         this.front = null;
     }
     
+    public void clear() {
+        front = null;
+        back = null;
+        size = 0;
+    }
+    
     public void enqueue(T newElement) {
 	QueueNode<T> queueIn = new QueueNode<T>(newElement);
 	if (front == null) {
@@ -46,8 +52,8 @@ public class Queue<T> {
 
     public T peek() {
 	return front.getElement();
-	
     }
+    
     public int size() {
 	return size;
     }

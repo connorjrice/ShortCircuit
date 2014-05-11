@@ -14,10 +14,12 @@ import com.jme3.scene.Spatial;
 public class JMEEdgeBuilder implements EdgeBuilder {
     private Graph worldGraph;
     private Node rootNode;
+    private final float precision;
     
-    public JMEEdgeBuilder(Graph worldGraph, Node rootNode) {
+    public JMEEdgeBuilder(Graph worldGraph, Node rootNode, float precision) {
         this.worldGraph = worldGraph;
         this.rootNode = rootNode;
+        this.precision = precision;
     }
 
     public void addEdges() {
@@ -29,24 +31,17 @@ public class JMEEdgeBuilder implements EdgeBuilder {
 
     private void addEdges(String targetName) {
         String[] tn = targetName.split(",");
-        int[] startPos = new int[tn.length];
+        float[] startPos = new float[tn.length];
         for (int i = 0; i < tn.length; i++) {
-            startPos[i] = Integer.parseInt(tn[i]);
+            startPos[i] = Float.parseFloat(tn[i]);
         }
-        for (int i = startPos[0] - 2; i <= startPos[0] + 2; i += 2) {
-            for (int j = startPos[1] - 2; j <= startPos[1] + 2; j += 2) {
-                String is = Integer.toString(i);
-                String js = Integer.toString(j);
+        for (float i = startPos[0] - precision; i <= startPos[0] + precision; i += precision) {
+            for (float j = startPos[1] - precision; j <= startPos[1] + precision; j += precision) {
+                String is = Float.toString(i);
+                String js = Float.toString(j);
                 String nodeName = is + "," + js;
-                Spatial newNode = rootNode.getChild(nodeName);
-                Spatial targetNode = rootNode.getChild(targetName);
-                if (newNode != null && targetNode != null) {
-                    if (newNode.getUserData("Name").equals("Unblocked")) {
-                        if (targetNode.getUserData("Name").equals("Unblocked")) {
-                            worldGraph.addEdge(targetName, nodeName);
-                        }
-                    }
-                }
+                worldGraph.addEdge(targetName, nodeName);
+
             }
         }
     }

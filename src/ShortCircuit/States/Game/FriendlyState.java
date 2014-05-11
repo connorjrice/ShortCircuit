@@ -2,6 +2,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.ChargerControl;
 import ShortCircuit.Controls.TowerControl;
+import ShortCircuit.DataStructures.Queue;
 import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
 import ShortCircuit.MapXML.Objects.TowerParams;
 import ShortCircuit.Threading.TowerCharge;
@@ -32,9 +33,9 @@ public class FriendlyState extends AbstractAppState {
     private EnemyState EnemyState;
     private Node worldNode;
     private AssetManager assetManager;
-    private ArrayList<TowerControl> emptyTowers;
-    private ArrayList<Spatial> activeChargers;
-    private ArrayList<Integer> globbedTowers; 
+    private Queue<TowerControl> emptyTowers;
+    private Queue<Spatial> activeChargers;
+    private boolean[] globbedTowers; 
     private TowerCharge tcr;
     private TowerUpgrade tur;
     private TowerDowngrade tdr;
@@ -63,13 +64,14 @@ public class FriendlyState extends AbstractAppState {
     }
 
     private void initLists() {
-        emptyTowers = new ArrayList<TowerControl>();
-        activeChargers = new ArrayList<Spatial>();
-        globbedTowers = new ArrayList<Integer>();
+        emptyTowers = new Queue<TowerControl>();
+        activeChargers = new Queue<Spatial>();
+
     }
 
     public void setTowerList(ArrayList<TowerParams> listIn) {
         towerList = listIn;
+        globbedTowers = new boolean[towerList.size()];
     }
 
     private void initRunnables() {
@@ -86,7 +88,6 @@ public class FriendlyState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         TowerParams tp = towerList.get(tindex);
-        System.out.println(tindex);
         if (tp.getType().equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
@@ -130,9 +131,6 @@ public class FriendlyState extends AbstractAppState {
         if (index != -1) {
             tcr.setTower(towerList.get(index), true);
             tcr.run();
-            if (getEmptyTowers().contains(towerList.get(index).getControl())) {
-                getEmptyTowers().remove(towerList.get(index).getControl());
-            }
         }
     }
 
@@ -194,9 +192,18 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getTowerUnbuiltSize();
     }
 
-    public ArrayList<Integer> getGlobbedTowerList() {
+    public boolean[] getGlobbedTowerList() {
         return globbedTowers;
     }
+    
+    public void setTowerGlobbedStatus(int index, boolean bool) {
+        globbedTowers[index] = bool;
+    }
+    
+    public boolean getTowerGlobbedStatus(int index) {
+        return globbedTowers[index];
+    }
+    
 
     /**
      * These are methods that are needed by factories to access GameState, Not
@@ -256,9 +263,7 @@ public class FriendlyState extends AbstractAppState {
      * Adds an empty tower to the list of towers that need to be charged.
      */
     public void addEmptyTower(TowerControl empty) {
-        if (!emptyTowers.contains(empty)) {
-            emptyTowers.add(empty);
-        }
+        emptyTowers.enqueue(empty);
     }
 
     /**
@@ -273,11 +278,11 @@ public class FriendlyState extends AbstractAppState {
      *
      * @return activeChargers, the list of active charger NPC's
      */
-    public ArrayList<Spatial> getActiveChargers() {
+    public Queue<Spatial> getActiveChargers() {
         return activeChargers;
     }
 
-    public ArrayList<TowerControl> getEmptyTowers() {
+    public Queue<TowerControl> getEmptyTowers() {
         return emptyTowers;
     }
 
@@ -299,9 +304,8 @@ public class FriendlyState extends AbstractAppState {
      * @param charger
      */
     private void addNewCharger(Spatial charger) {
-        System.out.println("Charger added: " + charger.getName());
         charger.addControl(new ChargerControl(this));
-        activeChargers.add(charger);
+        activeChargers.enqueue(charger);
         worldNode.attachChild(charger);
     }
 

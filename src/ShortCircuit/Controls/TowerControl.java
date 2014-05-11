@@ -87,8 +87,7 @@ public class TowerControl extends AbstractControl {
 
     public void globTower() {
         setInactive();
-        FriendlyState.getGlobbedTowerList().add(getIndex());
-        isGlobbed = true;
+        FriendlyState.setTowerGlobbedStatus(getIndex(), true);
     }
 
     public void setActive() {
@@ -99,14 +98,7 @@ public class TowerControl extends AbstractControl {
         if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
             setActive();
         }
-        isGlobbed = false;
-        if (FriendlyState.getGlobbedTowerList().indexOf(getIndex()) != -1) {
-            FriendlyState.getGlobbedTowerList().remove(FriendlyState.getGlobbedTowerList().indexOf(getIndex()));
-        }
-    }
-
-    public ArrayList<Integer> getGlobbedTowerIndices() {
-        return FriendlyState.getGlobbedTowerList();
+        FriendlyState.setTowerGlobbedStatus(getIndex(), false);
     }
 
     public boolean getIsGlobbed() {
@@ -175,9 +167,7 @@ public class TowerControl extends AbstractControl {
         setInactive();
         emptySound.play();
         GraphicsState.towerTextureEmpty(this);
-        if (!FriendlyState.getEmptyTowers().contains(this)) {
-            FriendlyState.addEmptyTower(this);
-        }
+        FriendlyState.addEmptyTower(this);
     }
 
     protected void shootCreep() {

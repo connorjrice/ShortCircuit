@@ -42,7 +42,7 @@ public class ChargerControl extends AbstractControl {
         }
         else {
             if (destTower == null) {
-                destTower = FriendlyState.getEmptyTowers().get(0);
+                destTower = FriendlyState.getEmptyTowers().dequeue();
                 moveTowardsTower();
             } else {
                 moveTowardsTower();
@@ -66,14 +66,12 @@ public class ChargerControl extends AbstractControl {
         }
         else {
             moveTowardsHome();
-            FriendlyState.getEmptyTowers().remove(destTower);
         }
     }
     
 
     private void chargeTower() {
         FriendlyState.chargeTower(getTowerIndex());
-        FriendlyState.getEmptyTowers().remove(destTower);
         decRemCharges();
         moveamount = .04f;
         destTower = null;

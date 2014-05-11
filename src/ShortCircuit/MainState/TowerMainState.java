@@ -11,6 +11,7 @@ import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
+import ShortCircuit.States.Game.PathfindingState;
 import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
 import com.jme3.app.Application;
@@ -55,6 +56,7 @@ public class TowerMainState extends AbstractAppState {
     private final String level;
     private TutorialState TutorialState;
     private FriendlyState HelperState;
+    private PathfindingState PathfindingState;
 
     public TowerMainState(boolean _profile, String level) {
         this.profile = _profile;
@@ -97,6 +99,7 @@ public class TowerMainState extends AbstractAppState {
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
+        PathfindingState = new PathfindingState();
         
 
 
@@ -110,6 +113,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
         stateManager.attach(HelperState);
+        stateManager.attach(PathfindingState);
         if (profile) {
             ProfileState ps = new ProfileState();
             stateManager.attach(ps);
@@ -132,6 +136,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(HelperState);
         stateManager.detach(TutorialState);
         stateManager.detach(AudioState);
+        stateManager.detach(PathfindingState);
     }
 
 

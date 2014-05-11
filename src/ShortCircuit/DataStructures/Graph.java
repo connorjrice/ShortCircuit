@@ -58,7 +58,7 @@ public class Graph<T extends Comparable> {
     }
 
     public void addEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
-        if (firstNode.getIndex() != secondNode.getIndex()) {
+        if (firstNode != null && secondNode != null && firstNode.getIndex() != secondNode.getIndex()) {
             edges[firstNode.getIndex()][secondNode.getIndex()] = true;
             edges[secondNode.getIndex()][firstNode.getIndex()] = true;
         }

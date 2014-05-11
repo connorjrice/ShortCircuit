@@ -25,19 +25,20 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * @author Connor Rice
+ * TODO: Fix EnemyState random seed for profile
  */
 public class EnemyState extends AbstractAppState {
 
     private Box univ_box = new Box(1, 1, 1);
     private Sphere glob_sphere = new Sphere(32, 32, 1f);
     public Node creepNode = new Node("Creep");
-    public Random random = new Random();
+    public Random random;
     private SimpleApplication app;
     private AssetManager assetManager;
     private GameState GameState;
     private FriendlyState FriendlyState;
     private int nextspawner;
-    private int nextrandom = random.nextInt(50);
+    private int nextrandom;
     private float randomCheck = 0;
     private RegCreepFactory cf;
     private GlobFactory gf;
@@ -76,6 +77,8 @@ public class EnemyState extends AbstractAppState {
     private void initLists() {
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
+        random = new Random();
+        nextrandom = random.nextInt(50);
     }
 
     public void setEnemyParams(EnemyParams ep) {
@@ -96,7 +99,7 @@ public class EnemyState extends AbstractAppState {
                 getNextRandomSpecialEnemyInt();
                 randomCheck = 0;
             } else {
-                randomCheck += tpf;
+                 randomCheck += tpf;
             }
         }
 
@@ -121,17 +124,17 @@ public class EnemyState extends AbstractAppState {
      * tower.
      */
     private void spawnGlob() {
-        if (FriendlyState.getGlobbedTowerList().size() < FriendlyState.getTowerList().size()) {
-            int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-            if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl().getIsGlobbed()) {
-                Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getTowerVec();
-                Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-                FriendlyState.getTowerList().get(towerVictimIndex).getControl().globTower();
-                creepNode.attachChild(glob);
-                globList.add(glob);
-            } else {
-                spawnGlob();
-            }
+        int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
+        System.out.println("spawn");
+        if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl().getIsGlobbed()) {
+            System.out.println("here");
+            Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getTowerVec();
+            Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
+            FriendlyState.getTowerList().get(towerVictimIndex).getControl().globTower();
+            creepNode.attachChild(glob);
+            globList.add(glob);
+        } else {
+            spawnGlob();
         }
     }
 
@@ -223,7 +226,7 @@ public class EnemyState extends AbstractAppState {
         return FriendlyState.getTowerList();
     }
 
-    public ArrayList<Integer> getGlobbedTowerList() {
+    public boolean[] getGlobbedTowerList() {
         return FriendlyState.getGlobbedTowerList();
     }
 
@@ -274,6 +277,8 @@ public class EnemyState extends AbstractAppState {
 
     public void seedForProfile() {
         random = new Random(42);
+        nextrandom = random.nextInt(10);
+        randomCheck = random.nextInt(10);
     }
 
     @Override

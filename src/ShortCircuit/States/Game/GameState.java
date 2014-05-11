@@ -135,7 +135,7 @@ public class GameState extends AbstractAppState {
         if (target.getName().equals("Tower")) {
             FriendlyState.shortenTower();
             int towerIndex = target.getUserData("Index");
-            if (globCheck(trans, towerIndex)) { // If the tower isn't 
+            if (globCheck(towerIndex)) { // If the tower isn't 
             } else {                                    //  globbed, we
                 FriendlyState.towerSelected(towerIndex);  //   select the tower.
             }
@@ -157,14 +157,8 @@ public class GameState extends AbstractAppState {
      * @param towerIndex
      * @return
      */
-    private boolean globCheck(Vector3f trans, int towerIndex) {
-        if (FriendlyState.getGlobbedTowerList().contains(towerIndex)) {
-            popGlob(trans, EnemyState.getGlobList().get(FriendlyState.getGlobbedTowerList().indexOf(towerIndex))
-                    .getControl(GlobControl.class));
-            return true;
-        } else {
-            return false;
-        }
+    private boolean globCheck(int towerIndex) {
+        return FriendlyState.getTowerGlobbedStatus(towerIndex);
     }
 
     /**
