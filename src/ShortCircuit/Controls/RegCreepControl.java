@@ -49,7 +49,7 @@ public class RegCreepControl extends AbstractControl {
             if (updateTimer > .2) {
                 if (path == null) {
                     baseCoords =  EnemyState.getFormattedBaseCoords();
-                    path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
+                    path = pathFinder.getPath(getFormattedCoords(), baseCoords);
                     
                 } else {
                     moveCreep();                    
@@ -74,7 +74,7 @@ public class RegCreepControl extends AbstractControl {
                 Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
                 spatial.setLocalTranslation(newLoc);
             } else {
-                this.path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
+                this.path = pathFinder.getPath(getFormattedCoords(), baseCoords);
             }
         }
     }
