@@ -13,12 +13,14 @@ public class Path {
     private ArrayList<Integer> pathIndicies;
     private float cost;
     private int curIndex;
+    private int UID;
     private boolean marked;
     
-    public Path(ArrayList<Integer> pathNodes) {
+    public Path(ArrayList<Integer> pathNodes, int UID) {
         this.pathIndicies = pathNodes;
         curIndex = 0;
         marked = false;
+        this.UID = UID;
     }
     
     public ArrayList<Integer> getGraphNodes() {
@@ -60,9 +62,12 @@ public class Path {
         return marked;
     }
     
-    @Override
-    public Path clone() {
-        return new Path((ArrayList<Integer>) getGraphNodes().clone());
+    public int getUID() {
+        return UID;
+    }
+    
+    public Path clone(int UID) {
+        return new Path((ArrayList<Integer>) getGraphNodes().clone(), UID);
     }
     
 }

@@ -10,8 +10,7 @@ import ShortCircuit.DataStructures.Objects.Path;
 public interface PathFinder {
 
     public Path pathFind(Path curPath);
-    
-    public Path clonePath(Path p);
+
     
 
     
