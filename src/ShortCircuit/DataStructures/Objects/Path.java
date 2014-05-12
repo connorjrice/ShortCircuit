@@ -13,13 +13,11 @@ public class Path {
     private ArrayList<GraphNode> pathNodes;
     private float cost;
     private int curIndex;
-    private boolean isIncomplete;
     private boolean marked;
     
     public Path(ArrayList<GraphNode> pathNodes) {
         this.pathNodes = pathNodes;
         curIndex = 0;
-        isIncomplete = true;
         marked = false;
     }
     
@@ -28,15 +26,15 @@ public class Path {
     }
     
     public GraphNode getLastNode() {
-        return pathNodes.get(pathNodes.size()-1);
+        return pathNodes.get(pathNodes.size()-1); // ASKMATTHEW: More efficient to keep internal tracker?
     }
     
     public void addNode(GraphNode newNode) {
         pathNodes.add(newNode);
     }
     
+    // ASKMATTHEW: can we do a (possibly threaded) this every time we addNode?
     public void updateCost(float estCost) {
-        //cost = estCost;
         cost = pathNodes.size() + estCost;
     }
     
@@ -54,35 +52,6 @@ public class Path {
         return next;
     }
     
-    public void resetIndex() {
-        curIndex = 0;
-    }
-   
-    public GraphNode get(int index) {
-        return pathNodes.get(index);
-    }
-    
-    public GraphNode peekNextPathNode() {
-        if (curIndex+1 < pathNodes.size()) {
-            return pathNodes.get(curIndex+1);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    public boolean isIncomplete() {
-        return isIncomplete;
-    }
-    
-    public void setComplete() {
-        isIncomplete = false;
-    }
-    
-    public void setIncomplete() {
-        isIncomplete = true;
-    }
-    
     public void setMarked() {
         marked = true;
     }
@@ -94,10 +63,6 @@ public class Path {
     @Override
     public Path clone() {
         return new Path((ArrayList<GraphNode>) getGraphNodes().clone());
-    }
-    
-    public boolean contains(GraphNode pn) {
-        return (pathNodes.contains(pn));
     }
     
 }

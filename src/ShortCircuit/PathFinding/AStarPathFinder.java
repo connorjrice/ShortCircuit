@@ -8,7 +8,7 @@ import ShortCircuit.DataStructures.Objects.Path;
 import java.util.ArrayList;
 
 /**
- *
+ * ASKMATTHEW: getLegalPaths threading?
  * @author Connor Rice and Matthew Whitehead
  */
 public class AStarPathFinder implements PathFinder {
@@ -106,7 +106,7 @@ public class AStarPathFinder implements PathFinder {
         Path cheapestPath = frontier.get(0);
         for (Path curPath : frontier) {
             if (curPath.getCost() < cheapestPath.getCost()) {
-                if (!closed.contains(curPath)) {
+                if (!closed.contains(curPath)) { //ASKMATTHEW: can we do like a hashmap or something?
                     cheapestPath = curPath;
                 }
             }
