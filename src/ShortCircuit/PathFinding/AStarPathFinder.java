@@ -1,8 +1,8 @@
 package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
+import ShortCircuit.DataStructures.Heap;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * ASKMATTHEW: getLegalPaths threading?
@@ -15,15 +15,17 @@ public class AStarPathFinder implements PathFinder {
     private Heuristic Heuristic;
     private Graph Graph;
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
-    private PriorityQueue<Path> frontier = new PriorityQueue<Path>();
+    private Heap<Path> frontier = new Heap<Path>();
     private int numRecursions;
     private int maxRecursions = 75;
+    private long neverLong;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
         this.Heuristic = Heuristic;
         this.Graph = Graph;
         this.maxNodeSize = nodeSize;
         numRecursions = 0;
+        neverLong = 0;
     }
 
     public Path getPath(String start, String end) {
@@ -69,8 +71,22 @@ public class AStarPathFinder implements PathFinder {
     private void clearPaths() {
         frontier.clear();
         neverReturnNodes.clear();
+        neverLong = 0;
+    }
+    /*
+     * Replace contains and neverReturnNodes
+     */
+    private boolean getInNever(int nodeIndex) {
+        int pos = 1 << nodeIndex;
+        return  (neverLong & pos) > 0;
+    }
+    
+    private void setNever(int nodeIndex) {
+        int pos = 1 << nodeIndex;
+        neverLong = neverLong | pos;
     }
 
+    // TODO: maybe try value threshold for adding to legalpath
     public ArrayList<Path> getLegalPaths(Path p) {
         ArrayList<Path> legalPaths = new ArrayList<Path>();
         int[] neighbors = Graph.getNeighbors(p.getLastNode());

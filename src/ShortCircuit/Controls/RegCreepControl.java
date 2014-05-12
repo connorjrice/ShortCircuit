@@ -37,6 +37,7 @@ public class RegCreepControl extends AbstractControl {
     public String baseCoords;
     private MoveCreep mc;
 
+    
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         this.basebounds = EnemyState.getBaseBounds();

@@ -4,7 +4,7 @@ package ShortCircuit.DataStructures;
  * Implementation of a Heap datastructure, that allows for either a Min or Max
  * Heap. It is based upon Cay Horstmann's implementation in Big Java, but uses
  * statically sized arrays instead of ArrayLists, and adds more functionality.
- * TODO: This don't work.
+ *
  * @author Connor Rice, May 2014
  */
 public class Heap<T extends Comparable> {
@@ -99,9 +99,8 @@ public class Heap<T extends Comparable> {
      */
     public void add(Comparable newElement) {
         if (currentSize < maxSize - 1) {
-            int index = currentSize - 1;
             currentSize++;
-
+            int index = currentSize - 1;
 
             // Moves parents based upon whether the heap is a minheap or maxheap
             if (min) {
@@ -141,11 +140,12 @@ public class Heap<T extends Comparable> {
      */
     public Comparable remove() {
         Comparable minimum = heap[1];
-        Comparable last = heap[currentSize - 1];
+        Comparable last = heap[currentSize-1];
         if (currentSize > 1) {
             heap[1] = last;
             fixHeap();
         }
+        heap[currentSize-1] = null;
         currentSize--;
         return minimum;
     }
@@ -195,15 +195,15 @@ public class Heap<T extends Comparable> {
     }
 
     private int getLeftChildIndex(int index) {
-        return 2 * index;
-    }
-
-    private int getRightChildIndex(int index) {
         return 2 * index + 1;
     }
 
+    private int getRightChildIndex(int index) {
+        return 2 * index + 2;
+    }
+
     private int getParentIndex(int index) {
-        return index / 2;
+        return (index -1)/2;
     }
 
     private Comparable getLeftChild(int index) {
@@ -265,7 +265,7 @@ public class Heap<T extends Comparable> {
     }
     
     public void clear() {
-        this.heap = new Comparable[maxSize];
+        heap = new Comparable[maxSize];
     }
 
 }

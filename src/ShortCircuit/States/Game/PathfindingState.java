@@ -46,7 +46,7 @@ public class PathfindingState extends AbstractAppState {
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
         this.worldGraph = new Graph<String>(1400);
-        this.precision = .5f; // works with 1.0f, .5f
+        this.precision = 1.0f; // works with 1.0f, .5f
         initAssets();
         createPathNodes();
         rootNode.attachChild(targetNode);
