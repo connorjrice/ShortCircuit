@@ -67,8 +67,6 @@ public class Path implements Comparable{
     public int compareTo(Object o) {
         if (cost > ((Path)o).getCost()) {
             return 1;
-        } else if (cost == ((Path)o).getCost()) {
-            return 0;
         } else {
             return -1;
         }

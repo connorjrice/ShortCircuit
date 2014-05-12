@@ -1,11 +1,11 @@
 package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Heap;
 import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Interfaces.PathFinder;
 import ShortCircuit.DataStructures.Objects.Path;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 /**
  * ASKMATTHEW: getLegalPaths threading?
@@ -18,8 +18,7 @@ public class AStarPathFinder implements PathFinder {
     private Heuristic Heuristic;
     private Graph Graph;
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
-    private ArrayList<Path> frontier = new ArrayList<Path>();
-    private ArrayList<Path> closed = new ArrayList<Path>();
+    private PriorityQueue<Path> frontier = new PriorityQueue<Path>();
     private int numRecursions;
     private int maxRecursions = 75;
 
@@ -52,13 +51,10 @@ public class AStarPathFinder implements PathFinder {
 
     public Path pathFind(Path curPath) {
         if (!maxFlag) {
-            closed.add(curPath);
             Path nextPath = getNextPath();
-            Heap<Path> legalPaths = getLegalPaths(curPath);
-            Path curLegal = (Path) legalPaths.remove();
-            while (curLegal != null) {
-                frontier.add(curLegal);
-                curLegal = (Path) legalPaths.remove();
+            ArrayList<Path> legalPaths = getLegalPaths(curPath);
+            for (Path legalPath : legalPaths) {
+                frontier.add(legalPath);
             }
             if (numRecursions < maxRecursions) {
                 numRecursions++;
@@ -75,12 +71,11 @@ public class AStarPathFinder implements PathFinder {
 
     private void clearPaths() {
         frontier.clear();
-        closed.clear();
         neverReturnNodes.clear();
     }
 
-    public Heap<Path> getLegalPaths(Path p) {
-        Heap<Path> legalPaths = new Heap<Path>();
+    public ArrayList<Path> getLegalPaths(Path p) {
+        ArrayList<Path> legalPaths = new ArrayList<Path>();
         int[] neighbors = Graph.getNeighbors(p.getLastNode());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
@@ -100,18 +95,11 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public Path getNextPath() {
-        Path cheapestPath = frontier.get(0);
-        for (Path curPath : frontier) {
-            if (curPath.getCost() < cheapestPath.getCost()) {
-                if (!closed.contains(curPath)) { //ASKMATTHEW: can we do like a hashmap or something?
-                    cheapestPath = curPath;
-                }
-            }
-        }
+        Path cheapestPath = (Path) frontier.remove();
+        
         if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
             maxFlag = true;
         }
-        frontier.remove(cheapestPath);
         return cheapestPath;
     }
 

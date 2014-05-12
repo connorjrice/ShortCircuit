@@ -10,8 +10,5 @@ import ShortCircuit.DataStructures.Objects.Path;
 public interface PathFinder {
 
     public Path pathFind(Path curPath);
-
-    
-
     
 }

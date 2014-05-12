@@ -99,8 +99,9 @@ public class Heap<T extends Comparable> {
      */
     public void add(Comparable newElement) {
         if (currentSize < maxSize - 1) {
-            currentSize++;
             int index = currentSize - 1;
+            currentSize++;
+
 
             // Moves parents based upon whether the heap is a minheap or maxheap
             if (min) {
@@ -262,6 +263,10 @@ public class Heap<T extends Comparable> {
         heap = newHeap;
         maxSize *= scalingFactor;
         add(newElement);
+    }
+    
+    public void clear() {
+        this.heap = new Comparable[maxSize];
     }
 
 }
