@@ -1,7 +1,6 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
 import ShortCircuit.PathFinding.JMEEdgeBuilder;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -18,8 +17,7 @@ import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
 
 /**
- * TODO: Method for creating plots on the map
- * TODO: A* pathfinding
+ * TODO: Make walls, make towers "solid"
  * @author Connor Rice
  */
 public class PathfindingState extends AbstractAppState {
@@ -29,7 +27,6 @@ public class PathfindingState extends AbstractAppState {
     private Spatial floor;
     private Graph<String> worldGraph;
     private float precision;
-    private jMEHeuristic Heuristic;
     private AssetManager assetManager;
     private Sphere targetMesh = new Sphere(32, 32, 1f);
     private Material targetMat;
@@ -37,7 +34,6 @@ public class PathfindingState extends AbstractAppState {
     private Material endMat;
     private Material pathMat;
     private ColorRGBA color;
-    private float updateTimer = 0f;
     private Material blockedMat;
     private Vector3f floorDimensions;
     private DecimalFormat numFormatter;
@@ -50,8 +46,7 @@ public class PathfindingState extends AbstractAppState {
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
         this.worldGraph = new Graph<String>(1400);
-        this.Heuristic = new jMEHeuristic();
-        this.precision = .5f;
+        this.precision = .5f; // works with 1.0f, .5f
         initAssets();
         createPathNodes();
         rootNode.attachChild(targetNode);
@@ -77,7 +72,7 @@ public class PathfindingState extends AbstractAppState {
     }
 
     private void createPathNodes() {
-        Vector3f translation = floor.getLocalTranslation();
+        //Vector3f translation = floor.getLocalTranslation();
         floorDimensions = floor.getLocalScale();
         float xAxis = Math.round(floorDimensions.x);
         float yAxis = Math.round(floorDimensions.y);
@@ -118,10 +113,6 @@ public class PathfindingState extends AbstractAppState {
     
     private String toString(Object o) {
         return o.toString();
-    }
-    
-    @Override
-    public void update(float tpf) {
     }
     
     @Override

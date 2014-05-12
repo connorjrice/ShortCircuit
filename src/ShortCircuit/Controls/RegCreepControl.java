@@ -1,8 +1,6 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
-import ShortCircuit.DataStructures.Interfaces.PathFinder;
-import ShortCircuit.DataStructures.Nodes.GraphNode;
 import ShortCircuit.DataStructures.Objects.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.Threading.MoveCreep;
@@ -31,55 +29,42 @@ public class RegCreepControl extends AbstractControl {
     protected EnemyState EnemyState;
     protected int creepNum;
     protected Vector3f direction;
-    private AStarPathFinder pathFinder;
+    public AStarPathFinder pathFinder;
     private float updateTimer = 0;
-    private BoundingVolume basebounds;
-    private Path path;
-    private String baseCoords;
+    public BoundingVolume basebounds;
+    public Path path;
+    public String baseCoords;
+    private MoveCreep mc;
 
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         this.basebounds = EnemyState.getBaseBounds();
         this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
+        this.mc = new MoveCreep(this);
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (EnemyState.isEnabled()) {
-            if (path == null) {
-                    baseCoords =  EnemyState.getFormattedBaseCoords();
-                    path = pathFinder.getPath(getFormattedCoords(), baseCoords);
-            }
-            if (updateTimer > .2) {
-                    moveCreep();                    
-
+        if (EnemyState.isEnabled()) {            
+            if (updateTimer > .1) {
+                mc.run();                  
                 updateTimer = 0;
             }  else {
                 updateTimer += tpf;
             }
         }
     }
-
-    private void moveCreep() {
-        if(spatial.getWorldBound().intersects(basebounds)) {
-                EnemyState.decPlrHealth(getValue());
-                EnemyState.creepList.remove(spatial);
-                spatial.removeFromParent();
-                spatial.removeControl(this);
-            } else {
-            if (!path.getEndReached()) {
-                GraphNode nextGraph = path.getNextPathNode();
-                float[] nextCoords = nextGraph.getCoordArray();
-                Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
-                spatial.setLocalTranslation(newLoc);
-            } else {
-                this.path = pathFinder.getPath(getFormattedCoords(), baseCoords);
-            }
-        }
-    }
     
     public String getFormattedCoords() {
         return Float.toString(getX())+","+Float.toString(getY());
+    }
+    
+    public String getFormattedBaseCoords() {
+        return EnemyState.getFormattedBaseCoords();
+    }
+    
+    public BoundingVolume getBaseBounds() {
+        return EnemyState.getBaseBounds();
     }
     
     public float getX() {
@@ -108,11 +93,7 @@ public class RegCreepControl extends AbstractControl {
         int health = getCreepHealth();
         spatial.setUserData("Health", health - damage);
         if (health - damage <= 0) {
-            EnemyState.incPlrBudget(getValue());
-            EnemyState.incPlrScore(1);
-            EnemyState.creepList.remove(spatial);
-            spatial.removeFromParent();
-            spatial.removeControl(this);
+            removeCreep(true);
         }
         return health - damage;
     }
@@ -125,17 +106,22 @@ public class RegCreepControl extends AbstractControl {
         return spatial.getLocalTranslation();
     }
 
-    public void removeCreep() {
+    public void removeCreep(boolean wasKilled) {
         EnemyState.creepList.remove(spatial);
-        EnemyState.incPlrBudget(getValue());
-        EnemyState.incPlrScore(1);
+        if (wasKilled) {
+            EnemyState.incPlrBudget(getValue());
+            EnemyState.incPlrScore(1);
+        } else {
+            EnemyState.decPlrHealth(getValue());
+        }
         spatial.removeFromParent();
         spatial.removeControl(this);
+        mc = null;
+        pathFinder = null;
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-
     }
 
     @Override

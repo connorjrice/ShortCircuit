@@ -5,7 +5,6 @@ import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Nodes.GraphNode;
 import ShortCircuit.DataStructures.Objects.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
