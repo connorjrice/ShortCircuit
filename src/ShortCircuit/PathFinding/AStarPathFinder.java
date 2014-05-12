@@ -91,10 +91,12 @@ public class AStarPathFinder implements PathFinder {
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
             if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]).getIndex())) {
+                if (!p.getGraphNodes().contains(Graph.getNode(neighbors[arrayIndex]))) {
                     Path pNew = p.clone();
                     pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
                     pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
                     legalPaths.add(pNew);
+                }
             }
             arrayIndex++;
         }
