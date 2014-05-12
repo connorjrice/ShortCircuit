@@ -35,8 +35,8 @@ public class MapGenerator {
         return new GameplayParams(parseLevelParams(), parsePlayerParams());
     }
     
-    public EnemyParams getEnemyParams() throws Exception {
-        return (EnemyParams) new GetEnemyParams(xpath, inputSource).call();
+    public EnemyParams getEnemyParams() {
+        return new EnemyParams(parseCreepList());
     }
     
     public GraphicsParams getGraphicsParams() {
