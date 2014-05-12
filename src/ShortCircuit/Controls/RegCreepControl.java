@@ -46,14 +46,13 @@ public class RegCreepControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (EnemyState.isEnabled()) {
-            if (updateTimer > .2) {
-                if (path == null) {
+            if (path == null) {
                     baseCoords =  EnemyState.getFormattedBaseCoords();
-                    path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
-                    
-                } else {
+                    path = pathFinder.getPath(getFormattedCoords(), baseCoords);
+            }
+            if (updateTimer > .2) {
                     moveCreep();                    
-                }
+
                 updateTimer = 0;
             }  else {
                 updateTimer += tpf;
@@ -74,7 +73,7 @@ public class RegCreepControl extends AbstractControl {
                 Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
                 spatial.setLocalTranslation(newLoc);
             } else {
-                this.path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
+                this.path = pathFinder.getPath(getFormattedCoords(), baseCoords);
             }
         }
     }

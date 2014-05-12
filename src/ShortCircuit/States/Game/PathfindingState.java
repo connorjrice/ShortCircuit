@@ -49,7 +49,7 @@ public class PathfindingState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
-        this.worldGraph = new Graph<String>(1200);
+        this.worldGraph = new Graph<String>(1400);
         this.Heuristic = new jMEHeuristic();
         this.precision = .5f;
         initAssets();
