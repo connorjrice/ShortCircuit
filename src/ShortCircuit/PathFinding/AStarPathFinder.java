@@ -5,7 +5,6 @@ import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Interfaces.PathFinder;
 import ShortCircuit.DataStructures.Objects.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * ASKMATTHEW: getLegalPaths threading?
@@ -19,18 +18,15 @@ public class AStarPathFinder implements PathFinder {
     private Graph Graph;
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
     private ArrayList<Path> frontier = new ArrayList<Path>();
-    private HashMap closed;
+    private ArrayList<Path> closed = new ArrayList<Path>();
     private int numRecursions;
     private int maxRecursions = 75;
-    private int UID;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
         this.Heuristic = Heuristic;
         this.Graph = Graph;
         this.maxNodeSize = nodeSize;
-        this.closed  = new HashMap(maxRecursions*9);
         numRecursions = 0;
-        UID = 0;
     }
 
     public Path getPath(String start, String end) {
@@ -55,8 +51,7 @@ public class AStarPathFinder implements PathFinder {
 
     public Path pathFind(Path curPath) {
         if (!maxFlag) {
-            closed.put(UID, curPath);
-            UID++;
+            closed.add(curPath);
             Path nextPath = getNextPath();
             ArrayList<Path> legalPaths = getLegalPaths(curPath);
             for (Path legalPath : legalPaths) {
@@ -105,7 +100,7 @@ public class AStarPathFinder implements PathFinder {
         Path cheapestPath = frontier.get(0);
         for (Path curPath : frontier) {
             if (curPath.getCost() < cheapestPath.getCost()) {
-                if (!closed.containsValue(curPath)) { //ASKMATTHEW: can we do like a hashmap or something?
+                if (!closed.contains(curPath)) { //ASKMATTHEW: can we do like a hashmap or something?
                     cheapestPath = curPath;
                 }
             }
@@ -117,5 +112,12 @@ public class AStarPathFinder implements PathFinder {
         return cheapestPath;
     }
 
+    public Path clonePath(Path p) {
+        ArrayList<Integer> pathClone = new ArrayList<Integer>();
+        for (int curNode : p.getGraphNodes()) {
+            pathClone.add(curNode);
+        }
+        return new Path(pathClone);
+    }
     
 }
