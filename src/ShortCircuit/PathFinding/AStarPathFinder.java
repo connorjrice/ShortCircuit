@@ -45,12 +45,12 @@ public class AStarPathFinder implements PathFinder {
         firstNodes.add(firstNode);
         Path firstPath = new Path(firstNodes);
         firstPath.updateCost(Heuristic.compareTo(Graph.getNode(firstNode)));
+        frontier.add(firstPath);
         return firstPath;
     }
 
     public Path pathFind(Path curPath) {
         if (!maxFlag) {
-            frontier.add(curPath);
             closed.add(curPath);
             Path nextPath = getNextPath();
             ArrayList<Path> legalPaths = getLegalPaths(curPath);
@@ -58,7 +58,6 @@ public class AStarPathFinder implements PathFinder {
                 frontier.add(legalPath);
             }
             if (numRecursions < maxRecursions) {
-                frontier.remove(curPath);
                 numRecursions++;
                 return pathFind(nextPath);
             } else {
