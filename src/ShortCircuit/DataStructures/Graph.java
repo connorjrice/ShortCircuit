@@ -1,10 +1,6 @@
 package ShortCircuit.DataStructures;
 
-import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
-import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Nodes.GraphNode;
-import ShortCircuit.DataStructures.Objects.Path;
-import ShortCircuit.PathFinding.AStarPathFinder;
 import java.util.HashMap;
 
 /**
@@ -20,8 +16,6 @@ public class Graph<T extends Comparable> {
     private HashMap nodeHash;
     private int maxSize;
     private int currentSize;
-    private Heuristic Heuristic = new jMEHeuristic();
-    private AStarPathFinder PathFinder;
 
     public Graph(int maxSize) {
         this.maxSize = maxSize;
@@ -29,8 +23,6 @@ public class Graph<T extends Comparable> {
         this.edges = new boolean[maxSize][maxSize];
         this.nodes = new GraphNode[maxSize];
         this.nodeHash = new HashMap(maxSize);
-        this.Heuristic = new jMEHeuristic();
-        this.PathFinder = new AStarPathFinder(Heuristic, this, 1000);
     }
 
     public void addNode(Comparable element) { // set in condition for if last
@@ -134,10 +126,6 @@ public class Graph<T extends Comparable> {
         return null;
     }
 
-    public Path getPath(String startName, String endName) {
-        return PathFinder.getPath(getNode(startName), getNode(endName));
-    }
-    
     public void printNodes() {
         for (GraphNode curNode : nodes) {
             if (curNode != null) {

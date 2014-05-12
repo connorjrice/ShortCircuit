@@ -32,13 +32,13 @@ public class MoveCreep implements Runnable {
             cc.removeCreep(false);
         } else {
             if (!cc.path.getEndReached()) {
-                GraphNode nextGraph = cc.path.getNextPathNode();
+                GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
                 float[] nextCoords = nextGraph.getCoordArray();
                 Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
                 cc.getSpatial().setLocalTranslation(newLoc);
             } else {
                 cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);
-                GraphNode nextGraph = cc.path.getNextPathNode();
+                GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
                 float[] nextCoords = nextGraph.getCoordArray();
                 Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
                 cc.getSpatial().setLocalTranslation(newLoc);

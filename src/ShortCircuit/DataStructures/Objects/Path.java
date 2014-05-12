@@ -10,32 +10,32 @@ import java.util.ArrayList;
  */
 public class Path {
     
-    private ArrayList<GraphNode> pathNodes;
+    private ArrayList<Integer> pathIndicies;
     private float cost;
     private int curIndex;
     private boolean marked;
     
-    public Path(ArrayList<GraphNode> pathNodes) {
-        this.pathNodes = pathNodes;
+    public Path(ArrayList<Integer> pathNodes) {
+        this.pathIndicies = pathNodes;
         curIndex = 0;
         marked = false;
     }
     
-    public ArrayList<GraphNode> getGraphNodes() {
-        return pathNodes;
+    public ArrayList<Integer> getGraphNodes() {
+        return pathIndicies;
     }
     
-    public GraphNode getLastNode() {
-        return pathNodes.get(pathNodes.size()-1); // ASKMATTHEW: More efficient to keep internal tracker?
+    public int getLastNode() {
+        return pathIndicies.get(pathIndicies.size()-1); // ASKMATTHEW: More efficient to keep internal tracker?
     }
     
-    public void addNode(GraphNode newNode) {
-        pathNodes.add(newNode);
+    public void addNode(int newNode) {
+        pathIndicies.add(newNode);
     }
     
     // ASKMATTHEW: can we do a (possibly threaded) this every time we addNode?
     public void updateCost(float estCost) {
-        cost = pathNodes.size() + estCost;
+        cost = pathIndicies.size() + estCost;
     }
     
     public float getCost() {
@@ -43,13 +43,13 @@ public class Path {
     }
     
     public boolean getEndReached() {
-        return curIndex == pathNodes.size();
+        return curIndex == pathIndicies.size()-1;
     }
     
-    public GraphNode getNextPathNode() {
-        GraphNode next = pathNodes.get(curIndex);
+    public int getNextPathNode() {
+        int index = pathIndicies.get(curIndex);
         curIndex++;
-        return next;
+        return index;
     }
     
     public void setMarked() {
@@ -62,7 +62,7 @@ public class Path {
     
     @Override
     public Path clone() {
-        return new Path((ArrayList<GraphNode>) getGraphNodes().clone());
+        return new Path((ArrayList<Integer>) getGraphNodes().clone());
     }
     
 }

@@ -3,7 +3,6 @@ package ShortCircuit.PathFinding;
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Interfaces.PathFinder;
-import ShortCircuit.DataStructures.Nodes.GraphNode;
 import ShortCircuit.DataStructures.Objects.Path;
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
  */
 public class AStarPathFinder implements PathFinder {
 
-    private GraphNode endNode;
+    private int endIndex;
     private boolean maxFlag;
     private int maxNodeSize;
     private Heuristic Heuristic;
@@ -32,22 +31,22 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public Path getPath(String start, String end) {
-        return getPath(Graph.getNode(start), Graph.getNode(end));
+        return getPath(Graph.getNode(start).getIndex(), Graph.getNode(end).getIndex());
     }
 
-    public Path getPath(GraphNode start, GraphNode end) {
-        this.endNode = end;
-        Heuristic.setEndPosition((endNode.getElement()));
+    public Path getPath(int start, int end) {
+        this.endIndex = end;
+        Heuristic.setEndPosition((Graph.getNode(endIndex).getElement()));
         maxFlag = false;
         numRecursions = 0;
         return pathFind(createFirstPath(start));
     }
 
-    public Path createFirstPath(GraphNode firstNode) {
-        ArrayList<GraphNode> firstNodes = new ArrayList<GraphNode>();
+    public Path createFirstPath(int firstNode) {
+        ArrayList<Integer> firstNodes = new ArrayList<Integer>();
         firstNodes.add(firstNode);
         Path firstPath = new Path(firstNodes);
-        firstPath.updateCost(Heuristic.compareTo(firstNode));
+        firstPath.updateCost(Heuristic.compareTo(Graph.getNode(firstNode)));
         return firstPath;
     }
 
@@ -83,19 +82,19 @@ public class AStarPathFinder implements PathFinder {
 
     public ArrayList<Path> getLegalPaths(Path p) {
         ArrayList<Path> legalPaths = new ArrayList<Path>();
-        int[] neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
+        int[] neighbors = Graph.getNeighbors(p.getLastNode());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
             if (!neverReturnNodes.contains(neighbors[arrayIndex])) {
                 Path pNew = p.clone();
-                pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
+                pNew.addNode(neighbors[arrayIndex]);
                 pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
                 legalPaths.add(pNew);
             }
             arrayIndex++;
         }
-        for (GraphNode curNode : p.getGraphNodes()) {
-            neverReturnNodes.add(curNode.getIndex());
+        for (int curNode : p.getGraphNodes()) {
+            neverReturnNodes.add(curNode);
         }
         p.setMarked();
 
@@ -120,18 +119,18 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public Path clonePath(Path p) {
-        ArrayList<GraphNode> pathClone = new ArrayList<GraphNode>();
-        for (GraphNode curNode : p.getGraphNodes()) {
+        ArrayList<Integer> pathClone = new ArrayList<Integer>();
+        for (int curNode : p.getGraphNodes()) {
             pathClone.add(curNode);
         }
         return new Path(pathClone);
     }
 
-    public void setEndNode(GraphNode endNode) {
-        this.endNode = endNode;
+    public void setEndIndex(int endIndex) {
+        this.endIndex = endIndex;
     }
 
-    public GraphNode getEndNode() {
-        return endNode;
+    public int getEndIndex() {
+        return endIndex;
     }
 }

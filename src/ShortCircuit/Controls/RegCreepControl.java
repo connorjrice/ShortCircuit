@@ -1,5 +1,6 @@
 package ShortCircuit.Controls;
 
+import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
 import ShortCircuit.DataStructures.Objects.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
@@ -53,6 +54,10 @@ public class RegCreepControl extends AbstractControl {
                 updateTimer += tpf;
             }
         }
+    }
+    
+    public Graph getWorldGraph() {
+        return EnemyState.getWorldGraph();
     }
     
     public String getFormattedCoords() {
