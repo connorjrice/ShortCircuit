@@ -88,19 +88,21 @@ public class AStarPathFinder implements PathFinder {
 
     public ArrayList<Path> getLegalPaths(Path p) {
         ArrayList<Path> legalPaths = new ArrayList<Path>();
-        ArrayList<GraphNode> neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
-        for (GraphNode curNode : p.getGraphNodes()) {
-            neverReturnNodes.add(curNode);
-        }
-        for (GraphNode curNeighbor : neighbors) {
-            if (!neverReturnNodes.contains(curNeighbor)) {
-                if (!p.getGraphNodes().contains(curNeighbor)) {
+        int[] neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
+        int arrayIndex = 0;
+        while (neighbors[arrayIndex] != 0) {
+            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]))) {
+                if (!p.getGraphNodes().contains(Graph.getNode(neighbors[arrayIndex]))) {
                     Path pNew = p.clone();
-                    pNew.addNode(curNeighbor);
-                    pNew.updateCost(Heuristic.compareTo(curNeighbor));
+                    pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
+                    pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
                     legalPaths.add(pNew);
                 }
             }
+            arrayIndex++;
+        }
+        for (GraphNode curNode : p.getGraphNodes()) {
+            neverReturnNodes.add(curNode);
         }
         p.setMarked();
 

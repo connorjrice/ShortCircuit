@@ -69,12 +69,14 @@ public class Graph<T extends Comparable> {
         edges[secondNode.getIndex()][firstNode.getIndex()] = false;
     }
 
-    public ArrayList<GraphNode<T>> getNeighbors(int index) {
-        ArrayList<GraphNode<T>> neighbors = new ArrayList<GraphNode<T>>();
+    public int[] getNeighbors(int index) {
+        int[] neighbors = new int[9];
+        int arrayIndex = 0;
         for (int i = 0; i < currentSize; i++) {
             boolean isNeighbor = edges[index][i];
             if (isNeighbor) {
-                neighbors.add(getNode(i));
+                neighbors[arrayIndex] = i;
+                arrayIndex++;
             }
         }
         return neighbors;
@@ -99,14 +101,15 @@ public class Graph<T extends Comparable> {
             if (node.getElement().equals(snode.getElement())) {
                 return node;
             }
-            ArrayList<GraphNode<T>> neighbors = getNeighbors(node.getIndex());
-            for (GraphNode<T> curNeighbor : neighbors) {
-                queue.enqueue(curNeighbor);
+            int[] neighbors = getNeighbors(node.getIndex());
+            int arrayIndex = 0;
+            while (neighbors[arrayIndex] != 0) {
+                queue.enqueue(getNode(neighbors[arrayIndex]));
             }
         }
         return null;
     }
-
+    
     public GraphNode<T> depthFirstTraversal(Comparable element) {
         return depthFirstTraversal(new GraphNode<T>(element));
     }
@@ -123,9 +126,11 @@ public class Graph<T extends Comparable> {
             if (node.getElement().equals(snode.getElement())) {
                 return node;
             }
-            ArrayList<GraphNode<T>> neighbors = getNeighbors(node.getIndex());
-            for (GraphNode<T> curNeighbor : neighbors) {
-                stack.push(curNeighbor);
+            
+            int[] neighbors = getNeighbors(node.getIndex());
+            int arrayIndex = 0;
+            while (neighbors[arrayIndex] != 0) {
+                stack.push(getNode(neighbors[arrayIndex]));
             }
         }
         return null;
