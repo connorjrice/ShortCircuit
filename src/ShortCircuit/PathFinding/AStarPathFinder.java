@@ -47,7 +47,7 @@ public class AStarPathFinder implements PathFinder {
     public Path createFirstPath(int firstNode) {
         ArrayList<Integer> firstNodes = new ArrayList<Integer>();
         firstNodes.add(firstNode);
-        Path firstPath = new Path(firstNodes, UID);
+        Path firstPath = new Path(firstNodes);
         firstPath.updateCost(Heuristic.compareTo(Graph.getNode(firstNode)));
         frontier.add(firstPath);
         return firstPath;
@@ -87,8 +87,7 @@ public class AStarPathFinder implements PathFinder {
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
             if (!neverReturnNodes.contains(neighbors[arrayIndex])) {
-                Path pNew = p.clone(UID);
-                UID++;
+                Path pNew = p.clone();
                 pNew.addNode(neighbors[arrayIndex]);
                 pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
                 legalPaths.add(pNew);
