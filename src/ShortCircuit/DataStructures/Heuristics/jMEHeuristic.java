@@ -16,18 +16,10 @@ public class jMEHeuristic implements Heuristic {
         
     }
 
-    public float compareTo(Object n) {
-        GraphNode node = (GraphNode) n;
-        String elementString = (String) node.getElement();
-        float[] curCoords = new float[elementString.length()];
-        String[] coordsString = elementString.split(",");
-        for (int i = 0; i < coordsString.length; i++) {
-            curCoords[i] = Float.parseFloat(coordsString[i]);
-        }
+    public float compareTo(GraphNode n) {
+        float[] curCoords = n.getCoordArray();
         float distx = Math.abs(endPosition[0] - curCoords[0]);
         float disty = Math.abs(endPosition[1] - curCoords[1]);
-        //System.out.println("Distx: " + Float.toString(distx));
-        //System.out.println("Disty: " + Float.toString(disty));
         return distx + disty;
     }
 

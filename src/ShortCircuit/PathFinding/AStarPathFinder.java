@@ -52,17 +52,13 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public Path pathFind(Path curPath) {
-        frontier.add(curPath);
-        closed.add(curPath);
         if (!maxFlag) {
+            frontier.add(curPath);
+            closed.add(curPath);
             Path nextPath = getNextPath();
             ArrayList<Path> legalPaths = getLegalPaths(curPath);
             for (Path legalPath : legalPaths) {
                 frontier.add(legalPath);
-                if (legalPath.getLastNode().equals(endNode)) {
-                    clearPaths();
-                    return legalPath;
-                }
             }
             if (numRecursions < maxRecursions) {
                 frontier.remove(curPath);
@@ -76,7 +72,6 @@ public class AStarPathFinder implements PathFinder {
             clearPaths();
             return curPath;
         }
-
     }
     
     private void clearPaths() {
@@ -91,7 +86,7 @@ public class AStarPathFinder implements PathFinder {
         int[] neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
-            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]).getIndex())) {
+            if (!neverReturnNodes.contains(neighbors[arrayIndex])) {
                 Path pNew = p.clone();
                 pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
                 pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
