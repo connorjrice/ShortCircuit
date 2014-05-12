@@ -1,5 +1,6 @@
 package ShortCircuit.MapXML;
 
+import ShortCircuit.Threading.GetEnemyParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
@@ -10,13 +11,10 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
  * extensions
- *
- * TODO: Fix inputSource bug (won't load outside IDE)
  * @author Connor Rice
  */
 public class MapGenerator {
@@ -24,19 +22,12 @@ public class MapGenerator {
     private XPath xpath;
     private Document inputSource;
     private AssetManager assetManager;
-    private String level;
 
     public MapGenerator(String level, SimpleApplication app) {
         xpath = XPathFactory.newInstance().newXPath();
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
-        this.level = level;
         this.inputSource = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
-        //this.inputSource = getInputSource();
-    }
-    
-    private InputSource getInputSource() {
-        return (InputSource) assetManager.loadAsset("XML/" + level + ".lvl.xml");
     }
 
     
@@ -44,8 +35,8 @@ public class MapGenerator {
         return new GameplayParams(parseLevelParams(), parsePlayerParams());
     }
     
-    public EnemyParams getEnemyParams() {
-        return new EnemyParams(parseCreepList());
+    public EnemyParams getEnemyParams() throws Exception {
+        return (EnemyParams) new GetEnemyParams(xpath, inputSource).call();
     }
     
     public GraphicsParams getGraphicsParams() {
@@ -134,7 +125,6 @@ public class MapGenerator {
         return new FilterParams(bloom, downsampling, blurscale, 
                 exposurepower, bloomintensity, glowmode);
     }
-    
     public ArrayList<CreepParams> parseCreepList() {
         String creepExpression = "enemyparams/param[@id = 'creepParams']/";
         String[] creepTypes = parseCreepTypes(getElement("creepTypes", creepExpression));
