@@ -102,7 +102,7 @@ public class PathfindingState extends AbstractAppState {
         targetNode.attachChild(target);
     }
     private void addEdges() {
-        JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, rootNode, precision);
+        JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, precision);
         edgeBuilder.addEdges();
     }
     

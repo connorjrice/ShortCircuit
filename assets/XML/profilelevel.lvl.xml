@@ -11,7 +11,7 @@
             <allowedenemies>111111</allowedenemies>
         </param>
         <param id = "playerParams">
-            <plrHealth>500</plrHealth>
+            <plrHealth>500000</plrHealth>
             <plrBudget>100000</plrBudget>
             <plrLevel>100</plrLevel>
             <plrScore>0</plrScore>

@@ -2,8 +2,6 @@ package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.DataStructures.Interfaces.EdgeBuilder;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 
 
     
@@ -13,12 +11,10 @@ import com.jme3.scene.Spatial;
  */
 public class JMEEdgeBuilder implements EdgeBuilder {
     private Graph worldGraph;
-    private Node rootNode;
     private final float precision;
     
-    public JMEEdgeBuilder(Graph worldGraph, Node rootNode, float precision) {
+    public JMEEdgeBuilder(Graph worldGraph, float precision) {
         this.worldGraph = worldGraph;
-        this.rootNode = rootNode;
         this.precision = precision;
     }
 
@@ -41,7 +37,6 @@ public class JMEEdgeBuilder implements EdgeBuilder {
                 String js = Float.toString(j);
                 String nodeName = is + "," + js;
                 worldGraph.addEdge(targetName, nodeName);
-
             }
         }
     }
