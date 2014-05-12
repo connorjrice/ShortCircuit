@@ -7,7 +7,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import java.util.ArrayList;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 
@@ -19,14 +18,14 @@ import org.w3c.dom.Document;
 public class MapGenerator {
 
     private XPath xpath;
-    private Document inputSource;
+    private Document doc;
     private AssetManager assetManager;
 
     public MapGenerator(String level, SimpleApplication app) {
         xpath = XPathFactory.newInstance().newXPath();
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
-        this.inputSource = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
+        this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
     }
 
     
@@ -98,7 +97,6 @@ public class MapGenerator {
         String materialElement = "graphicsparams/param[@id = 'materialParams']/";
         String matdir = getElement("matdir", materialElement);
         String colors = getElement("bgcolor", materialElement);
-        System.out.println(matdir);
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
         return new MaterialParams(backgroundcolor, matdir);
     }
@@ -160,7 +158,6 @@ public class MapGenerator {
     }
 
     public ColorRGBA parseColorRGBA(String colors) {
-        System.out.println(colors);
         if (colors.equals("Black")) {
             return ColorRGBA.Black;
         } else if (colors.equals("DarkGrey")) {
@@ -225,9 +222,11 @@ public class MapGenerator {
     
     public String getValue(String expression) {
         try {
-            return xpath.evaluate(expression, inputSource);
-        } catch (XPathExpressionException ex) {
+            return xpath.evaluate(expression, doc);
+        } /*catch (XPathExpressionException ex) {
             System.out.println(ex.getCause());
+            return null;
+        }*/ catch (Exception e) {
             return null;
         }
     }

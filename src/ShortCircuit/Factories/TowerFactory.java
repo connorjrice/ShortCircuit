@@ -22,7 +22,7 @@ public class TowerFactory {
 
     public TowerParams getTower(TowerParams tp) {
         Geometry tower_geom = new Geometry("Tower", gs.getUnivBox());
-        tower_geom.setMaterial(gs.getTowerMat("Unbuilt"));
+        tower_geom.setMaterial(gs.getMaterial("TowerUnbuilt"));
         tower_geom.setLocalScale(gs.getTowerUnbuiltSize());
         tower_geom.setLocalTranslation(tp.getTowerVec());
         Spatial tower = tower_geom;
