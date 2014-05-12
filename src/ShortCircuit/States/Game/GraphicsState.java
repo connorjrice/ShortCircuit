@@ -12,6 +12,7 @@ import ShortCircuit.MapXML.GeometryParams;
 import ShortCircuit.MapXML.MaterialParams;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.MapXML.GraphicsParams;
+import ShortCircuit.Threading.BuildMatHash;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -323,14 +324,9 @@ public class GraphicsState extends AbstractAppState {
     }
     
     private void buildMatHash() {
-        for (int i = 0; i < towerTypes.length; i++) {
-            matHash.put("Tower"+towerTypes[i], assetManager.loadMaterial(getMatLoc("Tower"+towerTypes[i])));
-        }
-        matHash.put("Bomb", assetManager.loadMaterial(getMatLoc("Bomb")));
-        matHash.put("CreepSpawner", assetManager.loadMaterial(getMatLoc("CreepSpawner")));
-        for (int i = 0; i < creepTypes.length; i++) {
-            matHash.put(creepTypes[i]+"Creep", assetManager.loadMaterial(getMatLoc(creepTypes[i]+"Creep")));
-        }
+        BuildMatHash bms = new BuildMatHash(this, towerTypes, creepTypes);
+        bms.run();
+        this.matHash = bms.getMatHash();
     }
     
     public Material getTowerMat(String type) {

@@ -1,6 +1,5 @@
 package ShortCircuit.MapXML;
 
-import ShortCircuit.Threading.GetEnemyParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
