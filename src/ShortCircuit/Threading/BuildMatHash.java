@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit.Threading;
 
 import ShortCircuit.States.Game.GraphicsState;
@@ -33,6 +29,11 @@ public class BuildMatHash implements Runnable {
         }
         matHash.put("Bomb", assetManager.loadMaterial(gs.getMatLoc("Bomb")));
         matHash.put("CreepSpawner", assetManager.loadMaterial(gs.getMatLoc("CreepSpawner")));
+        matHash.put("Base", assetManager.loadMaterial(gs.getMatLoc("Base")));
+        matHash.put("Floor", assetManager.loadMaterial(gs.getMatLoc("Floor")));
+        for (int i = 1; i < 5; i++) {
+            matHash.put("Tower"+i+"Beam", assetManager.loadMaterial(gs.getMatLoc("Tower"+i+"Beam")));
+        }
         for (int i = 0; i < creepTypes.length; i++) {
             matHash.put(creepTypes[i]+"Creep", assetManager.loadMaterial(gs.getMatLoc(creepTypes[i]+"Creep")));
         }

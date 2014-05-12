@@ -22,7 +22,7 @@ public class BeamFactory {
         beaml = new Line(origin, target);
         beaml.setLineWidth(beamWidth);
         beamg = new Geometry("Beam", beaml);
-        beamg.setMaterial(gs.getAssetManager().loadMaterial("Materials/"+gs.getMatDir()+"/"+towertype+"Beam.j3m"));
+        beamg.setMaterial(gs.getMaterial(towertype+"Beam"));
         return beamg;
     }
 

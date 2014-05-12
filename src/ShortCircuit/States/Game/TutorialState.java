@@ -110,7 +110,7 @@ public class TutorialState extends AbstractAppState {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 GameState.getWorldNode().getChild("Base")
-                        .setMaterial(assetManager.loadMaterial(GraphicsState.getBaseTexLoc()));
+                        .setMaterial(GraphicsState.getMaterial("Base"));
                 screen.removeElement(this);
                 towerPopup();
             }

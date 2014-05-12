@@ -9,6 +9,7 @@ import java.util.Set;
  * @author Development
  */
 public class GraphicsParams {
+
     private MaterialParams mp;
     private FilterParams fp;
     private GeometryParams gp;
@@ -17,8 +18,8 @@ public class GraphicsParams {
     private String[] towerTypes;
     private ArrayList<CreepParams> creepList;
     private HashMap<String, CreepParams> creepMap;
-    
-    public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp, 
+
+    public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp,
             ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList,
             String[] towerTypes, ArrayList<CreepParams> creepList) {
         this.mp = mp;
@@ -31,52 +32,46 @@ public class GraphicsParams {
         this.creepMap = new HashMap<String, CreepParams>();
         parseCreeps();
     }
-    
+
     public FilterParams getFilterParams() {
         return fp;
     }
-    
+
     public MaterialParams getMaterialParams() {
         return mp;
     }
-    
+
     public GeometryParams getGeometryParams() {
         return gp;
     }
-    
+
     public ArrayList<TowerParams> getTowerList() {
         return towerList;
     }
-    
+
     public String[] getTowerTypes() {
         return towerTypes;
     }
-    
+
     public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
         return creepSpawnerList;
     }
-    
 
-    
-    
     private void parseCreeps() {
         for (CreepParams curCreep : creepList) {
             creepMap.put(curCreep.getType(), curCreep);
         }
     }
-    
+
     public HashMap getCreepMap() {
         return creepMap;
     }
-    
+
     public CreepParams getCreepParams(String type) {
         return creepMap.get(type);
     }
-    
+
     public Set<String> getCreepTypes() {
         return creepMap.keySet();
     }
-    
-    
-    
 }

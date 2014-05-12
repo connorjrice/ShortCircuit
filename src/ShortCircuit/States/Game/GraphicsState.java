@@ -5,6 +5,7 @@ import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.BeamFactory;
 import ShortCircuit.Factories.CreepSpawnerFactory;
+import ShortCircuit.Factories.FloorFactory;
 import ShortCircuit.Factories.TowerFactory;
 import ShortCircuit.MapXML.CreepSpawnerParams;
 import ShortCircuit.MapXML.FilterParams;
@@ -34,7 +35,6 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -72,9 +72,8 @@ public class GraphicsState extends AbstractAppState {
     private HashMap matHash;
     private TowerFactory tf;
     private CreepSpawnerFactory csf;
-    private String[] towerTypes;
     private HashMap creepParams;
-    private Object[] creepTypes;
+    private FloorFactory FloorFactory;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -92,6 +91,7 @@ public class GraphicsState extends AbstractAppState {
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
+        FloorFactory = new FloorFactory(this);
         matHash = new HashMap(10);
     }
     
@@ -100,14 +100,12 @@ public class GraphicsState extends AbstractAppState {
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
         this.towerList = gp.getTowerList();
-        this.towerTypes = gp.getTowerTypes();
         this.creepSpawnerList = gp.getCreepSpawnerList();
         this.creepParams = gp.getCreepMap();
-        this.creepTypes = creepParams.keySet().toArray();
         initFilters();
         initFactories();
         setCameraSets();        
-        buildMatHash();
+        buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
         createWorld();
         EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
@@ -250,27 +248,21 @@ public class GraphicsState extends AbstractAppState {
     }
 
     public void createFloor() {
-        Geometry floor_geom = new Geometry("Floor", univ_box);
-        floor_geom.setMaterial(assetManager.loadMaterial(getFloorTexLoc()));
-        floor_geom.setLocalScale(gp.getFloorScale());
-        worldNode.attachChild(floor_geom);
+        Spatial floor = FloorFactory.getFloor();
+        worldNode.attachChild(floor);
     }
     
-    private String getFloorTexLoc() {
-        return "Materials/" + getMatDir() + "/Floor.j3m";
+    public Vector3f getFloorScale() {
+        return gp.getFloorScale();
     }
     
     /*** Base Methods ***/
 
     public void createBase() {
-        Spatial base = BaseFactory.getBase(getBaseTexLoc(), gp.getBaseVec(), gp.getBaseScale());
+        Spatial base = BaseFactory.getBase(gp.getBaseVec(), gp.getBaseScale());
         worldNode.attachChild(base);
         GameState.setBaseBounds(base.getWorldBound());
         GameState.setFormattedBaseCoords(base);
-    }
-    
-    public String getBaseTexLoc() {
-        return "Materials/" +getMatDir()+"/Base.j3m";
     }
     
     public Vector3f getBaseVec() {
@@ -323,7 +315,7 @@ public class GraphicsState extends AbstractAppState {
         FriendlyState.upgradeTower(tp);
     }
     
-    private void buildMatHash() {
+    private void buildMatHash(String[] towerTypes, Object[] creepTypes) {
         BuildMatHash bms = new BuildMatHash(this, towerTypes, creepTypes);
         bms.run();
         this.matHash = bms.getMatHash();
