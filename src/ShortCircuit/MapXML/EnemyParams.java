@@ -1,8 +1,5 @@
 package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.CreepParams;
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -16,9 +13,7 @@ import java.util.Set;
 public class EnemyParams {
 
     private ArrayList<CreepParams> creepList;
-    private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private HashMap<String, CreepParams> creepMap;
-    private HashMap<String, CreepSpawnerParams> creepSpawnerMap;
 
 
     public EnemyParams(ArrayList<CreepParams> creepList) {

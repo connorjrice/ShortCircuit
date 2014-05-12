@@ -41,7 +41,7 @@ public class MapGenerator {
     
     public GraphicsParams getGraphicsParams() {
         return new GraphicsParams(parseMaterialParams(), parseFilterParams(), 
-                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList());
+                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
     }
     
     private LevelParams parseLevelParams() {
@@ -127,7 +127,7 @@ public class MapGenerator {
     }
     public ArrayList<CreepParams> parseCreepList() {
         String creepExpression = "enemyparams/param[@id = 'creepParams']/";
-        String[] creepTypes = parseCreepTypes(getElement("creepTypes", creepExpression));
+        String[] creepTypes = parseStringArray(getElement("creepTypes", creepExpression));
         ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
         for (int i = 0; i < creepTypes.length; i++) {
             String curCreepExpression = creepExpression+creepTypes[i]+"Creep/";
@@ -153,7 +153,13 @@ public class MapGenerator {
         return creepSpawnerList;
     }
     
-    public String[] parseCreepTypes(String s) {
+    public String[] parseTowerTypes() {
+        String towerExp = "gameplayparams/param[@id = 'towerParams']/";
+        String[] types = parseStringArray(getElement("towerTypes", towerExp));
+        return types;
+    }
+    
+    public String[] parseStringArray(String s) {
         return s.split(",");
     }
 

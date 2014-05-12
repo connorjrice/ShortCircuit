@@ -41,6 +41,7 @@
         </param>
         <param id = "towerParams">
             <numTowers>20</numTowers>
+            <towerTypes>Unbuilt,Empty,1,2,3,4</towerTypes>
             <tower id = "0">
                 <vec>2.25f, 2.0f, 0.1f</vec>
                 <isStarter>true</isStarter>

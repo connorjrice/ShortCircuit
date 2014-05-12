@@ -33,6 +33,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -70,8 +71,10 @@ public class GraphicsState extends AbstractAppState {
     private Node rootNode;
     private ArrayList<TowerParams> towerList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
+    private HashMap matHash;
     private TowerFactory tf;
     private CreepSpawnerFactory csf;
+    private String[] towerTypes;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -90,6 +93,7 @@ public class GraphicsState extends AbstractAppState {
         this.startGUI = this.stateManager.getState(StartGUI.class);
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
+        matHash = new HashMap(10);
     }
     
     public void setGraphicsParams(GraphicsParams gp) {
@@ -97,12 +101,14 @@ public class GraphicsState extends AbstractAppState {
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
         this.towerList = gp.getTowerList();
+        this.towerTypes = gp.getTowerTypes();
         this.creepSpawnerList = gp.getCreepSpawnerList();
         initFilters();
         initAssets();
         initFactories();
         setCameraSets();
         createWorld();
+        buildMatHash();
         setBackgroundColor(mp.getBackgroundColor());
     }
     
@@ -321,6 +327,15 @@ public class GraphicsState extends AbstractAppState {
         FriendlyState.upgradeTower(tp);
     }
     
+    private void buildMatHash() {
+        for (int i = 0; i < towerTypes.length; i++) {
+            matHash.put("Tower"+towerTypes[i], assetManager.loadMaterial(getTowerMatLoc("Tower"+towerTypes[i])));
+        }
+    }
+    
+    public Material getTowerMat(String type) {
+        return (Material) matHash.get(type);
+    }
     
     public String getTowerMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";

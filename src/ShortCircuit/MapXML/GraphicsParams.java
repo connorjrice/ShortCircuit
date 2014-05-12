@@ -1,10 +1,5 @@
 package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.MapXML.FilterParams;
-import ShortCircuit.MapXML.GeometryParams;
-import ShortCircuit.MapXML.MaterialParams;
-import ShortCircuit.MapXML.TowerParams;
 import java.util.ArrayList;
 
 /**
@@ -17,14 +12,17 @@ public class GraphicsParams {
     private GeometryParams gp;
     private ArrayList<TowerParams> towerList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
+    private String[] towerTypes;
     
     public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp, 
-            ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList) {
+            ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList,
+            String[] towerTypes) {
         this.mp = mp;
         this.fp = fp;
         this.gp = gp;
         this.towerList = towerList;
         this.creepSpawnerList = creepSpawnerList;
+        this.towerTypes = towerTypes;
     }
     
     public FilterParams getFilterParams() {
@@ -41,6 +39,10 @@ public class GraphicsParams {
     
     public ArrayList<TowerParams> getTowerList() {
         return towerList;
+    }
+    
+    public String[] getTowerTypes() {
+        return towerTypes;
     }
     
     public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
