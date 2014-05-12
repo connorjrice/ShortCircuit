@@ -6,6 +6,8 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * LoadingState calls the appropriate methods in its sibling states to create a 
@@ -36,11 +38,15 @@ public class LoadingState extends AbstractAppState {
         this.GameState = this.stateManager.getState(GameState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.StartGUI = this.stateManager.getState(StartGUI.class);
-        newGame();
+        try {
+            newGame();
+        } catch (Exception ex) {
+            Logger.getLogger(LoadingState.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
-    public void newGame() {
+    public void newGame() throws Exception {
         initMG(levelName, app);
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
         EnemyState.setEnemyParams(mg.getEnemyParams());
