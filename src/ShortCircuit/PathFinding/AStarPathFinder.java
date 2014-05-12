@@ -1,6 +1,7 @@
 package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
+import ShortCircuit.DataStructures.Heap;
 import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Interfaces.PathFinder;
 import ShortCircuit.DataStructures.Objects.Path;
@@ -53,9 +54,11 @@ public class AStarPathFinder implements PathFinder {
         if (!maxFlag) {
             closed.add(curPath);
             Path nextPath = getNextPath();
-            ArrayList<Path> legalPaths = getLegalPaths(curPath);
-            for (Path legalPath : legalPaths) {
-                frontier.add(legalPath);
+            Heap<Path> legalPaths = getLegalPaths(curPath);
+            Path curLegal = (Path) legalPaths.remove();
+            while (curLegal != null) {
+                frontier.add(curLegal);
+                curLegal = (Path) legalPaths.remove();
             }
             if (numRecursions < maxRecursions) {
                 numRecursions++;
@@ -76,8 +79,8 @@ public class AStarPathFinder implements PathFinder {
         neverReturnNodes.clear();
     }
 
-    public ArrayList<Path> getLegalPaths(Path p) {
-        ArrayList<Path> legalPaths = new ArrayList<Path>();
+    public Heap<Path> getLegalPaths(Path p) {
+        Heap<Path> legalPaths = new Heap<Path>();
         int[] neighbors = Graph.getNeighbors(p.getLastNode());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 
  * @author Connor Rice
  */
-public class Path {
+public class Path implements Comparable{
     
     private ArrayList<Integer> pathIndicies;
     private float cost;
@@ -62,6 +62,16 @@ public class Path {
     @Override
     public Path clone() {
         return new Path((ArrayList<Integer>) getGraphNodes().clone());
+    }
+
+    public int compareTo(Object o) {
+        if (cost > ((Path)o).getCost()) {
+            return 1;
+        } else if (cost == ((Path)o).getCost()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
     
 }
