@@ -35,6 +35,14 @@ public class Graph<T extends Comparable> {
             doubleCapacity(newNode);
         }
     }
+    
+    public int getIndex(Comparable element) {
+        return ((GraphNode) nodeHash.get(element)).getIndex();
+    }
+    
+    public Comparable getElement(int index) {
+        return nodes[index].getElement();
+    }
 
     public GraphNode<T> getNode(int index) {
         return nodes[index];

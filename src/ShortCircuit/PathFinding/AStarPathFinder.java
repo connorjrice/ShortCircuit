@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class AStarPathFinder implements PathFinder {
 
-    private int endIndex;
     private boolean maxFlag;
     private int maxNodeSize;
     private Heuristic Heuristic;
@@ -31,12 +30,11 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public Path getPath(String start, String end) {
-        return getPath(Graph.getNode(start).getIndex(), Graph.getNode(end).getIndex());
+        return getPath(Graph.getIndex(start), Graph.getIndex(end));
     }
 
     public Path getPath(int start, int end) {
-        this.endIndex = end;
-        Heuristic.setEndPosition((Graph.getNode(endIndex).getElement()));
+        Heuristic.setEndPosition((Graph.getElement(end)));
         maxFlag = false;
         numRecursions = 0;
         return pathFind(createFirstPath(start));
@@ -72,13 +70,12 @@ public class AStarPathFinder implements PathFinder {
             return curPath;
         }
     }
-    
+
     private void clearPaths() {
         frontier.clear();
         closed.clear();
         neverReturnNodes.clear();
     }
-    
 
     public ArrayList<Path> getLegalPaths(Path p) {
         ArrayList<Path> legalPaths = new ArrayList<Path>();
@@ -97,7 +94,6 @@ public class AStarPathFinder implements PathFinder {
             neverReturnNodes.add(curNode);
         }
         p.setMarked();
-
         return legalPaths;
     }
 
@@ -113,7 +109,6 @@ public class AStarPathFinder implements PathFinder {
         if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
             maxFlag = true;
         }
-
         frontier.remove(cheapestPath);
         return cheapestPath;
     }
@@ -125,12 +120,5 @@ public class AStarPathFinder implements PathFinder {
         }
         return new Path(pathClone);
     }
-
-    public void setEndIndex(int endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public int getEndIndex() {
-        return endIndex;
-    }
+    
 }
