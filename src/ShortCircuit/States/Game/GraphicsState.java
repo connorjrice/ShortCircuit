@@ -1,6 +1,5 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Factories.BaseFactory;
@@ -34,6 +33,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -59,15 +59,12 @@ public class GraphicsState extends AbstractAppState {
     private Node beamNode = new Node("Beams");
     private float updateTimer = 0.0f;
     private MaterialParams mp;
-    private Material bomb_mat;
     private FilterParams fp;
     private AppStateManager stateManager;
     private GameState GameState;
     private BaseFactory BaseFactory;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
-    private StartGUI startGUI;
-    private String floortexloc;
     private Node rootNode;
     private ArrayList<TowerParams> towerList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
@@ -75,6 +72,8 @@ public class GraphicsState extends AbstractAppState {
     private TowerFactory tf;
     private CreepSpawnerFactory csf;
     private String[] towerTypes;
+    private HashMap creepParams;
+    private Object[] creepTypes;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -90,7 +89,6 @@ public class GraphicsState extends AbstractAppState {
         this.GameState = this.stateManager.getState(GameState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
-        this.startGUI = this.stateManager.getState(StartGUI.class);
         BeamFactory = new BeamFactory(this);
         BaseFactory = new BaseFactory(this);
         matHash = new HashMap(10);
@@ -103,12 +101,14 @@ public class GraphicsState extends AbstractAppState {
         this.towerList = gp.getTowerList();
         this.towerTypes = gp.getTowerTypes();
         this.creepSpawnerList = gp.getCreepSpawnerList();
+        this.creepParams = gp.getCreepMap();
+        this.creepTypes = creepParams.keySet().toArray();
         initFilters();
-        initAssets();
         initFactories();
-        setCameraSets();
-        createWorld();
+        setCameraSets();        
         buildMatHash();
+        createWorld();
+        EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
     }
     
@@ -155,11 +155,6 @@ public class GraphicsState extends AbstractAppState {
     private void attachBeamNode() {
         rootNode.attachChild(beamNode);
     }
-    
-    private void initAssets() {
-        bomb_mat = assetManager.loadMaterial("Materials/" + getMatDir() + "/Bomb.j3m");
-    }
-    
 
         /**
      * Sets up the FilterPostProcessor and Bloom filter used by the game.
@@ -312,15 +307,15 @@ public class GraphicsState extends AbstractAppState {
     }
     
     public void towerTextureCharged(TowerParams tp) {
-        tp.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tp.getType())));
+        tp.getSpatial().setMaterial((Material)matHash.get(tp.getType()));
     }
     
     public void towerTextureCharged(TowerControl tc) {
-        tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc(tc.getTowerType())));
+        tc.getSpatial().setMaterial((Material)matHash.get(tc.getTowerType()));
     }
     
     public void towerTextureEmpty(TowerControl tc) {
-        tc.getSpatial().setMaterial(assetManager.loadMaterial(getTowerMatLoc("TowerEmpty")));
+        tc.getSpatial().setMaterial((Material)matHash.get("TowerEmpty"));
     }
     
     public void towerUpgradeStarter(TowerParams tp) {
@@ -329,7 +324,12 @@ public class GraphicsState extends AbstractAppState {
     
     private void buildMatHash() {
         for (int i = 0; i < towerTypes.length; i++) {
-            matHash.put("Tower"+towerTypes[i], assetManager.loadMaterial(getTowerMatLoc("Tower"+towerTypes[i])));
+            matHash.put("Tower"+towerTypes[i], assetManager.loadMaterial(getMatLoc("Tower"+towerTypes[i])));
+        }
+        matHash.put("Bomb", assetManager.loadMaterial(getMatLoc("Bomb")));
+        matHash.put("CreepSpawner", assetManager.loadMaterial(getMatLoc("CreepSpawner")));
+        for (int i = 0; i < creepTypes.length; i++) {
+            matHash.put(creepTypes[i]+"Creep", assetManager.loadMaterial(getMatLoc(creepTypes[i]+"Creep")));
         }
     }
     
@@ -337,7 +337,7 @@ public class GraphicsState extends AbstractAppState {
         return (Material) matHash.get(type);
     }
     
-    public String getTowerMatLoc(String type) {
+    public String getMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";
     }
     
@@ -374,10 +374,6 @@ public class GraphicsState extends AbstractAppState {
         EnemyState.setCreepSpawnerList(creepSpawnerList);
     }
     
-    public String getCreepSpawnerMatLoc() {
-        return "Materials/" + getMatDir() + "/CreepSpawner.j3m";
-    }
-    
     public Vector3f getCreepSpawnerHorizontalScale() {
         return gp.getCreepSpawnerHorizontalScale();
     }
@@ -390,7 +386,7 @@ public class GraphicsState extends AbstractAppState {
     
     public void dropBomb(Vector3f translation, float initialSize) {
         Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
-        bomb_geom.setMaterial(bomb_mat);
+        bomb_geom.setMaterial((Material)matHash.get("Bomb"));
         bomb_geom.setLocalScale(initialSize);
         bomb_geom.setLocalTranslation(translation);
 
@@ -413,6 +409,10 @@ public class GraphicsState extends AbstractAppState {
     }
     public String getMatDir() {
         return mp.getMatDir();
+    }
+    
+    public Material getMaterial(String key) {
+        return (Material) matHash.get(key);
     }
     
     private void setBackgroundColor(ColorRGBA c) {

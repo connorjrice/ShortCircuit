@@ -35,13 +35,10 @@ public class MapGenerator {
         return new GameplayParams(parseLevelParams(), parsePlayerParams());
     }
     
-    public EnemyParams getEnemyParams() {
-        return new EnemyParams(parseCreepList());
-    }
     
     public GraphicsParams getGraphicsParams() {
         return new GraphicsParams(parseMaterialParams(), parseFilterParams(), 
-                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
+                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes(), parseCreepList());
     }
     
     private LevelParams parseLevelParams() {

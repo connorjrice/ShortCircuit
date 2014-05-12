@@ -1,14 +1,12 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.PathFinding.PathFinder;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
 import ShortCircuit.Factories.RangerFactory;
 import ShortCircuit.MapXML.CreepParams;
 import ShortCircuit.MapXML.CreepSpawnerParams;
 import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.MapXML.EnemyParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -22,6 +20,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -49,13 +48,13 @@ public class EnemyState extends AbstractAppState {
     private ArrayList<Spatial> rangerList;
     private ArrayList<Spatial> diggerList;
     private RangerFactory rf;
-    private EnemyParams ep;
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
     private Node rootNode;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private Object[] creepTypes;
     private PathfindingState PathState;
+    private HashMap creepParams;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -73,7 +72,7 @@ public class EnemyState extends AbstractAppState {
     }
 
     private void initFactories() {
-        cf = new RegCreepFactory(this);
+        cf = new RegCreepFactory(GraphicsState, this);
         gf = new GlobFactory(this);
         rf = new RangerFactory(this);
     }
@@ -85,10 +84,14 @@ public class EnemyState extends AbstractAppState {
         nextrandom = random.nextInt(50);
     }
 
-    public void setEnemyParams(EnemyParams ep) {
-        this.ep = ep;
-        this.creepTypes = ep.getCreepTypes().toArray();
+    public void setEnemyParams(HashMap creepParams) {
+        this.creepTypes = creepParams.keySet().toArray();
+        this.creepParams = creepParams;
         attachCreepNode();
+    }
+    
+    public String[] getCreepTypes() {
+        return (String[]) creepTypes;
     }
 
     public void setCreepSpawnerList(ArrayList<CreepSpawnerParams> creepSpawnerList) {
@@ -176,7 +179,7 @@ public class EnemyState extends AbstractAppState {
     }
 
     public CreepParams getNextCreepParams() {
-        return ep.getCreepParams(getNextCreepType());
+        return (CreepParams) creepParams.get(getNextCreepType());
     }
 
     public String getNextCreepType() {

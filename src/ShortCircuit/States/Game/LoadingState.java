@@ -34,7 +34,6 @@ public class LoadingState extends AbstractAppState {
         this.stateManager = stateManager;
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.GameState = this.stateManager.getState(GameState.class);
-        this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.StartGUI = this.stateManager.getState(StartGUI.class);
         newGame();
     }
@@ -43,7 +42,6 @@ public class LoadingState extends AbstractAppState {
     public void newGame() {
         initMG(levelName, app);
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
-        EnemyState.setEnemyParams(mg.getEnemyParams());
         GameState.setGameplayParams(mg.getGameplayParams());
     }
 
