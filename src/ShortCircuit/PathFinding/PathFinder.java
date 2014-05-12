@@ -1,7 +1,6 @@
-package ShortCircuit.DataStructures.Interfaces;
+package ShortCircuit.PathFinding;
 
-
-import ShortCircuit.DataStructures.Objects.Path;
+import ShortCircuit.PathFinding.Path;
 
 /**
  *

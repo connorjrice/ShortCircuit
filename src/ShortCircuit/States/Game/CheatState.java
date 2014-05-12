@@ -1,8 +1,8 @@
-package ShortCircuit.Cheats;
+package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.Objects.Game.Charges;
-import ShortCircuit.MapXML.Objects.TowerParams;
+import ShortCircuit.Objects.Charges;
+import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.GraphicsState;

@@ -1,7 +1,7 @@
-package ShortCircuit.Objects.Loading;
+package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.Objects.LevelParams;
-import ShortCircuit.MapXML.Objects.PlayerParams;
+import ShortCircuit.MapXML.LevelParams;
+import ShortCircuit.MapXML.PlayerParams;
 
 /**
  * This object contains all of the level parameters as specified by the XML file

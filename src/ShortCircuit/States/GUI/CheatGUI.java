@@ -1,5 +1,6 @@
-package ShortCircuit.Cheats;
+package ShortCircuit.States.GUI;
 
+import ShortCircuit.States.Game.CheatState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

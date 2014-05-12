@@ -1,6 +1,5 @@
-package ShortCircuit.DataStructures.Heuristics;
+package ShortCircuit.PathFinding;
 
-import ShortCircuit.DataStructures.Interfaces.Heuristic;
 import ShortCircuit.DataStructures.Nodes.GraphNode;
 
 

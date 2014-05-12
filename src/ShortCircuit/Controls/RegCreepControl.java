@@ -1,8 +1,8 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
-import ShortCircuit.DataStructures.Objects.Path;
+import ShortCircuit.PathFinding.jMEHeuristic;
+import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;

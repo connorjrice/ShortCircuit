@@ -1,7 +1,7 @@
 package ShortCircuit.Factories;
 
 import ShortCircuit.Controls.CreepSpawnerControl;
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;

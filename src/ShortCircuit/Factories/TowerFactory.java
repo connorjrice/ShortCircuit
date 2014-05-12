@@ -1,7 +1,7 @@
 package ShortCircuit.Factories;
 
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.MapXML.Objects.TowerParams;
+import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;

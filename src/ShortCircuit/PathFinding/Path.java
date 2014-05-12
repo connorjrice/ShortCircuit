@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures.Objects;
+package ShortCircuit.PathFinding;
 
 
 import java.util.ArrayList;

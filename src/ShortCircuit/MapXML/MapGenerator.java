@@ -1,16 +1,5 @@
 package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.Objects.CreepParams;
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
-import ShortCircuit.Objects.Loading.EnemyParams;
-import ShortCircuit.MapXML.Objects.FilterParams;
-import ShortCircuit.Objects.Loading.GameplayParams;
-import ShortCircuit.MapXML.Objects.GeometryParams;
-import ShortCircuit.MapXML.Objects.LevelParams;
-import ShortCircuit.MapXML.Objects.MaterialParams;
-import ShortCircuit.MapXML.Objects.PlayerParams;
-import ShortCircuit.MapXML.Objects.TowerParams;
-import ShortCircuit.Objects.Loading.GraphicsParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;

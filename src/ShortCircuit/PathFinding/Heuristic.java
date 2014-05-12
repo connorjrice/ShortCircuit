@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures.Interfaces;
+package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Nodes.GraphNode;
 

@@ -1,8 +1,8 @@
-package ShortCircuit.MainState;
+package ShortCircuit;
 
-import ShortCircuit.GUI.StartGUI;
-import ShortCircuit.Cheats.CheatGUI;
-import ShortCircuit.Cheats.CheatState;
+import ShortCircuit.States.GUI.StartGUI;
+import ShortCircuit.States.GUI.CheatGUI;
+import ShortCircuit.States.Game.CheatState;
 import ShortCircuit.States.GUI.GameGUI;
 import ShortCircuit.States.GUI.GameOverGUI;
 import ShortCircuit.States.Game.AudioState;

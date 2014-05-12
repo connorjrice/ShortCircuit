@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML.Objects;
+package ShortCircuit.MapXML;
 
 import com.jme3.post.filters.BloomFilter.GlowMode;
 

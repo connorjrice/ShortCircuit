@@ -3,7 +3,7 @@ package ShortCircuit.Controls;
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.STCCreepCompare;
 import ShortCircuit.States.Game.GraphicsState;
-import ShortCircuit.Objects.Game.Charges;
+import ShortCircuit.Objects.Charges;
 import ShortCircuit.States.Game.FriendlyState;
 import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;

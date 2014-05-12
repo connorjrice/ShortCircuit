@@ -1,6 +1,6 @@
 package ShortCircuit.Threading;
 
-import ShortCircuit.MapXML.Objects.TowerParams;
+import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
 
 /**

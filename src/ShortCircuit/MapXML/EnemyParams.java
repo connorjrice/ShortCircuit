@@ -1,7 +1,7 @@
-package ShortCircuit.Objects.Loading;
+package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.Objects.CreepParams;
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
+import ShortCircuit.MapXML.CreepParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
 import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.HashMap;

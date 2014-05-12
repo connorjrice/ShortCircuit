@@ -1,6 +1,6 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.GUI.StartGUI;
+import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.MapXML.MapGenerator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

@@ -1,14 +1,14 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Interfaces.PathFinder;
+import ShortCircuit.PathFinding.PathFinder;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
 import ShortCircuit.Factories.RangerFactory;
-import ShortCircuit.MapXML.Objects.CreepParams;
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
-import ShortCircuit.MapXML.Objects.TowerParams;
-import ShortCircuit.Objects.Loading.EnemyParams;
+import ShortCircuit.MapXML.CreepParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
+import ShortCircuit.MapXML.TowerParams;
+import ShortCircuit.MapXML.EnemyParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

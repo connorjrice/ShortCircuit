@@ -1,6 +1,6 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.MapXML.Objects.TowerParams;
+import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;

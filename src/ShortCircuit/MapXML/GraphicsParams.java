@@ -1,10 +1,10 @@
-package ShortCircuit.Objects.Loading;
+package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
-import ShortCircuit.MapXML.Objects.FilterParams;
-import ShortCircuit.MapXML.Objects.GeometryParams;
-import ShortCircuit.MapXML.Objects.MaterialParams;
-import ShortCircuit.MapXML.Objects.TowerParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
+import ShortCircuit.MapXML.FilterParams;
+import ShortCircuit.MapXML.GeometryParams;
+import ShortCircuit.MapXML.MaterialParams;
+import ShortCircuit.MapXML.TowerParams;
 import java.util.ArrayList;
 
 /**

@@ -1,18 +1,18 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.GUI.StartGUI;
+import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Factories.BaseFactory;
 import ShortCircuit.Factories.BeamFactory;
 import ShortCircuit.Factories.CreepSpawnerFactory;
 import ShortCircuit.Factories.TowerFactory;
-import ShortCircuit.MapXML.Objects.CreepSpawnerParams;
-import ShortCircuit.MapXML.Objects.FilterParams;
-import ShortCircuit.MapXML.Objects.GeometryParams;
-import ShortCircuit.MapXML.Objects.MaterialParams;
-import ShortCircuit.MapXML.Objects.TowerParams;
-import ShortCircuit.Objects.Loading.GraphicsParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
+import ShortCircuit.MapXML.FilterParams;
+import ShortCircuit.MapXML.GeometryParams;
+import ShortCircuit.MapXML.MaterialParams;
+import ShortCircuit.MapXML.TowerParams;
+import ShortCircuit.MapXML.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

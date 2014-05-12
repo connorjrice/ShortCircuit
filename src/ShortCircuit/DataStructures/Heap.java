@@ -4,7 +4,7 @@ package ShortCircuit.DataStructures;
  * Implementation of a Heap datastructure, that allows for either a Min or Max
  * Heap. It is based upon Cay Horstmann's implementation in Big Java, but uses
  * statically sized arrays instead of ArrayLists, and adds more functionality.
- *
+ * TODO: This don't work.
  * @author Connor Rice, May 2014
  */
 public class Heap<T extends Comparable> {
@@ -146,7 +146,6 @@ public class Heap<T extends Comparable> {
             heap[1] = last;
             fixHeap();
         }
-        heap[currentSize - 1] = null;
         currentSize--;
         return minimum;
     }

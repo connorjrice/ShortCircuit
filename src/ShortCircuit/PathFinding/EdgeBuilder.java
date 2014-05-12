@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures.Interfaces;
+package ShortCircuit.PathFinding;
 
 /**
  *

@@ -1,9 +1,6 @@
 package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Interfaces.Heuristic;
-import ShortCircuit.DataStructures.Interfaces.PathFinder;
-import ShortCircuit.DataStructures.Objects.Path;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -96,7 +93,6 @@ public class AStarPathFinder implements PathFinder {
 
     public Path getNextPath() {
         Path cheapestPath = (Path) frontier.remove();
-        
         if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
             maxFlag = true;
         }

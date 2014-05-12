@@ -1,10 +1,10 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.GUI.StartGUI;
+import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.Controls.GlobControl;
-import ShortCircuit.MapXML.Objects.LevelParams;
-import ShortCircuit.MapXML.Objects.PlayerParams;
-import ShortCircuit.Objects.Loading.GameplayParams;
+import ShortCircuit.MapXML.LevelParams;
+import ShortCircuit.MapXML.PlayerParams;
+import ShortCircuit.MapXML.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

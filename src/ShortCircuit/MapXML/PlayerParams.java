@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML.Objects;
+package ShortCircuit.MapXML;
 
 /**
  *

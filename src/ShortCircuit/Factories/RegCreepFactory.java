@@ -1,7 +1,7 @@
 package ShortCircuit.Factories;
 
 import ShortCircuit.Controls.RegCreepControl;
-import ShortCircuit.MapXML.Objects.CreepParams;
+import ShortCircuit.MapXML.CreepParams;
 import ShortCircuit.States.Game.EnemyState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
