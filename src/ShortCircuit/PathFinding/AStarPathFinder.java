@@ -18,12 +18,11 @@ public class AStarPathFinder implements PathFinder {
     private int maxNodeSize;
     private Heuristic Heuristic;
     private Graph Graph;
-    private boolean neverReturn = true;
-    private ArrayList<GraphNode> neverReturnNodes = new ArrayList<GraphNode>();
+    private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
     private ArrayList<Path> frontier = new ArrayList<Path>();
     private ArrayList<Path> closed = new ArrayList<Path>();
     private int numRecursions;
-    private int maxRecursions = 1000;
+    private int maxRecursions = 50;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
         this.Heuristic = Heuristic;
@@ -91,18 +90,16 @@ public class AStarPathFinder implements PathFinder {
         int[] neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
-            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]))) {
-                if (!p.getGraphNodes().contains(Graph.getNode(neighbors[arrayIndex]))) {
+            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]).getIndex())) {
                     Path pNew = p.clone();
                     pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
                     pNew.updateCost(Heuristic.compareTo(Graph.getNode(neighbors[arrayIndex])));
                     legalPaths.add(pNew);
-                }
             }
             arrayIndex++;
         }
         for (GraphNode curNode : p.getGraphNodes()) {
-            neverReturnNodes.add(curNode);
+            neverReturnNodes.add(curNode.getIndex());
         }
         p.setMarked();
 
