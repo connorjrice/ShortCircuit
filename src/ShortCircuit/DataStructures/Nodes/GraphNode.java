@@ -4,10 +4,12 @@ public class GraphNode<T> {
 
     private Comparable element;
     private int index;
-
+    private float[] coords;
+    
     public GraphNode(int _index, Comparable newElement) {
 	index = _index;
 	element = newElement;
+        setCoordArray();
     }
     
     public GraphNode(Comparable newElement) {
@@ -23,12 +25,15 @@ public class GraphNode<T> {
 	return element;
     }
     
-    public float[] getCoordArray() {
+    private void setCoordArray() {
         String[] strArr = ((String) element).split(",");
-        float[] coords = new float[strArr.length];
+        coords = new float[strArr.length];
         for (int i= 0; i < strArr.length; i++) {
             coords[i] = Float.parseFloat(strArr[i]);
         }
+    }
+    
+    public float[] getCoordArray() {
         return coords;
     }
     
