@@ -43,7 +43,7 @@
             <numTowers>1</numTowers>
             <tower id = "0">
                 <vec>0.0f,3.0f,0.1f</vec>
-                <isStarter>true</isStarter>
+                <isStarter>false</isStarter>
             </tower>
         </param>
     </gameplayparams>

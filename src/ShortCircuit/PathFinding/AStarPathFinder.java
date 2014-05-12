@@ -1,7 +1,7 @@
 package ShortCircuit.PathFinding;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Heap;
+import ShortCircuit.DataStructures.MinHeap;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +15,7 @@ public class AStarPathFinder implements PathFinder {
     private Heuristic Heuristic;
     private Graph Graph;
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
-    private Heap<Path> frontier = new Heap<Path>();
+    private MinHeap<Path> frontier = new MinHeap<Path>();
     private int numRecursions;
     private int maxRecursions = 75;
     private long neverLong;
