@@ -1,5 +1,7 @@
 package ShortCircuit.States.Game;
 
+import ShortCircuit.DataStructures.Graph;
+import ShortCircuit.DataStructures.Interfaces.PathFinder;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
 import ShortCircuit.Factories.RangerFactory;
@@ -53,6 +55,7 @@ public class EnemyState extends AbstractAppState {
     private Node rootNode;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private Object[] creepTypes;
+    private PathfindingState PathState;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -63,6 +66,7 @@ public class EnemyState extends AbstractAppState {
         this.GameState = this.stateManager.getState(GameState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
+        this.PathState = this.stateManager.getState(PathfindingState.class);
         this.rootNode = this.app.getRootNode();
         initFactories();
         initLists();
@@ -279,6 +283,17 @@ public class EnemyState extends AbstractAppState {
         random = new Random(42);
         nextrandom = random.nextInt(10);
         randomCheck = random.nextInt(10);
+    }
+    
+    public PathFinder getPathFinder() {
+        return PathState.createPathFinder();
+    }
+    public Graph getWorldGraph() {
+        return PathState.getWorldGraph();
+    }
+    
+    public String getFormattedBaseCoords() {
+        return GameState.getFormattedBaseCoords();
     }
 
     @Override

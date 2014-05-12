@@ -10,36 +10,39 @@ import ShortCircuit.DataStructures.Nodes.GraphNode;
  */
 public class jMEHeuristic implements Heuristic {
     
-    private int[] endPosition;
+    private float[] endPosition;
     
     public jMEHeuristic() {
         
     }
 
-    public int compareTo(Object n) {
+    public float compareTo(Object n) {
         GraphNode node = (GraphNode) n;
         String elementString = (String) node.getElement();
-        int[] curCoords = new int[elementString.length()];
+        float[] curCoords = new float[elementString.length()];
         String[] coordsString = elementString.split(",");
         for (int i = 0; i < coordsString.length; i++) {
-            curCoords[i] = Integer.parseInt(coordsString[i]);
+            curCoords[i] = Float.parseFloat(coordsString[i]);
         }
-        int distx = endPosition[0] - curCoords[0];
-        int disty = endPosition[1] - curCoords[1];
+        float distx = Math.abs(endPosition[0] - curCoords[0]);
+        float disty = Math.abs(endPosition[1] - curCoords[1]);
+        //System.out.println("Distx: " + Float.toString(distx));
+        //System.out.println("Disty: " + Float.toString(disty));
         return distx + disty;
     }
 
     public void setEndPosition(Object compPos) {
         String posString = (String) compPos;
         String[] endString = posString.split(",");
-        int[] endPos = new int[endString.length];
+        float[] endPos = new float[endString.length];
         for (int i = 0; i < endString.length; i++) {
-            endPos[i] = Integer.parseInt(endString[i]);
+            endPos[i] = Float.parseFloat(endString[i]);
         }
+        System.out.println(endPosition);
         this.endPosition = endPos;
     }
     
-    public int[] getEndPosition() {
+    public float[] getEndPosition() {
         return this.endPosition;
     }    
 

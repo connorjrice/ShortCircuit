@@ -134,6 +134,14 @@ public class Graph<T extends Comparable> {
     public Path getPath(String startName, String endName) {
         return PathFinder.initPathFinder(getNode(startName), getNode(endName));
     }
+    
+    public void printNodes() {
+        for (GraphNode curNode : nodes) {
+            if (curNode != null) {
+                System.out.println(curNode.getElement());
+            }
+        }
+    }
 
     /**
      * * Array doubling methods **

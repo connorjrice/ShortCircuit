@@ -264,6 +264,7 @@ public class GraphicsState extends AbstractAppState {
         Spatial base = BaseFactory.getBase(getBaseTexLoc(), gp.getBaseVec(), gp.getBaseScale());
         worldNode.attachChild(base);
         GameState.setBaseBounds(base.getWorldBound());
+        GameState.setFormattedBaseCoords(base);
     }
     
     public String getBaseTexLoc() {

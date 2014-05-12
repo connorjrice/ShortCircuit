@@ -19,7 +19,7 @@ public class Path {
     public Path(ArrayList<GraphNode> pathNodes) {
         this.pathNodes = pathNodes;
         curIndex = 0;
-        isIncomplete = false;
+        isIncomplete = true;
         marked = false;
     }
     
@@ -42,6 +42,10 @@ public class Path {
     
     public float getCost() {
         return cost;
+    }
+    
+    public boolean getEndReached() {
+        return curIndex == pathNodes.size();
     }
     
     public GraphNode getNextPathNode() {
@@ -69,6 +73,10 @@ public class Path {
     
     public boolean isIncomplete() {
         return isIncomplete;
+    }
+    
+    public void setComplete() {
+        isIncomplete = false;
     }
     
     public void setIncomplete() {

@@ -23,5 +23,14 @@ public class GraphNode<T> {
 	return element;
     }
     
+    public float[] getCoordArray() {
+        String[] strArr = ((String) element).split(",");
+        float[] coords = new float[strArr.length];
+        for (int i= 0; i < strArr.length; i++) {
+            coords[i] = Float.parseFloat(strArr[i]);
+        }
+        return coords;
+    }
+    
 
 }

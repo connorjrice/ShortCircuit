@@ -32,6 +32,10 @@ public class AStarPathFinder implements PathFinder {
         numRecursions = 0;
     }
     
+    public Path initPathFinder(String start, String end) {
+        return initPathFinder(Graph.getNode(start), Graph.getNode(end));
+    }
+    
     public Path initPathFinder(GraphNode start, GraphNode end) {
         this.endNode = end;
         Heuristic.setEndPosition((endNode.getElement()));        
@@ -77,7 +81,7 @@ public class AStarPathFinder implements PathFinder {
             /**
              * maxFlag allows the pathfinding to be broken into smaller chunks.
              */
-            if (!maxFlag && !curPath.getMarked()) { 
+            if (!maxFlag) { 
                 Path nextPath = getNextPath();            
                 ArrayList<Path> legalPaths = getLegalPaths(curPath);
                 for (Path legalPath : legalPaths) {
@@ -96,6 +100,7 @@ public class AStarPathFinder implements PathFinder {
                     if (finalPath == null) {
                         return pathFind(nextPath);
                     } else {
+                        finalPath.setComplete();
                         return finalPath;
                     }
                 } else {

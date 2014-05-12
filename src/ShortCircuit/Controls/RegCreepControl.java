@@ -1,7 +1,13 @@
 package ShortCircuit.Controls;
 
+import ShortCircuit.DataStructures.Heuristics.jMEHeuristic;
+import ShortCircuit.DataStructures.Interfaces.PathFinder;
+import ShortCircuit.DataStructures.Nodes.GraphNode;
+import ShortCircuit.DataStructures.Objects.Path;
+import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;
+import com.jme3.bounding.BoundingVolume;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -26,18 +32,77 @@ public class RegCreepControl extends AbstractControl {
     protected int creepNum;
     protected Vector3f direction;
     private MoveCreep mc;
+    private PathFinder pathFinder;
+    private Path creepPath;
+    private float updateTimer = 0;
+    private float moveamount;
+    private BoundingVolume basebounds;
+    private Vector3f basecenter;
+    private Path path;
 
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         mc = new MoveCreep(EnemyState, this);
+        this.pathFinder = EnemyState.getPathFinder();
+        this.basebounds = EnemyState.getBaseBounds();
+        
+        this.basecenter = this.basebounds.getCenter();
+        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
+        this.path = pathFinder.initPathFinder("0.0,7.0", EnemyState.getFormattedBaseCoords());
     }
 
     @Override
     protected void controlUpdate(float tpf) {
         if (EnemyState.isEnabled()) {
-            mc.run();
+
+            if (updateTimer > .3) {
+                moveCreep();
+                updateTimer = 0;
+            }  else {
+                updateTimer += tpf;
+            }
         }
     }
+
+    private void moveCreep() {
+        if(getSpatial().getWorldBound().intersects(basebounds)) {
+                EnemyState.decPlrHealth(getValue());
+                EnemyState.creepList.remove(getSpatial());
+                getSpatial().removeFromParent();
+                getSpatial().removeControl(this);
+            } else {
+                //System.out.println(path.getGraphNodes().size());
+            if (!path.getEndReached()) {
+                GraphNode nextGraph = path.getNextPathNode();
+                float[] nextCoords = nextGraph.getCoordArray();
+                Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
+                //System.out.println(newLoc);
+                getSpatial().setLocalTranslation(newLoc);
+            } else {
+                if (path.isIncomplete()) {
+                    this.path = pathFinder.initPathFinder(getFormattedCoords(), EnemyState.getFormattedBaseCoords());
+                } else {
+                    EnemyState.decPlrHealth(getValue());
+                    EnemyState.creepList.remove(getSpatial());
+                    getSpatial().removeFromParent();
+                    getSpatial().removeControl(this);
+                }
+            }
+        }
+    }
+    
+    public String getFormattedCoords() {
+        return Float.toString(getX())+","+Float.toString(getY());
+    }
+    
+    public float getX() {
+        return spatial.getLocalTranslation().x;
+    }
+    
+    public float getY() {
+        return spatial.getLocalTranslation().y;
+    }
+    
     public float getCreepSpeed() {
         return spatial.getUserData("Speed");
     }

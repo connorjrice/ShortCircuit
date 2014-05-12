@@ -39,6 +39,7 @@ public class GameState extends AbstractAppState {
     private GraphicsState GraphicsState;
     private BoundingVolume baseBounds;
     private StartGUI startGUI;
+    private String formattedBaseCoords;
 
     public GameState() {
     }
@@ -226,7 +227,7 @@ public class GameState extends AbstractAppState {
     }
 
     public void decPlrHealth(int h) {
-        pp.decScore(h);
+        pp.decHealth(h);
     }
 
     public void decPlrBudget(int b) {
@@ -243,6 +244,14 @@ public class GameState extends AbstractAppState {
 
     public BoundingVolume getBaseBounds() {
         return baseBounds;
+    }
+    
+    public String getFormattedBaseCoords() {
+        return formattedBaseCoords;
+    }
+    
+    public void setFormattedBaseCoords(Spatial base) {
+        formattedBaseCoords = base.getLocalTranslation().x+","+base.getLocalTranslation().y;
     }
 
     public void setBaseBounds(BoundingVolume baseBounds) {

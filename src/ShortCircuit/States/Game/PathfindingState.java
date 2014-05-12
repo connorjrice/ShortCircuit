@@ -9,9 +9,17 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
+import java.text.DecimalFormat;
 
 /**
  * TODO: Method for creating plots on the map
@@ -21,49 +29,99 @@ import com.jme3.scene.Spatial;
 public class PathfindingState extends AbstractAppState {
     private SimpleApplication app;
     private Node rootNode;
+    private Node targetNode = new Node("Targets");
     private Spatial floor;
     private Graph<String> worldGraph;
     private float precision;
     private jMEHeuristic Heuristic;
-    private AStarPathFinder pathFinder;
+    private AssetManager assetManager;
+    private Sphere targetMesh = new Sphere(32, 32, 1f);
+    private Material targetMat;
+    private Material startMat;
+    private Material endMat;
+    private Material pathMat;
+    private ColorRGBA color;
+    private float updateTimer = 0f;
+    private Material blockedMat;
+    private Vector3f floorDimensions;
+    private DecimalFormat numFormatter;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        this.assetManager = this.app.getAssetManager();
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
         this.worldGraph = new Graph<String>(1200);
         this.Heuristic = new jMEHeuristic();
         this.precision = .5f;
+        initAssets();
         createPathNodes();
         createPathFinder();
+        rootNode.attachChild(targetNode);
+    }
+    
+    private void initAssets() {
+        targetMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        targetMat.setColor("Color", ColorRGBA.White);
+
+        startMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        startMat.setColor("Color", ColorRGBA.Yellow);
+
+        endMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        endMat.setColor("Color", ColorRGBA.Pink);
+
+        blockedMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        blockedMat.setColor("Color", ColorRGBA.Black);
+
+        pathMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        pathMat.setColor("Color", color);
+        
+        numFormatter = new DecimalFormat("0.0");
     }
 
     private void createPathNodes() {
         Vector3f translation = floor.getLocalTranslation();
-        Vector3f dimensions = floor.getLocalScale();
-        for (float i = dimensions.x; i > -dimensions.x; i-=precision) {
-            for (float j = dimensions.y; j > -dimensions.y; j-=precision) {
-                worldGraph.addNode(toString(i)+','+toString(j));
+        floorDimensions = floor.getLocalScale();
+        float xAxis = Math.round(floorDimensions.x);
+        float yAxis = Math.round(floorDimensions.y);
+        for (float i = xAxis; i > -xAxis; i-=precision) {
+            for (float j = yAxis; j > -yAxis; j-=precision) {
+                String is = formatNumber(i);
+                String js = formatNumber(j);
+                worldGraph.addNode(is+','+js);
+                createTargetGeom(is,js);
             }
         }
         addEdges();
     }
     
-    private void createPathFinder() {
-        pathFinder = new AStarPathFinder(Heuristic, worldGraph, 100);
+    private String formatNumber(Float value) {
+        return numFormatter.format(value);
     }
     
-    public PathFinder getPathFinder() {
-        return pathFinder;
+
+    private void createTargetGeom(String x, String y) {
+        String targetName = x + "," + y;
+        Geometry target = new Geometry(targetName, targetMesh);
+        target.setMaterial(targetMat);
+        target.setLocalScale(.05f, .05f, .1f);
+        target.setLocalTranslation(Float.parseFloat(x), Float.parseFloat(y), 0.1f);
+        target.setUserData("Name", "Unblocked");
+        targetNode.attachChild(target);
     }
-    
     private void addEdges() {
         JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, rootNode, precision);
         edgeBuilder.addEdges();
-            
-
+    }
+    
+    public PathFinder createPathFinder() {
+        return new AStarPathFinder(Heuristic, worldGraph, 5);
+    }
+    
+    public Graph getWorldGraph() {
+        return worldGraph;
     }
     
     private String toString(Object o) {

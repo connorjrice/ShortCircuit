@@ -2,10 +2,10 @@
 <level>
     <gameplayparams>
         <param id = "levelParams">
-            <numCreeps>3</numCreeps>
-            <creepMod>2</creepMod>
-            <levelCap>50</levelCap>
-            <levelMod>50</levelMod>
+            <numCreeps>1</numCreeps>
+            <creepMod>1</creepMod>
+            <levelCap>5000</levelCap>
+            <levelMod>1</levelMod>
             <profile>false</profile>
             <tutorial>true</tutorial>
             <allowedenemies>110100</allowedenemies>
@@ -40,46 +40,10 @@
             </camera>
         </param>
         <param id = "towerParams">
-            <numTowers>10</numTowers>
+            <numTowers>1</numTowers>
             <tower id = "0">
-                <vec>-4.5f, -4.0f, 0.1f</vec>
+                <vec>0.0f,3.0f,0.1f</vec>
                 <isStarter>true</isStarter>
-            </tower>
-            <tower id = "1">
-                <vec>4.5f, -4.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
-            </tower>
-            <tower id = "2">
-                <vec>4.5f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "3">
-                <vec>-4.5f, -2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "4">
-                <vec>-4.5f, 0.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "5">
-                <vec>4.5f, 0.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "6">
-                <vec>4.5f, 2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "7">
-                <vec>-4.5f, 2.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "8">
-                <vec>4.5f, 4.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
-            </tower>
-            <tower id = "9">
-                <vec>-4.5f, 4.0f, 0.1f</vec>
-                <isStarter>false</isStarter>
             </tower>
         </param>
     </gameplayparams>
@@ -128,7 +92,6 @@
         </param>
         <param id = "creepSpawnerParams">
             <numSpawners>1</numSpawners>
-
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>

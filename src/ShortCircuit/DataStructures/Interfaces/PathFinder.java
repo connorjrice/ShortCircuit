@@ -26,7 +26,8 @@ public interface PathFinder {
     
     public GraphNode getEndNode();
     
-    public Path initPathFinder(GraphNode start, GraphNode end);
+    
+    public Path initPathFinder(String start, String end);
         
 
     
