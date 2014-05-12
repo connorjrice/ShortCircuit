@@ -137,7 +137,7 @@ public class Graph<T extends Comparable> {
     }
 
     public Path getPath(String startName, String endName) {
-        return PathFinder.getPath(getNode(startName), getNode(endName));
+        return PathFinder.initPathFinder(getNode(startName), getNode(endName));
     }
     
     public void printNodes() {

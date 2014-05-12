@@ -18,11 +18,12 @@ public class AStarPathFinder implements PathFinder {
     private int maxNodeSize;
     private Heuristic Heuristic;
     private Graph Graph;
-    private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
+    private boolean neverReturn = true;
+    private ArrayList<GraphNode> neverReturnNodes = new ArrayList<GraphNode>();
     private ArrayList<Path> frontier = new ArrayList<Path>();
     private ArrayList<Path> closed = new ArrayList<Path>();
     private int numRecursions;
-    private int maxRecursions = 50;
+    private int maxRecursions = 1000;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
         this.Heuristic = Heuristic;
@@ -31,11 +32,11 @@ public class AStarPathFinder implements PathFinder {
         numRecursions = 0;
     }
 
-    public Path getPath(String start, String end) {
-        return getPath(Graph.getNode(start), Graph.getNode(end));
+    public Path initPathFinder(String start, String end) {
+        return initPathFinder(Graph.getNode(start), Graph.getNode(end));
     }
 
-    public Path getPath(GraphNode start, GraphNode end) {
+    public Path initPathFinder(GraphNode start, GraphNode end) {
         this.endNode = end;
         Heuristic.setEndPosition((endNode.getElement()));
         maxFlag = false;
@@ -90,7 +91,7 @@ public class AStarPathFinder implements PathFinder {
         int[] neighbors = Graph.getNeighbors(p.getLastNode().getIndex());
         int arrayIndex = 0;
         while (neighbors[arrayIndex] != 0) {
-            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]).getIndex())) {
+            if (!neverReturnNodes.contains(Graph.getNode(neighbors[arrayIndex]))) {
                 if (!p.getGraphNodes().contains(Graph.getNode(neighbors[arrayIndex]))) {
                     Path pNew = p.clone();
                     pNew.addNode(Graph.getNode(neighbors[arrayIndex]));
@@ -101,7 +102,7 @@ public class AStarPathFinder implements PathFinder {
             arrayIndex++;
         }
         for (GraphNode curNode : p.getGraphNodes()) {
-            neverReturnNodes.add(curNode.getIndex());
+            neverReturnNodes.add(curNode);
         }
         p.setMarked();
 
