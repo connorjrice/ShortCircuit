@@ -1,7 +1,7 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.DataStructures.STC;
-import ShortCircuit.DataStructures.STCCreepCompare;
+import ShortCircuit.DataStructures.Nodes.STCCreepCompare;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.States.Game.FriendlyState;
