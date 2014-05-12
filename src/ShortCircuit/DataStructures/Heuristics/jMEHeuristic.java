@@ -38,7 +38,6 @@ public class jMEHeuristic implements Heuristic {
         for (int i = 0; i < endString.length; i++) {
             endPos[i] = Float.parseFloat(endString[i]);
         }
-        System.out.println(endPosition);
         this.endPosition = endPos;
     }
     

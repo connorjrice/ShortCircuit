@@ -129,9 +129,7 @@ public class EnemyState extends AbstractAppState {
      */
     private void spawnGlob() {
         int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-        System.out.println("spawn");
         if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl().getIsGlobbed()) {
-            System.out.println("here");
             Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getTowerVec();
             Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
             FriendlyState.getTowerList().get(towerVictimIndex).getControl().globTower();
@@ -285,9 +283,6 @@ public class EnemyState extends AbstractAppState {
         randomCheck = random.nextInt(10);
     }
     
-    public PathFinder getPathFinder() {
-        return PathState.createPathFinder();
-    }
     public Graph getWorldGraph() {
         return PathState.getWorldGraph();
     }

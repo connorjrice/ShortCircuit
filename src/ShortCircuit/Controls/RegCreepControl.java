@@ -31,32 +31,29 @@ public class RegCreepControl extends AbstractControl {
     protected EnemyState EnemyState;
     protected int creepNum;
     protected Vector3f direction;
-    private MoveCreep mc;
-    private PathFinder pathFinder;
-    private Path creepPath;
+    private AStarPathFinder pathFinder;
     private float updateTimer = 0;
-    private float moveamount;
     private BoundingVolume basebounds;
-    private Vector3f basecenter;
     private Path path;
+    private String baseCoords;
 
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
-        mc = new MoveCreep(EnemyState, this);
-        this.pathFinder = EnemyState.getPathFinder();
         this.basebounds = EnemyState.getBaseBounds();
-        
-        this.basecenter = this.basebounds.getCenter();
         this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
-        this.path = pathFinder.initPathFinder("0.0,7.0", EnemyState.getFormattedBaseCoords());
     }
 
     @Override
     protected void controlUpdate(float tpf) {
         if (EnemyState.isEnabled()) {
-
-            if (updateTimer > .3) {
-                moveCreep();
+            if (updateTimer > .2) {
+                if (path == null) {
+                    baseCoords =  EnemyState.getFormattedBaseCoords();
+                    path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
+                    
+                } else {
+                    moveCreep();                    
+                }
                 updateTimer = 0;
             }  else {
                 updateTimer += tpf;
@@ -65,28 +62,19 @@ public class RegCreepControl extends AbstractControl {
     }
 
     private void moveCreep() {
-        if(getSpatial().getWorldBound().intersects(basebounds)) {
+        if(spatial.getWorldBound().intersects(basebounds)) {
                 EnemyState.decPlrHealth(getValue());
-                EnemyState.creepList.remove(getSpatial());
-                getSpatial().removeFromParent();
-                getSpatial().removeControl(this);
+                EnemyState.creepList.remove(spatial);
+                spatial.removeFromParent();
+                spatial.removeControl(this);
             } else {
-                //System.out.println(path.getGraphNodes().size());
             if (!path.getEndReached()) {
                 GraphNode nextGraph = path.getNextPathNode();
                 float[] nextCoords = nextGraph.getCoordArray();
                 Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
-                //System.out.println(newLoc);
-                getSpatial().setLocalTranslation(newLoc);
+                spatial.setLocalTranslation(newLoc);
             } else {
-                if (path.isIncomplete()) {
-                    this.path = pathFinder.initPathFinder(getFormattedCoords(), EnemyState.getFormattedBaseCoords());
-                } else {
-                    EnemyState.decPlrHealth(getValue());
-                    EnemyState.creepList.remove(getSpatial());
-                    getSpatial().removeFromParent();
-                    getSpatial().removeControl(this);
-                }
+                this.path = pathFinder.initPathFinder(getFormattedCoords(), baseCoords);
             }
         }
     }
@@ -96,11 +84,11 @@ public class RegCreepControl extends AbstractControl {
     }
     
     public float getX() {
-        return spatial.getLocalTranslation().x;
+        return spatial.getWorldTranslation().x;
     }
     
     public float getY() {
-        return spatial.getLocalTranslation().y;
+        return spatial.getWorldTranslation().y;
     }
     
     public float getCreepSpeed() {
@@ -123,9 +111,9 @@ public class RegCreepControl extends AbstractControl {
         if (health - damage <= 0) {
             EnemyState.incPlrBudget(getValue());
             EnemyState.incPlrScore(1);
-            EnemyState.creepList.remove(getSpatial());
-            getSpatial().removeFromParent();
-            getSpatial().removeControl(this);
+            EnemyState.creepList.remove(spatial);
+            spatial.removeFromParent();
+            spatial.removeControl(this);
         }
         return health - damage;
     }
@@ -169,4 +157,6 @@ public class RegCreepControl extends AbstractControl {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
     }
+    
+
 }
