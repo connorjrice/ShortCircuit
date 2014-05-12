@@ -69,7 +69,7 @@ public class Graph<T extends Comparable> {
     }
 
     public int[] getNeighbors(int index) {
-        int[] neighbors = new int[8];
+        int[] neighbors = new int[9];
         int arrayIndex = 0;
         for (int i = 0; i < currentSize; i++) {
             if (edges[index][i]) {
