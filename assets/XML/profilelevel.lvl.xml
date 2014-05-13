@@ -40,88 +40,117 @@
             </camera>
         </param>
         <param id = "towerParams">
-            <numTowers>20</numTowers>
+            <numTowers>27</numTowers>
             <towerTypes>Unbuilt,Empty,1,2,3,4</towerTypes>
             <tower id = "0">
-                <vec>2.25f, 2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "1">
-                <vec>-2.25f, 2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-3.0f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "2">
-                <vec>2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "3">
-                <vec>-2.25f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-3.0f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "4">
-                <vec>-2.25f, 4.25f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-3.0f, 4.25f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "5">
-                <vec>2.25f, 4.25f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, 4.25f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "6">
-                <vec>2.25f, -4.25f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, -4.25f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "7">
-                <vec>-2.25f, -4.25f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-3.0f, -4.25f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "8">
-                <vec>2.25f, 6.50f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, 6.50f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "9">
-                <vec>-2.25f, 6.50f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-3.0f, 6.50f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "10">
-                <vec>2.25f, -6.50f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>3.0f, -6.50f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "11">
-                <vec>6.75f, 2.0f,0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>7.0f, 2.0f,0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "12">
-                <vec>-6.75f, 2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>
+                <vec>-7.0f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>
             </tower>
             <tower id = "13">
-                <vec>6.75f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>                
+                <vec>7.0f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "14">
-                <vec>-6.75f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>                
+                <vec>-7.0f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "15">
-                <vec>4.5f, 2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>                
+                <vec>5.0f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "16">
-                <vec>-4.5f, -2.0f, 0.1</vec>
-                <isStarter>true</isStarter>                
+                <vec>-5.0f, -2.0f, 0.1</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "17">
-                <vec>4.5f, -2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>                
+                <vec>5.0f, -2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "18">
-                <vec>-4.5f, 2.0f, 0.1f</vec>
-                <isStarter>true</isStarter>                
+                <vec>-5.0f, 2.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
             </tower>
             <tower id = "19">
-                <vec>-2.25f, -6.50f, 0.1f</vec>
-                <isStarter>true</isStarter>                
-            </tower>            
+                <vec>-3.0f, -7.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>
+            <tower id = "20">
+                <vec>-6.0f, 0.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>
+            <tower id = "21">
+                <vec>6.0f, 0.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>
+            <tower id = "22">
+                <vec>0.0f, 6.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>    
+            <tower id = "23">
+                <vec>0.0f, -6.0f, 0.1f</vec>
+                <isStarter>false</isStarter>`                
+            </tower>
+            <tower id = "24">
+                <vec>-6.0f, -1.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>     
+            <tower id = "25">
+                <vec>-4.0f, 1.0f, 0.1f</vec>
+                <isStarter>false</isStarter>                
+            </tower>                             
+            <tower id = "26">
+                <vec>-4.0f,0.0f,0.1f</vec>
+                <isStarted>false</isStarted>
+            </tower>
+                                   
         </param>
     </gameplayparams>
     

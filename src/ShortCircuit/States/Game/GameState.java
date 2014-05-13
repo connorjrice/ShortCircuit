@@ -13,6 +13,7 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -40,6 +41,8 @@ public class GameState extends AbstractAppState {
     private BoundingVolume baseBounds;
     private StartGUI startGUI;
     private String formattedBaseCoords;
+    private PathfindingState PathState;
+    private boolean bombActive;
 
     public GameState() {
     }
@@ -54,6 +57,7 @@ public class GameState extends AbstractAppState {
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
+        this.PathState = this.stateManager.getState(PathfindingState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.startGUI = this.stateManager.getState(StartGUI.class);
     }
@@ -143,8 +147,25 @@ public class GameState extends AbstractAppState {
         } else if (target.getName().equals("Glob")) {
             popGlob(trans, target.getControl(GlobControl.class));
         } else {
-            GraphicsState.dropBomb(trans, .1f);
+            if (bombActive) {
+                GraphicsState.dropBomb(trans, .1f);
+            } else {
+                PathState.nextVec(trans);
+            }
+            
         }
+    }
+    
+    public void toggleBomb() {
+        bombActive = !bombActive;
+    }
+    
+    public void setBombStatus(boolean b) {
+        bombActive = b;
+    }
+    
+    public HashMap getGeomHash() {
+        return lp.getGeomHash();
     }
 
     /**

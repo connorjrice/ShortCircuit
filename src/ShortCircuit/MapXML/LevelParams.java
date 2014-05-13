@@ -1,5 +1,7 @@
 package ShortCircuit.MapXML;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Connor Rice
@@ -26,10 +28,11 @@ public class LevelParams {
      * 111000
      */
     private String allowedenemies;
+    private HashMap geomHash;
     
     public LevelParams(int _numCreeps, int _creepMod, 
             int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
-            String _allowedenemies) {
+            String _allowedenemies, HashMap blockedNodes) {
         numCreeps = _numCreeps;
         creepMod = _creepMod;
         levelCap = _levelCap;
@@ -37,6 +40,8 @@ public class LevelParams {
         profile = _profile;
         tutorial = _tutorial;
         allowedenemies = _allowedenemies;
+        this.geomHash = blockedNodes;
+                
     }
 
 
@@ -74,6 +79,10 @@ public class LevelParams {
     
     public void updateNumCreeps() {
         numCreeps += creepMod;
+    }
+    
+    public HashMap getGeomHash() {
+        return geomHash;
     }
     
     

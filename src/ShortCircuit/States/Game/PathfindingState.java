@@ -1,6 +1,7 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.DataStructures.Graph;
+import ShortCircuit.DataStructures.Queue;
 import ShortCircuit.PathFinding.JMEEdgeBuilder;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -15,6 +16,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 
 /**
  * TODO: Make walls, make towers "solid"
@@ -26,6 +28,7 @@ public class PathfindingState extends AbstractAppState {
     private Node targetNode = new Node("Targets");
     private Spatial floor;
     private Graph<String> worldGraph;
+    private Queue<String> wallQueue;
     private float precision;
     private AssetManager assetManager;
     private Sphere targetMesh = new Sphere(32, 32, 1f);
@@ -37,6 +40,9 @@ public class PathfindingState extends AbstractAppState {
     private Material blockedMat;
     private Vector3f floorDimensions;
     private DecimalFormat numFormatter;
+    private String[] blockedGeom;
+    private GameState GameState;
+    private HashMap geomHash;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -47,6 +53,8 @@ public class PathfindingState extends AbstractAppState {
         this.floor = this.rootNode.getChild("Floor");
         this.worldGraph = new Graph<String>(1400);
         this.precision = 1.0f; // works with 1.0f, .5f
+        this.GameState = stateManager.getState(GameState.class);
+        this.geomHash = GameState.getGeomHash();
         initAssets();
         createPathNodes();
         rootNode.attachChild(targetNode);
@@ -69,6 +77,7 @@ public class PathfindingState extends AbstractAppState {
         pathMat.setColor("Color", color);
         
         numFormatter = new DecimalFormat("0.0");
+        wallQueue = new Queue<String>();
     }
 
     private void createPathNodes() {
@@ -78,17 +87,19 @@ public class PathfindingState extends AbstractAppState {
         float yAxis = Math.round(floorDimensions.y);
         for (float i = xAxis; i > -xAxis; i-=precision) {
             for (float j = yAxis; j > -yAxis; j-=precision) {
-                String is = formatNumber(i);
-                String js = formatNumber(j);
+                String is = formatRoundNumber(i);
+                String js = formatRoundNumber(j);
                 worldGraph.addNode(is+','+js);
                 createTargetGeom(is,js);
             }
         }
+        addGeometry();
         addEdges();
     }
     
-    private String formatNumber(Float value) {
-        return numFormatter.format(value);
+    public void nextVec(Vector3f nextVec) {
+        String formattedVec = formatVector3f(nextVec);
+        System.out.println(formattedVec);
     }
     
 
@@ -98,11 +109,33 @@ public class PathfindingState extends AbstractAppState {
         target.setMaterial(targetMat);
         target.setLocalScale(.05f, .05f, .1f);
         target.setLocalTranslation(Float.parseFloat(x), Float.parseFloat(y), 0.1f);
-        target.setUserData("Name", "Unblocked");
+/*        if (geomHash.get(targetName)!= null) {
+            target.setUserData("Name", targetName);
+        } else {
+            target.setUserData("Name", "Unblocked");
+        }*/
+        target.setUserData("Name", targetName);
         targetNode.attachChild(target);
     }
+    
+    private void addGeometry() {
+        
+    }
+    
+    private String formatVector3f(Vector3f in) {
+        return formatRoundNumber(in.x)+","+formatRoundNumber(in.y);
+    }
+    
+    private String formatNumber(Float value) {
+        return numFormatter.format(value);
+    }
+    
+    private String formatRoundNumber(Float value) {
+        return numFormatter.format(Math.round(value));
+    }
+    
     private void addEdges() {
-        JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, precision);
+        JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, targetNode, geomHash, precision);
         edgeBuilder.addEdges();
     }
     

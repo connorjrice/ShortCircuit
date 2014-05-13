@@ -43,43 +43,43 @@
             <numTowers>10</numTowers>
             <towerTypes>Unbuilt,Empty,1,2,3,4</towerTypes>
             <tower id = "0">
-                <vec>-4.5f, -4.0f, 0.1f</vec>
+                <vec>-4.0f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "1">
-                <vec>4.5f, -4.0f, 0.1f</vec>
+                <vec>4.0f, -4.0f, 0.1f</vec>
                 <isStarter>true</isStarter>
             </tower>
             <tower id = "2">
-                <vec>4.5f, -2.0f, 0.1f</vec>
+                <vec>4.0f, -2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "3">
-                <vec>-4.5f, -2.0f, 0.1f</vec>
+                <vec>-4.0f, -2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "4">
-                <vec>-4.5f, 0.0f, 0.1f</vec>
+                <vec>-4.0f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "5">
-                <vec>4.5f, 0.0f, 0.1f</vec>
+                <vec>4.0f, 0.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "6">
-                <vec>4.5f, 2.0f, 0.1f</vec>
+                <vec>4.0f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "7">
-                <vec>-4.5f, 2.0f, 0.1f</vec>
+                <vec>-4.0f, 2.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "8">
-                <vec>4.5f, 4.0f, 0.1f</vec>
+                <vec>4.0f, 4.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
             <tower id = "9">
-                <vec>-4.5f, 4.0f, 0.1f</vec>
+                <vec>-4.0f, 4.0f, 0.1f</vec>
                 <isStarter>false</isStarter>
             </tower>
         </param>
@@ -128,12 +128,19 @@
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <numSpawners>1</numSpawners>
-
+            <numSpawners>3</numSpawners>
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
             </creepSpawner>
+            <creepSpawner id = "1">
+                <vec>-8.0f, 0.0f, 1.0f</vec>
+                <orientation>Vertical</orientation>
+            </creepSpawner>      
+            <creepSpawner id = "2">
+                <vec>8.0f, 4.0f, 1.0f</vec>
+                <orientation>Vertical</orientation>
+            </creepSpawner>            
         </param>
     </enemyparams>
 </level>

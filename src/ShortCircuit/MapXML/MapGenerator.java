@@ -6,6 +6,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
@@ -20,13 +21,16 @@ public class MapGenerator {
     private XPath xpath;
     private Document doc;
     private AssetManager assetManager;
+    private HashMap geomHash;
 
     public MapGenerator(String level, SimpleApplication app) {
         xpath = XPathFactory.newInstance().newXPath();
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
+        this.geomHash = new HashMap(20);
         this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
     }
+    
 
     
     public GameplayParams getGameplayParams() {
@@ -50,7 +54,7 @@ public class MapGenerator {
         String allowedenemies = getElement("allowedenemies", levelExpression);
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
-        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies);
+        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, geomHash);
     }
     
     private PlayerParams parsePlayerParams() {
@@ -87,8 +91,10 @@ public class MapGenerator {
         for (int i = 0; i < numTowers; i++) {
             String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
+            
             boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
             towerList.add(new TowerParams(towerVec, starter, i));
+            geomHash.put(towerVec.x+","+towerVec.y, starter);
         }
         return towerList;
     }
@@ -179,6 +185,10 @@ public class MapGenerator {
         } else {
             return false;
         }
+    }
+    
+    public void parseVector3fHash(String vec, int index) {
+        geomHash.put(vec, "Tower"+index);
     }
 
     public Vector3f parseVector3f(String vec) {

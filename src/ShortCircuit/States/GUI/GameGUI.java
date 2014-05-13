@@ -95,6 +95,7 @@ public class GameGUI extends AbstractAppState {
     private float tenthHeight;
     private float tenthWidth;
     private GraphicsState GraphicsState;
+    private ButtonAdapter Bomb;
     
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -318,6 +319,8 @@ public class GameGUI extends AbstractAppState {
         purchaseChargerButton();
         getOldMat();
         downgradeButton();
+        bombToggle();
+        //wallToggle();
 
     }
 
@@ -717,6 +720,17 @@ public class GameGUI extends AbstractAppState {
         Level.setText("Level: ");
         Level.setIgnoreMouse(true);
         screen.addElement(Level);
+    }
+    
+    private void bombToggle() {
+        Bomb = new ButtonAdapter(screen, "BombToggle", new Vector2f(rightButtons, tenthHeight*7), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                GameState.toggleBomb();
+            }
+        };
+        Bomb.setText("Use Bombs");
+        screen.addElement(Bomb);
     }
 
     public void setCameraLocation() {

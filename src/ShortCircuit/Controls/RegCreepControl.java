@@ -41,14 +41,14 @@ public class RegCreepControl extends AbstractControl {
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         this.basebounds = EnemyState.getBaseBounds();
-        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
+        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 4);
         this.mc = new MoveCreep(this);
     }
 
     @Override
     protected void controlUpdate(float tpf) {
         if (EnemyState.isEnabled()) {            
-            if (updateTimer > .1) {
+            if (updateTimer > .2) {
                 mc.run();                  
                 updateTimer = 0;
             }  else {
