@@ -42,7 +42,7 @@ public class Path implements Comparable{
     }
     
     public boolean getEndReached() {
-        return curIndex == pathIndicies.size()-1;
+        return curIndex == pathIndicies.size();
     }
     
     public int getNextPathNode() {

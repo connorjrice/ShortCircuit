@@ -7,8 +7,8 @@ import com.jme3.math.Vector3f;
 import java.text.DecimalFormat;
 
 /**
- * Runnable for moving creeps.
- * TODO: Interpolation with pathfinding
+ * Runnable for moving creeps. TODO: Interpolation with pathfinding
+ *
  * @author clarence
  */
 public class MoveCreep implements Runnable {
@@ -18,75 +18,82 @@ public class MoveCreep implements Runnable {
     private BoundingVolume baseBounds;
     private Vector3f curVec;
     private float moveAmount;
-    private Vector3f baseCenter;
-    private Vector3f vecThreshold;
-    private DecimalFormat numFormatter;
 
+    private DecimalFormat numFormatter;
 
     public MoveCreep(RegCreepControl cc) {
         this.cc = cc;
         this.baseCoords = cc.getFormattedBaseCoords();
         this.baseBounds = cc.getBaseBounds();
         this.moveAmount = 0.1f;
-        this.vecThreshold = new Vector3f(0.2f,0.2f,0.2f);
         this.numFormatter = new DecimalFormat("0.0");
     }
 
     public void run() {
         if (cc.path == null) {
-            cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);
-            setCurVec();
+            getNextPath();
         }
-        if(cc.getSpatial().getWorldBound().intersects(baseBounds)) {
+        if (cc.getSpatial().getWorldBound().intersects(baseBounds)) {
             cc.removeCreep(false);
         } else {
             if (!cc.path.getEndReached()) {
-                moveByNode();
+                if (!getNodeEnd()) {
+                    moveInNode();
+                } else {
+                    latchOnNode();
+                }
+
             } else {
                 getNextPath();
-                moveByNode();
+                moveInNode();
             }
         }
     }
-    
+
     private void moveByNode() {
         GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
         float[] nextCoords = nextGraph.getCoordArray();
         Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
         cc.getSpatial().setLocalTranslation(newLoc);
     }
-    
-    private void getNextPath() {
-        cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);        
 
+    private void getNextPath() {
+        cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);
+        setCurVec();
     }
+
     private String formatRoundNumber(Float value) {
         return numFormatter.format(Math.round(value));
     }
-    
+
     private void setCurVec() {
         curVec = cc.getWorldGraph().getNode(cc.path.getNextPathNode()).getVector3f();
         resetMoveAmount();
     }
-    
+
     private void moveInNode() {
         cc.getSpatial().setLocalTranslation(cc.getCreepLocation().
                 interpolate(curVec, moveAmount));
-        if (moveAmount < 1) {
-            moveAmount += .025f;
-        }
+        incMoveAmount();
     }
     
+    private void latchOnNode() {
+        cc.getSpatial().setLocalTranslation(curVec);
+        setCurVec();
+    }
+
+    private void incMoveAmount() {
+        moveAmount += 0.2f;
+
+    }
+
     private void resetMoveAmount() {
-        moveAmount = 0.01f;
+        moveAmount = 0.1f;
     }
-    
-    private void getIsNodeEnd() {
+
+    private boolean getNodeEnd() {
         float dist = curVec.distance(cc.getCreepLocation());
-        if (dist < .1f) {
-            setCurVec();
-        }
-        
+        return dist < 0.05f;
     }
 }
           /*  if (!cc.path.getEndReached()) {

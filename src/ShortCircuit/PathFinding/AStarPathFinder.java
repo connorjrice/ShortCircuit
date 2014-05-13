@@ -5,7 +5,7 @@ import ShortCircuit.DataStructures.MinHeap;
 import java.util.ArrayList;
 
 /**
- * ASKMATTHEW: getLegalPaths threading?
+ * Tell MW about path index messup
  * @author Connor Rice and Matthew Whitehead
  */
 public class AStarPathFinder implements PathFinder {
@@ -17,7 +17,7 @@ public class AStarPathFinder implements PathFinder {
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
     private MinHeap<Path> frontier = new MinHeap<Path>();
     private int numRecursions;
-    private int maxRecursions = 75;
+    private int maxRecursions = 20;
     private long neverLong;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
