@@ -17,7 +17,7 @@ public class AStarPathFinder implements PathFinder {
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
     private MinHeap<Path> frontier = new MinHeap<Path>();
     private int numRecursions;
-    private int maxRecursions = 30;
+    private int maxRecursions = 75;
     private long neverLong;
 
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {

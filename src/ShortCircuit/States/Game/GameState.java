@@ -13,6 +13,7 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -43,6 +44,7 @@ public class GameState extends AbstractAppState {
     private String formattedBaseCoords;
     private PathfindingState PathState;
     private boolean bombActive;
+    private DecimalFormat numFormatter = new DecimalFormat("0.0");
 
     public GameState() {
     }
@@ -272,7 +274,11 @@ public class GameState extends AbstractAppState {
     }
     
     public void setFormattedBaseCoords(Spatial base) {
-        formattedBaseCoords = base.getLocalTranslation().x+","+base.getLocalTranslation().y;
+        formattedBaseCoords = formatRoundNumber(base.getLocalTranslation().x)+","+formatRoundNumber(base.getLocalTranslation().y);
+    }
+    
+    private String formatRoundNumber(Float value) {
+        return numFormatter.format(Math.round(value));
     }
 
     public void setBaseBounds(BoundingVolume baseBounds) {

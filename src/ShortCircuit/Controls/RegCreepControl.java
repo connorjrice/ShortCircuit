@@ -17,6 +17,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 /**
  * This is the control class for standard creeps.
@@ -36,6 +37,7 @@ public class RegCreepControl extends AbstractControl {
     public Path path;
     public String baseCoords;
     private MoveCreep mc;
+    private DecimalFormat numFormatter = new DecimalFormat("0.0");
 
     
     public RegCreepControl(EnemyState _state) {
@@ -48,7 +50,7 @@ public class RegCreepControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (EnemyState.isEnabled()) {            
-            if (updateTimer > .2) {
+            if (updateTimer > .05) {
                 mc.run();                  
                 updateTimer = 0;
             }  else {
@@ -62,7 +64,11 @@ public class RegCreepControl extends AbstractControl {
     }
     
     public String getFormattedCoords() {
-        return Float.toString(getX())+","+Float.toString(getY());
+        return formatRoundNumber(getX())+","+formatRoundNumber(getY());
+    }
+    
+    public String formatRoundNumber(float f) {
+        return numFormatter.format(Math.round(f));
     }
     
     public String getFormattedBaseCoords() {
