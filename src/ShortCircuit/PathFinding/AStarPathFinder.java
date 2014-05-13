@@ -17,7 +17,7 @@ public class AStarPathFinder implements PathFinder {
     private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
     private MinHeap<Path> frontier = new MinHeap<Path>();
     private int numRecursions;
-    private int maxRecursions = 20;
+    private int maxRecursions = 50;
     private long neverLong;
     
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
@@ -106,6 +106,7 @@ public class AStarPathFinder implements PathFinder {
         p.setMarked();
         return legalPaths;
     }
+    
 
     public Path getNextPath() {
         Path cheapestPath = (Path) frontier.remove();

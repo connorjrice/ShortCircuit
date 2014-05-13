@@ -62,10 +62,21 @@ public class Graph<T extends Comparable> {
             edges[secondNode.getIndex()][firstNode.getIndex()] = true;
         }
     }
+    
+    public void removeEdges(GraphNode<T> doomedNode) {
+        int doomedIndex = doomedNode.getIndex();
+        for (int i = 0; i < edges.length; i++) {
+            edges[doomedIndex][i] = false;
+        }
+    }
 
     public void removeEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
         edges[firstNode.getIndex()][secondNode.getIndex()] = false;
         edges[secondNode.getIndex()][firstNode.getIndex()] = false;
+    }
+    
+    public boolean isEdge(int i, int j) {
+        return edges[i][j];
     }
 
     public int[] getNeighbors(int index) {

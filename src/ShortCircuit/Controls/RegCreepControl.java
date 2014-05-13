@@ -43,7 +43,7 @@ public class RegCreepControl extends AbstractControl {
     public RegCreepControl(EnemyState _state) {
         EnemyState = _state;
         this.basebounds = EnemyState.getBaseBounds();
-        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 4);
+        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
         this.mc = new MoveCreep(this);
     }
 

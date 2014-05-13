@@ -9,7 +9,7 @@ import java.util.HashMap;
  *
  * @author Connor Rice
  */
-public class JMEEdgeBuilder implements EdgeBuilder {
+public class JEdgeManipulator implements EdgeManipulator {
 
     private Graph worldGraph;
     private final float precision;
@@ -18,7 +18,7 @@ public class JMEEdgeBuilder implements EdgeBuilder {
     private HashMap geomHash;
     private final String UNBLOCKED = "Unblocked";
 
-    public JMEEdgeBuilder(Graph worldGraph, Node targetNode, HashMap geomHash, float precision) {
+    public JEdgeManipulator(Graph worldGraph, Node targetNode, HashMap geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
         this.rootNode = targetNode;
@@ -26,14 +26,14 @@ public class JMEEdgeBuilder implements EdgeBuilder {
         this.geomHash = geomHash;
     }
 
-    public void addEdges() {
+    public void addInitialEdges() {
         String[] elements = worldGraph.getElementStrings();
         for (String s : elements) {
-            addEdges(s);
+            add4Edge(s);
         }
     }
 
-    private void addEdges(String targetName) {
+    private void add4Edge(String targetName) {
         String[] tn = targetName.split(",");
         float[] startPos = new float[tn.length];
         for (int i = 0; i < tn.length; i++) {
@@ -48,12 +48,10 @@ public class JMEEdgeBuilder implements EdgeBuilder {
             String is = formatRoundNumber(x);
             String nodeName = startPos[0] + "," + x;
             addEdge(nodeName, targetName);
-        
+
         }
     }
-        
 
-    
     private void addEdge(String nodeName, String targetName) {
         if (!nodeName.equals(targetName)) {
             if (geomHash.get(nodeName) == null && geomHash.get(targetName) == null) {
@@ -65,7 +63,20 @@ public class JMEEdgeBuilder implements EdgeBuilder {
                 rootNode.getChild(nodeName).setUserData("Name", geomHash.get(nodeName));
             }
         }
-        
+
+    }
+    
+    public void remove4Edge(String target) {
+        worldGraph.removeEdges(worldGraph.getNode(target));
+    }
+    
+    private float[] parseString(String in) {
+        String[] tn = in.split(",");
+        float[] startPos = new float[tn.length];
+        for (int i = 0; i < tn.length; i++) {
+            startPos[i] = Float.parseFloat(tn[i]);
+        }
+        return startPos;
     }
 
     private String formatRoundNumber(Float value) {

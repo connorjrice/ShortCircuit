@@ -2,6 +2,7 @@ package ShortCircuit.Threading;
 
 import ShortCircuit.Controls.RegCreepControl;
 import ShortCircuit.DataStructures.Nodes.GraphNode;
+import ShortCircuit.PathFinding.PathFinder;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
 import java.text.DecimalFormat;
@@ -18,7 +19,10 @@ public class MoveCreep implements Runnable {
     private BoundingVolume baseBounds;
     private Vector3f curVec;
     private float moveAmount;
-
+    private int curIndex;
+    private int prevIndex;
+    private Vector3f prevLoc;
+    
     private DecimalFormat numFormatter;
 
     public MoveCreep(RegCreepControl cc) {
@@ -67,7 +71,21 @@ public class MoveCreep implements Runnable {
     }
 
     private void setCurVec() {
-        curVec = cc.getWorldGraph().getNode(cc.path.getNextPathNode()).getVector3f();
+        prevIndex = curIndex;
+        prevLoc = curVec;
+        GraphNode currentNode = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
+        curVec = currentNode.getVector3f();
+        curIndex = currentNode.getIndex();
+
+        resetMoveAmount();
+    }
+    
+    private void setCurVec(GraphNode n) {
+        prevIndex = curIndex;
+        prevLoc = curVec;
+        curVec = n.getVector3f();
+        curIndex = n.getIndex();
+        
         resetMoveAmount();
     }
 
@@ -77,10 +95,24 @@ public class MoveCreep implements Runnable {
         incMoveAmount();
     }
     
+    /*
+     * We'll either 
+     */
     private void latchOnNode() {
-        cc.getSpatial().setLocalTranslation(curVec);
-        setCurVec();
+        if (prevLoc != null) {
+            if (cc.getWorldGraph().isEdge(curIndex, prevIndex))  {
+                cc.getSpatial().setLocalTranslation(curVec);
+                setCurVec();
+            } else {
+                cc.getSpatial().setLocalTranslation(prevLoc);
+                getNextPath();
+            }
+        } else {
+            cc.getSpatial().setLocalTranslation(curVec);
+            setCurVec();
+        } 
     }
+   
 
     private void incMoveAmount() {
         moveAmount += 0.2f;

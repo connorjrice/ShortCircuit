@@ -1,6 +1,7 @@
 package ShortCircuit.PathFinding;
 
 
+import ShortCircuit.DataStructures.Nodes.GraphNode;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +40,10 @@ public class Path implements Comparable{
     
     public float getCost() {
         return cost;
+    }
+    
+    public Integer peek() {
+        return pathIndicies.get(curIndex);
     }
     
     public boolean getEndReached() {

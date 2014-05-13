@@ -101,7 +101,11 @@ public class TowerMainState extends AbstractAppState {
         HelperState = new FriendlyState();
         PathfindingState = new PathfindingState();
         
-
+        if (profile) {
+            ProfileState ps = new ProfileState();
+            stateManager.attach(ps);
+            EnemyState.seedForProfile();
+        }
 
         stateManager.attach(AudioState);
         stateManager.attach(GameState);
@@ -114,11 +118,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(CheatGUI);
         stateManager.attach(HelperState);
         stateManager.attach(PathfindingState);
-        if (profile) {
-            ProfileState ps = new ProfileState();
-            stateManager.attach(ps);
-            EnemyState.seedForProfile();
-        }
+
     }
 
     /**

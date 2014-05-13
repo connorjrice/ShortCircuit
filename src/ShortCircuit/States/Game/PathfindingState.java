@@ -2,7 +2,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.DataStructures.Queue;
-import ShortCircuit.PathFinding.JMEEdgeBuilder;
+import ShortCircuit.PathFinding.JEdgeManipulator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -43,6 +43,7 @@ public class PathfindingState extends AbstractAppState {
     private String[] blockedGeom;
     private GameState GameState;
     private HashMap geomHash;
+    private JEdgeManipulator edgeMani;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -57,6 +58,9 @@ public class PathfindingState extends AbstractAppState {
         this.geomHash = GameState.getGeomHash();
         initAssets();
         createPathNodes();
+        edgeMani = new JEdgeManipulator(worldGraph, targetNode, geomHash, precision);
+        addGeometry();
+        addEdges();
         rootNode.attachChild(targetNode);
     }
     
@@ -93,13 +97,14 @@ public class PathfindingState extends AbstractAppState {
                 createTargetGeom(is,js);
             }
         }
-        addGeometry();
-        addEdges();
+
     }
     
     public void nextVec(Vector3f nextVec) {
         String formattedVec = formatVector3f(nextVec);
-        System.out.println(formattedVec);
+        rootNode.getChild(formattedVec).setMaterial(blockedMat);
+        removeEdge(formattedVec);
+        
     }
     
 
@@ -135,8 +140,12 @@ public class PathfindingState extends AbstractAppState {
     }
     
     private void addEdges() {
-        JMEEdgeBuilder edgeBuilder = new JMEEdgeBuilder(worldGraph, targetNode, geomHash, precision);
-        edgeBuilder.addEdges();
+        edgeMani.addInitialEdges();
+    }
+    
+    private void removeEdge(String target) {
+        edgeMani.remove4Edge(target);
+        
     }
     
 

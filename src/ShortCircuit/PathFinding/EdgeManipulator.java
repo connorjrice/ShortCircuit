@@ -4,8 +4,8 @@ package ShortCircuit.PathFinding;
  *
  * @author Connor Rice
  */
-public interface EdgeBuilder {
+public interface EdgeManipulator {
     
-    public void addEdges();
+    public void addInitialEdges();
     
 }
