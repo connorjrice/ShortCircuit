@@ -19,7 +19,7 @@ public class AStarPathFinder implements PathFinder {
     private int numRecursions;
     private int maxRecursions = 20;
     private long neverLong;
-
+    
     public AStarPathFinder(Heuristic Heuristic, Graph Graph, int nodeSize) {
         this.Heuristic = Heuristic;
         this.Graph = Graph;
@@ -67,7 +67,7 @@ public class AStarPathFinder implements PathFinder {
             return curPath;
         }
     }
-
+    
     private void clearPaths() {
         frontier.clear();
         neverReturnNodes.clear();

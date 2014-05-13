@@ -17,7 +17,7 @@ public class ShortCircuitMain extends SimpleApplication {
     private StartGUI sgui;
 
     public static void main(String[] args) {
-        //Logger.getLogger("").setLevel(Level.OFF);
+        Logger.getLogger("").setLevel(Level.OFF);
         ShortCircuitMain app = new ShortCircuitMain();
         AppSettings sets = new AppSettings(true);
         sets.setResolution(1920,1080);

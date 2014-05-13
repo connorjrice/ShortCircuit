@@ -108,7 +108,7 @@ public class PathfindingState extends AbstractAppState {
         Geometry target = new Geometry(targetName, targetMesh);
         target.setMaterial(targetMat);
         target.setLocalScale(.05f, .05f, .1f);
-        target.setLocalTranslation(Float.parseFloat(x), Float.parseFloat(y), 0.1f);
+        target.setLocalTranslation(Float.parseFloat(x), Float.parseFloat(y), 0.0f);
 /*        if (geomHash.get(targetName)!= null) {
             target.setUserData("Name", targetName);
         } else {
