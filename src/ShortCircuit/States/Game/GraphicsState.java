@@ -436,7 +436,7 @@ public class GraphicsState extends AbstractAppState {
     }
     
     public Vector3f getCamLocation() {
-        return cam.getLocation();
+        return gp.getCamLoc();
     }
     
     public Node getWorldNode() {

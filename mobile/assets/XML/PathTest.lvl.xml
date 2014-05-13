@@ -8,7 +8,7 @@
             <levelMod>1</levelMod>
             <profile>false</profile>
             <tutorial>true</tutorial>
-            <allowedenemies>110100</allowedenemies>
+            <allowedenemies>111100</allowedenemies>
         </param>
         <param id = "playerParams">
             <plrHealth>100</plrHealth>

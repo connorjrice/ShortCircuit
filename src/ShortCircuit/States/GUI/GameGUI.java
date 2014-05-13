@@ -37,6 +37,7 @@ import tonegod.gui.core.Screen;
 
 /**
  * Gameplay GUI for ShortCircuit
+ *
  * @author Connor
  */
 public class GameGUI extends AbstractAppState {
@@ -96,7 +97,9 @@ public class GameGUI extends AbstractAppState {
     private float tenthWidth;
     private GraphicsState GraphicsState;
     private ButtonAdapter Bomb;
-    
+    private ButtonAdapter BuildButton;
+    private Window BuildWindow;
+
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
     }
@@ -124,7 +127,7 @@ public class GameGUI extends AbstractAppState {
         setCameraLocation();
         setInitialPlrInfo();
     }
-    
+
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, getAtlas());
@@ -132,26 +135,25 @@ public class GameGUI extends AbstractAppState {
         guiNode.addControl(screen);
         //screen.setUseKeyboardIcons(true);
     }
-    
+
     public String getAtlas() {
         return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
     }
-    
+
     private void getScalingDimensions() {
-        tenthHeight = height/10;
-        tenthWidth = width/10;
-        buttonSize = new Vector2f(tenthWidth*1.75f, tenthHeight);
+        tenthHeight = height / 10;
+        tenthWidth = width / 10;
+        buttonSize = new Vector2f(tenthWidth * 1.75f, tenthHeight);
         leftButtons = 10;
-        rightButtons = width - tenthWidth*1.75f - 10;
+        rightButtons = width - tenthWidth * 1.75f - 10;
     }
 
-    
     @Override
     public void update(float tpf) {
         textLoop(tpf);
         frillsLoop(tpf);
     }
-    
+
     /**
      * Updates the GUI text, and checks to see if the game is over.
      */
@@ -164,16 +166,17 @@ public class GameGUI extends AbstractAppState {
             updateTimer += tpf;
         }
     }
-    
+
     private void checkGameOver() {
         if (GameState.getPlrHealth() <= 0) {
             tMS.gameover();
         }
     }
-    
+
     /**
      * Does extra frilly operations (text color, bloom level bump)
-     * @param tpf 
+     *
+     * @param tpf
      */
     private void frillsLoop(float tpf) {
         if (frillsTimer > .25 && isFrills) {
@@ -193,6 +196,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
+    // XXX: move this to AudioState
     private void endTheme() {
         endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
         endTheme.setVolume(1.0f);
@@ -206,7 +210,7 @@ public class GameGUI extends AbstractAppState {
      * lets the user use dirty cheats.
      */
     private void cheatsButton() {
-        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, tenthHeight*8), buttonSize) {
+        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
@@ -247,6 +251,7 @@ public class GameGUI extends AbstractAppState {
         }
 
     }
+    // XXX: Move this to AudioState
 
     public void setAudioListenerPosition(Vector3f trans) {
         app.getListener().setLocation(trans);
@@ -294,6 +299,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
+    //TODO: Cleanup setupGUI in GameGUI
     private void setupGUI() {
         settingsWindow();
         cheatToggleButton();
@@ -301,6 +307,7 @@ public class GameGUI extends AbstractAppState {
         progressIndicator();
         chargeButton();
         modifyButton();
+        buildButton();
         cameraButton();
         settingsButton();
         healthButton();
@@ -316,6 +323,7 @@ public class GameGUI extends AbstractAppState {
         soundSlider();
         purchaseButton();
         purchaseWindow();
+        buildWindow();
         purchaseChargerButton();
         getOldMat();
         downgradeButton();
@@ -338,16 +346,8 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(ObjectivePopup);
     }
 
-    private void settingsWindow() {
-        SetWindow = new Window(screen, new Vector2f(tenthWidth*2, tenthHeight*5), new Vector2f(width / 2, height / 4));
-        SetWindow.setIgnoreMouse(true);
-        SetWindow.setIsMovable(false);
-        screen.addElement(SetWindow);
-        SetWindow.hide();
-    }
-
     private void purchaseWindow() {
-        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, tenthHeight*6), new Vector2f(300, 500));
+        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, getHeightScale(6)), new Vector2f(300, 500));
         PurchaseWindow.setIgnoreMouse(true);
         PurchaseWindow.setWindowIsMovable(false);
         PurchaseWindow.setWindowTitle("Purchasables");
@@ -406,7 +406,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void settingsButton() {
-        Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, tenthHeight*5), buttonSize) {
+        Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, getHeightScale(6)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible()) {
@@ -425,6 +425,44 @@ public class GameGUI extends AbstractAppState {
         Settings.setText("Settings");
         Settings.setUseButtonPressedSound(true);
         screen.addElement(Settings);
+    }
+
+    private void settingsWindow() {
+        SetWindow = new Window(screen, getHorizontalWindowPosition(6), new Vector2f(width / 2, height / 4));
+        SetWindow.setIgnoreMouse(true);
+        SetWindow.setIsMovable(false);
+        screen.addElement(SetWindow);
+        SetWindow.hide();
+    }
+
+    private void buildButton() {
+        BuildButton = new ButtonAdapter(screen, "Build", new Vector2f(leftButtons, getHeightScale(2)), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (!StartGUI.MainWindow.getIsVisible()) {
+                    if (BuildWindow.getIsVisible()) {
+                        BuildWindow.hideWindow();
+                    } else {
+                        BuildWindow.showWindow();
+                    }
+                }
+            }
+        };
+        BuildButton.setText("Build...");
+        BuildButton.setUseButtonPressedSound(true);
+        screen.addElement(BuildButton);
+
+    }
+
+    /**
+     * Cover up everything but menu up. *
+     */
+    private void buildWindow() {
+        BuildWindow = new Window(screen, getHorizontalWindowPosition(2), new Vector2f(width / 2, height / 4));
+        BuildWindow.setIgnoreMouse(true);
+        BuildWindow.setIsMovable(false);
+        screen.addElement(BuildWindow);
+        BuildWindow.hide();
     }
 
     private void progressIndicator() {
@@ -618,7 +656,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void chargeButton() {
-        Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, tenthHeight), buttonSize) {
+        Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, 10), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 FriendlyState.chargeTower();
@@ -630,7 +668,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void modifyButton() {
-        Modify = new ButtonAdapter(screen, "modify", new Vector2f(leftButtons, tenthHeight*2), buttonSize) {
+        Modify = new ButtonAdapter(screen, "modify", new Vector2f(leftButtons, getHeightScale(1)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 FriendlyState.upgradeTower();
@@ -644,7 +682,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void cameraButton() {
-        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(leftButtons, tenthHeight*3), buttonSize) {
+        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(leftButtons, getHeightScale(3)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 doCamera();
@@ -671,7 +709,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void menuButton() {
-        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, tenthHeight*6), buttonSize) {
+        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, getHeightScale(8)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!SetWindow.getIsVisible()) {
@@ -689,7 +727,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void healthButton() {
-        Health = new ButtonAdapter(screen, "health", new Vector2f(rightButtons, tenthHeight), buttonSize) {
+        Health = new ButtonAdapter(screen, "health", new Vector2f(rightButtons, getHeightScale(1)), buttonSize) {
         };
         Health.setText("Health");
         Health.setIgnoreMouse(true);
@@ -699,7 +737,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void budgetButton() {
-        Budget = new ButtonAdapter(screen, "Budget", new Vector2f(rightButtons, tenthHeight*2), buttonSize) {
+        Budget = new ButtonAdapter(screen, "Budget", new Vector2f(rightButtons, getHeightScale(2)), buttonSize) {
         };
         Budget.setText("Budget: ");
         Budget.setIgnoreMouse(true);
@@ -707,7 +745,7 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void scoreButton() {
-        Score = new ButtonAdapter(screen, "Score", new Vector2f(rightButtons, tenthHeight*3), buttonSize) {
+        Score = new ButtonAdapter(screen, "Score", new Vector2f(rightButtons, getHeightScale(3)), buttonSize) {
         };
         Score.setText("Score: ");
         Score.setIgnoreMouse(true);
@@ -715,15 +753,15 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void levelButton() {
-        Level = new ButtonAdapter(screen, "Level", new Vector2f(rightButtons, tenthHeight*4), buttonSize) {
+        Level = new ButtonAdapter(screen, "Level", new Vector2f(rightButtons, getHeightScale(4)), buttonSize) {
         };
         Level.setText("Level: ");
         Level.setIgnoreMouse(true);
         screen.addElement(Level);
     }
-    
+
     private void bombToggle() {
-        Bomb = new ButtonAdapter(screen, "BombToggle", new Vector2f(rightButtons, tenthHeight*7), buttonSize) {
+        Bomb = new ButtonAdapter(screen, "BombToggle", new Vector2f(rightButtons, getHeightScale(7)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 GameState.toggleBomb();
@@ -741,7 +779,6 @@ public class GameGUI extends AbstractAppState {
         Element button = screen.getElementById("Budget");
         oldbuttmat = button.getMaterial();
     }
-    
 
     public void highlightButton(String buttonname) {
         Element button = screen.getElementById(buttonname);
@@ -753,6 +790,14 @@ public class GameGUI extends AbstractAppState {
         if (buttonname.equals("Budget")) {
             budgetButton();
         }
+    }
+
+    public float getHeightScale(int i) {
+        return (tenthHeight * i) + 10;
+    }
+
+    public Vector2f getHorizontalWindowPosition(int i) {
+        return new Vector2f(tenthWidth * 2, getHeightScale(i)-tenthHeight/2);
     }
 
     @Override

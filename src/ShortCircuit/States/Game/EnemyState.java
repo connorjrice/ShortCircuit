@@ -101,13 +101,13 @@ public class EnemyState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         if (isEnabled()) {
-            if (randomCheck > nextrandom) {
+            /*if (randomCheck > nextrandom) {
                 spawnRandomEnemy();
                 getNextRandomSpecialEnemyInt();
                 randomCheck = 0;
             } else {
                  randomCheck += tpf;
-            }
+            }*/
         }
 
     }
