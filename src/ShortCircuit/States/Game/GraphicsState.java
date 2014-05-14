@@ -155,7 +155,7 @@ public class GraphicsState extends AbstractAppState {
         rootNode.attachChild(beamNode);
     }
 
-        /**
+    /**
      * Sets up the FilterPostProcessor and Bloom filter used by the game.
      * Called upon initialization of the game.
      */
@@ -442,6 +442,7 @@ public class GraphicsState extends AbstractAppState {
     public Node getWorldNode() {
         return worldNode;
     }
+    
     
     @Override
     public void cleanup() {

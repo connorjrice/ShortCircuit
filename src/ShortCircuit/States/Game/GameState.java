@@ -73,7 +73,7 @@ public class GameState extends AbstractAppState {
     public void setGameplayParams(GameplayParams gp) {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
-        if (!lp.getProfile()) {
+        if (startGUI != null) {
             startGUI.hideloading();
         }
     }
@@ -91,6 +91,10 @@ public class GameState extends AbstractAppState {
                 updateTimer += tpf;
             }
         }
+    }
+    
+    public Node getRootNode() {
+        return rootNode;
     }
 
     public void attachWorldNode() {

@@ -28,7 +28,7 @@ public class MapGenerator {
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
         this.geomHash = new HashMap(20);
-        this.doc = (Document) assetManager.loadAsset("XML/" + level + ".lvl.xml");
+        this.doc = (Document) assetManager.loadAsset("XML/" + level);
     }
     
 
