@@ -35,7 +35,7 @@ public class ShortCircuitProfile extends SimpleApplication {
     }
         
     public void startTower() {
-        tms = new TowerMainState(true, "profilelevel");
+        tms = new TowerMainState(true, "profilelevel.lvl.xml");
         stateManager.attach(tms);
     }
     

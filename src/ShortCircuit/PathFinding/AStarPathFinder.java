@@ -111,6 +111,7 @@ public class AStarPathFinder implements PathFinder {
     public Path getNextPath() {
         Path cheapestPath = (Path) frontier.remove();
         if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
+            maxRecursions += 1;
             maxFlag = true;
         }
         return cheapestPath;

@@ -818,6 +818,8 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(PurchaseButton);
         screen.removeElement(PurchaseWindow);
         screen.removeElement(ProgressIndicator);
+        screen.removeElement(Bomb);
+        screen.removeElement(BuildButton);
         if (endTheme != null) {
             endTheme.stop();
         }

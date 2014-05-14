@@ -104,11 +104,10 @@ public class PathfindingState extends AbstractAppState {
     }
     
     public void nextVec(Vector3f nextVec) {
-        String formattedVec = formatVector3f(nextVec);
-        Spatial removedNode = rootNode.getChild(formattedVec);
-        removedNode = new Geometry("Post", new Box(1,1,1));
+        String formattedVec = formatVector3fString(nextVec);
+        Spatial removedNode = new Geometry("Post", new Box(1,1,1));
         removedNode.setMaterial(GraphicsState.getMaterial("Tower3Beam"));
-        removedNode.setLocalTranslation(nextVec);
+        removedNode.setLocalTranslation(roundVector3f(nextVec));
         removedNode.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
         removeEdge(formattedVec);
         rootNode.attachChild(removedNode);
@@ -134,7 +133,11 @@ public class PathfindingState extends AbstractAppState {
         
     }
     
-    private String formatVector3f(Vector3f in) {
+    private Vector3f roundVector3f(Vector3f in) {
+        return new Vector3f(Math.round(in.x), Math.round(in.y), Math.round(in.z));
+    }
+    
+    private String formatVector3fString(Vector3f in) {
         return formatRoundNumber(in.x)+","+formatRoundNumber(in.y);
     }
     
