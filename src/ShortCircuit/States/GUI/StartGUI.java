@@ -101,15 +101,15 @@ public class StartGUI extends AbstractAppState {
             @Override
             public void onMenuItemClicked(int index, Object value, boolean isToggled) {
                 if (value.equals("Start1")) {
-                    onStart("Level1", false);
+                    onStart("Level1.lvl.xml", false);
                 } else if (value.equals("Start2")) {
-                    onStart("Level2", false);
+                    onStart("Level2.lvl.xml", false);
                 } else if (value.equals("Start3")) {
-                    onStart("Level3", false);
+                    onStart("Level3.lvl.xml", false);
                 } else if (value.equals("GameOverTest")) {
-                    onStart("TestGameOver", false);
+                    onStart("TestGameOver.lvl.xml", false);
                 } else if (value.equals("StartPath")) {
-                    onStart("PathTest", false);
+                    onStart("PathTest.lvl.xml", false);
                 }
             }
         };

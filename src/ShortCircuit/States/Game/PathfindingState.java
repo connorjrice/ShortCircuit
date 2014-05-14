@@ -14,6 +14,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class PathfindingState extends AbstractAppState {
     private GameState GameState;
     private HashMap geomHash;
     private JEdgeManipulator edgeMani;
+    private GraphicsState GraphicsState;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -55,6 +57,7 @@ public class PathfindingState extends AbstractAppState {
         this.worldGraph = new Graph<String>(1400);
         this.precision = 1.0f; // works with 1.0f, .5f
         this.GameState = stateManager.getState(GameState.class);
+        this.GraphicsState = stateManager.getState(GraphicsState.class);
         this.geomHash = GameState.getGeomHash();
         initAssets();
         createPathNodes();
@@ -102,9 +105,13 @@ public class PathfindingState extends AbstractAppState {
     
     public void nextVec(Vector3f nextVec) {
         String formattedVec = formatVector3f(nextVec);
-        rootNode.getChild(formattedVec).setMaterial(blockedMat);
+        Spatial removedNode = rootNode.getChild(formattedVec);
+        removedNode = new Geometry("Post", new Box(1,1,1));
+        removedNode.setMaterial(GraphicsState.getMaterial("Tower3Beam"));
+        removedNode.setLocalTranslation(nextVec);
+        removedNode.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
         removeEdge(formattedVec);
-        
+        rootNode.attachChild(removedNode);
     }
     
 
