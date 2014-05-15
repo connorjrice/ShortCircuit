@@ -63,7 +63,6 @@ public class PathfindingState extends AbstractAppState {
         initAssets();
         createPathNodes();
         edgeMani = new JEdgeManipulator(worldGraph, targetNode, geomHash, precision);
-        addGeometry();
         addEdges();
         rootNode.attachChild(targetNode);
     }
@@ -89,7 +88,6 @@ public class PathfindingState extends AbstractAppState {
     }
 
     private void createPathNodes() {
-        //Vector3f translation = floor.getLocalTranslation();
         floorDimensions = floor.getLocalScale();
         float xAxis = Math.round(floorDimensions.x);
         float yAxis = Math.round(floorDimensions.y);
@@ -98,7 +96,7 @@ public class PathfindingState extends AbstractAppState {
                 String is = formatRoundNumber(i);
                 String js = formatRoundNumber(j);
                 worldGraph.addNode(is+','+js);
-                createTargetGeom(is,js);
+                //createTargetGeom(is,js);
             }
         }
 
@@ -106,12 +104,12 @@ public class PathfindingState extends AbstractAppState {
     
     public void nextVec(Vector3f nextVec) {
         String formattedVec = formatVector3fString(nextVec);
-        Spatial removedNode = new Geometry("Post", new Box(1,1,1));
-        removedNode.setMaterial(GraphicsState.getMaterial("Tower3Beam"));
-        removedNode.setLocalTranslation(roundVector3f(nextVec));
-        removedNode.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
+        Spatial newWall = new Geometry("Wall", new Box(1,1,1));
+        newWall.setMaterial(GraphicsState.getMaterial("Tower3Beam"));
+        newWall.setLocalTranslation(roundVector3f(nextVec));
+        newWall.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
         removeEdge(formattedVec);
-        rootNode.attachChild(removedNode);
+        rootNode.attachChild(newWall);
     }
     
 
@@ -121,17 +119,8 @@ public class PathfindingState extends AbstractAppState {
         target.setMaterial(targetMat);
         target.setLocalScale(.05f, .05f, .1f);
         target.setLocalTranslation(Float.parseFloat(x), Float.parseFloat(y), 0.0f);
-/*        if (geomHash.get(targetName)!= null) {
-            target.setUserData("Name", targetName);
-        } else {
-            target.setUserData("Name", "Unblocked");
-        }*/
         target.setUserData("Name", targetName);
-        targetNode.attachChild(target);
-    }
-    
-    private void addGeometry() {
-        
+        //targetNode.attachChild(target);
     }
     
     private Vector3f roundVector3f(Vector3f in) {

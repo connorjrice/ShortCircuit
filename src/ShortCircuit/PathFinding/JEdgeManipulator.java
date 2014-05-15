@@ -21,7 +21,7 @@ public class JEdgeManipulator implements EdgeManipulator {
     public JEdgeManipulator(Graph worldGraph, Node targetNode, HashMap geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
-        this.rootNode = targetNode;
+        //this.rootNode = targetNode;
         this.numFormatter = new DecimalFormat("0.0");
         this.geomHash = geomHash;
     }
@@ -55,12 +55,7 @@ public class JEdgeManipulator implements EdgeManipulator {
     private void addEdge(String nodeName, String targetName) {
         if (!nodeName.equals(targetName)) {
             if (geomHash.get(nodeName) == null && geomHash.get(targetName) == null) {
-                if (rootNode.getChild(nodeName) != null) {
-                    worldGraph.addEdge(targetName, nodeName);
-                    rootNode.getChild(nodeName).setUserData("Name", UNBLOCKED);
-                }
-            } else {
-                rootNode.getChild(nodeName).setUserData("Name", geomHash.get(nodeName));
+                worldGraph.addEdge(targetName, nodeName);
             }
         }
 

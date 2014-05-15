@@ -51,16 +51,21 @@ public class AStarPathFinder implements PathFinder {
     public Path pathFind(Path curPath) {
         if (!maxFlag) {
             Path nextPath = getNextPath();
-            ArrayList<Path> legalPaths = getLegalPaths(curPath);
-            for (Path legalPath : legalPaths) {
-                frontier.add(legalPath);
-            }
-            if (numRecursions < maxRecursions) {
-                numRecursions++;
-                return pathFind(nextPath);
+            if (nextPath != null) {
+                ArrayList<Path> legalPaths = getLegalPaths(curPath);
+                for (Path legalPath : legalPaths) {
+                    frontier.add(legalPath);
+                }
+                if (numRecursions < maxRecursions) {
+                    numRecursions++;
+                    return pathFind(nextPath);
+                } else {
+                    clearPaths();
+                    return nextPath;
+                }
             } else {
                 clearPaths();
-                return nextPath;
+                return curPath;
             }
         } else {
             clearPaths();
@@ -109,13 +114,17 @@ public class AStarPathFinder implements PathFinder {
     
 
     public Path getNextPath() {
-        Path cheapestPath = (Path) frontier.remove();
-        if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
-            maxRecursions += 1;
-            maxNodeSize += 1;
-            maxFlag = true;
+        if (!frontier.isEmpty()) {
+            Path cheapestPath = (Path) frontier.remove();
+            if (cheapestPath.getGraphNodes().size() > maxNodeSize) {
+                maxRecursions += 1;
+                maxNodeSize += 1;
+                maxFlag = true;
+            }
+            return cheapestPath;
+        } else {
+            return null;
         }
-        return cheapestPath;
     }
 
     public Path clonePath(Path p) {
