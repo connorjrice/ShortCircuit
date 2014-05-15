@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 /**
  * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
  * extensions
+ * TODO: Serialize world object (take rendered world and save it)
  * @author Connor Rice
  */
 public class MapGenerator {

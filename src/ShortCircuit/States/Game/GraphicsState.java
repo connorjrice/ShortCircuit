@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- *
+ * TODO: see if lower def files run faster on android
  * @author Development
  */
 public class GraphicsState extends AbstractAppState {

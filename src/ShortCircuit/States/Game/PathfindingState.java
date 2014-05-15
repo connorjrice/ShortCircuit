@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 /**
  * TODO: Make walls, make towers "solid"
+ * TODO: remove geometry for path node
  * @author Connor Rice
  */
 public class PathfindingState extends AbstractAppState {
