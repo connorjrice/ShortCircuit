@@ -300,7 +300,7 @@ public class GameGUI extends AbstractAppState {
 
     //TODO: Cleanup setupGUI in GameGUI
     private void setupGUI() {
-        StartGUI.updateAtlas(getAtlasString());
+        //StartGUI.updateAtlas(getAtlasString());
         settingsWindow();
         cheatToggleButton();
         internalMenu();
