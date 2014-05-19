@@ -170,6 +170,10 @@ public class GameState extends AbstractAppState {
         bombActive = b;
     }
     
+    public boolean getBombActive() {
+        return bombActive;
+    }
+    
     public HashMap getGeomHash() {
         return lp.getGeomHash();
     }

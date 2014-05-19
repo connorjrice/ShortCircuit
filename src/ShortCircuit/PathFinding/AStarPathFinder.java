@@ -5,7 +5,6 @@ import ShortCircuit.DataStructures.MinHeap;
 import java.util.ArrayList;
 
 /**
- * Tell MW about path index messup
  * @author Connor Rice and Matthew Whitehead
  */
 public class AStarPathFinder implements PathFinder {

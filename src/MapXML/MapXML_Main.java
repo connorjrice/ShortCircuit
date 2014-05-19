@@ -27,6 +27,7 @@ public class MapXML_Main extends SimpleApplication {
         app.setDisplayFps(false);
         app.setDisplayStatView(false);
         app.setShowSettings(false);
+        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
         app.start();
     }
     private Camera levelCam;

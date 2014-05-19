@@ -64,7 +64,7 @@ public class TutorialState extends AbstractAppState {
 
     private void initScreen() {
         screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, GameGUI.getAtlas());
+        screen.setUseTextureAtlas(true, GameGUI.getAtlasString());
         screen.setUseMultiTouch(false);
         guiNode.addControl(screen);
     }

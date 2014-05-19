@@ -129,16 +129,14 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, getAtlas());
+        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, getAtlasString());
         screen.setUseMultiTouch(false);
+        screen.setGlobalUIScale(tenthHeight, tenthWidth);
         guiNode.addControl(screen);
-        //screen.setUseKeyboardIcons(true);
     }
 
-    public String getAtlas() {
-        return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
-    }
+
 
     private void getScalingDimensions() {
         tenthHeight = height / 10;
@@ -765,9 +763,14 @@ public class GameGUI extends AbstractAppState {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 GameState.toggleBomb();
+                if (GameState.getBombActive()) {
+                    Bomb.setText("Drop Bombs");
+                } else {
+                    Bomb.setText("Build Walls");
+                }
             }
         };
-        Bomb.setText("Use Bombs");
+        Bomb.setText("Build Walls");
         screen.addElement(Bomb);
     }
 
@@ -790,6 +793,10 @@ public class GameGUI extends AbstractAppState {
         if (buttonname.equals("Budget")) {
             budgetButton();
         }
+    }
+    
+    public String getAtlasString() {
+        return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
     }
 
     public float getHeightScale(int i) {

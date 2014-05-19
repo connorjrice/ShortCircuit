@@ -1,5 +1,6 @@
 package ShortCircuit.States.GUI;
 
+import ShortCircuit.MapXML.FileLoader;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -13,9 +14,12 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
+import java.io.File;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
+import tonegod.gui.controls.lists.SelectList;
+import tonegod.gui.controls.lists.SelectList.ListItem;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -30,7 +34,7 @@ public class StartGUI extends AbstractAppState {
     private SimpleApplication app;
     private Node guiNode;
     private Screen screen;
-    private Button newGame;
+    private Button startButton;
     public Menu MainMenu;
     public Window MainWindow;
     private int height;
@@ -47,6 +51,7 @@ public class StartGUI extends AbstractAppState {
     private Menu levelMenu;
     private float scaler;
     private FlyByCamera flyCam;
+    private SelectList levelList;
 
     public StartGUI() {
     }
@@ -59,6 +64,7 @@ public class StartGUI extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.app.getFlyByCamera().setDragToRotate(true);
+        assetManager.registerLoader(FileLoader.class, "");
         height = this.app.getContext().getSettings().getHeight();
         width = this.app.getContext().getSettings().getWidth();
         buttonSize = new Vector2f(width / 8, height / 8);
@@ -68,17 +74,16 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "Interface/StartAtlas.png");
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
         mainWindow();
-        newGame();
-        initLoadBar();
+        startLevelButton();
         exitButton();
         loadingpic();
-        initLevelMenu();
+        initLevelList();
     }
     
     private void initScreen(String atlas) {
@@ -88,39 +93,23 @@ public class StartGUI extends AbstractAppState {
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
         mainWindow();
-        newGame();
-        initLoadBar();
+        startLevelButton();
         exitButton();
         loadingpic();
-        initLevelMenu();
+        initLevelList();
+        buildLevels();
     }
     
 
-    private void initLevelMenu() {
-        levelMenu = new Menu(screen, "levelmenu", new Vector2f(), true) {
+    private void initLevelList() {
+       levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler), new Vector2f(scaler*3, scaler*3)) {
             @Override
-            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
-                if (value.equals("Start1")) {
-                    onStart("Level1.lvl.xml", false);
-                } else if (value.equals("Start2")) {
-                    onStart("Level2.lvl.xml", false);
-                } else if (value.equals("Start3")) {
-                    onStart("Level3.lvl.xml", false);
-                } else if (value.equals("GameOverTest")) {
-                    onStart("TestGameOver.lvl.xml", false);
-                } else if (value.equals("StartPath")) {
-                    onStart("PathTest.lvl.xml", false);
-                }
+            public void onChange() {
+
             }
         };
-        levelMenu.addMenuItem("Level1", "Start1", null);
-        levelMenu.addMenuItem("Level2", "Start2", null);
-        levelMenu.addMenuItem("Level3", "Start3", null);
-        levelMenu.addMenuItem("TestGameOver", "GameOverTest", null);
-        levelMenu.addMenuItem("PathTest", "StartPath", null);
-        levelMenu.setPreferredSize(new Vector2f(300,300));
-        levelMenu.hide();
-        MainWindow.addChild(levelMenu);
+       buildLevels();
+       MainWindow.addChild(levelList);
     }
 
     public void onStart(String level, boolean debug) {
@@ -153,22 +142,8 @@ public class StartGUI extends AbstractAppState {
         guiNode.detachChild(loading);
     }
 
-    private void initLoadBar() {
-        ind = new Indicator(screen, "loadbar", new Vector2f(width / 2, height / 2 - 100), Indicator.Orientation.HORIZONTAL) {
-            @Override
-            public void onChange(float arg0, float arg1) {
-            }
-        };
-        ind.setBaseImage(screen.getStyle("Window").getString("defaultImg"));
-        ind.setIndicatorColor(ColorRGBA.randomColor());
-        ind.setAlphaMap(screen.getStyle("Indicator").getString("alphaImg"));
-        ind.setIndicatorPadding(new Vector4f(7, 7, 7, 7));
-        ind.setMaxValue(100);
-        ind.setDisplayPercentage();
-    }
-
     private void mainWindow() {
-        MainWindow = new Window(screen, new Vector2f(width / 4, height / 2 - height / 4), new Vector2f(width / 2, height / 2));
+        MainWindow = new Window(screen, new Vector2f(width / 6, height / 3 - height / 6), new Vector2f(width / 1.5f, height / 1.5f));
         MainWindow.setIgnoreMouse(true);
         MainWindow.setWindowIsMovable(false);
         MainWindow.setEffectZOrder(false);
@@ -176,38 +151,41 @@ public class StartGUI extends AbstractAppState {
         MainWindow.setWindowTitle("ShortCircuit");
         screen.addElement(MainWindow);
     }
+    
+    private void buildLevels() {
+        levelList.addListItem("Level1", "Level1.lvl.xml");
+        levelList.addListItem("Level2", "Level2.lvl.xml");
+        levelList.addListItem("Level3", "Level3.lvl.xml");
+    }
 
-    private void newGame() {
-        newGame = new ButtonAdapter(screen, "newGame", new Vector2f(MainWindow.getWidth() - scaler * 6, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
+    private void startLevelButton() {
+        startButton = new ButtonAdapter(screen, "levelSel", new Vector2f(scaler, scaler*4), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (levelMenu.getIsVisible()) {
-                    levelMenu.hideMenu();
-                } else {
-                    levelMenu.showMenu(null, 100,300);
+                String level = (String) levelList.getListItem(levelList.getSelectedIndex()).getValue();
+                if (level != null) {
+                    onStart(level, false);
                 }
             }
         };
-        newGame.setText("New Game");
-        newGame.setFont("Interface/Fonts/DejaVuSans.fnt");
-        MainWindow.addChild(newGame);
+        startButton.setText("Start");
+        MainWindow.addChild(startButton);
     }
 
 
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(MainWindow.getWidth() - scaler * 2, MainWindow.getHeight() - scaler * 1.5f), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*4, scaler*4), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();
             }
         };
         ExitButton.setText("Exit");
-        ExitButton.setFont("Interface/Fonts/DejaVuSans.fnt");
         MainWindow.addChild(ExitButton);
     }
 
     public void reallyExitDialog() {
-        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(200, 200)) {
+        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(width/2-scaler, height/2-scaler), new Vector2f(scaler*2, scaler*2)) {
             @Override
             public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
                 screen.removeElement(ReallyExitPopup);
@@ -220,7 +198,7 @@ public class StartGUI extends AbstractAppState {
                 app.stop(false);
             }
         };
-        ReallyExitPopup.setText("Exit");
+        ReallyExitPopup.setWindowTitle("Exit");
         ReallyExitPopup.setMsg("Are you sure?");
         MainWindow.addChild(ReallyExitPopup);
     }
@@ -228,10 +206,8 @@ public class StartGUI extends AbstractAppState {
     public void toggle() {
         if (!MainWindow.getIsVisible()) {
             MainWindow.show();
-            levelMenu.hide();
         } else {
             MainWindow.hide();
-            levelMenu.hide();
         }
     }
     

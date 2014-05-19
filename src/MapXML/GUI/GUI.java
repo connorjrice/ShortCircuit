@@ -1,6 +1,5 @@
 package MapXML.GUI;
 
-import ShortCircuit.TowerMainState;
 import ShortCircuit.TowerMapXML;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -76,7 +75,7 @@ public class GUI extends AbstractAppState {
     }
     
     private void initScreen() {
-        screen = new Screen(app, "MapXML/Style/style_map.gui.xml");
+        screen = new Screen(app, "StyleDefs/MapXML/style_map.gui.xml");
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
     }

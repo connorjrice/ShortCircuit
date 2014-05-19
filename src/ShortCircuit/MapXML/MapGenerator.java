@@ -1,6 +1,8 @@
 package ShortCircuit.MapXML;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetInfo;
+import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -28,6 +30,8 @@ public class MapGenerator {
         xpath = XPathFactory.newInstance().newXPath();
         this.assetManager = app.getAssetManager();
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
+
+
         this.geomHash = new HashMap(20);
         this.doc = (Document) assetManager.loadAsset("XML/" + level);
     }
