@@ -66,6 +66,7 @@ public class MoveCreep implements Runnable {
     }
 
     private void getNextPath() {
+        System.out.println(baseCoords);
         cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);
         setCurVec();
     }

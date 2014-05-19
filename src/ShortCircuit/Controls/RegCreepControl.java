@@ -3,6 +3,7 @@ package ShortCircuit.Controls;
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
+import ShortCircuit.PathFinding.jMEHeuristic;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
@@ -47,18 +48,16 @@ public class RegCreepControl extends AbstractControl implements Savable {
     }
     
     public RegCreepControl() {
-        
+        this.mc = new MoveCreep(this, baseCoords);
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (EnemyState.isEnabled()) {            
-            if (updateTimer > .05) {
-                mc.run();                  
-                updateTimer = 0;
-            }  else {
-                updateTimer += tpf;
-            }
+        if (updateTimer > .05) {
+           // mc.run();                  
+            updateTimer = 0;
+        }  else {
+            updateTimer += tpf;
         }
     }
     
@@ -161,7 +160,6 @@ public class RegCreepControl extends AbstractControl implements Savable {
         out.write(baseCoords, "baseCoords", baseCoords);
         
     }
-
 
 
 }
