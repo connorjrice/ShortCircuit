@@ -46,6 +46,10 @@ public class FriendlyState extends AbstractAppState {
     private GraphicsState GraphicsState;
     private ArrayList<TowerParams> towerList;
     private GameState GameState;
+    
+    public FriendlyState() {
+        
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -265,6 +269,7 @@ public class FriendlyState extends AbstractAppState {
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
         GraphicsState.towerTextureEmpty(empty);
+        AudioState.emptySound();
     }
     
     public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {

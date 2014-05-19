@@ -2,9 +2,9 @@ package ShortCircuit.Threading;
 
 import ShortCircuit.Controls.RegCreepControl;
 import ShortCircuit.DataStructures.Nodes.GraphNode;
-import ShortCircuit.PathFinding.PathFinder;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import java.text.DecimalFormat;
 
 /**
@@ -24,20 +24,24 @@ public class MoveCreep implements Runnable {
     private Vector3f prevLoc;
     
     private DecimalFormat numFormatter;
+    private Vector3f baseVec;
 
-    public MoveCreep(RegCreepControl cc) {
+    public MoveCreep(RegCreepControl cc, String baseCoords) {
         this.cc = cc;
-        this.baseCoords = cc.getFormattedBaseCoords();
-        this.baseBounds = cc.getBaseBounds();
+        this.baseCoords = baseCoords;
+        this.baseVec = cc.baseVec;
         this.moveAmount = 0.1f;
         this.numFormatter = new DecimalFormat("0.0");
     }
+    
+
+    
 
     public void run() {
         if (cc.path == null) {
             getNextPath();
         }
-        if (cc.getSpatial().getWorldBound().intersects(baseBounds)) {
+        if (cc.getSpatial().getLocalTranslation().distance(baseVec) < 1.0f) {
             cc.removeCreep(false);
         } else {
             if (!cc.path.getEndReached()) {

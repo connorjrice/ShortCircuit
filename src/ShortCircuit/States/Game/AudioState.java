@@ -8,7 +8,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * This class controls all audio manipulation and playing.
@@ -35,9 +34,12 @@ public class AudioState extends AbstractAppState {
     private AudioNode bombsound;
 
     /* TowerState Nodes */
+    private AudioNode emptySound;
     private AudioNode chargeSound;
     private AudioNode buildSound;
     private AudioNode bombsound2;
+    
+    public AudioState() {}
     
     
     @Override
@@ -67,6 +69,7 @@ public class AudioState extends AbstractAppState {
         buildSound = new AudioNode(assetManager, "Audio/buildgam.wav");
         bombsound = new AudioNode(assetManager, "Audio/bomb.wav");
         bombsound2 = new AudioNode(assetManager, "Audio/bomb.wav");
+        emptySound = new AudioNode(assetManager, "Audio/emptytower.wav");
 
     }
     
@@ -83,6 +86,10 @@ public class AudioState extends AbstractAppState {
         levelUpSound.setPositional(false);
         chargeSound.setPositional(false);
         buildSound.setPositional(false);
+    }
+    
+    public void emptySound() {
+        emptySound.playInstance();
     }
     
     /**

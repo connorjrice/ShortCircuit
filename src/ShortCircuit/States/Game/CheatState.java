@@ -27,6 +27,8 @@ public class CheatState extends AbstractAppState {
     private float slowItDownThere = 0f;
     private GraphicsState GraphicsState;
     
+    public CheatState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

@@ -55,6 +55,8 @@ public class EnemyState extends AbstractAppState {
     private Object[] creepTypes;
     private PathfindingState PathState;
     private HashMap creepParams;
+    
+    public EnemyState() {}
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -205,6 +207,10 @@ public class EnemyState extends AbstractAppState {
 
     public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
         return creepSpawnerList;
+    }
+    
+    public Vector3f getBaseVec() {
+        return GameState.getBaseVec();
     }
 
     public BoundingVolume getBaseBounds() {

@@ -1,12 +1,10 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.PathFinding.jMEHeuristic;
 import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;
-import com.jme3.bounding.BoundingVolume;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -33,18 +31,19 @@ public class RegCreepControl extends AbstractControl implements Savable {
     protected int creepNum;
     public AStarPathFinder pathFinder;
     private float updateTimer = 0;
-    public BoundingVolume basebounds;
     public Path path;
     public String baseCoords;
+    public Vector3f baseVec;
     private MoveCreep mc;
     private DecimalFormat numFormatter = new DecimalFormat("0.0");
 
     
-    public RegCreepControl(EnemyState _state) {
+    public RegCreepControl(EnemyState _state, AStarPathFinder pathFinder) {
         EnemyState = _state;
-        this.basebounds = EnemyState.getBaseBounds();
-        this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
-        this.mc = new MoveCreep(this);
+        this.pathFinder = pathFinder;
+        this.baseCoords = EnemyState.getFormattedBaseCoords();
+        this.baseVec = EnemyState.getBaseVec();
+        this.mc = new MoveCreep(this, baseCoords);
     }
     
     public RegCreepControl() {
@@ -75,13 +74,11 @@ public class RegCreepControl extends AbstractControl implements Savable {
         return numFormatter.format(Math.round(f));
     }
     
-    public String getFormattedBaseCoords() {
-        return EnemyState.getFormattedBaseCoords();
-    }
     
-    public BoundingVolume getBaseBounds() {
-        return EnemyState.getBaseBounds();
+    private String formatRoundNumber(Float value) {
+        return numFormatter.format(Math.round(value));
     }
+
     
     public float getX() {
         return spatial.getWorldTranslation().x;
@@ -135,6 +132,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
         mc = null;
         pathFinder = null;
     }
+    
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
@@ -142,7 +140,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
 
     @Override
     public RegCreepControl cloneForSpatial(Spatial spatial) {
-        RegCreepControl control = new RegCreepControl(EnemyState);
+        RegCreepControl control = new RegCreepControl();
         control.setSpatial(spatial);
         return control;
     }
@@ -151,6 +149,8 @@ public class RegCreepControl extends AbstractControl implements Savable {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
+        baseCoords = in.readString("baseCoords", "");
+        
     }
 
     @Override
@@ -158,9 +158,10 @@ public class RegCreepControl extends AbstractControl implements Savable {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
         out.write(creepNum, "creepNum", 0);
-        //out.write(pathFinder, "pathFinder", new AStarPathFinder());
+        out.write(baseCoords, "baseCoords", baseCoords);
         
     }
-    
+
+
 
 }

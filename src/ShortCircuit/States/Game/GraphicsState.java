@@ -75,6 +75,8 @@ public class GraphicsState extends AbstractAppState {
     private HashMap creepParams;
     private FloorFactory FloorFactory;
     
+    public GraphicsState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

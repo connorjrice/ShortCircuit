@@ -23,6 +23,8 @@ public class ProfileState extends AbstractAppState {
     private EnemyState EnemyState;
     private GraphicsState GraphicsState;
     
+    public ProfileState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

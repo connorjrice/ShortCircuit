@@ -48,6 +48,8 @@ public class PathfindingState extends AbstractAppState {
     private JEdgeManipulator edgeMani;
     private GraphicsState GraphicsState;
     
+    public PathfindingState() {}
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

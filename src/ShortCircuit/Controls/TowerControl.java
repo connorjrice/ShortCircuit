@@ -2,10 +2,8 @@ package ShortCircuit.Controls;
 
 import ShortCircuit.DataStructures.STC;
 import ShortCircuit.DataStructures.Nodes.STCCreepCompare;
-import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.States.Game.FriendlyState;
-import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Control for user-controlled towers. TODO: Documentation for TowerParams
@@ -35,13 +32,11 @@ public class TowerControl extends AbstractControl implements Savable {
     public ArrayList<Charges> charges = new ArrayList<Charges>();
     private Vector3f towerloc;
     protected FriendlyState FriendlyState;
-    private ScheduledThreadPoolExecutor exec;
     private boolean isActive = false;
     private float searchTimer = .0f;
     private float searchDelay = .2f;
     private Comparator<Spatial> cc;
     private Future future;
-    private AudioNode emptySound;
     private boolean isGlobbed = false;
     private float beamwidth;
 
@@ -49,26 +44,26 @@ public class TowerControl extends AbstractControl implements Savable {
         FriendlyState = _tstate;
         cc = new STCCreepCompare(towerloc);
         this.towerloc = towerloc;
-        // TODO: Remove emptySound from TowerControl
-        emptySound = new AudioNode(FriendlyState.getApp().getAssetManager(), "Audio/emptytower.wav");
     }
 
     public TowerControl() {
-        
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (FriendlyState.isEnabled() && isActive) {
-            if (searchTimer > searchDelay) {
-                decideShoot();
-                reachable = null;
-                searchForCreeps();
-                searchTimer = 0;
-            } else {
-                searchTimer += tpf;
+        /*if (FriendlyState.isEnabled()) {
+            if (isActive) {
+
+                if (searchTimer > searchDelay) {
+                    decideShoot();
+                    reachable = null;
+                    searchForCreeps();
+                    searchTimer = 0;
+                } else {
+                    searchTimer += tpf;
+                }
             }
-        }
+        }*/
     }
 
     protected void decideShoot() {
@@ -151,7 +146,6 @@ public class TowerControl extends AbstractControl implements Savable {
 
     protected void setTowerEmpty() {
         setInactive();
-        emptySound.play();
         FriendlyState.addEmptyTower(this);
     }
 

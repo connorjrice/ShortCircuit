@@ -10,6 +10,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingVolume;
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -26,7 +31,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class GameState extends AbstractAppState {
+public class GameState extends AbstractAppState implements Savable{
 
     private EnemyState EnemyState;
     private SimpleApplication app;
@@ -275,6 +280,10 @@ public class GameState extends AbstractAppState {
     public void decPlrScore(int s) {
         pp.decScore(s);
     }
+    
+    public Vector3f getBaseVec() {
+        return baseBounds.getCenter();
+    }
 
     public BoundingVolume getBaseBounds() {
         return baseBounds;
@@ -360,4 +369,18 @@ public class GameState extends AbstractAppState {
         rootNode.detachAllChildren();
         ex.shutdown();
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+        
+        
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+
+
 }

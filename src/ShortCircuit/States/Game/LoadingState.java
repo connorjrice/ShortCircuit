@@ -18,10 +18,12 @@ public class LoadingState extends AbstractAppState {
     private GameState GameState;
     private EnemyState EnemyState;
     private MapGenerator mg;
-    private final String levelName;
+    private String levelName;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private GraphicsState GraphicsState;
+    
+    public LoadingState() {}
     
     public LoadingState(String levelName) {
         this.levelName = levelName;

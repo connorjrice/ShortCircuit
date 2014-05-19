@@ -42,6 +42,8 @@ public class TutorialState extends AbstractAppState {
     private boolean hasGlobbed = false;
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
+    
+    public TutorialState() {}
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
