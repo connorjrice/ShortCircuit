@@ -1,11 +1,18 @@
 package ShortCircuit.Objects;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
+import java.io.IOException;
+
 /**
  * Charge object. Type input determines the amount of beams are left and how
  * much damage they do.
  * @author Connor Rice
  */
-public class Charges {
+public class Charges implements Savable {
 
     public int damage;
     public int remBeams;
@@ -36,6 +43,10 @@ public class Charges {
 
     }
 
+    public Charges() {
+
+    }
+
     public int shoot() {
         remBeams -= 1;
         return damage;
@@ -47,5 +58,15 @@ public class Charges {
 
     public int getRemBeams() {
         return remBeams;
+    }
+
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
     }
 }

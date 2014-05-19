@@ -1,5 +1,6 @@
 package ShortCircuit.States.GUI;
 
+
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import ShortCircuit.States.Game.FriendlyState;
@@ -299,6 +300,7 @@ public class GameGUI extends AbstractAppState {
 
     //TODO: Cleanup setupGUI in GameGUI
     private void setupGUI() {
+        StartGUI.updateAtlas(getAtlasString());
         settingsWindow();
         cheatToggleButton();
         internalMenu();

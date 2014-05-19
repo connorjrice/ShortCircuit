@@ -6,6 +6,7 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -23,7 +24,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class BombControl extends AbstractControl {
+public class BombControl extends AbstractControl implements Savable{
 
     private float bombTimer = 0f;
     private float collideTimer = 0f;
@@ -41,6 +42,8 @@ public class BombControl extends AbstractControl {
         this.as = as;
         this.ex = gs.getEx();
     }
+    
+    public BombControl() {}
 
     /**
      * If the gamestate is enabled, and the bomb has been alive for less than

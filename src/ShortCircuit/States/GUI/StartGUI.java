@@ -1,6 +1,8 @@
 package ShortCircuit.States.GUI;
 
 import ShortCircuit.MapXML.FileLoader;
+import ShortCircuit.ShortCircuitMain;
+import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -52,8 +54,10 @@ public class StartGUI extends AbstractAppState {
     private float scaler;
     private FlyByCamera flyCam;
     private SelectList levelList;
+    private ShortCircuitMain scm;
 
-    public StartGUI() {
+    public StartGUI(ShortCircuitMain scm) {
+        this.scm = scm;
     }
 
     @Override
@@ -194,8 +198,9 @@ public class StartGUI extends AbstractAppState {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
                 super.cleanup();
+                stateManager.getState(GameState.class).saveGame();
                 guiNode.detachAllChildren();
-                app.stop(false);
+                //app.stop(false);
             }
         };
         ReallyExitPopup.setWindowTitle("Exit");

@@ -10,6 +10,7 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -28,19 +29,16 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class TowerControl extends AbstractControl {
+public class TowerControl extends AbstractControl implements Savable {
 
-    protected GraphicsState GraphicsState;
-    public int[] reachableSpawners;
     public STC<Spatial> reachable;
     public ArrayList<Charges> charges = new ArrayList<Charges>();
     private Vector3f towerloc;
     protected FriendlyState FriendlyState;
-    private ScheduledThreadPoolExecutor ex;
+    private ScheduledThreadPoolExecutor exec;
     private boolean isActive = false;
     private float searchTimer = .0f;
     private float searchDelay = .2f;
-    private int[] allowedSpawners;
     private Comparator<Spatial> cc;
     private Future future;
     private AudioNode emptySound;
@@ -49,13 +47,14 @@ public class TowerControl extends AbstractControl {
 
     public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
-        GraphicsState = FriendlyState.getApp().getStateManager().getState(GraphicsState.class);
-        FriendlyState = FriendlyState.getApp().getStateManager().getState(FriendlyState.class);
         cc = new STCCreepCompare(towerloc);
         this.towerloc = towerloc;
-        this.ex = FriendlyState.getEx();
         // TODO: Remove emptySound from TowerControl
         emptySound = new AudioNode(FriendlyState.getApp().getAssetManager(), "Audio/emptytower.wav");
+    }
+
+    public TowerControl() {
+        
     }
 
     @Override
@@ -105,23 +104,10 @@ public class TowerControl extends AbstractControl {
         return isGlobbed;
     }
 
-    /*private void excludeCreeps() {
-     ArrayList<CreepSpawnerParams> creepSpawners = FriendlyState.getCreepSpawnerList();
-     allowedSpawners = new int[creepSpawners.size()];
-     for (int i = 0; i < creepSpawners.size(); i++) {
-     if (creepSpawners.get(i).getLocalTranslation().distance(towerloc) < 10.0f) {
-     allowedSpawners[i] = creepSpawners.get(i).getUserData("Parent");
-     }
-     }
-     }*/
-    public int[] getAllowedSpawners() {
-        return allowedSpawners;
-    }
-
     private void searchForCreeps() {
         try {
             if (reachable == null && future == null) {
-                future = ex.submit(callableCreepFind);
+                future = FriendlyState.getEx().submit(callableCreepFind);
             } else if (future != null) {
                 if (future.isDone()) {
                     reachable = (STC<Spatial>) future.get();
@@ -166,14 +152,13 @@ public class TowerControl extends AbstractControl {
     protected void setTowerEmpty() {
         setInactive();
         emptySound.play();
-        GraphicsState.towerTextureEmpty(this);
         FriendlyState.addEmptyTower(this);
     }
 
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(RegCreepControl.class) != null) {
-                GraphicsState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(),
+                FriendlyState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(),
                         getTowerType(), getBeamWidth());
                 if (reachable.peek()
                         .getControl(RegCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
@@ -241,6 +226,7 @@ public class TowerControl extends AbstractControl {
     @Override
     public Control cloneForSpatial(Spatial spatial) {
         TowerControl control = new TowerControl(FriendlyState, towerloc);
+        control.setSpatial(spatial);
         return control;
     }
 
@@ -248,11 +234,23 @@ public class TowerControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
+        towerloc = (Vector3f) in.readSavable("towerLoc", new Vector3f());
+        isActive = in.readBoolean("isActive", false);
+        setBeamType(in.readString("beamType", null));
+        setTowerType(in.readString("towerType", "TowerEmpty"));
+        searchTimer = in.readFloat("searchTimer", .2f);
+        searchDelay = in.readFloat("searchDelay", .0f);
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
+        out.write(towerloc, "towerLoc", towerloc);
+        out.write(getIsActive(), "isActive", false);
+        out.write(getBeamType(), "beamType", "TowerEmpty");
+        out.write(getTowerType(), "towerType", "TowerEmpty");
+        out.write(searchTimer, "searchTimer", .2f);
+        out.write(searchDelay, "searchDelay", .0f);
     }
 }

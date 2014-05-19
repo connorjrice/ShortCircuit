@@ -97,7 +97,7 @@ public class MinHeap<T extends Comparable> {
         boolean done = false;
         while (!done) {
             int childIndex = getLeftChildIndex(index);
-            if (childIndex <= getSize()) { // prevents IndexOutOfBoundsException
+            if (childIndex < getSize()) { // prevents IndexOutOfBoundsException
                 Comparable child = getLeftChild(index);
                 if (getRightChild(index) != null && getRightChild(index).compareTo(child) < 0) {
                     childIndex = getRightChildIndex(index);

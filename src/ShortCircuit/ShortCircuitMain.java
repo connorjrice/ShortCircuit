@@ -2,10 +2,14 @@ package ShortCircuit;
 
 import ShortCircuit.States.GUI.StartGUI;
 import com.jme3.app.SimpleApplication;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.system.AppSettings;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.applet.Main;
 
 /**
  * ShortCircuit: A tower defense game
@@ -46,7 +50,7 @@ public class ShortCircuitMain extends SimpleApplication {
     }
     
     public void startGUI() {
-        sgui = new StartGUI();
+        sgui = new StartGUI(this);
         stateManager.attach(sgui);
     }
   
@@ -55,4 +59,19 @@ public class ShortCircuitMain extends SimpleApplication {
         super.destroy();
         rootNode.detachAllChildren();
     }
+    
+    @Override
+    public void stop() {
+        String userHome = System.getProperty("user.home");
+        System.out.println(userHome);
+        BinaryExporter exporter = BinaryExporter.getInstance();
+        File file = new File(userHome+"/Models/"+"MyModel.j3o");
+        try {
+            exporter.save(rootNode, file);
+        } catch (IOException ex) {
+            
+        }
+        super.stop(); // continue quitting the game
+    }
+    
 }

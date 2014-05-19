@@ -27,6 +27,10 @@ public class AStarPathFinder implements PathFinder {
         neverLong = 0;
     }
 
+    public AStarPathFinder() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public Path getPath(String start, String end) {
         return getPath(Graph.getIndex(start), Graph.getIndex(end));
     }

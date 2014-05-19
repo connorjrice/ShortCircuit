@@ -10,9 +10,12 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingVolume;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -336,6 +339,18 @@ public class GameState extends AbstractAppState {
 
     public Node getWorldNode() {
         return worldNode;
+    }
+    
+    public void saveGame() {
+        String userHome = System.getProperty("user.home");
+        System.out.println(userHome);
+        BinaryExporter exporter = BinaryExporter.getInstance();
+        File file = new File(userHome+"/Models/"+"MyModel.j3o");
+        try {
+            exporter.save(rootNode, file);
+        } catch (IOException ex) {
+            
+        }
     }
 
     @Override

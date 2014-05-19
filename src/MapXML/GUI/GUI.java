@@ -6,6 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.renderer.Camera;
@@ -13,6 +14,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import java.io.File;
+import java.io.IOException;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.OSRViewPort;
 import tonegod.gui.controls.lists.ComboBox;
@@ -167,6 +169,15 @@ public class GUI extends AbstractAppState {
         returnButton = new ButtonAdapter(screen, "return", new Vector2f(10, 10), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                String userHome = System.getProperty("user.home");
+                System.out.println(userHome);
+                BinaryExporter exporter = BinaryExporter.getInstance();
+                File file = new File(userHome+"/Models/"+"SaveAttempt.j3o");
+                try {
+                    exporter.save(tMS.getRootNode(), file);
+                } catch (IOException ex) {
+            
+                }
                 stateManager.detach(tMS);
                 MainWindow.show();
                 screen.removeElement(this);

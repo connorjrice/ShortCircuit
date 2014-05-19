@@ -5,6 +5,7 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -18,12 +19,16 @@ import java.io.IOException;
  *
  * @author Connor Rice
  */
-public class CreepSpawnerControl extends AbstractControl {
+public class CreepSpawnerControl extends AbstractControl implements Savable {
 
     private EnemyState EnemyState;
 
     public CreepSpawnerControl(EnemyState _cstate) {
         EnemyState = _cstate;
+    }
+    
+    public CreepSpawnerControl() {
+        
     }
 
     /**
@@ -72,5 +77,6 @@ public class CreepSpawnerControl extends AbstractControl {
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
+        
     }
 }

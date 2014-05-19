@@ -264,6 +264,11 @@ public class FriendlyState extends AbstractAppState {
      */
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
+        GraphicsState.towerTextureEmpty(empty);
+    }
+    
+    public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
+        GraphicsState.makeLaserBeam(origin, target, towertype, beamwidth);
     }
 
     /**

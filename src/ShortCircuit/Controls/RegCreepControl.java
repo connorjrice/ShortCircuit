@@ -11,6 +11,7 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -26,11 +27,10 @@ import java.text.DecimalFormat;
  *
  * @author Connor Rice
  */
-public class RegCreepControl extends AbstractControl {
+public class RegCreepControl extends AbstractControl implements Savable {
 
     protected EnemyState EnemyState;
     protected int creepNum;
-    protected Vector3f direction;
     public AStarPathFinder pathFinder;
     private float updateTimer = 0;
     public BoundingVolume basebounds;
@@ -45,6 +45,10 @@ public class RegCreepControl extends AbstractControl {
         this.basebounds = EnemyState.getBaseBounds();
         this.pathFinder = new AStarPathFinder(new jMEHeuristic(), EnemyState.getWorldGraph(), 5);
         this.mc = new MoveCreep(this);
+    }
+    
+    public RegCreepControl() {
+        
     }
 
     @Override
@@ -153,6 +157,9 @@ public class RegCreepControl extends AbstractControl {
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
+        out.write(creepNum, "creepNum", 0);
+        //out.write(pathFinder, "pathFinder", new AStarPathFinder());
+        
     }
     
 

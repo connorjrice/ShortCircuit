@@ -1,4 +1,4 @@
-package ShortCircuit;
+    package ShortCircuit;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;

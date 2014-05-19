@@ -33,6 +33,10 @@ public class ChargerControl extends AbstractControl {
         moveamount = .04f;
     }
 
+    public ChargerControl() {
+        
+    }
+    
     @Override
     protected void controlUpdate(float tpf) {
         nextLocation();
@@ -131,11 +135,19 @@ public class ChargerControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
+        destTower = (TowerControl) in.readSavable("destTower", new TowerControl());
+        isHome = in.readBoolean("isHome", false);
+        moveamount = in.readFloat("moveAmount", .04f);
+        
+        
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
+        out.write(destTower, "destTower", null);
+        out.write(isHome, "isHome", true);
+        out.write(moveamount, "moveAmount", .04);
     }
 }
