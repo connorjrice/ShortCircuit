@@ -1,13 +1,19 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.post.filters.BloomFilter.GlowMode;
+import java.io.IOException;
 
 /**
  * This object contains all of the filter parameters for filters such as Bloom.
  *
  * @author Connor
  */
-public class FilterParams {
+public class FilterParams implements Savable {
 
     private boolean enabled;
     private float downsampling;
@@ -51,4 +57,14 @@ public class FilterParams {
     public GlowMode getGlowMode() {
         return glowmode;
     }
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
 }

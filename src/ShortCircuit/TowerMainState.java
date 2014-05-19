@@ -55,8 +55,12 @@ public class TowerMainState extends AbstractAppState {
     private final boolean profile;
     private final String level;
     private TutorialState TutorialState;
-    private FriendlyState HelperState;
     private PathfindingState PathfindingState;
+    
+    public TowerMainState() {
+        level = "Level1.lvl.xml";
+        profile = false;
+    }
 
     public TowerMainState(boolean _profile, String level) {
         this.profile = _profile;
@@ -98,7 +102,7 @@ public class TowerMainState extends AbstractAppState {
         GraphicsState = new GraphicsState();
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
-        HelperState = new FriendlyState();
+        FriendlyState = new FriendlyState();
         PathfindingState = new PathfindingState();
         
         if (profile) {
@@ -116,7 +120,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(LoadingState);
         stateManager.attach(GameGUI);
         stateManager.attach(CheatGUI);
-        stateManager.attach(HelperState);
+        stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
 
     }
@@ -133,7 +137,7 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(LoadingState);
         stateManager.detach(CheatState);
         stateManager.detach(CheatGUI);
-        stateManager.detach(HelperState);
+        stateManager.detach(FriendlyState);
         stateManager.detach(TutorialState);
         stateManager.detach(AudioState);
         stateManager.detach(PathfindingState);
@@ -210,7 +214,7 @@ public class TowerMainState extends AbstractAppState {
         GraphicsState.setEnabled(false);
         EnemyState.setEnabled(false);
         FriendlyState.setEnabled(false);
-        HelperState.setEnabled(false);
+        FriendlyState.setEnabled(false);
     }
 
     /**
@@ -222,7 +226,7 @@ public class TowerMainState extends AbstractAppState {
         LoadingState.setEnabled(true);
         GraphicsState.setEnabled(true);
         FriendlyState.setEnabled(true);
-        HelperState.setEnabled(true);
+        FriendlyState.setEnabled(true);
     }
 
     public boolean isStartWindowShown() {
@@ -264,7 +268,7 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(LoadingState);
         asm.detach(CheatState);
         asm.detach(CheatGUI);
-        asm.detach(HelperState);
+        asm.detach(FriendlyState);
         asm.detach(AudioState);
     }
 }

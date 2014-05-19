@@ -1,6 +1,12 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
+import java.io.IOException;
 
 /**
  * This class will contain the creep paramaters per level, including:
@@ -8,7 +14,7 @@ import com.jme3.math.Vector3f;
  * TODO: Implement CreepParams
  * @author Connor
  */
-public class CreepParams {
+public class CreepParams implements Savable {
     private final int health;
     private final float speed;
     private final Vector3f size;
@@ -42,5 +48,16 @@ public class CreepParams {
     public int getValue() {
         return value;
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
     
 }

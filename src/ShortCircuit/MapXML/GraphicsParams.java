@@ -1,5 +1,11 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -8,7 +14,7 @@ import java.util.Set;
  *
  * @author Development
  */
-public class GraphicsParams {
+public class GraphicsParams implements Savable {
 
     private MaterialParams mp;
     private FilterParams fp;
@@ -73,5 +79,15 @@ public class GraphicsParams {
 
     public Set<String> getCreepTypes() {
         return creepMap.keySet();
+    }
+
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
     }
 }

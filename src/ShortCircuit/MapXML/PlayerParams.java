@@ -1,10 +1,17 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
+import java.io.IOException;
+
 /**
  *
  * @author Connor and Matthew
  */
-public class PlayerParams {
+public class PlayerParams implements Savable {
     private int health;
     private int budget;
     private int level;
@@ -80,6 +87,17 @@ public class PlayerParams {
     public void decScore(int s) {
         score -= s;
     }
+    
+        @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
 
     
 }

@@ -1,12 +1,18 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
  *
  * @author Connor Rice
  */
-public class LevelParams {
+public class LevelParams implements Savable {
     private int numCreeps;
     private int creepMod;
     private int levelCap;
@@ -85,7 +91,15 @@ public class LevelParams {
         return geomHash;
     }
     
-    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
     
     
 }

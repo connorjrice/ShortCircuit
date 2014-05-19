@@ -12,6 +12,8 @@ import ShortCircuit.States.Game.LoadingState;
 import ShortCircuit.States.Game.PathfindingState;
 import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
+import ShortCircuit.States.Savable.GraphicsSavableState;
+import ShortCircuit.States.Savable.LoadSavableState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.scene.Node;
@@ -24,10 +26,10 @@ import com.jme3.system.AppSettings;
 public class TowerLoad extends SimpleApplication {
     
     private GameState GameState;
-    private GraphicsState GraphicsState;
+    private GraphicsSavableState GraphicsState;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
-    private LoadingState LoadingState;
+    private LoadSavableState LoadingState;
     private TutorialState TutorialState;
     private FriendlyState HelperState;
     private PathfindingState PathfindingState;
@@ -49,8 +51,9 @@ public class TowerLoad extends SimpleApplication {
     public void simpleInitApp() {
         String userHome = System.getProperty("user.home");
         assetManager.registerLocator(userHome, FileLocator.class);
+        LoadingState = new LoadSavableState("Level1.lvl.xml");
         GameState = new GameState();
-        GraphicsState = new GraphicsState();
+        GraphicsState = new GraphicsSavableState();
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
@@ -61,6 +64,7 @@ public class TowerLoad extends SimpleApplication {
         stateManager.attach(FriendlyState);
         stateManager.attach(EnemyState);
         stateManager.attach(GraphicsState);
+        stateManager.attach(LoadingState);
         stateManager.attach(HelperState);
         stateManager.attach(PathfindingState);
         Node loadedNode = (Node)assetManager.loadModel("Models/MyModel.j3o");

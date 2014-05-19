@@ -1,16 +1,20 @@
 package ShortCircuit.MapXML;
 
 import ShortCircuit.Controls.TowerControl;
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
 
 /**
  *
  * @author Connor Rice
  */
-public class TowerParams {
+public class TowerParams implements Savable {
     
     private Vector3f vec;
     private boolean starter;
@@ -82,6 +86,17 @@ public class TowerParams {
     public int getIndex() {
         return index;
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
 
     
 }

@@ -31,7 +31,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class GameState extends AbstractAppState implements Savable{
+public class GameState extends AbstractAppState implements Savable {
 
     private EnemyState EnemyState;
     private SimpleApplication app;

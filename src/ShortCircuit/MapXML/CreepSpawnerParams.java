@@ -1,14 +1,20 @@
 package ShortCircuit.MapXML;
 
 import ShortCircuit.Controls.CreepSpawnerControl;
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.io.IOException;
 
 /**
  *
  * @author Connor Rice
  */
-public class CreepSpawnerParams {
+public class CreepSpawnerParams implements Savable {
     private Vector3f vec;
     private String orientation;
     private int index;
@@ -52,5 +58,16 @@ public class CreepSpawnerParams {
     public Spatial getSpatial() {
         return spatial;
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
     
 }

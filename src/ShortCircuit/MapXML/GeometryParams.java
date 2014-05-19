@@ -1,12 +1,18 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
+import java.io.IOException;
 
 /**
  *
  * @author Development
  */
-public class GeometryParams {
+public class GeometryParams implements Savable {
     private Vector3f camLoc;
     private Vector3f floorscale;
     private Vector3f baseVec;
@@ -80,5 +86,16 @@ public class GeometryParams {
     public float getBeamWidth() {
         return beamwidth;
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+    }
+    
     
 }
