@@ -40,12 +40,12 @@ public class CreepSpawnerControl extends AbstractControl implements Savable {
      */
     @Override
     protected void controlUpdate(float tpf) {
-        if (EnemyState.getNextSpawner() == getIndex()) {
+/*        if (EnemyState.getNextSpawner() == getIndex()) {
             if (EnemyState.getCreepListSize() < EnemyState.getNumCreepsByLevel()) {
                 EnemyState.spawnRegCreep(spatial.getLocalTranslation());
                 EnemyState.goToNextSpawner();
             }
-        }
+        }*/
     }
 
     /**

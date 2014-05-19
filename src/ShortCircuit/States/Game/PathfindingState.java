@@ -63,10 +63,10 @@ public class PathfindingState extends AbstractAppState {
         this.GraphicsState = stateManager.getState(GraphicsState.class);
         this.geomHash = GameState.getGeomHash();
         initAssets();
-        createPathNodes();
+        /*createPathNodes();
         edgeMani = new JEdgeManipulator(worldGraph, targetNode, geomHash, precision);
         addEdges();
-        rootNode.attachChild(targetNode);
+        rootNode.attachChild(targetNode);*/
     }
     
     private void initAssets() {

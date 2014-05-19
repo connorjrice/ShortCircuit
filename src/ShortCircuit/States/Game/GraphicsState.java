@@ -1,5 +1,6 @@
 package ShortCircuit.States.Game;
 
+import ShortCircuit.States.Game.*;
 import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Factories.BaseFactory;
@@ -74,6 +75,11 @@ public class GraphicsState extends AbstractAppState {
     private CreepSpawnerFactory csf;
     private HashMap creepParams;
     private FloorFactory FloorFactory;
+    private boolean isBuilding = false;
+    
+    public GraphicsState(boolean isBuilding) {
+        this.isBuilding = isBuilding;
+    }
     
     public GraphicsState() {}
     
@@ -105,10 +111,13 @@ public class GraphicsState extends AbstractAppState {
         this.creepSpawnerList = gp.getCreepSpawnerList();
         this.creepParams = gp.getCreepMap();
         initFilters();
-        initFactories();
+
         setCameraSets();        
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
-        createWorld();
+        if (isBuilding) {
+            initFactories();
+            createWorld();
+        }
         EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
     }

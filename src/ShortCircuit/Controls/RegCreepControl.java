@@ -41,8 +41,8 @@ public class RegCreepControl extends AbstractControl implements Savable {
     public RegCreepControl(EnemyState _state, AStarPathFinder pathFinder) {
         EnemyState = _state;
         this.pathFinder = pathFinder;
-        this.baseCoords = EnemyState.getFormattedBaseCoords();
-        this.baseVec = EnemyState.getBaseVec();
+        this.baseCoords = "0,0";
+        this.baseVec = new Vector3f(0,0,0);
         this.mc = new MoveCreep(this, baseCoords);
     }
     
@@ -140,7 +140,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
 
     @Override
     public RegCreepControl cloneForSpatial(Spatial spatial) {
-        RegCreepControl control = new RegCreepControl();
+        RegCreepControl control = new RegCreepControl(EnemyState, pathFinder);
         control.setSpatial(spatial);
         return control;
     }

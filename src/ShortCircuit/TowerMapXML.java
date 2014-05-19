@@ -78,7 +78,7 @@ public class TowerMapXML extends AbstractAppState {
         LoadingState = new LoadingState(level);
 
         GameState = new GameState();
-        GraphicsState = new GraphicsState();
+        GraphicsState = new GraphicsState(true);
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();

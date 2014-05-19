@@ -47,11 +47,12 @@ public class TowerControl extends AbstractControl implements Savable {
     }
 
     public TowerControl() {
+        
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (FriendlyState.isEnabled()) {
+        /*if (FriendlyState.isEnabled()) {
             if (isActive) {
 
                 if (searchTimer > searchDelay) {
@@ -63,7 +64,7 @@ public class TowerControl extends AbstractControl implements Savable {
                     searchTimer += tpf;
                 }
             }
-        }
+        }*/
     }
 
     protected void decideShoot() {
