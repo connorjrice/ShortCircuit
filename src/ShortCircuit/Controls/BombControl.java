@@ -114,6 +114,7 @@ public class BombControl extends AbstractControl implements Savable{
             System.out.println("BombControl.searchForVictims()");
         }
     }
+    
     /**
      * Clones the list of creeps currently on the map, iterates through the list
      * looking for collisions, if there is a collision it is added to the list

@@ -3,7 +3,6 @@ package ShortCircuit.Controls;
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
-import ShortCircuit.PathFinding.jMEHeuristic;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
@@ -20,9 +19,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 /**
- * This is the control class for standard creeps.
- * It has not been decided if specialty creeps will inherit this control.
- * Currently, this control is used by the STD family of creeps.
+ * This is the control class for standard creeps. It has not been decided if
+ * specialty creeps will inherit this control. Currently, this control is used
+ * by the STD family of creeps.
  *
  * @author Connor Rice
  */
@@ -38,15 +37,14 @@ public class RegCreepControl extends AbstractControl implements Savable {
     private MoveCreep mc;
     private DecimalFormat numFormatter = new DecimalFormat("0.0");
 
-    
     public RegCreepControl(EnemyState _state, AStarPathFinder pathFinder) {
         EnemyState = _state;
         this.pathFinder = pathFinder;
         this.baseCoords = "0,0";
-        this.baseVec = new Vector3f(0,0,0);
+        this.baseVec = new Vector3f(0, 0, 0);
         this.mc = new MoveCreep(this, baseCoords);
     }
-    
+
     public RegCreepControl() {
         this.mc = new MoveCreep(this, baseCoords);
     }
@@ -54,52 +52,50 @@ public class RegCreepControl extends AbstractControl implements Savable {
     @Override
     protected void controlUpdate(float tpf) {
         if (updateTimer > .05) {
-            mc.run();                  
+            mc.run();
             updateTimer = 0;
-        }  else {
+        } else {
             updateTimer += tpf;
         }
     }
-    
+
     public Graph getWorldGraph() {
         return EnemyState.getWorldGraph();
     }
-    
+
     public String getFormattedCoords() {
-        return formatRoundNumber(getX())+","+formatRoundNumber(getY());
+        return formatRoundNumber(getX()) + "," + formatRoundNumber(getY());
     }
-    
+
     public String formatRoundNumber(float f) {
         return numFormatter.format(Math.round(f));
     }
-    
-    
+
     private String formatRoundNumber(Float value) {
         return numFormatter.format(Math.round(value));
     }
 
-    
     public float getX() {
         return spatial.getWorldTranslation().x;
     }
-    
+
     public float getY() {
         return spatial.getWorldTranslation().y;
     }
-    
+
     public float getCreepSpeed() {
         return spatial.getUserData("Speed");
     }
-    
+
     public int getCreepHealth() {
         return spatial.getUserData("Health");
     }
 
-
     /**
      * Decrements creep health, removes creep from world if below 0.
+     *
      * @param damage
-     * @return 
+     * @return
      */
     public int decCreepHealth(int damage) {
         int health = getCreepHealth();
@@ -131,7 +127,6 @@ public class RegCreepControl extends AbstractControl implements Savable {
         mc = null;
         pathFinder = null;
     }
-    
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
@@ -149,7 +144,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
         baseCoords = in.readString("baseCoords", "");
-        
+
     }
 
     @Override
@@ -158,8 +153,6 @@ public class RegCreepControl extends AbstractControl implements Savable {
         OutputCapsule out = ex.getCapsule(this);
         out.write(creepNum, "creepNum", 0);
         out.write(baseCoords, "baseCoords", baseCoords);
-        
+
     }
-
-
 }

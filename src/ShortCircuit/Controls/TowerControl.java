@@ -40,14 +40,13 @@ public class TowerControl extends AbstractControl implements Savable {
     private boolean isGlobbed = false;
     private float beamwidth;
 
+    public TowerControl() {
+    }
+
     public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
         cc = new STCCreepCompare(towerloc);
         this.towerloc = towerloc;
-    }
-
-    public TowerControl() {
-        
     }
 
     @Override

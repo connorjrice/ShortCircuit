@@ -14,6 +14,7 @@ public class TreeNode<T extends Comparable> {
         leftChild = null;
         rightChild = null;
     }
+
     public void addNode(TreeNode<T> newNode) {
         int comp = newNode.getData().compareTo(data);
         if (comp < 0) {
@@ -30,7 +31,7 @@ public class TreeNode<T extends Comparable> {
             }
         }
     }
-    
+
     public void printNodes() {
         if (hasLeftChild()) {
             getLeftChild().printNodes();
@@ -52,11 +53,11 @@ public class TreeNode<T extends Comparable> {
     public Comparable getData() {
         return data;
     }
-    
+
     public void setData(Comparable obj) {
         data = obj;
     }
-    
+
     public TreeNode<T> getLeftChild() {
         return leftChild;
     }

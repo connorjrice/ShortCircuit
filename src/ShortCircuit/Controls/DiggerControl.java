@@ -66,6 +66,7 @@ public class DiggerControl extends AbstractControl implements Savable {
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
 
+    @Override
     public Control cloneForSpatial(Spatial spatial) {
         DiggerControl control = new DiggerControl(cs);
         return control;

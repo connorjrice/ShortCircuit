@@ -35,11 +35,11 @@ public class Graph<T extends Comparable> {
             doubleCapacity(newNode);
         }
     }
-    
+
     public int getIndex(Comparable element) {
         return ((GraphNode) nodeHash.get(element)).getIndex();
     }
-    
+
     public Comparable getElement(int index) {
         return nodes[index].getElement();
     }
@@ -62,7 +62,7 @@ public class Graph<T extends Comparable> {
             edges[secondNode.getIndex()][firstNode.getIndex()] = true;
         }
     }
-    
+
     public void removeEdges(GraphNode<T> doomedNode) {
         int doomedIndex = doomedNode.getIndex();
         for (int i = 0; i < edges.length; i++) {
@@ -74,7 +74,7 @@ public class Graph<T extends Comparable> {
         edges[firstNode.getIndex()][secondNode.getIndex()] = false;
         edges[secondNode.getIndex()][firstNode.getIndex()] = false;
     }
-    
+
     public boolean isEdge(int i, int j) {
         return edges[i][j];
     }
@@ -118,7 +118,7 @@ public class Graph<T extends Comparable> {
         }
         return null;
     }
-    
+
     public GraphNode<T> depthFirstTraversal(Comparable element) {
         return depthFirstTraversal(new GraphNode<T>(element));
     }
@@ -135,7 +135,7 @@ public class Graph<T extends Comparable> {
             if (node.getElement().equals(snode.getElement())) {
                 return node;
             }
-            
+
             int[] neighbors = getNeighbors(node.getIndex());
             int arrayIndex = 0;
             while (neighbors[arrayIndex] != 0) {

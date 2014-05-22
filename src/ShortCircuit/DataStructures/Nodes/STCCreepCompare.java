@@ -7,27 +7,25 @@ import java.util.Comparator;
 /**
  * This compares the distance of two spatials, and returns the relationship
  * between the distance of each spatial to the origin.
+ *
  * @author Connor Rice
  */
-public class STCCreepCompare implements Comparator<Spatial>{
-    
+public class STCCreepCompare implements Comparator<Spatial> {
+
     private Vector3f origin;
-    
+
     public STCCreepCompare(Vector3f _origin) {
         origin = _origin;
     }
-    
+
     @Override
     public int compare(Spatial lhs, Spatial rhs) {
         if (lhs.getLocalTranslation().distance(origin) < rhs.getLocalTranslation().distance(origin)) {
             return -1;
-        }
-        else if (lhs.getLocalTranslation().distance(origin) > rhs.getLocalTranslation().distance(origin)) {
+        } else if (lhs.getLocalTranslation().distance(origin) > rhs.getLocalTranslation().distance(origin)) {
             return 1;
-        }
-        else {
+        } else {
             return 0;
-        }        
+        }
     }
-    
 }

@@ -1,19 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ShortCircuit;
 
+import ShortCircuit.States.GUI.GameGUI;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.GraphicsState;
-import ShortCircuit.States.Game.LoadingState;
 import ShortCircuit.States.Game.PathfindingState;
-import ShortCircuit.States.Game.ProfileState;
-import ShortCircuit.States.Game.TutorialState;
 import ShortCircuit.States.Game.GraphicsState;
-import ShortCircuit.States.Savable.LoadSavableState;
+import ShortCircuit.States.Game.LoadSavableState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.scene.Node;
@@ -30,7 +23,6 @@ public class TowerLoad extends SimpleApplication {
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
     private LoadSavableState LoadingState;
-    private TutorialState TutorialState;
     private PathfindingState PathfindingState;
     
     public static void main(String[] args) {
@@ -65,7 +57,7 @@ public class TowerLoad extends SimpleApplication {
         stateManager.attach(LoadingState);
         stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
-        Node loadedNode = (Node)assetManager.loadModel("Models/SaveAttempt.j3o");
+        Node loadedNode = (Node)assetManager.loadModel("Models/Level1.lvl.xml.j3o");
         loadedNode.setName("loaded node");
         rootNode.attachChild(loadedNode);
     }

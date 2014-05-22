@@ -1,4 +1,4 @@
-package ShortCircuit.States.Savable;
+package ShortCircuit.States.Game;
 
 import ShortCircuit.States.Game.*;
 import ShortCircuit.States.GUI.StartGUI;

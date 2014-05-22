@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.applet.Main;
 
 /**
  * ShortCircuit: A tower defense game
@@ -46,7 +45,6 @@ public class ShortCircuitMain extends SimpleApplication {
         setDisplayFps(false);
         setDisplayStatView(false);
         startGUI();
-        
     }
     
     public void startGUI() {
@@ -58,20 +56,6 @@ public class ShortCircuitMain extends SimpleApplication {
     public void destroy() {
         super.destroy();
         rootNode.detachAllChildren();
-    }
-    
-    @Override
-    public void stop() {
-        String userHome = System.getProperty("user.home");
-        System.out.println(userHome);
-        BinaryExporter exporter = BinaryExporter.getInstance();
-        File file = new File(userHome+"/Models/"+"MyModel.j3o");
-        try {
-            exporter.save(rootNode, file);
-        } catch (IOException ex) {
-            
-        }
-        super.stop(); // continue quitting the game
     }
     
 }

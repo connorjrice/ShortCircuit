@@ -1,21 +1,18 @@
-package ShortCircuit;
+package ScSDK;
 
+import ScSDK.IO.BuildState;
 import ShortCircuit.States.GUI.StartGUI;
-import ShortCircuit.States.Game.CheatState;
-import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.PathfindingState;
-import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -42,7 +39,6 @@ public class TowerMapXML extends AbstractAppState {
     private final static String MAPPING_ACTIVATE = "Touch";
     private SimpleApplication app;
     private InputManager inputManager;
-    private AssetManager assetManager;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private final boolean profile;
@@ -50,6 +46,7 @@ public class TowerMapXML extends AbstractAppState {
     private TutorialState TutorialState;
     private FriendlyState HelperState;
     private PathfindingState PathfindingState;
+    private BuildState BuildState;
 
     public TowerMapXML(boolean _profile, String level) {
         this.profile = _profile;
@@ -61,7 +58,6 @@ public class TowerMapXML extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.inputManager = this.app.getInputManager();
-        this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.StartGUI = stateManager.getState(StartGUI.class);
         width = app.getContext().getSettings().getWidth();
@@ -75,21 +71,17 @@ public class TowerMapXML extends AbstractAppState {
      * Instantiates/attaches all states necessary for a tower game.
      */
     public void attachStates() {
+        
         LoadingState = new LoadingState(level);
-
+        BuildState = new BuildState();
         GameState = new GameState();
         GraphicsState = new GraphicsState(true);
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
         HelperState = new FriendlyState();
         PathfindingState = new PathfindingState();
-        
-        if (profile) {
-            ProfileState ps = new ProfileState();
-            stateManager.attach(ps);
-            EnemyState.seedForProfile();
-        }
 
+        stateManager.attach(BuildState);
         stateManager.attach(GameState);
         stateManager.attach(FriendlyState);
         stateManager.attach(EnemyState);

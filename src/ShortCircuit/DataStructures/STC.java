@@ -5,12 +5,13 @@ import com.jme3.scene.Spatial;
 import java.util.Comparator;
 
 /**
- * Sorted Triple Coord Data Structure
- * Custom data structure for Towers in TowerDefense. Maximum size is 3, to 
- * reduce memory usage. Populates the STC with the first three spatials that
- * are offered, and then begins to compare extra elements after size 3 has been
- * reached. Comparisons are not essential, as the structure is updated at a
- * given time interval (which should be less than 8 seconds.)
+ * Sorted Triple Coord Data Structure Custom data structure for Towers in
+ * TowerDefense. Maximum size is 3, to reduce memory usage. Populates the STC
+ * with the first three spatials that are offered, and then begins to compare
+ * extra elements after size 3 has been reached. Comparisons are not essential,
+ * as the structure is updated at a given time interval (which should be less
+ * than 8 seconds.)
+ *
  * @author Connor Rice
  */
 public class STC<E extends Spatial> {
@@ -25,6 +26,7 @@ public class STC<E extends Spatial> {
 
     /**
      * Converts elements into nodes for the offering ceremony
+     *
      * @param element - spatial that might be added to STC
      */
     public void offer(Spatial element) {
@@ -33,7 +35,8 @@ public class STC<E extends Spatial> {
 
     /**
      * Checks to see if there are 3 elements
-     * @param newNode 
+     *
+     * @param newNode
      */
     public void offer(STCNode<E> newNode) {
         if (newNode != null) {
@@ -70,6 +73,7 @@ public class STC<E extends Spatial> {
 
     /**
      * Returns the root node's element but does not remove it from the STC
+     *
      * @return the root node's element
      */
     public Spatial peek() {
@@ -86,6 +90,7 @@ public class STC<E extends Spatial> {
 
     /**
      * Returns the size of the STC
+     *
      * @return size
      */
     public int size() {
@@ -93,8 +98,8 @@ public class STC<E extends Spatial> {
     }
 
     /**
-     * Returns true if the STC is empty.
-     * Returns false if size > 0.
+     * Returns true if the STC is empty. Returns false if size > 0.
+     *
      * @return if list is empty or not
      */
     public boolean isEmpty() {

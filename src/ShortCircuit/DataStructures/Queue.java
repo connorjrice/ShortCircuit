@@ -12,54 +12,51 @@ public class Queue<T> {
         this.size = 0;
         this.front = null;
     }
-    
+
     public void clear() {
         front = null;
         back = null;
         size = 0;
     }
-    
+
     public void enqueue(T newElement) {
-	QueueNode<T> queueIn = new QueueNode<T>(newElement);
-	if (front == null) {
-	    front = queueIn;
-	    back = queueIn;
-	    size++;
-	}
-	else {
-	    back.setNeighbor(queueIn);
-	    back = queueIn;
-	    size++;
-	}
-  
+        QueueNode<T> queueIn = new QueueNode<T>(newElement);
+        if (front == null) {
+            front = queueIn;
+            back = queueIn;
+            size++;
+        } else {
+            back.setNeighbor(queueIn);
+            back = queueIn;
+            size++;
+        }
+
     }
 
     public T dequeue() {
-	T element;
-	if (back == front) {
-	    size--;
-	    element = front.getElement();
-	    front = null;
-	    back = null;
-	}
-	else {
-	    size--;
-	    element = front.getElement();
-	    front = front.getNeighbor();
-	}
-	return element;
+        T element;
+        if (back == front) {
+            size--;
+            element = front.getElement();
+            front = null;
+            back = null;
+        } else {
+            size--;
+            element = front.getElement();
+            front = front.getNeighbor();
+        }
+        return element;
     }
 
     public T peek() {
-	return front.getElement();
-    }
-    
-    public int size() {
-	return size;
-    }
-    
-    public boolean isEmpty () {
-	return size == 0;
+        return front.getElement();
     }
 
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
 }

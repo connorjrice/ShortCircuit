@@ -1,6 +1,6 @@
-package MapXML.GUI;
+package ScSDK.GUI;
 
-import ShortCircuit.TowerMapXML;
+import ScSDK.TowerMapXML;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -19,7 +19,6 @@ import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.OSRViewPort;
 import tonegod.gui.controls.lists.ComboBox;
 import tonegod.gui.controls.text.TextField;
-import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.controls.windows.DialogBox;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -28,7 +27,7 @@ import tonegod.gui.core.Screen;
  *
  * @author Connor Rice
  */
-public class GUI extends AbstractAppState {
+public class SDKGUI extends AbstractAppState {
     private SimpleApplication app;
     private Node guiNode;
     private Screen screen;

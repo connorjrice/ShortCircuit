@@ -1,8 +1,7 @@
-package ShortCircuit.Factories;
+package ScSDK.Factories;
 
-import ShortCircuit.Controls.CreepSpawnerControl;
+import ScSDK.IO.BuildState;
 import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -14,27 +13,24 @@ import com.jme3.scene.shape.Box;
  */
 public class CreepSpawnerFactory {
 
-    private GraphicsState gs;
+    private BuildState bs;
 
-    public CreepSpawnerFactory(GraphicsState gs) {
-        this.gs = gs;
+    public CreepSpawnerFactory(BuildState bs) {
+        this.bs = bs;
     }
 
     public CreepSpawnerParams getSpawner(CreepSpawnerParams csp) {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1, 1, 1));
-        spawner_geom.setMaterial((Material)gs.getMaterial("CreepSpawner"));
+        spawner_geom.setMaterial((Material)bs.getMaterial("CreepSpawner"));
         spawner_geom.setLocalTranslation(csp.getVec());
         if (csp.getOrientation().equals("horizontal")) {
-            spawner_geom.setLocalScale(gs.getCreepSpawnerHorizontalScale());            
+            spawner_geom.setLocalScale(bs.getCreepSpawnerHorizontalScale());            
         } else if (csp.getOrientation().equals("vertical")) {
-            spawner_geom.setLocalScale(gs.getCreepSpawnerVerticalScale());            
+            spawner_geom.setLocalScale(bs.getCreepSpawnerVerticalScale());            
         }
         Spatial spawner = spawner_geom;
         csp.setSpatial(spawner);
         csp.setIndex();
-        CreepSpawnerControl csc = new CreepSpawnerControl(gs.getEnemyState());
-        spawner.addControl(csc);
-        csp.setControl(csc);
         return csp;
     }
 }

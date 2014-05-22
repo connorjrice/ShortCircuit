@@ -1,7 +1,11 @@
 package ShortCircuit.States.Game;
 
+import ScSDK.IO.BuildState;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.MapXML.MapGenerator;
+import ShortCircuit.States.Game.EnemyState;
+import ShortCircuit.States.Game.GameState;
+import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -22,6 +26,7 @@ public class LoadingState extends AbstractAppState {
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private GraphicsState GraphicsState;
+    private BuildState BuildState;
     
     public LoadingState() {}
     
@@ -37,12 +42,14 @@ public class LoadingState extends AbstractAppState {
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.GameState = this.stateManager.getState(GameState.class);
         this.StartGUI = this.stateManager.getState(StartGUI.class);
+        this.BuildState = this.stateManager.getState(BuildState.class);
         newGame();
     }
     
 
     public void newGame() {
         initMG(levelName, app);
+        BuildState.createWorld(mg.getGraphicsParams());
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
         GameState.setGameplayParams(mg.getGameplayParams());
     }

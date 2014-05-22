@@ -25,13 +25,4 @@ public class QueueNode<T> {
     public String toString() {
         return element.toString();
     }
-   
-
 }
-
-
-
-
-
-
-
