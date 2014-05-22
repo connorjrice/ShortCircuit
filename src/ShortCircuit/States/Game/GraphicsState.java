@@ -1,18 +1,17 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.BombControl;
-import ShortCircuit.Controls.TowerControl;
 import ScSDK.Factories.BaseFactory;
 import ShortCircuit.Factories.BeamFactory;
 import ScSDK.Factories.CreepSpawnerFactory;
 import ScSDK.Factories.FloorFactory;
 import ScSDK.Factories.TowerFactory;
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.MapXML.FilterParams;
-import ShortCircuit.MapXML.GeometryParams;
-import ShortCircuit.MapXML.MaterialParams;
-import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.MapXML.GraphicsParams;
+import ScSDK.MapXML.CreepSpawnerParams;
+import ScSDK.MapXML.FilterParams;
+import ScSDK.MapXML.GeometryParams;
+import ScSDK.MapXML.MaterialParams;
+import ScSDK.MapXML.TowerParams;
+import ScSDK.MapXML.GraphicsParams;
 import ShortCircuit.Threading.BuildMatHash;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -29,7 +28,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
@@ -100,7 +98,7 @@ public class GraphicsState extends AbstractAppState {
         matHash = new HashMap(10);
     }
     
-    public void setGraphicsParams(GraphicsParams gp) {
+    public void setGPBuild(GraphicsParams gp) {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
@@ -112,6 +110,10 @@ public class GraphicsState extends AbstractAppState {
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
         setBackgroundColor(mp.getBackgroundColor());
         rootNode.attachChild(beamNode);
+    }
+    
+    public void setGPLoad() {
+        
     }
     
     @Override

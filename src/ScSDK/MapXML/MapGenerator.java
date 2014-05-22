@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetInfo;
@@ -92,13 +92,14 @@ public class MapGenerator {
     private ArrayList<TowerParams> parseTowerList() {
         ArrayList<TowerParams> towerList = new ArrayList<TowerParams>();
         String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
+        float beamwidth = parseFloat(getElement("/tower/beamwidth", "gameplayparams/param[@id = 'geometryParams']/"));
         int numTowers = parseInt(getElement("numTowers", towerExpression));
         for (int i = 0; i < numTowers; i++) {
             String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
             
             boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
-            towerList.add(new TowerParams(towerVec, starter, i));
+            towerList.add(new TowerParams(towerVec, starter, i, beamwidth));
             geomHash.put(towerVec.x+","+towerVec.y, starter);
         }
         return towerList;

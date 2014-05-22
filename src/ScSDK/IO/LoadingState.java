@@ -2,7 +2,7 @@ package ScSDK.IO;
 
 import ScSDK.IO.BuildState;
 import ShortCircuit.States.GUI.StartGUI;
-import ShortCircuit.MapXML.MapGenerator;
+import ScSDK.MapXML.MapGenerator;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.app.Application;
@@ -46,8 +46,8 @@ public class LoadingState extends AbstractAppState {
     public void newGame() {
         initMG(levelName, app);
         BuildState.createWorld(mg.getGraphicsParams());
-        GraphicsState.setGraphicsParams(mg.getGraphicsParams());
-        GameState.setGameplayParams(mg.getGameplayParams());
+        GraphicsState.setGPBuild(mg.getGraphicsParams());
+        GameState.setGPBuild(mg.getGameplayParams());
     }
 
     private void initMG(String levelname, SimpleApplication app) {

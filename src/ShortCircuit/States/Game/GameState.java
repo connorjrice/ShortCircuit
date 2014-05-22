@@ -2,9 +2,9 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.Controls.GlobControl;
-import ShortCircuit.MapXML.LevelParams;
-import ShortCircuit.MapXML.PlayerParams;
-import ShortCircuit.MapXML.GameplayParams;
+import ScSDK.MapXML.LevelParams;
+import ScSDK.MapXML.PlayerParams;
+import ScSDK.MapXML.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -78,7 +78,7 @@ public class GameState extends AbstractAppState implements Savable {
      *
      * @param gp
      */
-    public void setGameplayParams(GameplayParams gp) {
+    public void setGPBuild(GameplayParams gp) {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
         if (startGUI != null) {

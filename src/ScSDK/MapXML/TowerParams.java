@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 import ShortCircuit.Controls.TowerControl;
 import com.jme3.export.InputCapsule;
@@ -24,10 +24,11 @@ public class TowerParams implements Savable {
     private Spatial towerSpatial;
     private float beamwidth;
     
-    public TowerParams(Vector3f vec,  boolean starter, int index) {
+    public TowerParams(Vector3f vec,  boolean starter, int index, float beamwidth) {
         this.vec = vec;
         this.starter = starter;
         this.index = index;
+        this.beamwidth = beamwidth;
     }
     
     public void setScale(Vector3f s) {
