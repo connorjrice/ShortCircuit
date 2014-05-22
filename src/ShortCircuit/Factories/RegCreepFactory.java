@@ -1,7 +1,7 @@
 package ShortCircuit.Factories;
 
 import ShortCircuit.Controls.RegCreepControl;
-import ScSDK.MapXML.CreepParams;
+import ShortCircuit.MapXML.CreepParams;
 import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.PathFinding.jMEHeuristic;
 import ShortCircuit.States.Game.EnemyState;

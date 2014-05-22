@@ -1,4 +1,4 @@
-package ScSDK.MapXML;
+package ShortCircuit.MapXML;
 
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetLoader;

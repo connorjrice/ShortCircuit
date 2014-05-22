@@ -1,7 +1,7 @@
 package ScSDK.Factories;
 
 import ScSDK.IO.BuildState;
-import ScSDK.MapXML.TowerParams;
+import ShortCircuit.MapXML.TowerParams;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;

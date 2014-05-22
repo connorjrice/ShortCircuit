@@ -156,8 +156,7 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void buildLevel() {
-        System.out.println(levelString);
-        tMS = new TowerMapXML(false, levelString);
+        tMS = new TowerMapXML(levelString);
         returnButton();
         stateManager.attach(tMS);
         MainWindow.hide();

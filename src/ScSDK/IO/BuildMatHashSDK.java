@@ -11,14 +11,12 @@ public class BuildMatHashSDK implements Runnable {
     private BuildState bs;
     private AssetManager assetManager;
     private String[] towerTypes;
-    private Object[] creepTypes;
     private HashMap matHash;
     
-    public BuildMatHashSDK(BuildState bs, String[] towerTypes, Object[] creepTypes) {
+    public BuildMatHashSDK(BuildState bs, String[] towerTypes) {
         this.bs = bs;
         this.assetManager = bs.getAssetManager();
         this.towerTypes = towerTypes;
-        this.creepTypes = creepTypes;
         this.matHash = new HashMap(20);
     }
     
@@ -32,9 +30,6 @@ public class BuildMatHashSDK implements Runnable {
         matHash.put("Floor", assetManager.loadMaterial(bs.getMatLoc("Floor")));
         for (int i = 1; i < 5; i++) {
             matHash.put("Tower"+i+"Beam", assetManager.loadMaterial(bs.getMatLoc("Tower"+i+"Beam")));
-        }
-        for (int i = 0; i < creepTypes.length; i++) {
-            matHash.put(creepTypes[i]+"Creep", assetManager.loadMaterial(bs.getMatLoc(creepTypes[i]+"Creep")));
         }
     }
     

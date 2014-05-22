@@ -1,9 +1,9 @@
 package ShortCircuit.States.Game;
 
+import ShortCircuit.MapXML.MapGenerator;
 import ShortCircuit.Controls.CreepSpawnerControl;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.GUI.StartGUI;
-import ShortCircuit.MapXML.MapLoader;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -24,7 +24,7 @@ public class LoadSavableState extends AbstractAppState {
     private SimpleApplication app;
     private GameState GameState;
     private EnemyState EnemyState;
-    private MapLoader mg;
+    private MapGenerator mg;
     private String levelName;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
@@ -106,16 +106,16 @@ public class LoadSavableState extends AbstractAppState {
     
     private void setParams() {
         initMG(levelName, app);
-        /*GraphicsState.setGraphicsParams(mg.getGraphicsParams());
+        GraphicsState.setGraphicsParams(mg.getGraphicsParams());
         EnemyState.setEnemyParams(mg.getGraphicsParams().getCreepMap());
         EnemyState.setCreepSpawnerList(spawnerList);
         GameState.setGPBuild(mg.getGameplayParams());
-        FriendlyState.setTowerList(towerList);*/
+        FriendlyState.setTowerList(towerList);
     }
 
 
     private void initMG(String levelname, SimpleApplication app) {
-        mg = new MapLoader(levelname, app);
+        mg = new MapGenerator(levelname, app);
     }
     
     private void updateStartGUI() {

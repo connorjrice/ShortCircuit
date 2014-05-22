@@ -1,4 +1,4 @@
-package ScSDK.MapXML;
+package ShortCircuit.MapXML;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;

@@ -4,11 +4,13 @@ import ScSDK.Factories.BaseFactory;
 import ScSDK.Factories.CreepSpawnerFactory;
 import ScSDK.Factories.FloorFactory;
 import ScSDK.Factories.TowerFactory;
-import ScSDK.MapXML.CreepSpawnerParams;
-import ScSDK.MapXML.GeometryParams;
-import ScSDK.MapXML.GraphicsParams;
-import ScSDK.MapXML.MaterialParams;
-import ScSDK.MapXML.TowerParams;
+import ScSDK.MapXML.BuildParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
+import ShortCircuit.MapXML.GeometryParams;
+import ShortCircuit.MapXML.GraphicsParams;
+import ShortCircuit.MapXML.MapGenerator;
+import ShortCircuit.MapXML.MaterialParams;
+import ShortCircuit.MapXML.TowerParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -34,7 +36,6 @@ public class BuildState extends AbstractAppState {
 
     private SimpleApplication app;
     private GeometryParams gp;
-    private Node worldNode = new Node("World");
     private Box univ_box = new Box(1, 1, 1);
     private MaterialParams mp;
     private Node rootNode;
@@ -47,6 +48,11 @@ public class BuildState extends AbstractAppState {
     private AssetManager assetManager;
     private FloorFactory ff;
     private BaseFactory bf;
+    private String levelName;
+    
+    public BuildState (String levelName) {
+        this.levelName = levelName;
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -57,24 +63,26 @@ public class BuildState extends AbstractAppState {
         matHash = new HashMap(10);
         initFactories();
         initLists();
+        createWorld();
     }
 
-    public void createWorld(GraphicsParams gp) {
-        this.gp = gp.getGeometryParams();
-        this.mp = gp.getMaterialParams();
-        buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
-        this.towerParamList = gp.getTowerList();
-        this.creepSpawnerList = gp.getCreepSpawnerList();
+    private void createWorld() {
+        MapGenerator mg = new MapGenerator(levelName, app);
+        BuildParams bp = mg.getBuildParams();
+        this.gp = bp.getGeometryParams();
+        this.mp = bp.getMaterialParams();
+        buildMatHash(bp.getTowerTypes());
+        this.towerParamList = bp.getTowerList();
+        this.creepSpawnerList = bp.getCreepSpawnerList();
         createLight();
         createFloor();
         createBase();
         buildTowers();
         buildCreepSpawners();
-        attachWorldNode();
     }
     
-    private void buildMatHash(String[] towerTypes, Object[] creepTypes) {
-        BuildMatHashSDK bms = new BuildMatHashSDK(this, towerTypes, creepTypes);
+    private void buildMatHash(String[] towerTypes) {
+        BuildMatHashSDK bms = new BuildMatHashSDK(this, towerTypes);
         bms.run();
         this.matHash = bms.getMatHash();
     }
@@ -92,10 +100,6 @@ public class BuildState extends AbstractAppState {
         csf = new CreepSpawnerFactory(this);
     }
 
-    private void attachWorldNode() {
-        rootNode.attachChild(worldNode);
-    }
-
 
     /**
      * * World Methods **
@@ -103,12 +107,12 @@ public class BuildState extends AbstractAppState {
     public void createLight() {
         AmbientLight ambient = new AmbientLight();
         ambient.setColor(ColorRGBA.White.mult(128f));
-        worldNode.addLight(ambient);
+        rootNode.addLight(ambient);
     }
 
     public void createFloor() {
         Spatial floor = ff.getFloor();
-        worldNode.attachChild(floor);
+        rootNode.attachChild(floor);
     }
 
     public Vector3f getFloorScale() {
@@ -120,7 +124,7 @@ public class BuildState extends AbstractAppState {
      */
     public void createBase() {
         Spatial base = bf.getBase(gp.getBaseVec(), gp.getBaseScale());
-        worldNode.attachChild(base);
+        rootNode.attachChild(base);
     }
 
     public Vector3f getBaseVec() {
@@ -143,7 +147,7 @@ public class BuildState extends AbstractAppState {
     public void createTower(TowerParams tp) {
         Spatial tower = tf.getTower(tp);
         towerList.add(tp.getIndex(), tower);
-        worldNode.attachChild(tower);
+        rootNode.attachChild(tower);
     }
     
     public Vector3f getTowerBuiltSize() {
@@ -167,7 +171,7 @@ public class BuildState extends AbstractAppState {
      */
     public void createCreepSpawner(CreepSpawnerParams curSpawner) {
         creepSpawnerList.set(curSpawner.getIndex(), csf.getSpawner(curSpawner));
-        worldNode.attachChild(creepSpawnerList.get(curSpawner.getIndex()).getSpatial());
+        rootNode.attachChild(creepSpawnerList.get(curSpawner.getIndex()).getSpatial());
     }
 
     public void buildCreepSpawners() {

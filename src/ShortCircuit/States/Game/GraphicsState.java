@@ -1,17 +1,12 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.BombControl;
-import ScSDK.Factories.BaseFactory;
 import ShortCircuit.Factories.BeamFactory;
-import ScSDK.Factories.CreepSpawnerFactory;
-import ScSDK.Factories.FloorFactory;
-import ScSDK.Factories.TowerFactory;
-import ScSDK.MapXML.CreepSpawnerParams;
-import ScSDK.MapXML.FilterParams;
-import ScSDK.MapXML.GeometryParams;
-import ScSDK.MapXML.MaterialParams;
-import ScSDK.MapXML.TowerParams;
-import ScSDK.MapXML.GraphicsParams;
+import ShortCircuit.MapXML.FilterParams;
+import ShortCircuit.MapXML.GeometryParams;
+import ShortCircuit.MapXML.MaterialParams;
+import ShortCircuit.MapXML.TowerParams;
+import ShortCircuit.MapXML.GraphicsParams;
 import ShortCircuit.Threading.BuildMatHash;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -61,22 +56,12 @@ public class GraphicsState extends AbstractAppState {
     private FilterParams fp;
     private AppStateManager stateManager;
     private GameState GameState;
-    private BaseFactory BaseFactory;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
     private Node rootNode;
     private ArrayList<TowerParams> towerParamList;
-    private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private HashMap matHash;
-    private TowerFactory tf;
-    private CreepSpawnerFactory csf;
-    private HashMap creepParams;
-    private FloorFactory FloorFactory;
-    private boolean isBuilding = false;
-    
-    public GraphicsState(boolean isBuilding) {
-        this.isBuilding = isBuilding;
-    }
+
     
     public GraphicsState() {}
     
@@ -98,22 +83,15 @@ public class GraphicsState extends AbstractAppState {
         matHash = new HashMap(10);
     }
     
-    public void setGPBuild(GraphicsParams gp) {
+    public void setGraphicsParams(GraphicsParams gp) {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
-
-        this.creepParams = gp.getCreepMap();
         initFilters();
-
         setCameraSets();        
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
         setBackgroundColor(mp.getBackgroundColor());
         rootNode.attachChild(beamNode);
-    }
-    
-    public void setGPLoad() {
-        
     }
     
     @Override

@@ -1,4 +1,4 @@
-package ScSDK.MapXML;
+package ShortCircuit.MapXML;
 
 import ShortCircuit.Controls.TowerControl;
 import com.jme3.export.InputCapsule;

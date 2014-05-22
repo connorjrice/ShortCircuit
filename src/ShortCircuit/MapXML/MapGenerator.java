@@ -1,5 +1,6 @@
-package ScSDK.MapXML;
+package ShortCircuit.MapXML;
 
+import ScSDK.MapXML.BuildParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetKey;
@@ -36,7 +37,9 @@ public class MapGenerator {
         this.doc = (Document) assetManager.loadAsset("XML/" + level);
     }
     
-
+    public BuildParams getBuildParams() {
+        return new BuildParams(parseMaterialParams(), parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
+    }
     
     public GameplayParams getGameplayParams() {
         return new GameplayParams(parseLevelParams(), parsePlayerParams());

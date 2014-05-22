@@ -1,6 +1,6 @@
 package ShortCircuit.Controls;
 
-import ScSDK.MapXML.TowerParams;
+import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.EnemyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;

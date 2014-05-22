@@ -9,7 +9,6 @@ import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
-import ScSDK.IO.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.LoadSavableState;
 import ShortCircuit.States.Game.PathfindingState;

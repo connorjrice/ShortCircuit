@@ -1,7 +1,7 @@
 package ScSDK.Factories;
 
 import ScSDK.IO.BuildState;
-import ScSDK.MapXML.CreepSpawnerParams;
+import ShortCircuit.MapXML.CreepSpawnerParams;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
