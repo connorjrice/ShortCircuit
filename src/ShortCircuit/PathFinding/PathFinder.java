@@ -1,7 +1,5 @@
 package ShortCircuit.PathFinding;
 
-import ShortCircuit.PathFinding.Path;
-
 /**
  *
  * @author Development
