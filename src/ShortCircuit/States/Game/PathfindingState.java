@@ -107,7 +107,7 @@ public class PathfindingState extends AbstractAppState {
     public void nextVec(Vector3f nextVec) {
         String formattedVec = formatVector3fString(nextVec);
         Spatial newWall = new Geometry("Wall", new Box(1,1,1));
-        newWall.setMaterial(GraphicsState.getMaterial("Tower3Beam"));
+        newWall.setMaterial(assetManager.loadMaterial("Materials/Circuit/Tower3Beam.j3m"));
         newWall.setLocalTranslation(roundVector3f(nextVec));
         newWall.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
         removeEdge(formattedVec);

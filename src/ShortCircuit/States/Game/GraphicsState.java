@@ -60,7 +60,6 @@ public class GraphicsState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private Node rootNode;
     private ArrayList<TowerParams> towerParamList;
-    private HashMap matHash;
 
     
     public GraphicsState() {}
@@ -80,7 +79,6 @@ public class GraphicsState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         BeamFactory = new BeamFactory(this);
-        matHash = new HashMap(10);
     }
     
     public void setGraphicsParams(GraphicsParams gp) {
@@ -89,7 +87,6 @@ public class GraphicsState extends AbstractAppState {
         this.fp = gp.getFilterParams();
         initFilters();
         setCameraSets();        
-        buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
         setBackgroundColor(mp.getBackgroundColor());
         rootNode.attachChild(beamNode);
     }
@@ -222,23 +219,14 @@ public class GraphicsState extends AbstractAppState {
         return gp.getBaseScale();
     }
     
-    public void towerTextureCharged(Spatial tp) {
-        tp.setMaterial((Material)matHash.get(tp.getUserData("Type")));
+    public void towerTextureCharged(Spatial tower) {
+        tower.setMaterial(assetManager.loadMaterial(getMatLoc((String)tower.getUserData("Type"))));
     }
     
     public void towerTextureEmpty(Spatial tower) {
-        tower.setMaterial((Material)matHash.get("TowerEmpty"));
-    }
-
-    private void buildMatHash(String[] towerTypes, Object[] creepTypes) {
-        BuildMatHash bms = new BuildMatHash(this, towerTypes, creepTypes);
-        bms.run();
-        this.matHash = bms.getMatHash();
+        tower.setMaterial(assetManager.loadMaterial(getMatLoc(("TowerEmpty"))));
     }
     
-    public Material getTowerMat(String type) {
-        return (Material) matHash.get(type);
-    }
     
     public String getMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";
@@ -268,7 +256,7 @@ public class GraphicsState extends AbstractAppState {
     
     public void dropBomb(Vector3f translation, float initialSize) {
         Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
-        bomb_geom.setMaterial((Material)matHash.get("Bomb"));
+        bomb_geom.setMaterial(assetManager.loadMaterial(getMatLoc("Bomb")));
         bomb_geom.setLocalScale(initialSize);
         bomb_geom.setLocalTranslation(translation);
 
@@ -287,10 +275,6 @@ public class GraphicsState extends AbstractAppState {
     }
     public String getMatDir() {
         return mp.getMatDir();
-    }
-    
-    public Material getMaterial(String key) {
-        return (Material) matHash.get(key);
     }
     
     private void setBackgroundColor(ColorRGBA c) {

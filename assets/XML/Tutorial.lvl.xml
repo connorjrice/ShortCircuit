@@ -128,19 +128,11 @@
             </GiantCreep>
         </param>
         <param id = "creepSpawnerParams">
-            <numSpawners>3</numSpawners>
+            <numSpawners>1</numSpawners>
             <creepSpawner id = "0">
                 <vec>0.0f, 7.0f, 1.0f</vec>
                 <orientation>horizontal</orientation>
-            </creepSpawner>
-            <creepSpawner id = "1">
-                <vec>-8.0f, 0.0f, 1.0f</vec>
-                <orientation>Vertical</orientation>
             </creepSpawner>      
-            <creepSpawner id = "2">
-                <vec>8.0f, 4.0f, 1.0f</vec>
-                <orientation>Vertical</orientation>
-            </creepSpawner>            
         </param>
     </enemyparams>
 </level>
