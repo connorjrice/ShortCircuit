@@ -12,8 +12,6 @@ import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 /**
  *
@@ -26,7 +24,6 @@ public class BuildParams implements Savable {
     private ArrayList<TowerParams> towerList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private String[] towerTypes;
-    private HashMap<String, CreepParams> creepMap;
 
     public BuildParams(MaterialParams mp, GeometryParams gp,
             ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList, String[] towerTypes) {
@@ -56,18 +53,6 @@ public class BuildParams implements Savable {
 
     public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
         return creepSpawnerList;
-    }
-
-    public HashMap getCreepMap() {
-        return creepMap;
-    }
-
-    public CreepParams getCreepParams(String type) {
-        return creepMap.get(type);
-    }
-
-    public Set<String> getCreepTypes() {
-        return creepMap.keySet();
     }
 
     @Override
