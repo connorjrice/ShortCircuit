@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 import ShortCircuit.Controls.CreepSpawnerControl;
 import com.jme3.export.InputCapsule;

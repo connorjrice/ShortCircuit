@@ -2,7 +2,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Objects.Charges;
-import ShortCircuit.MapXML.TowerParams;
+import ScSDK.MapXML.TowerParams;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.GraphicsState;

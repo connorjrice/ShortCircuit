@@ -52,6 +52,7 @@ public class SDKGUI extends AbstractAppState {
     private ButtonAdapter runLevel;
     private ButtonAdapter returnButton;
     private TowerMapXML tMS;
+    private ButtonAdapter buildAll;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -162,6 +163,18 @@ public class SDKGUI extends AbstractAppState {
         MainWindow.hide();
 
         //initViewPort(tMS.getRootNode());
+    }
+    
+    private void buildAll() {
+        buildAll = new ButtonAdapter(screen, "buildall", new Vector2f(scaler *5, 35), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                //for ( : open.get)
+                buildLevel();
+            }
+        };
+        buildAll.setText("Run...");
+        MainWindow.addChild(buildAll);
     }
     
     private void returnButton() {
