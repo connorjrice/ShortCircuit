@@ -1,6 +1,6 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
-import ShortCircuit.DataStructures.Nodes.STCNode;
+import DataStructures.Nodes.STCNode;
 import com.jme3.scene.Spatial;
 import java.util.Comparator;
 

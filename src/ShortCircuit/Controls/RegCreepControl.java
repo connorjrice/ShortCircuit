@@ -1,6 +1,6 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.DataStructures.Graph;
+import DataStructures.Graph;
 import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.Threading.MoveCreep;
@@ -40,7 +40,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
     public RegCreepControl(EnemyState _state, AStarPathFinder pathFinder) {
         EnemyState = _state;
         this.pathFinder = pathFinder;
-        this.baseCoords = "0,0";
+        this.baseCoords = "0.0,0.0";
         this.baseVec = new Vector3f(0, 0, 0);
         this.mc = new MoveCreep(this, baseCoords);
     }

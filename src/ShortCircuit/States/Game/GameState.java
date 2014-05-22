@@ -298,6 +298,7 @@ public class GameState extends AbstractAppState implements Savable {
     }
     
     private String formatRoundNumber(Float value) {
+        System.out.println(numFormatter.format(Math.round(value)));
         return numFormatter.format(Math.round(value));
     }
 

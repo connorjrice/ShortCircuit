@@ -1,6 +1,6 @@
 package ShortCircuit.PathFinding;
 
-import ShortCircuit.DataStructures.Nodes.GraphNode;
+import DataStructures.Nodes.GraphNode;
 
 
 /**

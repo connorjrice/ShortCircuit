@@ -1,6 +1,6 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
-import ShortCircuit.DataStructures.Nodes.StackNode;
+import DataStructures.Nodes.StackNode;
 
 public class Stack<T> {
 

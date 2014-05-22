@@ -9,9 +9,6 @@ import ShortCircuit.MapXML.GeometryParams;
 import ShortCircuit.MapXML.GraphicsParams;
 import ShortCircuit.MapXML.MaterialParams;
 import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.States.Game.FriendlyState;
-import ShortCircuit.States.Game.GameState;
-import ShortCircuit.Threading.BuildMatHash;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -31,7 +28,7 @@ import java.util.HashMap;
  * This class will take care of actually building the levels, without adding any
  * controls.
  *
- * @author Development
+ * @author Connor Rice
  */
 public class BuildState extends AbstractAppState {
 
@@ -40,9 +37,6 @@ public class BuildState extends AbstractAppState {
     private Node worldNode = new Node("World");
     private Box univ_box = new Box(1, 1, 1);
     private MaterialParams mp;
-    private AppStateManager stateManager;
-    private GameState GameState;
-    private FriendlyState FriendlyState;
     private Node rootNode;
     private ArrayList<TowerParams> towerParamList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
@@ -50,7 +44,6 @@ public class BuildState extends AbstractAppState {
     private HashMap matHash;
     private TowerFactory tf;
     private CreepSpawnerFactory csf;
-    private HashMap creepParams;
     private AssetManager assetManager;
     private FloorFactory ff;
     private BaseFactory bf;
@@ -61,18 +54,9 @@ public class BuildState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
-        this.stateManager = this.app.getStateManager();
-        this.GameState = this.stateManager.getState(GameState.class);
-        this.FriendlyState = this.stateManager.getState(FriendlyState.class);
-
         matHash = new HashMap(10);
         initFactories();
         initLists();
-    }
-
-    @Override
-    public void update(float tpf) {
-        //TODO: implement behavior during runtime
     }
 
     public void createWorld(GraphicsParams gp) {
@@ -137,8 +121,6 @@ public class BuildState extends AbstractAppState {
     public void createBase() {
         Spatial base = bf.getBase(gp.getBaseVec(), gp.getBaseScale());
         worldNode.attachChild(base);
-        GameState.setBaseBounds(base.getWorldBound());
-        GameState.setFormattedBaseCoords(base);
     }
 
     public Vector3f getBaseVec() {
@@ -159,8 +141,9 @@ public class BuildState extends AbstractAppState {
     }
 
     public void createTower(TowerParams tp) {
-        towerList.add(tp.getIndex(), tf.getTower(tp).getSpatial());
-        worldNode.attachChild(tp.getSpatial());
+        Spatial tower = tf.getTower(tp);
+        towerList.add(tp.getIndex(), tower);
+        worldNode.attachChild(tower);
     }
     
     public Vector3f getTowerBuiltSize() {

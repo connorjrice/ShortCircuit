@@ -1,6 +1,6 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
-import ShortCircuit.DataStructures.Nodes.TreeNode;
+import DataStructures.Nodes.TreeNode;
 
 /**
  * Binary Search Tree implementation. Adapted from Cay Horstmann's Big Java

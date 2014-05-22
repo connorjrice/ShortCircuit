@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures.Nodes;
+package DataStructures.Nodes;
 
 import com.jme3.math.Vector3f;
 

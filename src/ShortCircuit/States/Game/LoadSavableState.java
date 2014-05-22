@@ -1,12 +1,18 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.States.Game.*;
+import ShortCircuit.Controls.CreepSpawnerControl;
+import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.MapXML.MapGenerator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
+import com.jme3.scene.Node;
+import com.jme3.scene.SceneGraphVisitor;
+import com.jme3.scene.Spatial;
+import java.util.ArrayList;
 
 /**
  * LoadingState calls the appropriate methods in its sibling states to create a 
@@ -23,6 +29,13 @@ public class LoadSavableState extends AbstractAppState {
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private GraphicsState GraphicsState;
+    private Node rootNode;
+    private AssetManager assetManager;
+    
+    
+    private ArrayList<Spatial> towerList;
+    private ArrayList<Spatial> spawnerList;
+    private FriendlyState FriendlyState;
     
     public LoadSavableState() {}
     
@@ -34,19 +47,62 @@ public class LoadSavableState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.stateManager = stateManager;
-        this.GraphicsState = this.stateManager.getState(GraphicsState.class);
-        this.GameState = this.stateManager.getState(GameState.class);
-        this.StartGUI = this.stateManager.getState(StartGUI.class);
-        newGame();
+        this.rootNode = this.app.getRootNode();
+        this.assetManager = this.app.getAssetManager();
+        this.stateManager = this.app.getStateManager();
+        getStates();
+        initLists();
+        loadWorld();
+        visitScene();
+        setParams();
     }
     
-
-    public void newGame() {
+    private void getStates() {
+        this.GraphicsState = this.stateManager.getState(GraphicsState.class);
+        this.GameState = this.stateManager.getState(GameState.class);
+        this.EnemyState = this.stateManager.getState(EnemyState.class);
+        this.FriendlyState = this.stateManager.getState(FriendlyState.class);
+        this.StartGUI = this.stateManager.getState(StartGUI.class);
+    }
+    
+    private void initLists() {
+        towerList = new ArrayList<Spatial>();
+        spawnerList = new ArrayList<Spatial>();
+    }
+    
+    private void loadWorld() {
+        Node loadedWorld = (Node) assetManager.loadModel("Models/"+levelName+".j3o");
+        loadedWorld.setName("LoadedWorld");
+        rootNode.attachChild(loadedWorld);
+    }
+    
+    private void visitScene() {
+        SceneGraphVisitor vis = new SceneGraphVisitor() {
+            public void visit(Spatial spatial) {
+                if (spatial.getName().equals("Base")) {
+                    GameState.setBaseBounds(spatial.getWorldBound());
+                    GameState.setFormattedBaseCoords(spatial);
+                } else if (spatial.getName().equals("Tower")) {
+                    towerList.add(spatial);
+                    spatial.addControl(new TowerControl(FriendlyState, spatial.getLocalTranslation()));
+                } else if (spatial.getName().equals("Spawner")) {
+                    spawnerList.add(spatial);
+                    spatial.addControl(new CreepSpawnerControl(EnemyState));
+                }
+            }
+        };
+        rootNode.breadthFirstTraversal(vis);
+    }
+    
+    private void setParams() {
         initMG(levelName, app);
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
+        EnemyState.setEnemyParams(mg.getGraphicsParams().getCreepMap());
+        EnemyState.setCreepSpawnerList(spawnerList);
         GameState.setGameplayParams(mg.getGameplayParams());
+        FriendlyState.setTowerList(towerList);
     }
+
 
     private void initMG(String levelname, SimpleApplication app) {
         mg = new MapGenerator(levelname, app);

@@ -1,7 +1,7 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.DataStructures.Graph;
+import DataStructures.Graph;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
 import ShortCircuit.Factories.RangerFactory;
@@ -52,7 +52,7 @@ public class EnemyState extends AbstractAppState {
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
     private Node rootNode;
-    private ArrayList<CreepSpawnerParams> creepSpawnerList;
+    private ArrayList<Spatial> creepSpawnerList;
     private Object[] creepTypes;
     private PathfindingState PathState;
     private HashMap creepParams;
@@ -97,7 +97,7 @@ public class EnemyState extends AbstractAppState {
         return (String[]) creepTypes;
     }
 
-    public void setCreepSpawnerList(ArrayList<CreepSpawnerParams> creepSpawnerList) {
+    public void setCreepSpawnerList(ArrayList<Spatial> creepSpawnerList) {
         this.creepSpawnerList = creepSpawnerList;
     }
 
@@ -206,7 +206,7 @@ public class EnemyState extends AbstractAppState {
         return GameState.getNumCreeps();
     }
 
-    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
+    public ArrayList<Spatial> getCreepSpawnerList() {
         return creepSpawnerList;
     }
     

@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
 /**
  * Implementation of a MinHeap datastructure. It is based upon Cay Horstmann's

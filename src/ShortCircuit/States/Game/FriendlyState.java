@@ -2,7 +2,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.ChargerControl;
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.DataStructures.Queue;
+import DataStructures.Queue;
 import ShortCircuit.MapXML.CreepSpawnerParams;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.Threading.TowerCharge;
@@ -92,6 +92,7 @@ public class FriendlyState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         Spatial tp = towerList.get(tindex);
+        System.out.println(tp.getUserDataKeys());
         if (tp.getUserData("Type").equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
@@ -182,6 +183,10 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getMatDir();
     }
 
+    public Spatial getTower(int tindex) {
+        return towerList.get(tindex);
+    }
+    
     public ArrayList<Spatial> getTowerList() {
         return towerList;
     }
@@ -242,7 +247,7 @@ public class FriendlyState extends AbstractAppState {
         return EnemyState.getCreepList();
     }
 
-    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
+    public ArrayList<Spatial> getCreepSpawnerList() {
         return EnemyState.getCreepSpawnerList();
     }
 

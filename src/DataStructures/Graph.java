@@ -1,6 +1,6 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
-import ShortCircuit.DataStructures.Nodes.GraphNode;
+import DataStructures.Nodes.GraphNode;
 import java.util.HashMap;
 
 /**

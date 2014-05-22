@@ -9,8 +9,9 @@ import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.LoadingState;
+import ScSDK.IO.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
+import ShortCircuit.States.Game.LoadSavableState;
 import ShortCircuit.States.Game.PathfindingState;
 import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
@@ -33,7 +34,7 @@ public class TowerMainState extends AbstractAppState {
     private GraphicsState GraphicsState;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
-    private LoadingState LoadingState;
+    private LoadSavableState LoadingState;
     private CheatState CheatState;
     private AudioState AudioState;
     private GameGUI GameGUI;
@@ -90,7 +91,7 @@ public class TowerMainState extends AbstractAppState {
         GameOverGUI = new GameOverGUI(this);
         
         AudioState = new AudioState();
-        LoadingState = new LoadingState(level);
+        LoadingState = new LoadSavableState(level);
         
         CheatState = new CheatState();
         CheatGUI = new CheatGUI();

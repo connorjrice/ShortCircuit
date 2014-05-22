@@ -1,4 +1,4 @@
-package ShortCircuit.DataStructures.Nodes;
+package DataStructures.Nodes;
 
 /**
  * @author Connor Rice

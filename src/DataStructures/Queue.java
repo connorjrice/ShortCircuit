@@ -1,6 +1,6 @@
-package ShortCircuit.DataStructures;
+package DataStructures;
 
-import ShortCircuit.DataStructures.Nodes.QueueNode;
+import DataStructures.Nodes.QueueNode;
 
 public class Queue<T> {
 

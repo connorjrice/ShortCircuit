@@ -1,6 +1,6 @@
 package ShortCircuit.PathFinding;
 
-import ShortCircuit.DataStructures.Graph;
+import DataStructures.Graph;
 import com.jme3.scene.Node;
 import java.text.DecimalFormat;
 import java.util.HashMap;

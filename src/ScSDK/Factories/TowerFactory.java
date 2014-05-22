@@ -19,14 +19,19 @@ public class TowerFactory {
         this.assetManager = bs.getAssetManager();
     }
 
-    public TowerParams getTower(TowerParams tp) {
+    public Spatial getTower(TowerParams tp) {
         Geometry tower_geom = new Geometry("Tower", bs.getUnivBox());
         tower_geom.setMaterial(bs.getMaterial("TowerUnbuilt"));
         tower_geom.setLocalScale(bs.getTowerUnbuiltSize());
         tower_geom.setLocalTranslation(tp.getTowerVec());
         Spatial tower = tower_geom;
-        tp.setSpatial(tower);
-        return tp;
+        tower.setUserData("Index", tp.getIndex());
+        if (tp.getIsStarter()) {
+            tower.setUserData("Type", "Tower1");
+        } else {
+            tower.setUserData("Type", "TowerUnbuilt");
+        }
+        return tower;
     }
     
     

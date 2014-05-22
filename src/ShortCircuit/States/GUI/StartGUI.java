@@ -2,7 +2,6 @@ package ShortCircuit.States.GUI;
 
 import ShortCircuit.MapXML.FileLoader;
 import ShortCircuit.ShortCircuitMain;
-import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -11,17 +10,13 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
-import java.io.File;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.lists.SelectList;
-import tonegod.gui.controls.lists.SelectList.ListItem;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -198,9 +193,8 @@ public class StartGUI extends AbstractAppState {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
                 super.cleanup();
-                stateManager.getState(GameState.class).saveGame();
                 guiNode.detachAllChildren();
-                //app.stop(false);
+                app.stop();
             }
         };
         ReallyExitPopup.setWindowTitle("Exit");

@@ -1,9 +1,8 @@
-package ShortCircuit.States.Game;
+package ScSDK.IO;
 
 import ScSDK.IO.BuildState;
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.MapXML.MapGenerator;
-import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.app.Application;
@@ -20,11 +19,9 @@ import com.jme3.app.state.AppStateManager;
 public class LoadingState extends AbstractAppState {
     private SimpleApplication app;
     private GameState GameState;
-    private EnemyState EnemyState;
     private MapGenerator mg;
     private String levelName;
     private AppStateManager stateManager;
-    private StartGUI StartGUI;
     private GraphicsState GraphicsState;
     private BuildState BuildState;
     
@@ -41,7 +38,6 @@ public class LoadingState extends AbstractAppState {
         this.stateManager = stateManager;
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.GameState = this.stateManager.getState(GameState.class);
-        this.StartGUI = this.stateManager.getState(StartGUI.class);
         this.BuildState = this.stateManager.getState(BuildState.class);
         newGame();
     }
@@ -57,13 +53,7 @@ public class LoadingState extends AbstractAppState {
     private void initMG(String levelname, SimpleApplication app) {
         mg = new MapGenerator(levelname, app);
     }
-    
-    private void updateStartGUI() {
-        StartGUI.hideloading();
-        StartGUI.updateAtlas(GameState.getAtlas());
-    }
 
-   
     @Override
     public void cleanup() {
         super.cleanup();

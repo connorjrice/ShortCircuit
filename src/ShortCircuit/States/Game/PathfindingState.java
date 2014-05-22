@@ -1,7 +1,7 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Queue;
+import DataStructures.Graph;
+import DataStructures.Queue;
 import ShortCircuit.PathFinding.JEdgeManipulator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -63,10 +63,10 @@ public class PathfindingState extends AbstractAppState {
         this.GraphicsState = stateManager.getState(GraphicsState.class);
         this.geomHash = GameState.getGeomHash();
         initAssets();
-        /*createPathNodes();
+        createPathNodes();
         edgeMani = new JEdgeManipulator(worldGraph, targetNode, geomHash, precision);
         addEdges();
-        rootNode.attachChild(targetNode);*/
+        rootNode.attachChild(targetNode);
     }
     
     private void initAssets() {

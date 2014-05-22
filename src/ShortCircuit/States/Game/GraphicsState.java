@@ -75,7 +75,6 @@ public class GraphicsState extends AbstractAppState {
     private HashMap creepParams;
     private FloorFactory FloorFactory;
     private boolean isBuilding = false;
-    private ArrayList<Spatial> towerList;
     
     public GraphicsState(boolean isBuilding) {
         this.isBuilding = isBuilding;
@@ -111,15 +110,8 @@ public class GraphicsState extends AbstractAppState {
 
         setCameraSets();        
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
-        if (isBuilding) {
-
-
-        } else {
-            loadWorld();
-        }
-        
-        EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
+        rootNode.attachChild(beamNode);
     }
     
     @Override
@@ -143,19 +135,6 @@ public class GraphicsState extends AbstractAppState {
         cam.setLocation(gp.getCamLoc());
     }
     
-    private void loadWorld() {
-        towerParamList = new ArrayList<TowerParams>();
-        SceneGraphVisitor vis = new SceneGraphVisitor() {
-            public void visit(Spatial spatial) {
-                if (spatial.getName().equals("Base")) {
-                    GameState.setBaseBounds(spatial.getWorldBound());
-                    GameState.setFormattedBaseCoords(spatial);
-                } else if (spatial.getName().equals("Tower")) {
-                    //towerList.add(spatial);
-                }
-            }
-        };
-    }
 
     /**
      * Sets up the FilterPostProcessor and Bloom filter used by the game.
@@ -241,14 +220,18 @@ public class GraphicsState extends AbstractAppState {
     
     public void setTowerScale(int tindex, String scaletype) {
         if (scaletype.equals("BuiltSize")) {
-            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSize());
+            getTower(tindex).setLocalScale(getTowerBuiltSize());
         } else if (scaletype.equals("UnbuiltSize")) {
-            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSize());
+            getTower(tindex).setLocalScale(getTowerUnbuiltSize());
         } else if (scaletype.equals("BuiltSelected")) {
-            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSelected());
+            getTower(tindex).setLocalScale(getTowerBuiltSelected());
         } else if (scaletype.equals("UnbuiltSelected")) {
-            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSelected());
+            getTower(tindex).setLocalScale(getTowerUnbuiltSelected());
         }
+    }
+    
+    private Spatial getTower(int tindex) {
+        return FriendlyState.getTower(tindex);
     }
     
     public Vector3f getBaseVec() {
@@ -330,8 +313,6 @@ public class GraphicsState extends AbstractAppState {
     public Sphere getBombMesh() {
         return bombMesh;
     }
-
-
     
     /*** Global Methods ***/
     

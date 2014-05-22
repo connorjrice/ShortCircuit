@@ -5,7 +5,7 @@ import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.LoadingState;
+import ScSDK.IO.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.PathfindingState;
 import ShortCircuit.States.Game.TutorialState;
