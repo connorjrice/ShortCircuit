@@ -1,6 +1,5 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
@@ -87,9 +86,9 @@ public class ChargerControl extends AbstractControl {
         }
     }
 
-    public void startToTower(TowerParams tower) {
+    public void startToTower(TowerControl tower) {
         setIsHome(false);
-        destTower = tower.getControl();
+        destTower = tower;
     }
 
     public boolean getIsHome() {

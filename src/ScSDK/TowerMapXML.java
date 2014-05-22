@@ -189,6 +189,7 @@ public class TowerMapXML extends AbstractAppState {
         asm.detach(GraphicsState);
         asm.detach(LoadingState);
         asm.detach(HelperState);
+        asm.detach(BuildState);
     }
 
 }

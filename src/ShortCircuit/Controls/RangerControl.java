@@ -34,10 +34,10 @@ public class RangerControl extends AbstractControl implements Savable {
     private boolean attachedToTower = false;
     private float downgradeTimer = 0f;
     private final float downgradeDelay = 3.0f;
-    private TowerParams victimTower;
+    private TowerControl victimTower;
     private float moveAmount;
 
-    public RangerControl(EnemyState _cs, TowerParams _vt) {
+    public RangerControl(EnemyState _cs, TowerControl _vt) {
         cs = _cs;
         victimTower = _vt;
         moveAmount = .04f;
@@ -90,8 +90,8 @@ public class RangerControl extends AbstractControl implements Savable {
     }
 
     private void downgradeVictimTower() {
-        TowerControl tower = victimTower.getControl();
-        //tower.downgrade()
+        TowerControl tower = victimTower;
+       // tower.downgrade();
     }
 
     private int getRangerHealth() {

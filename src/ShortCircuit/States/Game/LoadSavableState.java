@@ -83,8 +83,7 @@ public class LoadSavableState extends AbstractAppState {
                     GameState.setBaseBounds(spatial.getWorldBound());
                     GameState.setFormattedBaseCoords(spatial);
                 } else if (spatial.getName().equals("Tower")) {
-                    towerList.add(spatial);
-                    spatial.addControl(new TowerControl(FriendlyState, spatial.getLocalTranslation()));
+                    addTower(spatial);
                 } else if (spatial.getName().equals("Spawner")) {
                     spawnerList.add(spatial);
                     spatial.addControl(new CreepSpawnerControl(EnemyState));
@@ -92,6 +91,17 @@ public class LoadSavableState extends AbstractAppState {
             }
         };
         rootNode.breadthFirstTraversal(vis);
+    }
+    
+    private void addTower(Spatial spatial) {
+        TowerControl tc = new TowerControl(FriendlyState, spatial.getLocalTranslation());
+        spatial.addControl(tc);
+        if (spatial.getUserData("Type").equals("Tower1")) {
+            tc.addCharges();
+        }
+        tc.setBeamWidth();
+        towerList.add(spatial);
+
     }
     
     private void setParams() {

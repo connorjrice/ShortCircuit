@@ -22,7 +22,6 @@ public class TowerParams implements Savable {
     private String type;
     private Vector3f scale;
     private Spatial towerSpatial;
-    private TowerControl towerControl;
     private float beamwidth;
     
     public TowerParams(Vector3f vec,  boolean starter, int index) {
@@ -55,7 +54,6 @@ public class TowerParams implements Savable {
     
     public void setBeamWidth(float beamwidth) {
         this.beamwidth = beamwidth;
-        towerControl.setBeamWidth(beamwidth);
     }
     
     public float getBeamWidth() {
@@ -69,15 +67,7 @@ public class TowerParams implements Savable {
     public Spatial getSpatial() {
         return towerSpatial;
     }
-       
-    public void setControl(TowerControl c) {
-        this.towerControl = c;
-    }
- 
-    
-    public TowerControl getControl() {
-        return towerControl;
-    }
+
     
     public String getType() {
         return type;

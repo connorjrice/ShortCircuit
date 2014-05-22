@@ -246,22 +246,10 @@ public class GraphicsState extends AbstractAppState {
         tp.setMaterial((Material)matHash.get(tp.getUserData("Type")));
     }
     
-    public void towerTextureCharged(TowerParams tp) {
-        tp.getSpatial().setMaterial((Material)matHash.get(tp.getType()));
+    public void towerTextureEmpty(Spatial tower) {
+        tower.setMaterial((Material)matHash.get("TowerEmpty"));
     }
-    
-    public void towerTextureCharged(TowerControl tc) {
-        tc.getSpatial().setMaterial((Material)matHash.get(tc.getTowerType()));
-    }
-    
-    public void towerTextureEmpty(TowerControl tc) {
-        tc.getSpatial().setMaterial((Material)matHash.get("TowerEmpty"));
-    }
-    
-    public void towerUpgradeStarter(TowerParams tp) {
-        FriendlyState.upgradeTower(tp);
-    }
-    
+
     private void buildMatHash(String[] towerTypes, Object[] creepTypes) {
         BuildMatHash bms = new BuildMatHash(this, towerTypes, creepTypes);
         bms.run();
@@ -305,7 +293,7 @@ public class GraphicsState extends AbstractAppState {
         bomb_geom.setLocalTranslation(translation);
 
         bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
-        worldNode.attachChild(bomb_geom);
+        rootNode.attachChild(bomb_geom);
         AudioState.playBombSound(translation);
 
     }

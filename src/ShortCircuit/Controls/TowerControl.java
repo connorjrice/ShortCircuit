@@ -30,7 +30,6 @@ public class TowerControl extends AbstractControl implements Savable {
 
     public STC<Spatial> reachable;
     public ArrayList<Charges> charges = new ArrayList<Charges>();
-    private Vector3f towerloc;
     protected FriendlyState FriendlyState;
     private boolean isActive = false;
     private float searchTimer = .0f;
@@ -46,7 +45,6 @@ public class TowerControl extends AbstractControl implements Savable {
     public TowerControl(FriendlyState _tstate, Vector3f towerloc) {
         FriendlyState = _tstate;
         cc = new STCCreepCompare(towerloc);
-        this.towerloc = towerloc;
     }
 
     @Override
@@ -132,7 +130,7 @@ public class TowerControl extends AbstractControl implements Savable {
             }).get();
 
             for (int i = 0; i < creepClone.size(); i++) {
-                if (creepClone.get(i).getLocalTranslation().distance(towerloc) < 5.0f) {
+                if (creepClone.get(i).getLocalTranslation().distance(spatial.getLocalTranslation()) < 5.0f) {
                     reach.offer(creepClone.get(i));
                 }
 
@@ -151,7 +149,7 @@ public class TowerControl extends AbstractControl implements Savable {
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(RegCreepControl.class) != null) {
-                FriendlyState.makeLaserBeam(towerloc, reachable.peek().getLocalTranslation(),
+                FriendlyState.makeLaserBeam(spatial.getLocalTranslation(), reachable.peek().getLocalTranslation(),
                         getTowerType(), getBeamWidth());
                 if (reachable.peek()
                         .getControl(RegCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
@@ -173,8 +171,9 @@ public class TowerControl extends AbstractControl implements Savable {
         isActive = false;
     }
 
-    public void setBeamWidth(float beamwidth) {
-        this.beamwidth = beamwidth;
+    public void setBeamWidth() {
+        this.beamwidth = spatial.getUserData("BeamWidth");
+        System.out.println(beamwidth);
     }
 
     public float getBeamWidth() {
@@ -218,7 +217,7 @@ public class TowerControl extends AbstractControl implements Savable {
 
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        TowerControl control = new TowerControl(FriendlyState, towerloc);
+        TowerControl control = new TowerControl(FriendlyState, spatial.getLocalTranslation());
         control.setSpatial(spatial);
         return control;
     }
@@ -227,7 +226,6 @@ public class TowerControl extends AbstractControl implements Savable {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
-        towerloc = (Vector3f) in.readSavable("towerLoc", new Vector3f());
         isActive = in.readBoolean("isActive", false);
         setBeamType(in.readString("beamType", null));
         setTowerType(in.readString("towerType", "TowerEmpty"));
@@ -239,7 +237,6 @@ public class TowerControl extends AbstractControl implements Savable {
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
-        out.write(towerloc, "towerLoc", towerloc);
         out.write(getIsActive(), "isActive", false);
         out.write(getBeamType(), "beamType", "TowerEmpty");
         out.write(getTowerType(), "towerType", "TowerEmpty");

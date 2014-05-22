@@ -3,8 +3,6 @@ package ShortCircuit.States.Game;
 import ShortCircuit.Controls.ChargerControl;
 import ShortCircuit.Controls.TowerControl;
 import DataStructures.Queue;
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.Threading.TowerCharge;
 import ShortCircuit.Threading.TowerDowngrade;
 import ShortCircuit.Threading.TowerUpgrade;
@@ -31,7 +29,6 @@ public class FriendlyState extends AbstractAppState {
 
     private SimpleApplication app;
     private EnemyState EnemyState;
-    private Node worldNode;
     private AssetManager assetManager;
     private Queue<TowerControl> emptyTowers;
     private Queue<Spatial> activeChargers;
@@ -46,6 +43,7 @@ public class FriendlyState extends AbstractAppState {
     private GraphicsState GraphicsState;
     private ArrayList<Spatial> towerList;
     private GameState GameState;
+    private Node rootNode;
     
     public FriendlyState() {
         
@@ -57,11 +55,11 @@ public class FriendlyState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.stateManager = this.app.getStateManager();
         this.assetManager = this.app.getAssetManager();
+        this.rootNode = this.app.getRootNode();
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.GameState = this.stateManager.getState(GameState.class);
-        this.worldNode = this.GraphicsState.getWorldNode();
 
         initLists();
         initRunnables();
@@ -145,7 +143,7 @@ public class FriendlyState extends AbstractAppState {
         }
     }
 
-    public void upgradeTower(TowerParams tp) {
+    public void upgradeTower(TowerControl tp) {
         tur.setManualTower(tp);
         tur.run();
     }
@@ -271,7 +269,7 @@ public class FriendlyState extends AbstractAppState {
      */
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
-        GraphicsState.towerTextureEmpty(empty);
+        GraphicsState.towerTextureEmpty(empty.getSpatial());
         AudioState.emptySound();
     }
     
@@ -319,7 +317,7 @@ public class FriendlyState extends AbstractAppState {
     private void addNewCharger(Spatial charger) {
         charger.addControl(new ChargerControl(this));
         activeChargers.enqueue(charger);
-        worldNode.attachChild(charger);
+        rootNode.attachChild(charger);
     }
 
     @Override

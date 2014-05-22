@@ -16,7 +16,7 @@ public class TowerUpgrade implements Runnable {
     private float pitch;
     private FriendlyState fs;
     private boolean valid;
-    private TowerParams customParams;
+    private TowerControl tower;
     private String type;
 
     /**
@@ -34,10 +34,10 @@ public class TowerUpgrade implements Runnable {
      */
     public void run() {
         // Determine type of upgrade/validity
-        if (customParams == null) {
+        if (tower == null) {
             type = fs.getTowerList().get(fs.getSelected()).getUserData("Type");
         } else {
-            type = customParams.getType();
+            type = tower.getTowerType();
         }
         if (type.equals("TowerUnbuilt")) {
             cost = 100;
@@ -63,26 +63,23 @@ public class TowerUpgrade implements Runnable {
 
         // Perform upgrade if valid
         if (valid) {
-            if (customParams != null) {
-                TowerParams tower = customParams;
-                TowerControl tc = customParams.getControl();
-                tower.setType("Tower" + type);
-                tc.addCharges();
-                tc.setBuilt();
-                tower.setScale(fs.getTowerBuiltSize());
+            if (tower != null) {
+                tower.setTowerType("Tower" + type);
+                tower.addCharges();
+                tower.setBuilt();
+                tower.getSpatial().setLocalScale(fs.getTowerBuiltSize());
                 fs.towerTextureCharged(tower.getSpatial());
             } else {
+                tower = fs.getTower(fs.getSelected()).getControl(TowerControl.class);
                 if (fs.getPlrBudget() >= cost) {
-                    Spatial tower = fs.getTowerList().get(fs.getSelected());
-                    TowerControl tc = tower.getControl(TowerControl.class);
-                    tower.setUserData("Type", "Tower" + type);
-                    tc.addCharges();
-                    tc.setBuilt();
+                    tower.setTowerType("Tower" + type);
+                    tower.addCharges();
+                    tower.setBuilt();
                     if (type.equals("4")) {
                         fs.incFours();
                     }
-                    tower.setLocalScale(fs.getTowerBuiltSize());
-                    fs.towerTextureCharged(tc.getSpatial());
+                    tower.getSpatial().setLocalScale(fs.getTowerBuiltSize());
+                    fs.towerTextureCharged(tower.getSpatial());
                     fs.decPlrBudget(cost);
                     fs.playBuildSound(pitch);
                 }
@@ -90,10 +87,10 @@ public class TowerUpgrade implements Runnable {
         }
         type = "";
         valid = false;
-        customParams = null;
+        tower = null;
     }
 
-    public void setManualTower(TowerParams customParams) {
-        this.customParams = customParams;
+    public void setManualTower(TowerControl tc) {
+        this.tower = tc;
     }
 }
