@@ -31,7 +31,6 @@ public class TowerLoad extends SimpleApplication {
     private FriendlyState FriendlyState;
     private LoadSavableState LoadingState;
     private TutorialState TutorialState;
-    private FriendlyState HelperState;
     private PathfindingState PathfindingState;
     
     public static void main(String[] args) {
@@ -56,16 +55,15 @@ public class TowerLoad extends SimpleApplication {
         GraphicsState = new GraphicsState();
         EnemyState = new EnemyState();
         FriendlyState = new FriendlyState();
-        HelperState = new FriendlyState();
+        FriendlyState = new FriendlyState();
         PathfindingState = new PathfindingState();
-
 
         stateManager.attach(GameState);
         stateManager.attach(FriendlyState);
         stateManager.attach(EnemyState);
         stateManager.attach(GraphicsState);
         stateManager.attach(LoadingState);
-        stateManager.attach(HelperState);
+        stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
         Node loadedNode = (Node)assetManager.loadModel("Models/SaveAttempt.j3o");
         loadedNode.setName("loaded node");

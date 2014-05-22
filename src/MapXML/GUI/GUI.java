@@ -172,7 +172,7 @@ public class GUI extends AbstractAppState {
                 String userHome = System.getProperty("user.home");
                 System.out.println(userHome);
                 BinaryExporter exporter = BinaryExporter.getInstance();
-                File file = new File(userHome+"/Models/"+"SaveAttempt.j3o");
+                File file = new File(userHome+"/Documents/ShortCircuit/Assets/Models/"+levelString+".j3o");
                 try {
                     exporter.save(tMS.getRootNode(), file);
                 } catch (IOException ex) {

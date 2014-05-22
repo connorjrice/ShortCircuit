@@ -44,7 +44,7 @@ public class FriendlyState extends AbstractAppState {
     private AppStateManager stateManager;
     private AudioState AudioState;
     private GraphicsState GraphicsState;
-    private ArrayList<TowerParams> towerList;
+    private ArrayList<Spatial> towerList;
     private GameState GameState;
     
     public FriendlyState() {
@@ -73,7 +73,7 @@ public class FriendlyState extends AbstractAppState {
 
     }
 
-    public void setTowerList(ArrayList<TowerParams> listIn) {
+    public void setTowerList(ArrayList<Spatial> listIn) {
         towerList = listIn;
         globbedTowers = new boolean[towerList.size()];
     }
@@ -91,8 +91,8 @@ public class FriendlyState extends AbstractAppState {
      * selectedTower to be tindex for other methods to access.
      */
     public void towerSelected(int tindex) {
-        TowerParams tp = towerList.get(tindex);
-        if (tp.getType().equals("TowerUnbuilt")) {
+        Spatial tp = towerList.get(tindex);
+        if (tp.getUserData("Type").equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
             GraphicsState.setTowerScale(tindex, "BuiltSelected");
@@ -106,11 +106,11 @@ public class FriendlyState extends AbstractAppState {
      */
     public void shortenTower() {
         if (selectedTower != -1) {
-            TowerParams tp = towerList.get(selectedTower);
-            if (tp.getType().equals("TowerUnbuilt")) {
-                tp.setScale(GraphicsState.getTowerUnbuiltSize());
+            Spatial tp = towerList.get(selectedTower);
+            if (tp.getUserData("Type").equals("TowerUnbuilt")) {
+                tp.setLocalScale(GraphicsState.getTowerUnbuiltSize());
             } else {
-                tp.setScale(GraphicsState.getTowerBuiltSize());
+                tp.setLocalScale(GraphicsState.getTowerBuiltSize());
             }
         }
     }
@@ -157,15 +157,13 @@ public class FriendlyState extends AbstractAppState {
     }
 
     public String getSelectedTowerType() {
-        return towerList.get(selectedTower).getType();
+        return towerList.get(selectedTower).getUserData("Type");
     }
+    
+    
 
-    public void towerTextureCharged(TowerControl tower) {
-        GraphicsState.towerTextureCharged(tower);
-    }
-
-    public void towerTextureCharged(TowerParams tower) {
-        GraphicsState.towerTextureCharged(tower);
+    public void towerTextureCharged(Spatial s) {
+        GraphicsState.towerTextureCharged(s);
     }
 
     public void playChargeSound() {
@@ -184,7 +182,7 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getMatDir();
     }
 
-    public ArrayList<TowerParams> getTowerList() {
+    public ArrayList<Spatial> getTowerList() {
         return towerList;
     }
 

@@ -31,6 +31,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
@@ -68,7 +69,7 @@ public class GraphicsState extends AbstractAppState {
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
     private Node rootNode;
-    private ArrayList<TowerParams> towerList;
+    private ArrayList<TowerParams> towerParamList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private HashMap matHash;
     private TowerFactory tf;
@@ -76,6 +77,7 @@ public class GraphicsState extends AbstractAppState {
     private HashMap creepParams;
     private FloorFactory FloorFactory;
     private boolean isBuilding = false;
+    private ArrayList<Spatial> towerList;
     
     public GraphicsState(boolean isBuilding) {
         this.isBuilding = isBuilding;
@@ -107,8 +109,7 @@ public class GraphicsState extends AbstractAppState {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
-        this.towerList = gp.getTowerList();
-        this.creepSpawnerList = gp.getCreepSpawnerList();
+
         this.creepParams = gp.getCreepMap();
         initFilters();
 
@@ -116,8 +117,14 @@ public class GraphicsState extends AbstractAppState {
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
         if (isBuilding) {
             initFactories();
+            this.towerParamList = gp.getTowerList();
+            this.creepSpawnerList = gp.getCreepSpawnerList();
             createWorld();
+
+        } else {
+            loadWorld();
         }
+        
         EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
     }
@@ -141,6 +148,20 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
         cam.setLocation(gp.getCamLoc());
+    }
+    
+    private void loadWorld() {
+        towerParamList = new ArrayList<TowerParams>();
+        SceneGraphVisitor vis = new SceneGraphVisitor() {
+            public void visit(Spatial spatial) {
+                if (spatial.getName().equals("Base")) {
+                    GameState.setBaseBounds(spatial.getWorldBound());
+                    GameState.setFormattedBaseCoords(spatial);
+                } else if (spatial.getName().equals("Tower")) {
+                    //towerList.add(spatial);
+                }
+            }
+        };
     }
     
     private void createWorld() {
@@ -287,27 +308,31 @@ public class GraphicsState extends AbstractAppState {
     /*** Tower Methods ***/
     
     public void buildTowers() {
-        for (int i = 0; i < towerList.size(); i++) {
-            createTower(towerList.get(i));
+        for (int i = 0; i < towerParamList.size(); i++) {
+            createTower(towerParamList.get(i));
         }
         FriendlyState.setTowerList(towerList);
     }
     
     public void createTower(TowerParams tp) {
         towerList.set(tp.getIndex(), tf.getTower(tp));
-        worldNode.attachChild(towerList.get(tp.getIndex()).getSpatial());
+        worldNode.attachChild(towerParamList.get(tp.getIndex()).getSpatial());
     }
     
     public void setTowerScale(int tindex, String scaletype) {
         if (scaletype.equals("BuiltSize")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSize());
+            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSize());
         } else if (scaletype.equals("UnbuiltSize")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSize());
+            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSize());
         } else if (scaletype.equals("BuiltSelected")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSelected());
+            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSelected());
         } else if (scaletype.equals("UnbuiltSelected")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSelected());
+            towerParamList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSelected());
         }
+    }
+    
+    public void towerTextureCharged(Spatial tp) {
+        tp.setMaterial((Material)matHash.get(tp.getUserData("Type")));
     }
     
     public void towerTextureCharged(TowerParams tp) {
@@ -357,7 +382,7 @@ public class GraphicsState extends AbstractAppState {
     }
     
     public ArrayList<TowerParams> getTowerList() {
-        return towerList;
+        return towerParamList;
     }
     
     /*** CreepSpawner Methods ***/

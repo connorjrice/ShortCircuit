@@ -96,6 +96,10 @@ public class TowerParams implements Savable {
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
     }
+
+    public TowerControl getControl(Class<TowerControl> aClass) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 
     

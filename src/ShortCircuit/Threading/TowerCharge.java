@@ -1,7 +1,9 @@
 package ShortCircuit.Threading;
 
+import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
+import com.jme3.scene.Spatial;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
@@ -12,7 +14,7 @@ public class TowerCharge implements Runnable {
 
     private int chargeCost = 10;
     private FriendlyState fs;
-    private TowerParams tp;
+    private Spatial tp;
     private boolean free;
 
     /**
@@ -31,12 +33,12 @@ public class TowerCharge implements Runnable {
     public void run() {
         if (free) {
             fs.towerTextureCharged(tp);
-            tp.getControl().addCharges();
+            tp.getControl(TowerControl.class).addCharges();
             fs.playChargeSound();
         } else {
-            if (fs.getPlrBudget() >= chargeCost && !tp.getType().equals("TowerUnbuilt")) {
+            if (fs.getPlrBudget() >= chargeCost && !tp.getUserData("Type").equals("TowerUnbuilt")) {
                 fs.towerTextureCharged(tp);
-                tp.getControl().addCharges();              
+                tp.getControl(TowerControl.class).addCharges();              
                 fs.decPlrBudget(chargeCost);
                 fs.playChargeSound();
 
@@ -44,7 +46,7 @@ public class TowerCharge implements Runnable {
         }
     }
 
-    public void setTower(TowerParams _tp, boolean free) {
+    public void setTower(Spatial _tp, boolean free) {
         tp = _tp;
         this.free = free;
     }

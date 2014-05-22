@@ -3,6 +3,7 @@ package ShortCircuit.Threading;
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
+import com.jme3.scene.Spatial;
 
 /**
  * This class handles the upgrading of a tower/building of a tower
@@ -34,7 +35,7 @@ public class TowerUpgrade implements Runnable {
     public void run() {
         // Determine type of upgrade/validity
         if (customParams == null) {
-            type = fs.getTowerList().get(fs.getSelected()).getType();
+            type = fs.getTowerList().get(fs.getSelected()).getUserData("Type");
         } else {
             type = customParams.getType();
         }
@@ -69,19 +70,19 @@ public class TowerUpgrade implements Runnable {
                 tc.addCharges();
                 tc.setBuilt();
                 tower.setScale(fs.getTowerBuiltSize());
-                fs.towerTextureCharged(tower);
+                fs.towerTextureCharged(tower.getSpatial());
             } else {
                 if (fs.getPlrBudget() >= cost) {
-                    TowerParams tower = fs.getTowerList().get(fs.getSelected());
-                    TowerControl tc = tower.getControl();
-                    tower.setType("Tower" + type);
+                    Spatial tower = fs.getTowerList().get(fs.getSelected());
+                    TowerControl tc = tower.getControl(TowerControl.class);
+                    tower.setUserData("Type", "Tower" + type);
                     tc.addCharges();
                     tc.setBuilt();
                     if (type.equals("4")) {
                         fs.incFours();
                     }
-                    tower.setScale(fs.getTowerBuiltSize());
-                    fs.towerTextureCharged(tc);
+                    tower.setLocalScale(fs.getTowerBuiltSize());
+                    fs.towerTextureCharged(tc.getSpatial());
                     fs.decPlrBudget(cost);
                     fs.playBuildSound(pitch);
                 }

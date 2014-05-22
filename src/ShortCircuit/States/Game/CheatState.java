@@ -10,6 +10,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 
 /**
@@ -55,9 +56,9 @@ public class CheatState extends AbstractAppState {
      * Adds 10 charges of type base to all towers fo FREE.
      */
     public void badassAmmoH4KX() {
-        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
+        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerControl control = towerList.get(i).getControl();
+            TowerControl control = towerList.get(i).getControl(TowerControl.class);
             for (int j = 0; i < 10; i++) {
                 control.charges.add(new Charges("Towerc"));
                 control.setBeamType("beam4");
@@ -83,9 +84,9 @@ public class CheatState extends AbstractAppState {
      * Makes towers quite large.
      */
     public void makeTowersHUGE() {
-        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
+        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            towerList.get(i).setScale(new Vector3f(30f,30f,10f));
+            towerList.get(i).setLocalScale(new Vector3f(30f,30f,10f));
         }
     }
     
@@ -93,12 +94,9 @@ public class CheatState extends AbstractAppState {
      * Upgrades all of the towers to purple and adds a bunch of charges.
      */
     public void makeTowersPurp() {
-        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
+        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerParams tp = towerList.get(i);
-            addPurptoPurp(tp.getControl());
-            tp.setType("Tower4");
-            GraphicsState.towerTextureCharged(tp);
+            addPurptoPurp(towerList.get(i).getControl(TowerControl.class));
         }
     }
     /**
@@ -108,6 +106,8 @@ public class CheatState extends AbstractAppState {
     private void addPurptoPurp(TowerControl control) {
         for (int i = 0; i < 100; i++) {
             control.charges.add(new Charges("Tower4"));
+            control.setTowerType("Tower4");
+            FriendlyState.towerTextureCharged(control.getSpatial());
         }
     }
     
@@ -117,12 +117,12 @@ public class CheatState extends AbstractAppState {
      * those super lasers.
      */
     public void makeTowersBadAss() {
-        ArrayList<TowerParams> towerList = FriendlyState.getTowerList();
+        ArrayList<Spatial> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerParams tower = towerList.get(i);
-            addBadAsstoBadAss(tower.getControl());
-            tower.getControl().setBuilt();                    
-            tower.setType("Tower4");
+            TowerControl tower = towerList.get(i).getControl(TowerControl.class);
+            addBadAsstoBadAss(tower);
+            tower.setBuilt();                    
+            tower.setTowerType("Tower4");
             GraphicsState.towerTextureCharged(tower);
         }
     }

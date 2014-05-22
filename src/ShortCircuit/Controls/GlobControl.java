@@ -43,14 +43,14 @@ public class GlobControl extends AbstractControl implements Savable {
     }
 
     protected void enableVictimTower() {
-        getVictimTower().getControl().setActive();
+        getVictimTower().getControl(TowerControl.class).setActive();
     }
 
     protected void unglobTower() {
-        cs.getTowerList().get(getVictimTowerInd()).getControl().unglobTower();
+        cs.getTowerList().get(getVictimTowerInd()).getControl(TowerControl.class).unglobTower();
     }
 
-    protected TowerParams getVictimTower() {
+    protected Spatial getVictimTower() {
         return cs.getTowerList().get(getVictimTowerInd());
     }
 

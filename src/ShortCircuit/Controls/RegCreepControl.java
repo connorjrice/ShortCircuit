@@ -54,7 +54,7 @@ public class RegCreepControl extends AbstractControl implements Savable {
     @Override
     protected void controlUpdate(float tpf) {
         if (updateTimer > .05) {
-           // mc.run();                  
+            mc.run();                  
             updateTimer = 0;
         }  else {
             updateTimer += tpf;

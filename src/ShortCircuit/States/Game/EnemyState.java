@@ -1,5 +1,6 @@
 package ShortCircuit.States.Game;
 
+import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.DataStructures.Graph;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
@@ -134,10 +135,10 @@ public class EnemyState extends AbstractAppState {
      */
     private void spawnGlob() {
         int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-        if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl().getIsGlobbed()) {
-            Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getTowerVec();
+        if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
+            Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getLocalTranslation();
             Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-            FriendlyState.getTowerList().get(towerVictimIndex).getControl().globTower();
+            FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
             creepNode.attachChild(glob);
             globList.add(glob);
         } else {
@@ -233,7 +234,7 @@ public class EnemyState extends AbstractAppState {
         return assetManager;
     }
 
-    public ArrayList<TowerParams> getTowerList() {
+    public ArrayList<Spatial> getTowerList() {
         return FriendlyState.getTowerList();
     }
 
