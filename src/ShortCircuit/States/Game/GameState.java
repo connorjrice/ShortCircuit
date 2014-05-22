@@ -33,7 +33,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 public class GameState extends AbstractAppState implements Savable {
 
-    private EnemyState EnemyState;
     private SimpleApplication app;
     private Node rootNode;
     private float updateTimer = 0;
@@ -64,7 +63,6 @@ public class GameState extends AbstractAppState implements Savable {
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.stateManager = this.app.getStateManager();
-        this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.PathState = this.stateManager.getState(PathfindingState.class);
@@ -100,7 +98,7 @@ public class GameState extends AbstractAppState implements Savable {
             }
         }
     }
-    
+
     public Node getRootNode() {
         return rootNode;
     }
@@ -166,22 +164,22 @@ public class GameState extends AbstractAppState implements Savable {
             } else {
                 PathState.nextVec(trans);
             }
-            
+
         }
     }
-    
+
     public void toggleBomb() {
         bombActive = !bombActive;
     }
-    
+
     public void setBombStatus(boolean b) {
         bombActive = b;
     }
-    
+
     public boolean getBombActive() {
         return bombActive;
     }
-    
+
     public HashMap getGeomHash() {
         return lp.getGeomHash();
     }
@@ -280,7 +278,7 @@ public class GameState extends AbstractAppState implements Savable {
     public void decPlrScore(int s) {
         pp.decScore(s);
     }
-    
+
     public Vector3f getBaseVec() {
         return baseBounds.getCenter();
     }
@@ -288,15 +286,15 @@ public class GameState extends AbstractAppState implements Savable {
     public BoundingVolume getBaseBounds() {
         return baseBounds;
     }
-    
+
     public String getFormattedBaseCoords() {
         return formattedBaseCoords;
     }
-    
+
     public void setFormattedBaseCoords(Spatial base) {
-        formattedBaseCoords = formatRoundNumber(base.getLocalTranslation().x)+","+formatRoundNumber(base.getLocalTranslation().y);
+        formattedBaseCoords = formatRoundNumber(base.getLocalTranslation().x) + "," + formatRoundNumber(base.getLocalTranslation().y);
     }
-    
+
     private String formatRoundNumber(Float value) {
         System.out.println(numFormatter.format(Math.round(value)));
         return numFormatter.format(Math.round(value));
@@ -350,16 +348,15 @@ public class GameState extends AbstractAppState implements Savable {
     public Node getWorldNode() {
         return worldNode;
     }
-    
+
     public void saveGame() {
         String userHome = System.getProperty("user.home");
         System.out.println(userHome);
         BinaryExporter exporter = BinaryExporter.getInstance();
-        File file = new File(userHome+"/Models/"+"MyModel.j3o");
+        File file = new File(userHome + "/Models/" + "MyModel.j3o");
         try {
             exporter.save(rootNode, file);
         } catch (IOException ex) {
-            
         }
     }
 
@@ -370,18 +367,16 @@ public class GameState extends AbstractAppState implements Savable {
         rootNode.detachAllChildren();
         ex.shutdown();
     }
-    
+
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
-        
-        
+
+
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
     }
-
-
 }

@@ -2,8 +2,6 @@ package ShortCircuit.MapXML;
 
 import ScSDK.MapXML.BuildParams;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetInfo;
-import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;

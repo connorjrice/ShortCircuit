@@ -274,8 +274,6 @@ public class GraphicsState extends AbstractAppState {
 
         bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
         rootNode.attachChild(bomb_geom);
-        AudioState.playBombSound(translation);
-
     }
     
     public Sphere getBombMesh() {

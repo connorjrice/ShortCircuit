@@ -6,7 +6,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioSource;
 import com.jme3.math.Vector3f;
 
 /**
@@ -161,25 +160,17 @@ public class AudioState extends AbstractAppState {
     /**
      * Plays the bomb sound.
      */
-    public void playBombSound(Vector3f trans) {
-        if (bombsound.getStatus().equals(AudioSource.Status.Playing)) {
-            bombsound2.setLocalTranslation(trans);
-            bombsound2.play();
-        } else {
-            bombsound.setLocalTranslation(trans);
-            bombsound.play();
-        }
+    public AudioNode playBombSound(Vector3f trans) {
+        AudioNode an = new AudioNode(assetManager, "Audio/bomb.wav");
+        an.play();
+        return an;
     }
     
     /**
      * Stop the bomb sound.
      */
     public void stopBombSound() {
-        if (bombsound.getStatus().equals(AudioSource.Status.Playing)) {
-            bombsound.stop();
-        } else {
-            bombsound2.stop();
-        }
+        bombsound.detachAllChildren();
     }
     
     public void themeLoop() {

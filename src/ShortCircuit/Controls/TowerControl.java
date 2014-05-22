@@ -49,16 +49,14 @@ public class TowerControl extends AbstractControl implements Savable {
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (FriendlyState.isEnabled()) {
-            if (isActive) {
-                if (searchTimer > searchDelay) {
-                    decideShoot();
-                    reachable = null;
-                    searchForCreeps();
-                    searchTimer = 0;
-                } else {
-                    searchTimer += tpf;
-                }
+        if (FriendlyState.isEnabled() && isActive) {
+            if (searchTimer > searchDelay) {
+                decideShoot();
+                reachable = null;
+                searchForCreeps();
+                searchTimer = 0;
+            } else {
+                searchTimer += tpf;
             }
         }
     }
@@ -173,7 +171,6 @@ public class TowerControl extends AbstractControl implements Savable {
 
     public void setBeamWidth() {
         this.beamwidth = spatial.getUserData("BeamWidth");
-        System.out.println(beamwidth);
     }
 
     public float getBeamWidth() {

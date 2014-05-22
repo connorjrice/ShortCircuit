@@ -150,6 +150,5 @@ public class RegCreepControl extends AbstractControl implements Savable {
         OutputCapsule out = ex.getCapsule(this);
         out.write(creepNum, "creepNum", 0);
         out.write(baseCoords, "baseCoords", baseCoords);
-
     }
 }

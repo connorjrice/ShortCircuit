@@ -2,11 +2,13 @@ package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
+import com.jme3.audio.AudioNode;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -35,12 +37,13 @@ public class BombControl extends AbstractControl implements Savable{
     private GraphicsState gs;
     private ScheduledThreadPoolExecutor ex;
     private AudioState as;
+    private AudioNode bombSound;
 
     public BombControl(float size, GraphicsState gs, AudioState as) {
         bombSize = size; // Initial size of bomb
         this.gs = gs;    // Game state
-        this.as = as;
         this.ex = gs.getEx();
+        this.as = as;
     }
     
     public BombControl() {}
@@ -61,6 +64,9 @@ public class BombControl extends AbstractControl implements Savable{
     @Override
     protected void controlUpdate(float tpf) {
         if (gs.isEnabled() && bombTimer < .5f && bombSize < 3.0f) {
+            if (bombSound == null) {
+                bombSound = as.playBombSound(spatial.getLocalTranslation());
+            }
             bombSize += tpf + .01f;
             spatial.setLocalScale(bombSize);
             bombTimer += tpf;
@@ -78,7 +84,7 @@ public class BombControl extends AbstractControl implements Savable{
          * spatial, and remove this control.
          */
         else {
-            as.stopBombSound();
+            bombSound.stop();
             spatial.removeFromParent();
             spatial.removeControl(this);
         }
