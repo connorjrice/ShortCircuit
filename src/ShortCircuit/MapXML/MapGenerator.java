@@ -48,7 +48,7 @@ public class MapGenerator {
     
     public GraphicsParams getGraphicsParams() {
         return new GraphicsParams(parseMaterialParams(), parseFilterParams(), 
-                parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes(), parseCreepList());
+                parseGeometryParams(), parseTowerTypes(), parseCreepList());
     }
     
     private LevelParams parseLevelParams() {
