@@ -9,8 +9,9 @@ import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.LoadingState;
+import ScSDK.IO.LoadingState;
 import ShortCircuit.States.Game.FriendlyState;
+import ShortCircuit.States.Game.LoadSavableState;
 import ShortCircuit.States.Game.PathfindingState;
 import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
@@ -18,7 +19,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -34,7 +34,7 @@ public class TowerMainState extends AbstractAppState {
     private GraphicsState GraphicsState;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
-    private LoadingState LoadingState;
+    private LoadSavableState LoadingState;
     private CheatState CheatState;
     private AudioState AudioState;
     private GameGUI GameGUI;
@@ -49,7 +49,6 @@ public class TowerMainState extends AbstractAppState {
     private final static String MAPPING_ACTIVATE = "Touch";
     private SimpleApplication app;
     private InputManager inputManager;
-    private AssetManager assetManager;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private final boolean profile;
@@ -72,7 +71,6 @@ public class TowerMainState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.inputManager = this.app.getInputManager();
-        this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.StartGUI = stateManager.getState(StartGUI.class);
         width = app.getContext().getSettings().getWidth();
@@ -93,7 +91,7 @@ public class TowerMainState extends AbstractAppState {
         GameOverGUI = new GameOverGUI(this);
         
         AudioState = new AudioState();
-        LoadingState = new LoadingState(level);
+        LoadingState = new LoadSavableState(level);
         
         CheatState = new CheatState();
         CheatGUI = new CheatGUI();
@@ -142,20 +140,11 @@ public class TowerMainState extends AbstractAppState {
         stateManager.detach(AudioState);
         stateManager.detach(PathfindingState);
     }
-
-
-
-    /**
-     * Changes global volume.
-     * @param volume -New volume level. Not implemented yet.
-     */
-    public void setVolume(int volume) {
-        app.getListener().setVolume(volume);
-    }
-
+    
     /**
      * Returns to the start menu.
      * Currently used by GameOver state, the "Too Bad" button.
+     * TODO: Remove this
      */
     public void returnToStartAfterGameOver() {
         detachStates();

@@ -2,11 +2,11 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.Factories.BaseFactory;
+import ScSDK.Factories.BaseFactory;
 import ShortCircuit.Factories.BeamFactory;
-import ShortCircuit.Factories.CreepSpawnerFactory;
-import ShortCircuit.Factories.FloorFactory;
-import ShortCircuit.Factories.TowerFactory;
+import ScSDK.Factories.CreepSpawnerFactory;
+import ScSDK.Factories.FloorFactory;
+import ScSDK.Factories.TowerFactory;
 import ShortCircuit.MapXML.CreepSpawnerParams;
 import ShortCircuit.MapXML.FilterParams;
 import ShortCircuit.MapXML.GeometryParams;
@@ -20,7 +20,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.FlyByCamera;
-import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -30,6 +29,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
@@ -67,13 +67,18 @@ public class GraphicsState extends AbstractAppState {
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
     private Node rootNode;
-    private ArrayList<TowerParams> towerList;
+    private ArrayList<TowerParams> towerParamList;
     private ArrayList<CreepSpawnerParams> creepSpawnerList;
     private HashMap matHash;
     private TowerFactory tf;
     private CreepSpawnerFactory csf;
     private HashMap creepParams;
     private FloorFactory FloorFactory;
+    private boolean isBuilding = false;
+    
+    public GraphicsState(boolean isBuilding) {
+        this.isBuilding = isBuilding;
+    }
     
     public GraphicsState() {}
     
@@ -92,8 +97,6 @@ public class GraphicsState extends AbstractAppState {
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         BeamFactory = new BeamFactory(this);
-        BaseFactory = new BaseFactory(this);
-        FloorFactory = new FloorFactory(this);
         matHash = new HashMap(10);
     }
     
@@ -101,16 +104,14 @@ public class GraphicsState extends AbstractAppState {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
-        this.towerList = gp.getTowerList();
-        this.creepSpawnerList = gp.getCreepSpawnerList();
+
         this.creepParams = gp.getCreepMap();
         initFilters();
-        initFactories();
+
         setCameraSets();        
         buildMatHash(gp.getTowerTypes(), gp.getCreepTypes().toArray());
-        createWorld();
-        EnemyState.setEnemyParams(creepParams);
         setBackgroundColor(mp.getBackgroundColor());
+        rootNode.attachChild(beamNode);
     }
     
     @Override
@@ -134,28 +135,6 @@ public class GraphicsState extends AbstractAppState {
         cam.setLocation(gp.getCamLoc());
     }
     
-    private void createWorld() {
-        createLight();
-        createFloor();
-        createBase();
-        buildTowers();
-        buildCreepSpawners();
-        attachBeamNode();
-        attachWorldNode();
-    }
-    
-    private void initFactories() {
-        tf = new TowerFactory(this);
-        csf = new CreepSpawnerFactory(this);
-    }
-    
-    private void attachWorldNode() {
-        rootNode.attachChild(worldNode);
-    }
-    
-    private void attachBeamNode() {
-        rootNode.attachChild(beamNode);
-    }
 
     /**
      * Sets up the FilterPostProcessor and Bloom filter used by the game.
@@ -179,8 +158,6 @@ public class GraphicsState extends AbstractAppState {
             viewPort.addProcessor(fpp);
         }
     }
-    
-    
     
     private void removeFilters() {
         viewPort.removeProcessor(fpp);
@@ -239,32 +216,22 @@ public class GraphicsState extends AbstractAppState {
         beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, towertype, beamwidth));
         shot = true;
     }
-    
-    
-    /*** World Methods ***/
 
-    public void createLight() {
-        AmbientLight ambient = new AmbientLight();
-        ambient.setColor(ColorRGBA.White.mult(128f));
-        worldNode.addLight(ambient);
-    }
-
-    public void createFloor() {
-        Spatial floor = FloorFactory.getFloor();
-        worldNode.attachChild(floor);
-    }
     
-    public Vector3f getFloorScale() {
-        return gp.getFloorScale();
+    public void setTowerScale(int tindex, String scaletype) {
+        if (scaletype.equals("BuiltSize")) {
+            getTower(tindex).setLocalScale(getTowerBuiltSize());
+        } else if (scaletype.equals("UnbuiltSize")) {
+            getTower(tindex).setLocalScale(getTowerUnbuiltSize());
+        } else if (scaletype.equals("BuiltSelected")) {
+            getTower(tindex).setLocalScale(getTowerBuiltSelected());
+        } else if (scaletype.equals("UnbuiltSelected")) {
+            getTower(tindex).setLocalScale(getTowerUnbuiltSelected());
+        }
     }
     
-    /*** Base Methods ***/
-
-    public void createBase() {
-        Spatial base = BaseFactory.getBase(gp.getBaseVec(), gp.getBaseScale());
-        worldNode.attachChild(base);
-        GameState.setBaseBounds(base.getWorldBound());
-        GameState.setFormattedBaseCoords(base);
+    private Spatial getTower(int tindex) {
+        return FriendlyState.getTower(tindex);
     }
     
     public Vector3f getBaseVec() {
@@ -275,48 +242,14 @@ public class GraphicsState extends AbstractAppState {
         return gp.getBaseScale();
     }
     
-    /*** Tower Methods ***/
-    
-    public void buildTowers() {
-        for (int i = 0; i < towerList.size(); i++) {
-            createTower(towerList.get(i));
-        }
-        FriendlyState.setTowerList(towerList);
+    public void towerTextureCharged(Spatial tp) {
+        tp.setMaterial((Material)matHash.get(tp.getUserData("Type")));
     }
     
-    public void createTower(TowerParams tp) {
-        towerList.set(tp.getIndex(), tf.getTower(tp));
-        worldNode.attachChild(towerList.get(tp.getIndex()).getSpatial());
+    public void towerTextureEmpty(Spatial tower) {
+        tower.setMaterial((Material)matHash.get("TowerEmpty"));
     }
-    
-    public void setTowerScale(int tindex, String scaletype) {
-        if (scaletype.equals("BuiltSize")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSize());
-        } else if (scaletype.equals("UnbuiltSize")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSize());
-        } else if (scaletype.equals("BuiltSelected")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerBuiltSelected());
-        } else if (scaletype.equals("UnbuiltSelected")) {
-            towerList.get(tindex).getSpatial().setLocalScale(getTowerUnbuiltSelected());
-        }
-    }
-    
-    public void towerTextureCharged(TowerParams tp) {
-        tp.getSpatial().setMaterial((Material)matHash.get(tp.getType()));
-    }
-    
-    public void towerTextureCharged(TowerControl tc) {
-        tc.getSpatial().setMaterial((Material)matHash.get(tc.getTowerType()));
-    }
-    
-    public void towerTextureEmpty(TowerControl tc) {
-        tc.getSpatial().setMaterial((Material)matHash.get("TowerEmpty"));
-    }
-    
-    public void towerUpgradeStarter(TowerParams tp) {
-        FriendlyState.upgradeTower(tp);
-    }
-    
+
     private void buildMatHash(String[] towerTypes, Object[] creepTypes) {
         BuildMatHash bms = new BuildMatHash(this, towerTypes, creepTypes);
         bms.run();
@@ -348,28 +281,7 @@ public class GraphicsState extends AbstractAppState {
     }
     
     public ArrayList<TowerParams> getTowerList() {
-        return towerList;
-    }
-    
-    /*** CreepSpawner Methods ***/
-    public void createCreepSpawner(CreepSpawnerParams curSpawner) {
-        creepSpawnerList.set(curSpawner.getIndex(), csf.getSpawner(curSpawner));
-        worldNode.attachChild(creepSpawnerList.get(curSpawner.getIndex()).getSpatial());
-    }
-
-    public void buildCreepSpawners() {
-        for (int i = 0; i < creepSpawnerList.size(); i++) {
-            createCreepSpawner(creepSpawnerList.get(i));
-        }
-        EnemyState.setCreepSpawnerList(creepSpawnerList);
-    }
-    
-    public Vector3f getCreepSpawnerHorizontalScale() {
-        return gp.getCreepSpawnerHorizontalScale();
-    }
-    
-    public Vector3f getCreepSpawnerVerticalScale() {
-        return gp.getCreepSpawnerVerticalScale();
+        return towerParamList;
     }
     
     /*** Bomb Methods ***/
@@ -381,7 +293,7 @@ public class GraphicsState extends AbstractAppState {
         bomb_geom.setLocalTranslation(translation);
 
         bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
-        worldNode.attachChild(bomb_geom);
+        rootNode.attachChild(bomb_geom);
         AudioState.playBombSound(translation);
 
     }
@@ -389,8 +301,6 @@ public class GraphicsState extends AbstractAppState {
     public Sphere getBombMesh() {
         return bombMesh;
     }
-
-
     
     /*** Global Methods ***/
     

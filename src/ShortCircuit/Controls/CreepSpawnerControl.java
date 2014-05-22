@@ -26,9 +26,8 @@ public class CreepSpawnerControl extends AbstractControl implements Savable {
     public CreepSpawnerControl(EnemyState _cstate) {
         EnemyState = _cstate;
     }
-    
+
     public CreepSpawnerControl() {
-        
     }
 
     /**
@@ -77,6 +76,6 @@ public class CreepSpawnerControl extends AbstractControl implements Savable {
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule out = ex.getCapsule(this);
-        
+
     }
 }

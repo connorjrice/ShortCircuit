@@ -1,8 +1,10 @@
 package ShortCircuit.Threading;
 
 
+import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
+import com.jme3.scene.Spatial;
 
 /**
  * This class handles the downgrading of a tower from enemy attack.
@@ -32,7 +34,7 @@ public class TowerDowngrade implements Runnable {
     public void run() {
         // Determine type of upgrade/validity
         if (victimIndex != -1) {
-            String type = fs.getTowerList().get(victimIndex).getType();
+            String type = fs.getTowerList().get(victimIndex).getUserData("Type");
             if (type.equals("Tower1")) {
                 type = "Unbuilt";
                 matLoc = "Materials/" + fs.getMatDir() + "/TowerUnbuilt.j3m";
@@ -52,19 +54,19 @@ public class TowerDowngrade implements Runnable {
             }
 
             if (valid) {
-                TowerParams tower = fs.getTowerList().get(victimIndex);
-                tower.setType("Tower" + type);
+                Spatial tower = fs.getTowerList().get(victimIndex);
+                tower.setUserData("Type", "Tower" + type);
                 if (type.equals("Unbuilt")) {
-                    tower.getControl().charges.clear();
-                    tower.getControl().setInactive();
-                    tower.setScale(fs.getTowerUnbuiltSize());
+                    tower.getControl(TowerControl.class).charges.clear();
+                    tower.getControl(TowerControl.class).setInactive();
+                    tower.setLocalScale(fs.getTowerUnbuiltSize());
                 } else {
-                    int oldnumcharges = tower.getControl().charges.size();
-                    tower.getControl().charges.clear();
+                    int oldnumcharges = tower.getControl(TowerControl.class).charges.size();
+                    tower.getControl(TowerControl.class).charges.clear();
                     for (int i = 0; i < oldnumcharges; i++) {
-                        tower.getControl().addCharges();
+                        tower.getControl(TowerControl.class).addCharges();
                     }
-                    tower.setScale(fs.getTowerBuiltSize());
+                    tower.setLocalScale(fs.getTowerBuiltSize());
                 }
                 fs.towerTextureCharged(tower);
 

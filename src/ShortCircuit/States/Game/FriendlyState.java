@@ -2,9 +2,7 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.ChargerControl;
 import ShortCircuit.Controls.TowerControl;
-import ShortCircuit.DataStructures.Queue;
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.MapXML.TowerParams;
+import DataStructures.Queue;
 import ShortCircuit.Threading.TowerCharge;
 import ShortCircuit.Threading.TowerDowngrade;
 import ShortCircuit.Threading.TowerUpgrade;
@@ -31,7 +29,6 @@ public class FriendlyState extends AbstractAppState {
 
     private SimpleApplication app;
     private EnemyState EnemyState;
-    private Node worldNode;
     private AssetManager assetManager;
     private Queue<TowerControl> emptyTowers;
     private Queue<Spatial> activeChargers;
@@ -44,8 +41,9 @@ public class FriendlyState extends AbstractAppState {
     private AppStateManager stateManager;
     private AudioState AudioState;
     private GraphicsState GraphicsState;
-    private ArrayList<TowerParams> towerList;
+    private ArrayList<Spatial> towerList;
     private GameState GameState;
+    private Node rootNode;
     
     public FriendlyState() {
         
@@ -57,11 +55,11 @@ public class FriendlyState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.stateManager = this.app.getStateManager();
         this.assetManager = this.app.getAssetManager();
+        this.rootNode = this.app.getRootNode();
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.GameState = this.stateManager.getState(GameState.class);
-        this.worldNode = this.GraphicsState.getWorldNode();
 
         initLists();
         initRunnables();
@@ -73,7 +71,7 @@ public class FriendlyState extends AbstractAppState {
 
     }
 
-    public void setTowerList(ArrayList<TowerParams> listIn) {
+    public void setTowerList(ArrayList<Spatial> listIn) {
         towerList = listIn;
         globbedTowers = new boolean[towerList.size()];
     }
@@ -91,8 +89,9 @@ public class FriendlyState extends AbstractAppState {
      * selectedTower to be tindex for other methods to access.
      */
     public void towerSelected(int tindex) {
-        TowerParams tp = towerList.get(tindex);
-        if (tp.getType().equals("TowerUnbuilt")) {
+        Spatial tp = towerList.get(tindex);
+        System.out.println(tp.getUserDataKeys());
+        if (tp.getUserData("Type").equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
             GraphicsState.setTowerScale(tindex, "BuiltSelected");
@@ -106,11 +105,11 @@ public class FriendlyState extends AbstractAppState {
      */
     public void shortenTower() {
         if (selectedTower != -1) {
-            TowerParams tp = towerList.get(selectedTower);
-            if (tp.getType().equals("TowerUnbuilt")) {
-                tp.setScale(GraphicsState.getTowerUnbuiltSize());
+            Spatial tp = towerList.get(selectedTower);
+            if (tp.getUserData("Type").equals("TowerUnbuilt")) {
+                tp.setLocalScale(GraphicsState.getTowerUnbuiltSize());
             } else {
-                tp.setScale(GraphicsState.getTowerBuiltSize());
+                tp.setLocalScale(GraphicsState.getTowerBuiltSize());
             }
         }
     }
@@ -144,7 +143,7 @@ public class FriendlyState extends AbstractAppState {
         }
     }
 
-    public void upgradeTower(TowerParams tp) {
+    public void upgradeTower(TowerControl tp) {
         tur.setManualTower(tp);
         tur.run();
     }
@@ -157,15 +156,13 @@ public class FriendlyState extends AbstractAppState {
     }
 
     public String getSelectedTowerType() {
-        return towerList.get(selectedTower).getType();
+        return towerList.get(selectedTower).getUserData("Type");
     }
+    
+    
 
-    public void towerTextureCharged(TowerControl tower) {
-        GraphicsState.towerTextureCharged(tower);
-    }
-
-    public void towerTextureCharged(TowerParams tower) {
-        GraphicsState.towerTextureCharged(tower);
+    public void towerTextureCharged(Spatial s) {
+        GraphicsState.towerTextureCharged(s);
     }
 
     public void playChargeSound() {
@@ -184,7 +181,11 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getMatDir();
     }
 
-    public ArrayList<TowerParams> getTowerList() {
+    public Spatial getTower(int tindex) {
+        return towerList.get(tindex);
+    }
+    
+    public ArrayList<Spatial> getTowerList() {
         return towerList;
     }
 
@@ -244,7 +245,7 @@ public class FriendlyState extends AbstractAppState {
         return EnemyState.getCreepList();
     }
 
-    public ArrayList<CreepSpawnerParams> getCreepSpawnerList() {
+    public ArrayList<Spatial> getCreepSpawnerList() {
         return EnemyState.getCreepSpawnerList();
     }
 
@@ -268,7 +269,7 @@ public class FriendlyState extends AbstractAppState {
      */
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
-        GraphicsState.towerTextureEmpty(empty);
+        GraphicsState.towerTextureEmpty(empty.getSpatial());
         AudioState.emptySound();
     }
     
@@ -316,7 +317,7 @@ public class FriendlyState extends AbstractAppState {
     private void addNewCharger(Spatial charger) {
         charger.addControl(new ChargerControl(this));
         activeChargers.enqueue(charger);
-        worldNode.attachChild(charger);
+        rootNode.attachChild(charger);
     }
 
     @Override

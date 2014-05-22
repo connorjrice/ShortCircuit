@@ -29,8 +29,8 @@ public class RegCreepFactory {
     }
 
     public Spatial getCreep(Vector3f spawnpoint, CreepParams cp) {
-        Geometry creep_geom = new Geometry(cp.getType()+"Creep", gs.getUnivBox());
-        creep_geom.setMaterial(gs.getMaterial(cp.getType()+"Creep"));
+        Geometry creep_geom = new Geometry(cp.getType() + "Creep", gs.getUnivBox());
+        creep_geom.setMaterial(gs.getMaterial(cp.getType() + "Creep"));
         creep_geom.setLocalScale(cp.getSize());
         creep_geom.setLocalTranslation(spawnpoint);
         Spatial creep = creep_geom;

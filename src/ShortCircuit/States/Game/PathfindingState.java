@@ -1,7 +1,7 @@
 package ShortCircuit.States.Game;
 
-import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.Queue;
+import DataStructures.Graph;
+import DataStructures.Queue;
 import ShortCircuit.PathFinding.JEdgeManipulator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

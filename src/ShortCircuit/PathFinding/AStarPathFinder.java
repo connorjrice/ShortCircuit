@@ -1,7 +1,7 @@
 package ShortCircuit.PathFinding;
 
-import ShortCircuit.DataStructures.Graph;
-import ShortCircuit.DataStructures.MinHeap;
+import DataStructures.Graph;
+import DataStructures.MinHeap;
 import java.util.ArrayList;
 
 /**

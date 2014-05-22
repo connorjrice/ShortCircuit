@@ -1,5 +1,6 @@
 package ShortCircuit.Threading;
 
+import ScSDK.IO.BuildState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.asset.AssetManager;
 import java.util.HashMap;

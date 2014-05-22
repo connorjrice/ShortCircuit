@@ -9,9 +9,7 @@ import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.scene.control.Control;
 import java.io.IOException;
 
 /**
@@ -36,10 +34,10 @@ public class RangerControl extends AbstractControl implements Savable {
     private boolean attachedToTower = false;
     private float downgradeTimer = 0f;
     private final float downgradeDelay = 3.0f;
-    private TowerParams victimTower;
+    private TowerControl victimTower;
     private float moveAmount;
 
-    public RangerControl(EnemyState _cs, TowerParams _vt) {
+    public RangerControl(EnemyState _cs, TowerControl _vt) {
         cs = _cs;
         victimTower = _vt;
         moveAmount = .04f;
@@ -92,8 +90,8 @@ public class RangerControl extends AbstractControl implements Savable {
     }
 
     private void downgradeVictimTower() {
-        TowerControl tower = victimTower.getControl();
-        //tower.downgrade()
+        TowerControl tower = victimTower;
+       // tower.downgrade();
     }
 
     private int getRangerHealth() {
