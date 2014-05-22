@@ -62,7 +62,6 @@ public class MapGenerator {
         String allowedenemies = getElement("allowedenemies", levelExpression);
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
-        parseGeomHash();
         return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, geomHash);
     }
     
@@ -91,16 +90,6 @@ public class MapGenerator {
         return new GeometryParams(camLoc, floorScale, baseVec, baseScale, 
                 towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, 
                 towerUnbuiltSelected, horizontalScale, verticalScale, beamwidth);
-    }
-    
-    private void parseGeomHash() {
-        String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
-        int numTowers = parseInt(getElement("numTowers", towerExpression));
-        for (int i = 0; i < numTowers; i++) {
-            String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
-            Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
-            geomHash.put(towerVec.x+","+towerVec.y, true);
-        }
     }
     
     private ArrayList<TowerParams> parseTowerList() {
