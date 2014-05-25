@@ -20,10 +20,10 @@ public class MoveCreep implements Runnable {
     private Vector3f prevLoc;
     private Vector3f baseVec;
 
-    public MoveCreep(RegCreepControl cc, String baseCoords) {
+    public MoveCreep(RegCreepControl cc) {
         this.cc = cc;
-        this.baseCoords = baseCoords;
         this.baseVec = cc.baseVec;
+        this.baseCoords = baseVec.x+","+baseVec.y;
         this.moveAmount = 0.1f;
     }
 

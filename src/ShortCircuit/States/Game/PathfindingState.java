@@ -17,8 +17,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * TODO: Make walls, make towers "solid"

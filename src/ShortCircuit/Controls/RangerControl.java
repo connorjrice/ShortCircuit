@@ -1,16 +1,9 @@
 package ShortCircuit.Controls;
 
-import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.States.Game.EnemyState;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import java.io.IOException;
 
 /**
  * This type of enemy will advance towards a built tower at a slow pace, and
@@ -28,7 +21,7 @@ import java.io.IOException;
  *
  * @author Connor
  */
-public class RangerControl extends AbstractControl implements Savable {
+public class RangerControl extends AbstractControl {
 
     private EnemyState cs;
     private boolean attachedToTower = false;
@@ -106,15 +99,5 @@ public class RangerControl extends AbstractControl implements Savable {
      RangerControl control = new RangerControl(cs, spatial);
      return control;
      }*/
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        super.read(im);
-        InputCapsule in = im.getCapsule(this);
-    }
 
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        super.write(ex);
-        OutputCapsule out = ex.getCapsule(this);
-    }
 }

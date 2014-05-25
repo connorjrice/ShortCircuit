@@ -1,17 +1,11 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.EnemyState;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
-import java.io.IOException;
 
 /**
  * PENDING: Blinking creepspawner and then flood of enemies, simultaneously shut
@@ -19,7 +13,7 @@ import java.io.IOException;
  *
  * @author Connor Rice
  */
-public class CreepSpawnerControl extends AbstractControl implements Savable {
+public class CreepSpawnerControl extends AbstractControl {
 
     private EnemyState EnemyState;
 
@@ -64,18 +58,5 @@ public class CreepSpawnerControl extends AbstractControl implements Savable {
     public Control cloneForSpatial(Spatial spatial) {
         CreepSpawnerControl control = new CreepSpawnerControl(EnemyState);
         return control;
-    }
-
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        super.read(im);
-        InputCapsule in = im.getCapsule(this);
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        super.write(ex);
-        OutputCapsule out = ex.getCapsule(this);
-
     }
 }

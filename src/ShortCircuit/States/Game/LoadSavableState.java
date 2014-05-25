@@ -117,6 +117,7 @@ public class LoadSavableState extends AbstractAppState {
 
         EnemyState.setEnemyParams(grp.getCreepMap());
         EnemyState.setCreepSpawnerList(spawnerList);
+        EnemyState.initLists(gap.getLevelParams().getProfile());
         GameState.setGPBuild(gap);
         FriendlyState.setTowerList(towerList);
     }
@@ -129,6 +130,14 @@ public class LoadSavableState extends AbstractAppState {
         GameState.setGPBuild(mg.getGameplayParams());
         FriendlyState.setTowerList(towerList);
     }*/
+    
+    public MapGenerator getMG() {
+        return mg;
+    }
+    
+    public boolean getProfile() {
+        return mg.getGameplayParams().getLevelParams().getProfile();
+    }
 
 
     private void initMG(String levelname, SimpleApplication app) {

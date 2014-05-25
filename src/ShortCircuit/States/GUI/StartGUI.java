@@ -110,16 +110,16 @@ public class StartGUI extends AbstractAppState {
        MainWindow.addChild(levelList);
     }
 
-    public void onStart(String level, boolean debug) {
+    public void onStart(String level) {
         if (firstLoad) {
             showloading();
-            tMS = new TowerMainState(debug, level);
+            tMS = new TowerMainState(level);
             stateManager.attach(tMS);
             firstLoad = false;
         } else {
             showloading();
             stateManager.detach(tMS);
-            tMS = new TowerMainState(debug, level);
+            tMS = new TowerMainState(level);
             stateManager.attach(tMS);
         }
         forceHide();
@@ -165,7 +165,7 @@ public class StartGUI extends AbstractAppState {
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 String level = (String) levelList.getListItem(levelList.getSelectedIndex()).getValue();
                 if (level != null) {
-                    onStart(level, false);
+                    onStart(level);
                 }
             }
         };

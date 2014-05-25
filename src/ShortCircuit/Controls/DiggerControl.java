@@ -1,17 +1,11 @@
 package ShortCircuit.Controls;
 
 import ShortCircuit.States.Game.EnemyState;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
-import java.io.IOException;
 
 /**
  * The digger enemey will slowly emerge from the ground. It is damageable from
@@ -25,7 +19,7 @@ import java.io.IOException;
  *
  * @author Connor
  */
-public class DiggerControl extends AbstractControl implements Savable {
+public class DiggerControl extends AbstractControl {
 
     private EnemyState cs;
     private boolean doneDigging = false;
@@ -70,17 +64,5 @@ public class DiggerControl extends AbstractControl implements Savable {
     public Control cloneForSpatial(Spatial spatial) {
         DiggerControl control = new DiggerControl(cs);
         return control;
-    }
-
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        super.read(im);
-        InputCapsule in = im.getCapsule(this);
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        super.write(ex);
-        OutputCapsule out = ex.getCapsule(this);
     }
 }

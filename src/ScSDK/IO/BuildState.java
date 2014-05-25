@@ -103,19 +103,8 @@ public class BuildState extends AbstractAppState {
     }
 
     private void embedLevelData() {
-        GraphicsParams grap = mg.getGraphicsParams();
-
         rootNode.setUserData("GraphicsParams", mg.getGraphicsParams());
         rootNode.setUserData("GameplayParams", mg.getGameplayParams());
-        //rootNode.setUserData("GeometryParams", grap.getGeometryParams());
-        //rootNode.setUserData("MaterialParams", grap.getMaterialParams());
-        //rootNode.setUserData("FilterParams", grap.getFilterParams());
-        //rootNode.setUserData("towerTypes", grap.getTowerTypes());
-        //rootNode.setUserData("creepList", grap.getCreepList());
-        //rootNode.setUserData("creepMap", grap.getCreepMap());
-//        System.out.println(((GraphicsParams) rootNode.getUserData("GraphicsParams")).getGeometryParams().getCamLoc());
-
-
     }
 
     /**
@@ -232,5 +221,16 @@ public class BuildState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+        rootNode.detachAllChildren();
+        towerParamList.clear();
+        creepSpawnerList.clear();
+        towerList.clear();
+        matHash.clear();
+        mg = null;
+        bf = null;
+        ff = null;
+        mp = null; 
+        gp = null;
+        tf = null;
     }
 }

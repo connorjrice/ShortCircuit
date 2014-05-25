@@ -4,18 +4,12 @@ import DataStructures.STC;
 import DataStructures.Nodes.STCCreepCompare;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.States.Game.FriendlyState;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.Callable;
@@ -25,7 +19,7 @@ import java.util.concurrent.Future;
  * Control for user-controlled towers. 
  * @author Connor Rice
  */
-public class TowerControl extends AbstractControl implements Savable {
+public class TowerControl extends AbstractControl {
 
     public STC<Spatial> reachable;
     public ArrayList<Charges> charges = new ArrayList<Charges>();
@@ -216,27 +210,5 @@ public class TowerControl extends AbstractControl implements Savable {
         TowerControl control = new TowerControl(FriendlyState, spatial.getLocalTranslation());
         control.setSpatial(spatial);
         return control;
-    }
-
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        super.read(im);
-        InputCapsule in = im.getCapsule(this);
-        isActive = in.readBoolean("isActive", false);
-        setBeamType(in.readString("beamType", null));
-        setTowerType(in.readString("towerType", "TowerEmpty"));
-        searchTimer = in.readFloat("searchTimer", .2f);
-        searchDelay = in.readFloat("searchDelay", .0f);
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        super.write(ex);
-        OutputCapsule out = ex.getCapsule(this);
-        out.write(getIsActive(), "isActive", false);
-        out.write(getBeamType(), "beamType", "TowerEmpty");
-        out.write(getTowerType(), "towerType", "TowerEmpty");
-        out.write(searchTimer, "searchTimer", .2f);
-        out.write(searchDelay, "searchDelay", .0f);
     }
 }

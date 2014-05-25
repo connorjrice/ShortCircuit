@@ -2,10 +2,6 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.Objects.Charges;
-import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.States.Game.GameState;
-import ShortCircuit.States.Game.FriendlyState;
-import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;

@@ -50,18 +50,16 @@ public class TowerMainState extends AbstractAppState {
     private InputManager inputManager;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
-    private final boolean profile;
     private final String level;
     private TutorialState TutorialState;
     private PathfindingState PathfindingState;
+    private boolean isProfile = false;
     
     public TowerMainState() {
         level = "Level1.lvl.xml";
-        profile = false;
     }
 
-    public TowerMainState(boolean _profile, String level) {
-        this.profile = _profile;
+    public TowerMainState(String level) {
         this.level = level;
     }
 
@@ -102,11 +100,7 @@ public class TowerMainState extends AbstractAppState {
         FriendlyState = new FriendlyState();
         PathfindingState = new PathfindingState();
         
-        if (profile) {
-            ProfileState ps = new ProfileState();
-            stateManager.attach(ps);
-            EnemyState.seedForProfile();
-        }
+
 
         stateManager.attach(AudioState);
         stateManager.attach(GameState);
@@ -119,7 +113,11 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(CheatGUI);
         stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
-
+        if (LoadingState.getProfile()) {
+            isProfile = true;
+            ProfileState ps = new ProfileState();
+            stateManager.attach(ps);
+        }
     }
 
     /**
@@ -178,7 +176,7 @@ public class TowerMainState extends AbstractAppState {
      * Ends game and detaches the states so they cannot be retrieved.
      */
     public void gameover() {
-        if (!profile) {
+        if (!isProfile) {
             isPauseAllowed = false;
             stateManager.attach(GameOverGUI);
             detachStates();

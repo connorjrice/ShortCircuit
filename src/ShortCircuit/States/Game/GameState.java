@@ -14,7 +14,6 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -22,8 +21,6 @@ import com.jme3.scene.Spatial;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -32,7 +29,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class GameState extends AbstractAppState implements Savable {
+public class GameState extends AbstractAppState {
 
     private SimpleApplication app;
     private Node rootNode;
@@ -369,15 +366,4 @@ public class GameState extends AbstractAppState implements Savable {
         ex.shutdown();
     }
 
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        InputCapsule in = im.getCapsule(this);
-
-
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        OutputCapsule out = ex.getCapsule(this);
-    }
 }

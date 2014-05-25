@@ -13,100 +13,88 @@ import java.io.IOException;
  */
 public class PlayerParams implements Savable {
 
-    private int health;
-    private int budget;
-    private int level;
-    private int score;
+    private int[] intParams;
 
     public PlayerParams() {
     }
 
-    public PlayerParams(int _health, int _budget, int _level, int _score) {
-        health = _health;
-        budget = _budget;
-        level = _level;
-        score = _score;
+    public PlayerParams(int health, int budget, int level, int score) {
+        this.intParams = new int[] {health, budget, level, score};
     }
 
     public int getHealth() {
-        return health;
+        return intParams[0];
     }
 
     public int getBudget() {
-        return budget;
+        return intParams[1];
     }
 
     public int getLevel() {
-        return level;
+        return intParams[2];
     }
 
     public int getScore() {
-        return score;
+        return intParams[3];
     }
 
     public void setHealth(int h) {
-        health = h;
+        intParams[0] = h;
     }
 
     public void setBudget(int b) {
-        budget = b;
+        intParams[1] = b;
     }
 
     public void setLevel(int l) {
-        level = l;
+        intParams[2] = l;
     }
 
     public void setScore(int s) {
-        score = s;
+        intParams[3] = s;
     }
 
     public void incHealth(int h) {
-        health += h;
+        intParams[0] += h;
     }
 
     public void incBudget(int b) {
-        budget += b;
+        intParams[1] += b;
     }
 
     public void incLevel(int l) {
-        level += l;
+        intParams[2] += l;
     }
 
     public void incScore(int s) {
-        score += s;
+        intParams[3] += s;
     }
 
     public void decHealth(int h) {
-        health -= h;
+        intParams[0] -= h;
     }
 
     public void decBudget(int b) {
-        budget -= b;
+        intParams[1] -= b;
     }
 
     public void decLevel(int l) {
-        level -= l;
+        intParams[2] -= l;
     }
 
     public void decScore(int s) {
-        score -= s;
+        intParams[3] -= s;
     }
 
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
-        health = in.readInt("h", 100);
-        budget = in.readInt("b", 100);
-        level = in.readInt("l", 1);
-        score = in.readInt("s", 0);
+        intParams = in.readIntArray("intParams", new int[4]);
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
-        out.write(health, "h", health);
-        out.write(budget, "b", budget);
-        out.write(level, "l", level);
-        out.write(score, "s", score);
+        out.write(intParams, "intParams", new int[4]);
     }
 }

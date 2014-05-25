@@ -71,7 +71,6 @@ public class EnemyState extends AbstractAppState {
         this.PathState = this.stateManager.getState(PathfindingState.class);
         this.rootNode = this.app.getRootNode();
         initFactories();
-        initLists();
     }
 
     private void initFactories() {
@@ -80,10 +79,14 @@ public class EnemyState extends AbstractAppState {
         rf = new RangerFactory(this);
     }
 
-    private void initLists() {
+    public void initLists(boolean isProfile) {
         creepList = new ArrayList<Spatial>();
         globList = new ArrayList<Spatial>();
-        random = new Random();
+        if (isProfile) {
+            random = new Random(42);
+        } else {
+            random = new Random();
+        }        
         nextrandom = random.nextInt(50);
     }
 

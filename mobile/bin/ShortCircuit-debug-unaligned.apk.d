@@ -1,0 +1,22 @@
+C:\Users\Development\Documents\ShortCircuit\mobile\bin\ShortCircuit-debug-unaligned.apk : \
+C:\Users\Development\Documents\ShortCircuit\mobile\bin\ShortCircuit.ap_ \
+C:\Users\Development\Documents\ShortCircuit\mobile\bin\classes.dex \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-jogg.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-android.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-plugins.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-core.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\ShortCircuit.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\tonegod.gui.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\j-ogg-vorbisd.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\j-ogg-oggd.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\eventbus.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-bullet.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-effects.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-terrain.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\xmlpull-xpp3.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\jME3-networking.jar \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\armeabi\libbulletjme.so \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\armeabi\libopenalsoftjme.so \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\armeabi-v7a\libbulletjme.so \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\armeabi-v7a\libopenalsoftjme.so \
+C:\Users\Development\Documents\ShortCircuit\mobile\libs\x86\libopenalsoftjme.so \

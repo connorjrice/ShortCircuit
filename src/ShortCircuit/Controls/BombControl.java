@@ -3,18 +3,11 @@ package ShortCircuit.Controls;
 import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.audio.AudioNode;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -26,7 +19,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author Connor Rice
  */
-public class BombControl extends AbstractControl implements Savable{
+public class BombControl extends AbstractControl {
 
     private float bombTimer = 0f;
     private float collideTimer = 0f;
@@ -172,15 +165,5 @@ public class BombControl extends AbstractControl implements Savable{
         return control;
     }
 
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        super.read(im);
-        InputCapsule in = im.getCapsule(this);
-    }
 
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        super.write(ex);
-        OutputCapsule out = ex.getCapsule(this);
-    }
 }
