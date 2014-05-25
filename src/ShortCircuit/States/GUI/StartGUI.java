@@ -1,6 +1,6 @@
 package ShortCircuit.States.GUI;
 
-import ShortCircuit.MapXML.FileLoader;
+import ScSDK.MapXML.FileLoader;
 import ShortCircuit.ShortCircuitMain;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;

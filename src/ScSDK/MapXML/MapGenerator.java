@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 import ScSDK.MapXML.BuildParams;
 import com.jme3.app.SimpleApplication;

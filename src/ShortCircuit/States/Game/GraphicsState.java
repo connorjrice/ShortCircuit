@@ -2,11 +2,11 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.BombControl;
 import ShortCircuit.Factories.BeamFactory;
-import ShortCircuit.MapXML.FilterParams;
-import ShortCircuit.MapXML.GeometryParams;
-import ShortCircuit.MapXML.MaterialParams;
-import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.MapXML.GraphicsParams;
+import ScSDK.MapXML.FilterParams;
+import ScSDK.MapXML.GeometryParams;
+import ScSDK.MapXML.MaterialParams;
+import ScSDK.MapXML.TowerParams;
+import ScSDK.MapXML.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -30,9 +30,11 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * TODO: see if lower def files run faster on android
+ *
  * @author Development
  */
 public class GraphicsState extends AbstractAppState {
+
     private SimpleApplication app;
     private GeometryParams gp;
     private Sphere bombMesh = new Sphere(16, 16, 1.0f);
@@ -59,9 +61,9 @@ public class GraphicsState extends AbstractAppState {
     private Node rootNode;
     private ArrayList<TowerParams> towerParamList;
 
-    
-    public GraphicsState() {}
-    
+    public GraphicsState() {
+    }
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -78,17 +80,17 @@ public class GraphicsState extends AbstractAppState {
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         BeamFactory = new BeamFactory(this);
     }
-    
+
     public void setGraphicsParams(GraphicsParams gp) {
         this.gp = gp.getGeometryParams();
         this.mp = gp.getMaterialParams();
         this.fp = gp.getFilterParams();
         initFilters();
-        setCameraSets();        
+        setCameraSets();
         setBackgroundColor(mp.getBackgroundColor());
         rootNode.attachChild(beamNode);
     }
-    
+
     @Override
     public void update(float tpf) {
         super.update(tpf);
@@ -102,18 +104,17 @@ public class GraphicsState extends AbstractAppState {
             }
         }
     }
-    
+
     private void setCameraSets() {
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
         cam.setLocation(gp.getCamLoc());
     }
-    
 
     /**
-     * Sets up the FilterPostProcessor and Bloom filter used by the game.
-     * Called upon initialization of the game.
+     * Sets up the FilterPostProcessor and Bloom filter used by the game. Called
+     * upon initialization of the game.
      */
     public void initFilters() {
         if (fp.getEnabled()) {
@@ -128,12 +129,12 @@ public class GraphicsState extends AbstractAppState {
             viewPort.addProcessor(fpp);
         }
     }
-    
+
     private void removeFilters() {
         viewPort.removeProcessor(fpp);
     }
-    
-        /**
+
+    /**
      * Toggle the bloom filter.
      */
     public void toggleBloom() {
@@ -147,6 +148,7 @@ public class GraphicsState extends AbstractAppState {
 
     /**
      * Method for changing the bloom filter's exposure power.
+     *
      * @param newVal - what it will be changed to
      */
     public void setBloomExposurePower(float newVal) {
@@ -155,6 +157,7 @@ public class GraphicsState extends AbstractAppState {
 
     /**
      * Method for changing the bloom filter's blur scape.
+     *
      * @param newVal - what it will be changed to
      */
     public void setBloomBlurScape(float newVal) {
@@ -163,6 +166,7 @@ public class GraphicsState extends AbstractAppState {
 
     /**
      * Method fo setting the bloom filter's intensity
+     *
      * @param newVal - what it should be changed to.
      */
     public void setBloomIntensity(float newVal) {
@@ -171,23 +175,23 @@ public class GraphicsState extends AbstractAppState {
 
     /**
      * Increments the bloom filter's intensity
+     *
      * @param add - value to be added to the filter.
      */
     public void incBloomIntensity(float add) {
         bloom.setBloomIntensity(bloom.getBloomIntensity() + add);
     }
-    
+
     public BloomFilter getBloom() {
         return bloom;
     }
-    
+
     public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
         AudioState.beamSound(towertype, origin);
         beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, towertype, beamwidth));
         shot = true;
     }
 
-    
     public void setTowerScale(int tindex, String scaletype) {
         if (scaletype.equals("BuiltSize")) {
             getTower(tindex).setLocalScale(getTowerBuiltSize());
@@ -199,54 +203,54 @@ public class GraphicsState extends AbstractAppState {
             getTower(tindex).setLocalScale(getTowerUnbuiltSelected());
         }
     }
-    
+
     private Spatial getTower(int tindex) {
         return FriendlyState.getTower(tindex);
     }
-    
+
     public Vector3f getBaseVec() {
         return gp.getBaseVec();
     }
-    
+
     public Vector3f getBaseScale() {
         return gp.getBaseScale();
     }
-    
+
     public void towerTextureCharged(Spatial tower) {
-        tower.setMaterial(assetManager.loadMaterial(getMatLoc((String)tower.getUserData("Type"))));
+        tower.setMaterial(assetManager.loadMaterial(getMatLoc((String) tower.getUserData("Type"))));
     }
-    
+
     public void towerTextureEmpty(Spatial tower) {
         tower.setMaterial(assetManager.loadMaterial(getMatLoc(("TowerEmpty"))));
     }
-    
-    
+
     public String getMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";
     }
-    
+
     public Vector3f getTowerBuiltSize() {
         return gp.getTowerBuiltSize();
     }
-    
+
     public Vector3f getTowerUnbuiltSize() {
         return gp.getTowerUnbuiltSize();
     }
-    
+
     public Vector3f getTowerBuiltSelected() {
         return gp.getTowerBuiltSelected();
     }
-    
+
     public Vector3f getTowerUnbuiltSelected() {
         return gp.getTowerUnbuiltSelected();
     }
-    
+
     public ArrayList<TowerParams> getTowerList() {
         return towerParamList;
     }
-    
-    /*** Bomb Methods ***/
-    
+
+    /**
+     * * Bomb Methods **
+     */
     public void dropBomb(Vector3f translation, float initialSize) {
         Geometry bomb_geom = new Geometry("Bomb", getBombMesh());
         bomb_geom.setMaterial(assetManager.loadMaterial(getMatLoc("Bomb")));
@@ -256,61 +260,62 @@ public class GraphicsState extends AbstractAppState {
         bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
         rootNode.attachChild(bomb_geom);
     }
-    
+
     public Sphere getBombMesh() {
         return bombMesh;
     }
-    
-    /*** Global Methods ***/
-    
+
+    /**
+     * * Global Methods **
+     */
     public Box getUnivBox() {
         return univ_box;
     }
+
     public String getMatDir() {
         return mp.getMatDir();
     }
-    
+
     private void setBackgroundColor(ColorRGBA c) {
         app.getViewPort().setBackgroundColor(c);
     }
+
     public AssetManager getAssetManager() {
         return assetManager;
     }
-    
+
     public ScheduledThreadPoolExecutor getEx() {
         return GameState.getEx();
     }
-        
+
     public SimpleApplication getApp() {
         return app;
     }
-    
+
     public FriendlyState getFriendlyState() {
         return FriendlyState;
     }
-    
+
     public EnemyState getEnemyState() {
         return EnemyState;
     }
-    
+
     public ArrayList<Spatial> getCreepList() {
         return EnemyState.getCreepList();
     }
-    
-    
+
     public GeometryParams getGeometryParams() {
         return gp;
     }
-    
+
     public Vector3f getCamLocation() {
         return gp.getCamLoc();
     }
-    
+
     public Node getWorldNode() {
         return worldNode;
     }
-    
-    
+
     @Override
     public void cleanup() {
         super.cleanup();
@@ -318,6 +323,4 @@ public class GraphicsState extends AbstractAppState {
         beamNode.detachAllChildren();
 
     }
-
- 
 }

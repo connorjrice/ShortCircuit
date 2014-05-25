@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;

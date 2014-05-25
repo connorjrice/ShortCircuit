@@ -71,8 +71,13 @@ public class Graph<T extends Comparable> {
     }
 
     public void removeEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
-        edges[firstNode.getIndex()][secondNode.getIndex()] = false;
-        edges[secondNode.getIndex()][firstNode.getIndex()] = false;
+        if (firstNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
+            if (secondNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
+                edges[firstNode.getIndex()][secondNode.getIndex()] = false;
+                edges[secondNode.getIndex()][firstNode.getIndex()] = false;
+            }
+        }
+
     }
 
     public boolean isEdge(int i, int j) {

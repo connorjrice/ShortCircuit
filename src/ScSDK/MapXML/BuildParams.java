@@ -1,10 +1,5 @@
 package ScSDK.MapXML;
 
-import ShortCircuit.MapXML.CreepParams;
-import ShortCircuit.MapXML.GeometryParams;
-import ShortCircuit.MapXML.TowerParams;
-import ShortCircuit.MapXML.CreepSpawnerParams;
-import ShortCircuit.MapXML.MaterialParams;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;

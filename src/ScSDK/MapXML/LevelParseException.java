@@ -1,4 +1,4 @@
-package ShortCircuit.MapXML;
+package ScSDK.MapXML;
 
 /**
  * Exception for level parameters going wonky
