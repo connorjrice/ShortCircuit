@@ -16,6 +16,8 @@ public class MaterialParams implements Savable {
 
     private ColorRGBA backgroundcolor;
     private String matdir;
+    
+    public MaterialParams() {}
 
     public MaterialParams(ColorRGBA _backgroundcolor, String _matdir) {
         backgroundcolor = _backgroundcolor;
@@ -33,10 +35,14 @@ public class MaterialParams implements Savable {
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        backgroundcolor = (ColorRGBA) in.readSavable("bgcolor", new ColorRGBA());
+        matdir = in.readString("matdir", "");
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
+        out.write(backgroundcolor, "bgcolor", new ColorRGBA());
+        out.write(matdir, "matdir", "");
     }
 }

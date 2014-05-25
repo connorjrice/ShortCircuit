@@ -22,6 +22,7 @@ import com.jme3.scene.Spatial;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -180,8 +181,8 @@ public class GameState extends AbstractAppState implements Savable {
         return bombActive;
     }
 
-    public HashMap getGeomHash() {
-        return lp.getGeomHash();
+    public String[] getBlockedNodes() {
+        return lp.getBlockedNodes();
     }
 
     /**

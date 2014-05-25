@@ -6,6 +6,7 @@ import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,93 +14,85 @@ import java.util.HashMap;
  * @author Connor Rice
  */
 public class LevelParams implements Savable {
-    private int numCreeps;
-    private int creepMod;
-    private int levelCap;
-    private int levelMod;
-    private boolean profile;
-    private boolean tutorial;
-    
+
+    private int[] intParams;
+    private boolean[] boolParams;
     /**
-     * Allowed Enemies
-     * 0123456
-     * 0 = small creep
-     * 1 = medium creep
-     * 2 = large creep
-     * 3 = giant creep
-     * 4 = glob
-     * 5 = ranger
-     * 6 = digger
-     * Binary system, so sm-large is
-     * 111000
+     * Allowed Enemies 0123456 0 = small creep 1 = medium creep 2 = large creep
+     * 3 = giant creep 4 = glob 5 = ranger 6 = digger Binary system, so sm-large
+     * is 111000
      */
     private String allowedenemies;
-    private HashMap geomHash;
-    
-    public LevelParams(int _numCreeps, int _creepMod, 
-            int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
-            String _allowedenemies, HashMap blockedNodes) {
-        numCreeps = _numCreeps;
-        creepMod = _creepMod;
-        levelCap = _levelCap;
-        levelMod = _levelMod;
-        profile = _profile;
-        tutorial = _tutorial;
-        allowedenemies = _allowedenemies;
-        this.geomHash = blockedNodes;
-                
+    private String[] blockedNodes;
+
+    public LevelParams() {
     }
 
+    public LevelParams(int _numCreeps, int _creepMod,
+            int _levelCap, int _levelMod, boolean _profile, boolean _tutorial,
+            String _allowedenemies, String[] blockedNodes) {
+        intParams = new int[]{_numCreeps, _creepMod, _levelCap, _levelMod};
+        boolParams = new boolean[]{_profile, _tutorial};
+        allowedenemies = _allowedenemies;
+        this.blockedNodes = (String[]) blockedNodes;
+
+    }
 
     public int getNumCreeps() {
-        return numCreeps;
+        return intParams[0];
     }
 
     public int getCreepMod() {
-        return creepMod;
+        return intParams[1];
     }
 
     public int getLevelCap() {
-        return levelCap;
+        return intParams[2];
     }
 
     public int getLevelMod() {
-        return levelMod;
+        return intParams[3];
     }
-    
+
     public boolean getProfile() {
-        return profile;
+        return boolParams[0];
     }
-    
+
     public boolean getTutorial() {
-        return tutorial;
+        return boolParams[1];
     }
-    
+
     public String getAllowedEnemies() {
         return allowedenemies;
     }
-    
+
     public void incLevelCap() {
-        levelCap *= 2;
+        intParams[2] *= 2;
     }
-    
+
     public void updateNumCreeps() {
-        numCreeps += creepMod;
+        intParams[0] += getCreepMod();
     }
-    
-    public HashMap getGeomHash() {
-        return geomHash;
+
+    public String[] getBlockedNodes() {
+        return blockedNodes;
     }
-    
+
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        intParams = in.readIntArray("intParams", new int[30]);
+        boolParams = in.readBooleanArray("boolParams", new boolean[30]);
+        allowedenemies = in.readString("allowedenemies", "");
+        blockedNodes = in.readStringArray("blockedNodes", new String[10]);
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
+        out.write(intParams, "intParams", new int[intParams.length]);
+        out.write(boolParams, "boolParams", new boolean[boolParams.length]);
+        out.write(allowedenemies, "allowedenemies", allowedenemies);
+        out.write(blockedNodes, "blockedNodes", new String[blockedNodes.length]);
     }
-    
-    
 }

@@ -49,8 +49,9 @@ public class BuildState extends AbstractAppState {
     private FloorFactory ff;
     private BaseFactory bf;
     private String levelName;
-    
-    public BuildState (String levelName) {
+    private MapGenerator mg;
+
+    public BuildState(String levelName) {
         this.levelName = levelName;
     }
 
@@ -67,7 +68,7 @@ public class BuildState extends AbstractAppState {
     }
 
     private void createWorld() {
-        MapGenerator mg = new MapGenerator(levelName, app);
+        this.mg = new MapGenerator(levelName, app);
         BuildParams bp = mg.getBuildParams();
         this.gp = bp.getGeometryParams();
         this.mp = bp.getMaterialParams();
@@ -79,14 +80,15 @@ public class BuildState extends AbstractAppState {
         createBase();
         buildTowers();
         buildCreepSpawners();
+        embedLevelData();
     }
-    
+
     private void buildMatHash(String[] towerTypes) {
         BuildMatHashSDK bms = new BuildMatHashSDK(this, towerTypes);
         bms.run();
         this.matHash = bms.getMatHash();
     }
-    
+
     private void initLists() {
         towerParamList = new ArrayList<TowerParams>(32);
         towerList = new ArrayList<Spatial>(32);
@@ -100,6 +102,21 @@ public class BuildState extends AbstractAppState {
         csf = new CreepSpawnerFactory(this);
     }
 
+    private void embedLevelData() {
+        GraphicsParams grap = mg.getGraphicsParams();
+
+        rootNode.setUserData("GraphicsParams", mg.getGraphicsParams());
+        rootNode.setUserData("GameplayParams", mg.getGameplayParams());
+        //rootNode.setUserData("GeometryParams", grap.getGeometryParams());
+        //rootNode.setUserData("MaterialParams", grap.getMaterialParams());
+        //rootNode.setUserData("FilterParams", grap.getFilterParams());
+        //rootNode.setUserData("towerTypes", grap.getTowerTypes());
+        //rootNode.setUserData("creepList", grap.getCreepList());
+        //rootNode.setUserData("creepMap", grap.getCreepMap());
+//        System.out.println(((GraphicsParams) rootNode.getUserData("GraphicsParams")).getGeometryParams().getCamLoc());
+
+
+    }
 
     /**
      * * World Methods **
@@ -149,19 +166,19 @@ public class BuildState extends AbstractAppState {
         towerList.add(tp.getIndex(), tower);
         rootNode.attachChild(tower);
     }
-    
+
     public Vector3f getTowerBuiltSize() {
         return gp.getTowerBuiltSize();
     }
-    
+
     public Vector3f getTowerUnbuiltSize() {
         return gp.getTowerUnbuiltSize();
     }
-    
+
     public Vector3f getTowerBuiltSelected() {
         return gp.getTowerBuiltSelected();
     }
-    
+
     public Vector3f getTowerUnbuiltSelected() {
         return gp.getTowerUnbuiltSelected();
     }
@@ -195,7 +212,7 @@ public class BuildState extends AbstractAppState {
     public AssetManager getAssetManager() {
         return assetManager;
     }
-    
+
     public Box getUnivBox() {
         return univ_box;
     }
@@ -203,7 +220,7 @@ public class BuildState extends AbstractAppState {
     public String getMatDir() {
         return mp.getMatDir();
     }
-    
+
     public String getMatLoc(String type) {
         return "Materials/" + getMatDir() + "/" + type + ".j3m";
     }

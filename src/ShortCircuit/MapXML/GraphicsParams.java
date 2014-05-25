@@ -5,7 +5,6 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
-import com.jme3.scene.Spatial;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +22,10 @@ public class GraphicsParams implements Savable {
     private String[] towerTypes;
     private ArrayList<CreepParams> creepList;
     private HashMap<String, CreepParams> creepMap;
+    
+    public GraphicsParams() {
+        this.creepMap = new HashMap<String, CreepParams>();
+    }
 
     public GraphicsParams(MaterialParams mp, FilterParams fp, GeometryParams gp,
             String[] towerTypes, ArrayList<CreepParams> creepList) {
@@ -51,32 +54,54 @@ public class GraphicsParams implements Savable {
         return towerTypes;
     }
 
-
-    private void parseCreeps() {
+    public void parseCreeps() {
         for (CreepParams curCreep : creepList) {
             creepMap.put(curCreep.getType(), curCreep);
         }
     }
+    
+    public ArrayList<CreepParams> getCreepList() {
+        return creepList;
+    }
 
     public HashMap getCreepMap() {
+        if (creepMap.isEmpty()) {
+            parseCreeps();
+        }
         return creepMap;
     }
 
     public CreepParams getCreepParams(String type) {
+        if (creepMap.isEmpty()) {
+            parseCreeps();
+        }
         return creepMap.get(type);
     }
 
     public Set<String> getCreepTypes() {
+        if (creepMap.isEmpty()) {
+            parseCreeps();
+        }
         return creepMap.keySet();
     }
 
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        mp = (MaterialParams) in.readSavable("mp", new MaterialParams());
+        fp = (FilterParams) in.readSavable("fp", new FilterParams());
+        gp = (GeometryParams) in.readSavable("gp", new GeometryParams());
+        towerTypes = in.readStringArray("towerTypes", new String[0]);
+        creepList = in.readSavableArrayList("creepList", new ArrayList<CreepParams>());
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
+        out.write(mp, "mp", new MaterialParams());
+        out.write(fp, "fp", new FilterParams());
+        out.write(gp, "gp", new GameplayParams());
+        out.write(towerTypes, "towerTypes", new String[20]);
+        out.writeSavableArrayList(creepList, "creepList",new ArrayList<CreepParams>());
     }
 }

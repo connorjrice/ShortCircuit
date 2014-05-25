@@ -7,18 +7,17 @@ import ShortCircuit.MapXML.GeometryParams;
 import ShortCircuit.MapXML.MaterialParams;
 import ShortCircuit.MapXML.TowerParams;
 import ShortCircuit.MapXML.GraphicsParams;
-import ShortCircuit.Threading.BuildMatHash;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.FlyByCamera;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
+import com.jme3.post.filters.BloomFilter.GlowMode;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
@@ -27,7 +26,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -109,6 +107,7 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
+        System.out.println(gp.getCamLoc());
         cam.setLocation(gp.getCamLoc());
     }
     
@@ -120,12 +119,8 @@ public class GraphicsState extends AbstractAppState {
     public void initFilters() {
         if (fp.getEnabled()) {
             fpp = new FilterPostProcessor(assetManager);
-            if (fp.getGlowMode() != null) {
-                bloom = new BloomFilter(fp.getGlowMode());
-            }
-            else {
-                bloom = new BloomFilter();
-            }
+            bloom = new BloomFilter(GlowMode.SceneAndObjects);
+            System.out.println("Fp"+ fp.getDownSampling());
             bloom.setDownSamplingFactor(fp.getDownSampling());
             bloom.setBlurScale(fp.getBlurScale());
             bloom.setExposurePower(fp.getExposurePower());

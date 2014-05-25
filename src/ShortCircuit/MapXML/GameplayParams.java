@@ -1,7 +1,5 @@
 package ShortCircuit.MapXML;
 
-import ShortCircuit.MapXML.LevelParams;
-import ShortCircuit.MapXML.PlayerParams;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -20,6 +18,11 @@ public class GameplayParams implements Savable {
 
     private LevelParams lp;
     private PlayerParams pp;
+    public String hello;
+    
+    public GameplayParams() {
+
+    }
 
     public GameplayParams(LevelParams lp, PlayerParams pp) {
         this.lp = lp;
@@ -35,16 +38,17 @@ public class GameplayParams implements Savable {
         return pp;
     }
 
-    @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        lp = (LevelParams) in.readSavable("lp", new LevelParams());
+        System.out.println("here"+lp.getAllowedEnemies());
+        pp = (PlayerParams) in.readSavable("pp", new PlayerParams());
     }
 
-    @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
-        out.write(lp, "lp", lp);
-        out.write(pp, "pp", pp);
+        out.write(lp, "lp", new LevelParams());
+        out.write(pp, "pp", new PlayerParams());
     }
     
 

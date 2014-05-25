@@ -15,11 +15,13 @@ import java.io.IOException;
  * @author Connor
  */
 public class CreepParams implements Savable {
-    private final int health;
-    private final float speed;
-    private final Vector3f size;
-    private final String type;
-    private final int value;
+    private  int health;
+    private float speed;
+    private Vector3f size;
+    private String type;
+    private int value;
+    
+    public CreepParams() {}
 
     public CreepParams(int health, float speed, Vector3f size, String type, int value) {
         this.health = health;
@@ -52,11 +54,22 @@ public class CreepParams implements Savable {
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        health = in.readInt("health", 100);
+        speed = in.readFloat("speed", 1.0f);
+        size = (Vector3f) in.readSavable("size", new Vector3f());
+        type = in.readString("type", "creep");
+        value = in.readInt("value", 100);
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
+        out.write(health, "health", health);
+        out.write(speed, "speed", speed);
+        out.write(size, "size", new Vector3f());
+        out.write(type, "type", "");
+        out.write(value, "value", value);
+
     }
     
     

@@ -3,6 +3,8 @@ package ShortCircuit.States.Game;
 import ShortCircuit.MapXML.MapGenerator;
 import ShortCircuit.Controls.CreepSpawnerControl;
 import ShortCircuit.Controls.TowerControl;
+import ShortCircuit.MapXML.GameplayParams;
+import ShortCircuit.MapXML.GraphicsParams;
 import ShortCircuit.States.GUI.StartGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -36,6 +38,8 @@ public class LoadSavableState extends AbstractAppState {
     private ArrayList<Spatial> towerList;
     private ArrayList<Spatial> spawnerList;
     private FriendlyState FriendlyState;
+    private GameplayParams gap;
+    private GraphicsParams grp;
     
     public LoadSavableState() {}
     
@@ -54,7 +58,6 @@ public class LoadSavableState extends AbstractAppState {
         initLists();
         loadWorld();
         visitScene();
-        setParams();
     }
     
     private void getStates() {
@@ -87,10 +90,13 @@ public class LoadSavableState extends AbstractAppState {
                 } else if (spatial.getName().equals("Spawner")) {
                     spawnerList.add(spatial);
                     spatial.addControl(new CreepSpawnerControl(EnemyState));
+                } else if (spatial.getName().equals("Data")) {
+
                 }
             }
         };
         rootNode.breadthFirstTraversal(vis);
+        setParams();
     }
     
     private void addTower(Spatial spatial) {
@@ -106,12 +112,27 @@ public class LoadSavableState extends AbstractAppState {
     
     private void setParams() {
         initMG(levelName, app);
+        grp = (GraphicsParams) rootNode.getChild("LoadedWorld").getUserData("GraphicsParams");
+        gap = (GameplayParams) rootNode.getChild("LoadedWorld").getUserData("GameplayParams");
+        grp.parseCreeps();
+        GraphicsState.setGraphicsParams(grp);
+
+        EnemyState.setEnemyParams(grp.getCreepMap());
+        System.out.println(spawnerList.size());
+        EnemyState.setCreepSpawnerList(spawnerList);
+        GameState.setGPBuild(gap);
+        FriendlyState.setTowerList(towerList);
+        System.out.println("cleared");
+    }
+    
+    /*private void setParams() {
+        initMG(levelName, app);
         GraphicsState.setGraphicsParams(mg.getGraphicsParams());
         EnemyState.setEnemyParams(mg.getGraphicsParams().getCreepMap());
         EnemyState.setCreepSpawnerList(spawnerList);
         GameState.setGPBuild(mg.getGameplayParams());
         FriendlyState.setTowerList(towerList);
-    }
+    }*/
 
 
     private void initMG(String levelname, SimpleApplication app) {

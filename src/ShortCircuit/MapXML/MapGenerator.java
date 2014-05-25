@@ -23,7 +23,7 @@ public class MapGenerator {
     private XPath xpath;
     private Document doc;
     private AssetManager assetManager;
-    private HashMap geomHash;
+    private ArrayList<String> blockedNodes;
 
     public MapGenerator(String level, SimpleApplication app) {
         xpath = XPathFactory.newInstance().newXPath();
@@ -31,7 +31,7 @@ public class MapGenerator {
         assetManager.registerLoader(XMLLoader.class, "lvl.xml");
 
 
-        this.geomHash = new HashMap(20);
+        this.blockedNodes = new ArrayList<String>();
         this.doc = (Document) assetManager.loadAsset("XML/" + level);
     }
     
@@ -61,7 +61,7 @@ public class MapGenerator {
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
         parseGeomHash();
-        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, geomHash);
+        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, blockedNodes.toArray(new String[blockedNodes.size()]));
     }
     
     private PlayerParams parsePlayerParams() {
@@ -97,7 +97,7 @@ public class MapGenerator {
         for (int i = 0; i < numTowers; i++) {
             String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
-            geomHash.put(towerVec.x+","+towerVec.y, true);
+            blockedNodes.add(towerVec.x+","+towerVec.y);
         }
     }
     
@@ -112,7 +112,7 @@ public class MapGenerator {
             
             boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
             towerList.add(new TowerParams(towerVec, starter, i, beamwidth));
-            geomHash.put(towerVec.x+","+towerVec.y, starter);
+            blockedNodes.add(towerVec.x+","+towerVec.y);
         }
         return towerList;
     }
@@ -206,7 +206,7 @@ public class MapGenerator {
     }
     
     public void parseVector3fHash(String vec, int index) {
-        geomHash.put(vec, "Tower"+index);
+        blockedNodes.add(vec);
     }
 
     public Vector3f parseVector3f(String vec) {

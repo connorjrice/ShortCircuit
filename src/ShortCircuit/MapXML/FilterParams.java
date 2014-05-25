@@ -1,11 +1,17 @@
 package ShortCircuit.MapXML;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
+import com.jme3.material.Material;
+import com.jme3.post.Filter;
+import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.BloomFilter.GlowMode;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
 import java.io.IOException;
 
 /**
@@ -16,21 +22,15 @@ import java.io.IOException;
 public class FilterParams implements Savable {
 
     private boolean enabled;
-    private float downsampling;
-    private float blurscale;
-    private float exposurepower;
-    private float bloomintensity;
+    private float[] filterFloats;
     private GlowMode glowmode;
     
-    // TODO: array float FilterParams
+    public FilterParams() {}
 
     public FilterParams(boolean _enabled, float _downsampling, float _blurscale,
             float _exposurepower, float _bloomintensity, GlowMode _glowmode) {
+        filterFloats = new float[] {_downsampling, _blurscale, _exposurepower, _bloomintensity};
         enabled = _enabled;
-        downsampling = _downsampling;
-        blurscale = _blurscale;
-        exposurepower = _exposurepower;
-        bloomintensity = _bloomintensity;
         glowmode = _glowmode;
     }
 
@@ -39,19 +39,19 @@ public class FilterParams implements Savable {
     }
 
     public float getDownSampling() {
-        return downsampling;
+        return filterFloats[0];
     }
 
     public float getBlurScale() {
-        return blurscale;
+        return filterFloats[1];
     }
 
     public float getExposurePower() {
-        return exposurepower;
+        return filterFloats[2];
     }
 
     public float getBloomIntensity() {
-        return bloomintensity;
+        return filterFloats[3];
     }
 
     public GlowMode getGlowMode() {
@@ -60,11 +60,17 @@ public class FilterParams implements Savable {
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
+        enabled = in.readBoolean("enabled", true);
+        filterFloats = in.readFloatArray("filterFloats", new float[4]);
+        glowmode = GlowMode.SceneAndObjects;
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
+        out.write(enabled, "enabled", enabled);
+        out.write(filterFloats, "filterFloats", new float[4]);
+        out.write(glowmode, "glowmode", glowmode);
     }
     
 }

@@ -3,7 +3,7 @@ package ShortCircuit.PathFinding;
 import DataStructures.Graph;
 import com.jme3.scene.Node;
 import java.text.DecimalFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,17 +13,15 @@ public class JEdgeManipulator implements EdgeManipulator {
 
     private Graph worldGraph;
     private final float precision;
-    private Node rootNode;
     private DecimalFormat numFormatter;
-    private HashMap geomHash;
-    private final String UNBLOCKED = "Unblocked";
+    private String[] blockedNodes;
 
-    public JEdgeManipulator(Graph worldGraph, Node targetNode, HashMap geomHash, float precision) {
+    public JEdgeManipulator(Graph worldGraph, Node targetNode, String[] geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
         //this.rootNode = targetNode;
         this.numFormatter = new DecimalFormat("0.0");
-        this.geomHash = geomHash;
+        this.blockedNodes = geomHash;
     }
 
     public void addInitialEdges() {
@@ -54,7 +52,13 @@ public class JEdgeManipulator implements EdgeManipulator {
 
     private void addEdge(String nodeName, String targetName) {
         if (!nodeName.equals(targetName)) {
-            if (geomHash.get(nodeName) == null && geomHash.get(targetName) == null) {
+            boolean possible = true;
+            for (int i = 0; i < blockedNodes.length; i++) {
+                if (blockedNodes[i].equals(nodeName) || blockedNodes[i].equals(targetName)) {
+                    possible = false;
+                }
+            }
+            if (possible) {
                 worldGraph.addEdge(targetName, nodeName);
             }
         }

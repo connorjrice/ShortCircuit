@@ -17,6 +17,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -44,7 +45,7 @@ public class PathfindingState extends AbstractAppState {
     private DecimalFormat numFormatter;
     private String[] blockedGeom;
     private GameState GameState;
-    private HashMap geomHash;
+    private String[] blockedNodes;
     private JEdgeManipulator edgeMani;
     private GraphicsState GraphicsState;
     
@@ -61,10 +62,10 @@ public class PathfindingState extends AbstractAppState {
         this.precision = 1.0f; // works with 1.0f, .5f
         this.GameState = stateManager.getState(GameState.class);
         this.GraphicsState = stateManager.getState(GraphicsState.class);
-        this.geomHash = GameState.getGeomHash();
+        this.blockedNodes = GameState.getBlockedNodes();
         initAssets();
         createPathNodes();
-        edgeMani = new JEdgeManipulator(worldGraph, targetNode, geomHash, precision);
+        edgeMani = new JEdgeManipulator(worldGraph, targetNode, blockedNodes, precision);
         addEdges();
         rootNode.attachChild(targetNode);
     }
