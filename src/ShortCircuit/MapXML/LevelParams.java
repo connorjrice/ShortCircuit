@@ -81,8 +81,8 @@ public class LevelParams implements Savable {
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
-        intParams = in.readIntArray("intParams", new int[30]);
-        boolParams = in.readBooleanArray("boolParams", new boolean[30]);
+        intParams = in.readIntArray("intParams", new int[4]);
+        boolParams = in.readBooleanArray("boolParams", new boolean[2]);
         allowedenemies = in.readString("allowedenemies", "");
         blockedNodes = in.readStringArray("blockedNodes", new String[10]);
     }

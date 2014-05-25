@@ -90,10 +90,8 @@ public class LoadSavableState extends AbstractAppState {
                 } else if (spatial.getName().equals("Spawner")) {
                     spawnerList.add(spatial);
                     spatial.addControl(new CreepSpawnerControl(EnemyState));
-                } else if (spatial.getName().equals("Data")) {
-
                 }
-            }
+           }
         };
         rootNode.breadthFirstTraversal(vis);
         setParams();
@@ -118,11 +116,9 @@ public class LoadSavableState extends AbstractAppState {
         GraphicsState.setGraphicsParams(grp);
 
         EnemyState.setEnemyParams(grp.getCreepMap());
-        System.out.println(spawnerList.size());
         EnemyState.setCreepSpawnerList(spawnerList);
         GameState.setGPBuild(gap);
         FriendlyState.setTowerList(towerList);
-        System.out.println("cleared");
     }
     
     /*private void setParams() {

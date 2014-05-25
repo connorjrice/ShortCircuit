@@ -58,14 +58,14 @@ public class CreepParams implements Savable {
         speed = in.readFloat("speed", 1.0f);
         size = (Vector3f) in.readSavable("size", new Vector3f());
         type = in.readString("type", "creep");
-        value = in.readInt("value", 100);
+        value = in.readInt("value", 1);
     }
 
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
-        out.write(health, "health", health);
-        out.write(speed, "speed", speed);
+        out.write(health, "health", 100);
+        out.write(speed, "speed", 1.0f);
         out.write(size, "size", new Vector3f());
         out.write(type, "type", "");
         out.write(value, "value", value);

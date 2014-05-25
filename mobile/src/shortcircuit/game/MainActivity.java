@@ -27,7 +27,7 @@ public class MainActivity extends AndroidHarness{
         // Set the application class to run
         appClass = "ShortCircuit.ShortCircuitMain";
         // Try ConfigType.FASTEST; or ConfigType.LEGACY if you have problems
-        eglConfigType = ConfigType.BEST;
+        eglConfigType = ConfigType.FASTEST;
         audioRendererType = AppSettings.ANDROID_OPENAL_SOFT;
         // Enable verbose logging
         eglConfigVerboseLogging = false;

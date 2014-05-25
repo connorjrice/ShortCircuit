@@ -107,7 +107,6 @@ public class GraphicsState extends AbstractAppState {
         flyCam.setDragToRotate(true);
         flyCam.setRotationSpeed(0.0f);
         flyCam.setZoomSpeed(0.0f);
-        System.out.println(gp.getCamLoc());
         cam.setLocation(gp.getCamLoc());
     }
     
@@ -120,7 +119,6 @@ public class GraphicsState extends AbstractAppState {
         if (fp.getEnabled()) {
             fpp = new FilterPostProcessor(assetManager);
             bloom = new BloomFilter(GlowMode.SceneAndObjects);
-            System.out.println("Fp"+ fp.getDownSampling());
             bloom.setDownSamplingFactor(fp.getDownSampling());
             bloom.setBlurScale(fp.getBlurScale());
             bloom.setExposurePower(fp.getExposurePower());
