@@ -118,6 +118,10 @@ public class LoadSavableState extends AbstractAppState {
         EnemyState.setEnemyParams(grp.getCreepMap());
         EnemyState.setCreepSpawnerList(spawnerList);
         EnemyState.initLists(gap.getLevelParams().getProfile());
+        if (getProfile()){
+            ProfileState ps = new ProfileState();
+            stateManager.attach(ps);
+        }
         GameState.setGPBuild(gap);
         FriendlyState.setTowerList(towerList);
     }
@@ -136,7 +140,7 @@ public class LoadSavableState extends AbstractAppState {
     }
     
     public boolean getProfile() {
-        return mg.getGameplayParams().getLevelParams().getProfile();
+        return gap.getLevelParams().getProfile();
     }
 
 

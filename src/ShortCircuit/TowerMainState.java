@@ -113,11 +113,6 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(CheatGUI);
         stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
-        if (LoadingState.getProfile()) {
-            isProfile = true;
-            ProfileState ps = new ProfileState();
-            stateManager.attach(ps);
-        }
     }
 
     /**
@@ -176,14 +171,11 @@ public class TowerMainState extends AbstractAppState {
      * Ends game and detaches the states so they cannot be retrieved.
      */
     public void gameover() {
-        if (!isProfile) {
+        if (!LoadingState.getProfile()) {
             isPauseAllowed = false;
             stateManager.attach(GameOverGUI);
             detachStates();
         } else {
-            /**
-             * If we're in a profile session, we want to end the game.
-             */
             super.cleanup();
             cleanup();
             app.stop();
