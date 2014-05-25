@@ -22,8 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
- * Control for user-controlled towers. TODO: Documentation for TowerParams
- *
+ * Control for user-controlled towers. 
  * @author Connor Rice
  */
 public class TowerControl extends AbstractControl implements Savable {

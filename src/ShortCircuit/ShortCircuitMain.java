@@ -2,13 +2,7 @@ package ShortCircuit;
 
 import ShortCircuit.States.GUI.StartGUI;
 import com.jme3.app.SimpleApplication;
-import com.jme3.export.binary.BinaryExporter;
 import com.jme3.system.AppSettings;
-import java.io.File;
-import java.io.IOException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * ShortCircuit: A tower defense game
@@ -28,8 +22,10 @@ public class ShortCircuitMain extends SimpleApplication {
         sets.setFullscreen(false);
         sets.setVSync(true);
         sets.setFrameRate(60);
+        sets.setTitle("ShortCircuit");
         app.setSettings(sets);
         app.setShowSettings(true);
+        
         sets.setSettingsDialogImage("Interface/loading.jpg");
         sets.setFrameRate(60);
         app.setSettings(sets);
@@ -56,6 +52,7 @@ public class ShortCircuitMain extends SimpleApplication {
     public void destroy() {
         super.destroy();
         rootNode.detachAllChildren();
+        System.exit(1337);
     }
     
 }

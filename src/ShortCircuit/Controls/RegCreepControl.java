@@ -51,11 +51,13 @@ public class RegCreepControl extends AbstractControl implements Savable {
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (updateTimer > .05) {
-            mc.run();
-            updateTimer = 0;
-        } else {
-            updateTimer += tpf;
+        if (EnemyState.isEnabled()) {
+            if (updateTimer > .05) {
+                mc.run();
+                updateTimer = 0;
+            } else {
+                updateTimer += tpf;
+            }
         }
     }
 

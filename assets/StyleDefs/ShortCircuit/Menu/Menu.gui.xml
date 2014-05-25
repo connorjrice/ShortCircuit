@@ -2,7 +2,7 @@
 <root>
 	<element name="Menu">
 		<font>
-			<property name="fontSize" type="float" value="20" />
+			<property name="fontSize" type="float" value="36" />
 			<property name="fontColor" type="ColorRGBA">
 				<r value="1" />
 				<g value="1" />
@@ -35,8 +35,8 @@
 				<x value="350" />
 				<y value="200" />
 			</property>
-			<property name="menuPadding" type="float" value="4" />
-			<property name="menuOverhang" type="float" value="8" />
+			<property name="menuPadding" type="float" value="2" />
+			<property name="menuOverhang" type="float" value="4" />
 		</attributes>
 		<images>
 			<property name="defaultImg" type="String" value="x=1|y=1|w=34|h=34" />
@@ -59,17 +59,17 @@
 				<b value="1.0" />
 				<a value="1.0" />
 			</property>
-			<property name="textAlign" type="String" value="Left" />
+			<property name="textAlign" type="String" value="Center" />
 			<property name="textVAlign" type="String" value="Center" />
 			<property name="textWrap" type="String" value="NoWrap" />
 			<property name="textPadding" type="float" value="0" />
 		</font>
 		<attributes>
 			<property name="resizeBorders" type="Vector4f">
-				<x value="6" />
-				<y value="6" />
-				<z value="6" />
-				<w value="6" />
+				<x value="12" />
+				<y value="12" />
+				<z value="12" />
+				<w value="12" />
 			</property>
 		</attributes>
 		<images>

@@ -26,7 +26,7 @@ public class BeamFactory {
         beaml = new Line(origin, target);
         beaml.setLineWidth(beamWidth);
         beamg = new Geometry("Beam", beaml);
-        beamg.setMaterial(assetManager.loadMaterial(gs.getMatLoc(towertype)));
+        beamg.setMaterial(assetManager.loadMaterial(gs.getMatLoc(towertype+"Beam")));
         return beamg;
     }
 }

@@ -45,7 +45,6 @@ public class StartGUI extends AbstractAppState {
     private Picture loading;
     private boolean firstLoad = true;
     private TowerMainState tMS;
-    private Menu levelMenu;
     private float scaler;
     private FlyByCamera flyCam;
     private SelectList levelList;
@@ -101,7 +100,7 @@ public class StartGUI extends AbstractAppState {
     
 
     private void initLevelList() {
-       levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler), new Vector2f(scaler*3, scaler*3)) {
+       levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler*.75f), new Vector2f(scaler*3, scaler*3)) {
             @Override
             public void onChange() {
 
@@ -152,9 +151,12 @@ public class StartGUI extends AbstractAppState {
     }
     
     private void buildLevels() {
+        levelList.addListItem("Tutorial", "Tutorial.lvl.xml");
         levelList.addListItem("Level1", "Level1.lvl.xml");
         levelList.addListItem("Level2", "Level2.lvl.xml");
         levelList.addListItem("Level3", "Level3.lvl.xml");
+        levelList.addListItem("PathTest", "PathTest.lvl.xml");
+        levelList.addListItem("TestGameOver", "TestGameOver.lvl.xml");
     }
 
     private void startLevelButton() {
@@ -173,7 +175,7 @@ public class StartGUI extends AbstractAppState {
 
 
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*4, scaler*4), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*6, scaler*4), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();

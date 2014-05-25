@@ -250,6 +250,7 @@ public class TowerMainState extends AbstractAppState {
     public void stateDetached(AppStateManager asm) {
         asm.detach(GameGUI);
         asm.detach(GameState);
+        asm.detach(PathfindingState);
         asm.detach(FriendlyState);
         asm.detach(EnemyState);
         asm.detach(GraphicsState);
@@ -258,5 +259,6 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(CheatGUI);
         asm.detach(FriendlyState);
         asm.detach(AudioState);
+        inputManager.clearMappings();
     }
 }
