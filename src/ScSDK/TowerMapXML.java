@@ -1,7 +1,6 @@
 package ScSDK;
 
 import ScSDK.IO.BuildState;
-import ShortCircuit.States.Game.PathfindingState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -28,7 +27,6 @@ public class TowerMapXML extends AbstractAppState {
     private AppStateManager stateManager;
     private final String level;
     private BuildState BuildState;
-    private PathfindingState PathState;
 
     public TowerMapXML(String level) {
         this.level = level;
@@ -49,9 +47,7 @@ public class TowerMapXML extends AbstractAppState {
 
     public void attachStates() {        
         BuildState = new BuildState(level);
-        PathState = new PathfindingState(true);
         stateManager.attach(BuildState);
-        stateManager.attach(PathState);
     }
     
     public Node getRootNode() {

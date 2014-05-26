@@ -1,33 +1,24 @@
 package ShortCircuit.PathFinding;
 
 import DataStructures.Graph;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
 import com.jme3.scene.Node;
-import java.io.IOException;
 import java.text.DecimalFormat;
 
 /**
  *
  * @author Connor Rice
  */
-public class JEdgeManipulator implements Savable{
+public class JEdgeManipulator implements EdgeManipulator {
 
     private Graph worldGraph;
-    private float precision;
+    private final float precision;
     private DecimalFormat numFormatter;
     private String[] blockedNodes;
-    
-    public JEdgeManipulator() {
-        this.numFormatter = new DecimalFormat("0.0");
-    }
 
     public JEdgeManipulator(Graph worldGraph, Node targetNode, String[] geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
+        //this.rootNode = targetNode;
         this.numFormatter = new DecimalFormat("0.0");
         this.blockedNodes = geomHash;
     }
@@ -54,11 +45,8 @@ public class JEdgeManipulator implements Savable{
             String is = formatRoundNumber(x);
             String nodeName = startPos[0] + "," + x;
             addEdge(nodeName, targetName);
+
         }
-    }
-    
-    public void writeToNode(Node n) {
-        n.setUserData("Edges", this);
     }
 
     private void addEdge(String nodeName, String targetName) {
@@ -92,27 +80,4 @@ public class JEdgeManipulator implements Savable{
     private String formatRoundNumber(Float value) {
         return numFormatter.format(Math.round(value));
     }
-    
-    public Graph getWorldGraph() {
-        return worldGraph;
-    }
-
-    
-        @Override
-    public void read(JmeImporter im) throws IOException {
-        InputCapsule in = im.getCapsule(this);
-        worldGraph = (Graph) in.readSavable("worldGraph", new Graph());
-        precision = in.readFloat("precision", 1.0f);
-        blockedNodes = in.readStringArray("blockedNodes", new String[20]);
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        OutputCapsule out = ex.getCapsule(this);
-        out.write(worldGraph, "worldGraph", new Graph());
-        out.write(precision, "precision", 1.0f);
-        out.write(blockedNodes, "blockedNodes", new String[blockedNodes.length]);
-
-    }
-
 }

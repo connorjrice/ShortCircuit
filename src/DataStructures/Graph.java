@@ -1,35 +1,22 @@
 package DataStructures;
 
 import DataStructures.Nodes.GraphNode;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
-import com.jme3.export.Savable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Implementation of an Unweighted Graph datastructure with A* Pathfinding.
  *
  * @author Connor Rice
- * @param 
+ * @param <T>
  */
-public class Graph<T extends Comparable> implements Savable{
+public class Graph<T extends Comparable> {
 
     private boolean[][] edges;
     private GraphNode[] nodes;
-    private Map nodeHash;
+    private HashMap nodeHash;
     private int maxSize;
     private int currentSize;
 
-    public Graph() {
-        this.nodeHash = new HashMap(maxSize);
-    }
-    
     public Graph(int maxSize) {
         this.maxSize = maxSize;
         this.currentSize = 0;
@@ -38,8 +25,8 @@ public class Graph<T extends Comparable> implements Savable{
         this.nodeHash = new HashMap(maxSize);
     }
 
-    public void addNode(String element) { // set in condition for if last
-        GraphNode newNode = new GraphNode(currentSize, element);
+    public void addNode(Comparable element) { // set in condition for if last
+        GraphNode<T> newNode = new GraphNode<T>(currentSize, element);
         if (currentSize < maxSize - 1) {
             nodes[currentSize] = newNode;
             nodeHash.put(element, newNode);
@@ -57,11 +44,11 @@ public class Graph<T extends Comparable> implements Savable{
         return nodes[index].getElement();
     }
 
-    public GraphNode getNode(int index) {
+    public GraphNode<T> getNode(int index) {
         return nodes[index];
     }
 
-    public GraphNode getNode(Comparable element) {
+    public GraphNode<T> getNode(Comparable element) {
         return (GraphNode) nodeHash.get(element);
     }
 
@@ -69,21 +56,21 @@ public class Graph<T extends Comparable> implements Savable{
         addEdge(getNode(firstElement), getNode(secondElement));
     }
 
-    public void addEdge(GraphNode firstNode, GraphNode secondNode) {
+    public void addEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
         if (firstNode != null && secondNode != null && firstNode.getIndex() != secondNode.getIndex()) {
             edges[firstNode.getIndex()][secondNode.getIndex()] = true;
             edges[secondNode.getIndex()][firstNode.getIndex()] = true;
         }
     }
 
-    public void removeEdges(GraphNode doomedNode) {
+    public void removeEdges(GraphNode<T> doomedNode) {
         int doomedIndex = doomedNode.getIndex();
         for (int i = 0; i < edges.length; i++) {
             edges[doomedIndex][i] = false;
         }
     }
 
-    public void removeEdge(GraphNode firstNode, GraphNode secondNode) {
+    public void removeEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
         if (firstNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
             if (secondNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
                 edges[firstNode.getIndex()][secondNode.getIndex()] = false;
@@ -112,11 +99,11 @@ public class Graph<T extends Comparable> implements Savable{
     /**
      * * Breadth and Depth Traversals **
      */
-    public GraphNode breadthFirstTraversal(String element) {
-        return breadthFirstTraversal(new GraphNode(element));
+    public GraphNode<T> breadthFirstTraversal(Comparable element) {
+        return breadthFirstTraversal(new GraphNode<T>(element));
     }
 
-    public GraphNode breadthFirstTraversal(GraphNode snode) {
+    public GraphNode<T> breadthFirstTraversal(GraphNode<T> snode) {
         Queue<GraphNode> queue = new Queue<GraphNode>();
         boolean[] marked = new boolean[currentSize];
         queue.enqueue(nodes[0]);
@@ -137,11 +124,11 @@ public class Graph<T extends Comparable> implements Savable{
         return null;
     }
 
-    public GraphNode depthFirstTraversal(String element) {
-        return depthFirstTraversal(new GraphNode(element));
+    public GraphNode<T> depthFirstTraversal(Comparable element) {
+        return depthFirstTraversal(new GraphNode<T>(element));
     }
 
-    public GraphNode depthFirstTraversal(GraphNode snode) {
+    public GraphNode<T> depthFirstTraversal(GraphNode<T> snode) {
         Stack<GraphNode> stack = new Stack<GraphNode>();
         boolean[] marked = new boolean[currentSize];
         stack.push(nodes[0]);
@@ -174,19 +161,19 @@ public class Graph<T extends Comparable> implements Savable{
     /**
      * * Array doubling methods **
      */
-    private void doubleCapacity(GraphNode newNode) {
+    private void doubleCapacity(GraphNode<T> newNode) {
         maxSize *= 2;
         nodes = doubleNodes(newNode);
         edges = doubleEdges();
 
     }
 
-    private GraphNode[] doubleNodes(GraphNode newNode) {
+    private GraphNode[] doubleNodes(GraphNode<T> newNode) {
         nodes[currentSize] = newNode;
         nodeHash.put(newNode.getElement(), newNode);
         currentSize++;
         GraphNode[] newNodes = new GraphNode[maxSize];
-        for (GraphNode curNode : nodes) {
+        for (GraphNode<T> curNode : nodes) {
             newNodes[curNode.getIndex()] = curNode;
         }
         return newNodes;
@@ -214,38 +201,4 @@ public class Graph<T extends Comparable> implements Savable{
         }
         return str;
     }
-    
-    public int getSize() {
-        return currentSize;
-    }
-    
-    @Override
-    public void read(JmeImporter im) throws IOException {
-        InputCapsule in = im.getCapsule(this);
-        int[] intParams = in.readIntArray("intParams", new int[2]);
-        currentSize = intParams[0];
-        maxSize = intParams[1];
-        edges = in.readBooleanArray2D("edges", new boolean[maxSize][maxSize]);
-        ArrayList<GraphNode> nodeA =  in.readSavableArrayList("nodeA", new ArrayList<GraphNode>());
-        nodes = new GraphNode[maxSize];
-        System.out.println(nodes.length);
-        for (int i = 0; i < nodeA.size(); i++) {
-            nodes[i] = nodeA.get(i);
-        }
-        nodeHash = in.readStringSavableMap("nodeHash", new HashMap());
-     
-    }
-
-    @Override
-    public void write(JmeExporter ex) throws IOException {
-        OutputCapsule out = ex.getCapsule(this);
-        int[] intParams = new int[] {currentSize, maxSize};
-        out.write(intParams, "intParams", new int[2]);
-        out.write(edges, "edges", new boolean[currentSize][currentSize]);
-        ArrayList<GraphNode> nodeA = new ArrayList(Arrays.asList(nodes));
-        out.writeStringSavableMap(nodeHash, "nodeHash", new HashMap());
-        out.writeSavableArrayList(nodeA, "nodeA", new ArrayList<GraphNode>());
-        
-    }
-
 }
