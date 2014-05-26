@@ -49,6 +49,7 @@ public class StartGUI extends AbstractAppState {
     private FlyByCamera flyCam;
     private SelectList levelList;
     private ShortCircuitMain scm;
+    private ButtonAdapter resumeLevel;
 
     public StartGUI(ShortCircuitMain scm) {
         this.scm = scm;
@@ -85,7 +86,7 @@ public class StartGUI extends AbstractAppState {
     }
     
     private void initScreen(String atlas) {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
         screen.setUseTextureAtlas(true, atlas);
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
@@ -95,7 +96,7 @@ public class StartGUI extends AbstractAppState {
         exitButton();
         loadingpic();
         initLevelList();
-        buildLevels();
+        resumeLevelButton();
     }
     
 
@@ -111,16 +112,18 @@ public class StartGUI extends AbstractAppState {
     }
 
     public void onStart(String level) {
+
         if (firstLoad) {
-            showloading();
+            showLoading();
             tMS = new TowerMainState(level);
             stateManager.attach(tMS);
             firstLoad = false;
         } else {
-            showloading();
+            showLoading();
             stateManager.detach(tMS);
             tMS = new TowerMainState(level);
             stateManager.attach(tMS);
+
         }
         forceHide();
     }
@@ -132,7 +135,7 @@ public class StartGUI extends AbstractAppState {
         loading.setHeight(height);
     }
 
-    private void showloading() {
+    private void showLoading() {
         guiNode.attachChild(loading);
     }
     
@@ -144,7 +147,7 @@ public class StartGUI extends AbstractAppState {
         MainWindow = new Window(screen, new Vector2f(width / 6, height / 3 - height / 6), new Vector2f(width / 1.5f, height / 1.5f));
         MainWindow.setIgnoreMouse(true);
         MainWindow.setWindowIsMovable(false);
-        MainWindow.setEffectZOrder(false);
+        //MainWindow.setEffectZOrder(false);
         MainWindow.setIsResizable(false);
         MainWindow.setWindowTitle("ShortCircuit");
         screen.addElement(MainWindow);
@@ -172,10 +175,25 @@ public class StartGUI extends AbstractAppState {
         startButton.setText("Start");
         MainWindow.addChild(startButton);
     }
+    
+    public void resumeLevelButton() {
+        resumeLevel = new ButtonAdapter(screen, "resume", new Vector2f(scaler*3, scaler*4), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                tMS.goToMainMenu();
+            }
+        };
+        resumeLevel.setText("Resume");
+        MainWindow.addChild(resumeLevel);
+    }
+    
+    public boolean isResumeShown() {
+        return (guiNode.hasChild(resumeLevel));
+    }
 
 
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*6, scaler*4), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*5, scaler*4), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 reallyExitDialog();
@@ -204,11 +222,13 @@ public class StartGUI extends AbstractAppState {
         MainWindow.addChild(ReallyExitPopup);
     }
 
-    public void toggle() {
+    public boolean toggle() {
         if (!MainWindow.getIsVisible()) {
             MainWindow.show();
+            return true;
         } else {
             MainWindow.hide();
+            return false;
         }
     }
     
@@ -226,6 +246,7 @@ public class StartGUI extends AbstractAppState {
     }
     
     public void updateAtlas(String newAtlas) {
+        levelList.removeAllListItems();
         guiNode.removeControl(screen);
         initScreen(newAtlas);
         forceHide();

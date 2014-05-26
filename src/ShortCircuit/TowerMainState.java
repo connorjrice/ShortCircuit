@@ -12,7 +12,6 @@ import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.LoadSavableState;
 import ShortCircuit.States.Game.PathfindingState;
-import ShortCircuit.States.Game.ProfileState;
 import ShortCircuit.States.Game.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -50,7 +49,7 @@ public class TowerMainState extends AbstractAppState {
     private InputManager inputManager;
     private AppStateManager stateManager;
     private StartGUI StartGUI;
-    private final String level;
+    private String level;
     private TutorialState TutorialState;
     private PathfindingState PathfindingState;
     private boolean isProfile = false;
@@ -213,7 +212,7 @@ public class TowerMainState extends AbstractAppState {
 
     public void goToMainMenu() {
         pause();
-        StartGUI.toggle();
+        GameGUI.toggle(StartGUI.toggle());
     }
 
     public int getWidth() {
@@ -251,4 +250,5 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(AudioState);
         inputManager.clearMappings();
     }
+
 }

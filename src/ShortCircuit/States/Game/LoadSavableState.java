@@ -2,8 +2,8 @@ package ShortCircuit.States.Game;
 
 import ShortCircuit.Controls.CreepSpawnerControl;
 import ShortCircuit.Controls.TowerControl;
-import ScSDK.MapXML.GameplayParams;
-import ScSDK.MapXML.GraphicsParams;
+import ShortCircuit.Objects.GameplayParams;
+import ShortCircuit.Objects.GraphicsParams;
 import ShortCircuit.States.GUI.StartGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

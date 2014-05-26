@@ -7,7 +7,7 @@ import ScSDK.Factories.TowerFactory;
 import ScSDK.MapXML.BuildParams;
 import ScSDK.MapXML.CreepSpawnerParams;
 import ScSDK.MapXML.GeometryParams;
-import ScSDK.MapXML.GraphicsParams;
+import ShortCircuit.Objects.GraphicsParams;
 import ScSDK.MapXML.MapGenerator;
 import ScSDK.MapXML.MaterialParams;
 import ScSDK.MapXML.TowerParams;
@@ -20,6 +20,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
@@ -50,6 +51,7 @@ public class BuildState extends AbstractAppState {
     private BaseFactory bf;
     private String levelName;
     private MapGenerator mg;
+    private Camera cam;
 
     public BuildState(String levelName) {
         this.levelName = levelName;
@@ -61,6 +63,7 @@ public class BuildState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
+        this.cam = this.app.getCamera();
         matHash = new HashMap(10);
         initFactories();
         initLists();
@@ -81,6 +84,7 @@ public class BuildState extends AbstractAppState {
         buildTowers();
         buildCreepSpawners();
         embedLevelData();
+        cam.setLocation(mg.getGraphicsParams().getGeometryParams().getCamLoc());
     }
 
     private void buildMatHash(String[] towerTypes) {

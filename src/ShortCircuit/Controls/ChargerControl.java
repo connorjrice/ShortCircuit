@@ -37,7 +37,9 @@ public class ChargerControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        nextLocation();
+        if (FriendlyState.isEnabled()) {
+            nextLocation();
+        }
     }
 
     private void nextLocation() {

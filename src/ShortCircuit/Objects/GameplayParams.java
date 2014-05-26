@@ -1,5 +1,7 @@
-package ScSDK.MapXML;
+package ShortCircuit.Objects;
 
+import ScSDK.MapXML.LevelParams;
+import ScSDK.MapXML.PlayerParams;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;

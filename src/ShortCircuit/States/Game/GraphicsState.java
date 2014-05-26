@@ -6,7 +6,7 @@ import ScSDK.MapXML.FilterParams;
 import ScSDK.MapXML.GeometryParams;
 import ScSDK.MapXML.MaterialParams;
 import ScSDK.MapXML.TowerParams;
-import ScSDK.MapXML.GraphicsParams;
+import ShortCircuit.Objects.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -36,30 +36,30 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class GraphicsState extends AbstractAppState {
 
     private SimpleApplication app;
-    private GeometryParams gp;
-    private Sphere bombMesh = new Sphere(16, 16, 1.0f);
-    private Node worldNode = new Node("World");
-    private Box univ_box = new Box(1, 1, 1);
+    private AssetManager assetManager;
+    private AppStateManager stateManager;
     private ViewPort viewPort;
     private FilterPostProcessor fpp;
     private BloomFilter bloom;
-    private AssetManager assetManager;
     public float bloomIntensity;
-    private Camera cam;
-    private FlyByCamera flyCam;
-    private boolean shot = false;
-    private BeamFactory BeamFactory;
-    private AudioState AudioState;
+    private Node rootNode;
+    private Node worldNode = new Node("World");
     private Node beamNode = new Node("Beams");
-    private float updateTimer = 0.0f;
-    private MaterialParams mp;
-    private FilterParams fp;
-    private AppStateManager stateManager;
+    private Sphere bombMesh = new Sphere(16, 16, 1.0f);
+    private Box univ_box = new Box(1, 1, 1);
+    private AudioState AudioState;
     private GameState GameState;
     private EnemyState EnemyState;
     private FriendlyState FriendlyState;
-    private Node rootNode;
+    private GeometryParams gp;
+    private MaterialParams mp;
+    private FilterParams fp;
+    private Camera cam;
+    private FlyByCamera flyCam;
+    private BeamFactory BeamFactory;
     private ArrayList<TowerParams> towerParamList;
+    private boolean shot = false;
+    private float updateTimer = 0.0f;
 
     public GraphicsState() {
     }
@@ -68,17 +68,25 @@ public class GraphicsState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        getResources();
+        getStates();
+    }
+    
+    private void getResources() {
         this.rootNode = this.app.getRootNode();
         this.stateManager = this.app.getStateManager();
         this.viewPort = this.app.getViewPort();
         this.assetManager = this.app.getAssetManager();
         this.cam = this.app.getCamera();
         this.flyCam = this.app.getFlyByCamera();
+        BeamFactory = new BeamFactory(this);
+    }
+    
+    private void getStates() {
         this.AudioState = this.stateManager.getState(AudioState.class);
         this.GameState = this.stateManager.getState(GameState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
-        BeamFactory = new BeamFactory(this);
     }
 
     public void setGraphicsParams(GraphicsParams gp) {

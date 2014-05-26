@@ -1,6 +1,5 @@
 package ShortCircuit.States.GUI;
 
-
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import ShortCircuit.States.Game.FriendlyState;
@@ -137,8 +136,6 @@ public class GameGUI extends AbstractAppState {
         guiNode.addControl(screen);
     }
 
-
-
     private void getScalingDimensions() {
         tenthHeight = height / 10;
         tenthWidth = width / 10;
@@ -182,6 +179,7 @@ public class GameGUI extends AbstractAppState {
             if (GameState.getPlrLevel() != internalLevel) {
                 GraphicsState.incBloomIntensity(.2f);
                 internalLevel = GameState.getPlrLevel();
+                Level.setText(Integer.toString(internalLevel));
             }
             if (GameState.getFours() > 0 && !end) {
                 endTheme();
@@ -263,8 +261,6 @@ public class GameGUI extends AbstractAppState {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (isEnabled()) {
                 if (keyPressed) {
-
-
                     Vector2f click2d = inputManager.getCursorPosition();
                     Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
                             click2d.getX(), click2d.getY()), 0f);
@@ -298,9 +294,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    //TODO: Cleanup setupGUI in GameGUI
     private void setupGUI() {
-        //StartGUI.updateAtlas(getAtlasString());
         settingsWindow();
         cheatToggleButton();
         internalMenu();
@@ -328,8 +322,6 @@ public class GameGUI extends AbstractAppState {
         getOldMat();
         downgradeButton();
         bombToggle();
-        //wallToggle();
-
     }
 
     private void objectivePopup() {
@@ -602,6 +594,7 @@ public class GameGUI extends AbstractAppState {
         TextColorButton.setIsToggleButton(true);
         TextColorButton.setText("Disable Text Colors");
         SetWindow.addChild(TextColorButton);
+
     }
 
     private void bloomToggleButton() {
@@ -614,6 +607,7 @@ public class GameGUI extends AbstractAppState {
         BloomToggleButton.setIsToggleButton(true);
         BloomToggleButton.setText("Disable bloom");
         SetWindow.addChild(BloomToggleButton);
+
     }
 
     private void bloomLevelSlider() {
@@ -626,6 +620,7 @@ public class GameGUI extends AbstractAppState {
         BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
         BloomSlider.setSelectedByValue(2.0f);
         SetWindow.addChild(BloomSlider);
+
     }
 
     private void soundToggleButton() {
@@ -641,6 +636,7 @@ public class GameGUI extends AbstractAppState {
         };
         soundToggle.setText("Toggle Sound");
         SetWindow.addChild(soundToggle);
+
     }
 
     private void soundSlider() {
@@ -653,6 +649,7 @@ public class GameGUI extends AbstractAppState {
         SoundSlider.setStepFloatRange(0.0f, 1.0f, .1f);
         app.getListener().setVolume(1.0f);
         SetWindow.addChild(SoundSlider);
+
     }
 
     private void chargeButton() {
@@ -712,13 +709,7 @@ public class GameGUI extends AbstractAppState {
         Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, getHeightScale(8)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!SetWindow.getIsVisible()) {
-                    SetWindow.setIgnoreMouse(true);
-                    tMS.goToMainMenu();
-                } else {
-                    tMS.goToMainMenu();
-                    SetWindow.setIgnoreMouse(false);
-                }
+                tMS.goToMainMenu();
             }
         };
         Menu.setText("Menu");
@@ -796,7 +787,7 @@ public class GameGUI extends AbstractAppState {
             budgetButton();
         }
     }
-    
+
     public String getAtlasString() {
         return "Interface/" + GraphicsState.getMatDir() + "Atlas.png";
     }
@@ -806,7 +797,50 @@ public class GameGUI extends AbstractAppState {
     }
 
     public Vector2f getHorizontalWindowPosition(int i) {
-        return new Vector2f(tenthWidth * 2, getHeightScale(i)-tenthHeight/2);
+        return new Vector2f(tenthWidth * 2, getHeightScale(i) - tenthHeight / 2);
+    }
+
+    public void toggle(boolean hide) {
+        if (hide) {
+            hide();
+        } else {
+            show();
+        }
+    }
+
+    public void hide() {
+        Budget.hide();
+        Camera.hide();
+        Charge.hide();
+        Health.hide();
+        Level.hide();
+        Menu.hide();
+        Modify.hide();
+        Score.hide();
+        Settings.hide();
+        CheatsButton.hide();
+        PurchaseButton.hide();
+        PurchaseWindow.hide();
+        ProgressIndicator.hide();
+        Bomb.hide();
+        BuildButton.hide();
+        BuildWindow.hide();
+    }
+
+    public void show() {
+        Budget.show();
+        Camera.show();
+        Charge.show();
+        Health.show();
+        Level.show();
+        Menu.show();
+        Modify.show();
+        Score.show();
+        Settings.show();
+        PurchaseButton.show();
+        ProgressIndicator.show();
+        Bomb.show();
+        BuildButton.show();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ScSDK.MapXML;
 
+import ShortCircuit.Objects.GraphicsParams;
+import ShortCircuit.Objects.GameplayParams;
 import ScSDK.MapXML.BuildParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;

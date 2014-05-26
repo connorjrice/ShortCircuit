@@ -4,7 +4,7 @@ import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.Controls.GlobControl;
 import ScSDK.MapXML.LevelParams;
 import ScSDK.MapXML.PlayerParams;
-import ScSDK.MapXML.GameplayParams;
+import ShortCircuit.Objects.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -41,7 +41,7 @@ public class GameState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private GraphicsState GraphicsState;
     private BoundingVolume baseBounds;
-    private StartGUI startGUI;
+    private StartGUI StartGUI;
     private String formattedBaseCoords;
     private PathfindingState PathState;
     private boolean bombActive;
@@ -61,7 +61,7 @@ public class GameState extends AbstractAppState {
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.PathState = this.stateManager.getState(PathfindingState.class);
         this.AudioState = this.stateManager.getState(AudioState.class);
-        this.startGUI = this.stateManager.getState(StartGUI.class);
+        this.StartGUI = this.stateManager.getState(StartGUI.class);
     }
 
     /**
@@ -73,8 +73,8 @@ public class GameState extends AbstractAppState {
     public void setGPBuild(GameplayParams gp) {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
-        if (startGUI != null) {
-            startGUI.hideloading();
+        if (StartGUI != null) {
+            StartGUI.hideloading();
         }
     }
 
