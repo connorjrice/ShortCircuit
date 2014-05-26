@@ -1,7 +1,7 @@
 package ShortCircuit.States.Game;
 
 import DataStructures.Graph;
-import DataStructures.Queue;
+import ShortCircuit.PathFinding.EdgeManipulator;
 import ShortCircuit.PathFinding.JEdgeManipulator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -22,31 +22,30 @@ import java.text.DecimalFormat;
  * @author Connor Rice
  */
 public class PathfindingState extends AbstractAppState {
+
     private SimpleApplication app;
-    private Node rootNode;
-    private Node targetNode = new Node("Targets");
+    private AssetManager assetManager;
+    private GameState GameState;
+    private Sphere targetMesh = new Sphere(32, 32, 1f);
     private Spatial floor;
     private Graph<String> worldGraph;
-    private Queue<String> wallQueue;
-    private float precision;
-    private AssetManager assetManager;
-    private Sphere targetMesh = new Sphere(32, 32, 1f);
+    private String[] blockedNodes;
+    private Node rootNode;
+    private Node targetNode = new Node("Targets");
+    private DecimalFormat numFormatter;
+    private EdgeManipulator edgeMani;
+    private Material blockedMat;
     private Material targetMat;
     private Material startMat;
     private Material endMat;
     private Material pathMat;
     private ColorRGBA color;
-    private Material blockedMat;
     private Vector3f floorDimensions;
-    private DecimalFormat numFormatter;
-    private String[] blockedGeom;
-    private GameState GameState;
-    private String[] blockedNodes;
-    private JEdgeManipulator edgeMani;
-    private GraphicsState GraphicsState;
-    
-    public PathfindingState() {}
-    
+    private float precision;
+
+    public PathfindingState() {
+    }
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -57,7 +56,6 @@ public class PathfindingState extends AbstractAppState {
         this.worldGraph = new Graph<String>(1400);
         this.precision = 1.0f; // works with 1.0f, .5f
         this.GameState = stateManager.getState(GameState.class);
-        this.GraphicsState = stateManager.getState(GraphicsState.class);
         this.blockedNodes = GameState.getBlockedNodes();
         initAssets();
         createPathNodes();
@@ -65,7 +63,7 @@ public class PathfindingState extends AbstractAppState {
         addEdges();
         rootNode.attachChild(targetNode);
     }
-    
+
     private void initAssets() {
         targetMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         targetMat.setColor("Color", ColorRGBA.White);
@@ -81,36 +79,34 @@ public class PathfindingState extends AbstractAppState {
 
         pathMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         pathMat.setColor("Color", color);
-        
+
         numFormatter = new DecimalFormat("0.0");
-        wallQueue = new Queue<String>();
     }
 
     private void createPathNodes() {
         floorDimensions = floor.getLocalScale();
         float xAxis = Math.round(floorDimensions.x);
         float yAxis = Math.round(floorDimensions.y);
-        for (float i = xAxis; i > -xAxis; i-=precision) {
-            for (float j = yAxis; j > -yAxis; j-=precision) {
+        for (float i = xAxis; i > -xAxis; i -= precision) {
+            for (float j = yAxis; j > -yAxis; j -= precision) {
                 String is = formatRoundNumber(i);
                 String js = formatRoundNumber(j);
-                worldGraph.addNode(is+','+js);
+                worldGraph.addNode(is + ',' + js);
                 //createTargetGeom(is,js);
             }
         }
 
     }
-    
+
     public void nextVec(Vector3f nextVec) {
         String formattedVec = formatVector3fString(nextVec);
-        Spatial newWall = new Geometry("Wall", new Box(1,1,1));
+        Spatial newWall = new Geometry("Wall", new Box(1, 1, 1));
         newWall.setMaterial(assetManager.loadMaterial("Materials/Circuit/Tower3Beam.j3m"));
         newWall.setLocalTranslation(roundVector3f(nextVec));
-        newWall.setLocalScale(new Vector3f(0.3f,0.2f,0.4f));
+        newWall.setLocalScale(new Vector3f(0.3f, 0.2f, 0.4f));
         removeEdge(formattedVec);
         rootNode.attachChild(newWall);
     }
-    
 
     private void createTargetGeom(String x, String y) {
         String targetName = x + "," + y;
@@ -121,41 +117,40 @@ public class PathfindingState extends AbstractAppState {
         target.setUserData("Name", targetName);
         //targetNode.attachChild(target);
     }
-    
+
     private Vector3f roundVector3f(Vector3f in) {
         return new Vector3f(Math.round(in.x), Math.round(in.y), Math.round(in.z));
     }
-    
+
     private String formatVector3fString(Vector3f in) {
-        return formatRoundNumber(in.x)+","+formatRoundNumber(in.y);
+        return formatRoundNumber(in.x) + "," + formatRoundNumber(in.y);
     }
-    
+
     private String formatNumber(Float value) {
         return numFormatter.format(value);
     }
-    
+
     private String formatRoundNumber(Float value) {
         return numFormatter.format(Math.round(value));
     }
-    
+
     private void addEdges() {
         edgeMani.addInitialEdges();
     }
-    
+
     private void removeEdge(String target) {
         edgeMani.remove4Edge(target);
-        
+
     }
-    
 
     public Graph getWorldGraph() {
         return worldGraph;
     }
-    
+
     private String toString(Object o) {
         return o.toString();
     }
-    
+
     @Override
     public void cleanup() {
         super.cleanup();

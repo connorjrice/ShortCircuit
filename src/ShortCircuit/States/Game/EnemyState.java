@@ -4,7 +4,6 @@ import ShortCircuit.Controls.TowerControl;
 import DataStructures.Graph;
 import ShortCircuit.Factories.RegCreepFactory;
 import ShortCircuit.Factories.GlobFactory;
-import ShortCircuit.Factories.RangerFactory;
 import ScSDK.MapXML.CreepParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -13,7 +12,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
@@ -28,33 +26,32 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 public class EnemyState extends AbstractAppState {
 
-    private Box univ_box = new Box(1, 1, 1);
-    private Sphere glob_sphere = new Sphere(32, 32, 1f);
-    public Node creepNode = new Node("Creep");
-    public Random random;
     private SimpleApplication app;
     private AssetManager assetManager;
+    private AppStateManager stateManager;
     private GameState GameState;
     private FriendlyState FriendlyState;
-    private int nextspawner;
-    private int nextrandom;
-    private float randomCheck = 0;
+    private GraphicsState GraphicsState;
+    private PathfindingState PathState;
+    private Node rootNode;
+    private Node creepNode = new Node("Creep");
+    private Box univ_box = new Box(1, 1, 1);
+    private Sphere glob_sphere = new Sphere(32, 32, 1f);
+    private Random random;
+    private ArrayList<Spatial> creepList;
+    private ArrayList<Spatial> globList;
+    private ArrayList<Spatial> creepSpawnerList;
+    private HashMap creepParams;
+    private Object[] creepTypes;
     private RegCreepFactory cf;
     private GlobFactory gf;
-    public ArrayList<Spatial> creepList;
-    private ArrayList<Spatial> globList;
-    private ArrayList<Spatial> rangerList;
-    private ArrayList<Spatial> diggerList;
-    private RangerFactory rf;
-    private AppStateManager stateManager;
-    private GraphicsState GraphicsState;
-    private Node rootNode;
-    private ArrayList<Spatial> creepSpawnerList;
-    private Object[] creepTypes;
-    private PathfindingState PathState;
-    private HashMap creepParams;
-    
-    public EnemyState() {}
+    private float randomCheck = 0;
+    private int nextspawner;
+    private int nextrandom;
+
+    //private ArrayList<Spatial> diggerList;
+    public EnemyState() {
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -73,7 +70,7 @@ public class EnemyState extends AbstractAppState {
     private void initFactories() {
         cf = new RegCreepFactory(GraphicsState, this);
         gf = new GlobFactory(this);
-        rf = new RangerFactory(this);
+        //rf = new RangerFactory(this);
     }
 
     public void initLists(boolean isProfile) {
@@ -83,7 +80,7 @@ public class EnemyState extends AbstractAppState {
             random = new Random(42);
         } else {
             random = new Random();
-        }        
+        }
         nextrandom = random.nextInt(50);
     }
 
@@ -92,7 +89,7 @@ public class EnemyState extends AbstractAppState {
         this.creepParams = creepParams;
         attachCreepNode();
     }
-    
+
     public String[] getCreepTypes() {
         return (String[]) creepTypes;
     }
@@ -109,7 +106,7 @@ public class EnemyState extends AbstractAppState {
                 getNextRandomSpecialEnemyInt();
                 randomCheck = 0;
             } else {
-                 randomCheck += tpf;
+                randomCheck += tpf;
             }
         }
 
@@ -150,28 +147,6 @@ public class EnemyState extends AbstractAppState {
         return glob_sphere;
     }
 
-    private void spawnRanger() {
-        int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-        Spatial ranger = rf.getRanger(getRangerSpawnPoint(towerVictimIndex),
-                towerVictimIndex);
-        rangerList.add(ranger);
-        creepNode.attachChild(ranger);
-    }
-
-    public Geometry getRangerGeom() {
-        return new Geometry("Ranger", new Box(1, 1, 1));
-    }
-
-    /**
-     * TODO: Algorithm for determining where rangers should spawn.
-     *
-     * @param towerVictimIndex
-     * @return
-     */
-    private Vector3f getRangerSpawnPoint(int towerVictimIndex) {
-        return new Vector3f();
-    }
-
     public void attachCreepNode() {
         rootNode.attachChild(creepNode);
     }
@@ -209,7 +184,7 @@ public class EnemyState extends AbstractAppState {
     public ArrayList<Spatial> getCreepSpawnerList() {
         return creepSpawnerList;
     }
-    
+
     public Vector3f getBaseVec() {
         return GameState.getBaseVec();
     }
@@ -224,6 +199,10 @@ public class EnemyState extends AbstractAppState {
 
     public ArrayList<Spatial> getCreepList() {
         return creepList;
+    }
+
+    public Spatial getCreep(int i) {
+        return creepList.get(i);
     }
 
     public int getCreepListSize() {
@@ -292,11 +271,11 @@ public class EnemyState extends AbstractAppState {
         nextrandom = random.nextInt(10);
         randomCheck = random.nextInt(10);
     }
-    
+
     public Graph getWorldGraph() {
         return PathState.getWorldGraph();
     }
-    
+
     public String getFormattedBaseCoords() {
         return GameState.getFormattedBaseCoords();
     }

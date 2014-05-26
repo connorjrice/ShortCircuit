@@ -43,8 +43,6 @@ public class CreepSpawnerControl extends AbstractControl {
 
     /**
      * Returns the index of the creepspawner.
-     *
-     * @return
      */
     protected int getIndex() {
         return spatial.getUserData("Index");

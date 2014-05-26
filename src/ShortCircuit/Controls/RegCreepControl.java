@@ -3,6 +3,7 @@ package ShortCircuit.Controls;
 import DataStructures.Graph;
 import ShortCircuit.PathFinding.Path;
 import ShortCircuit.PathFinding.AStarPathFinder;
+import ShortCircuit.PathFinding.PathFinder;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;
 import com.jme3.math.Vector3f;
@@ -23,14 +24,14 @@ public class RegCreepControl extends AbstractControl {
 
     protected EnemyState EnemyState;
     protected int creepNum;
-    public AStarPathFinder pathFinder;
+    public PathFinder pathFinder;
     private float updateTimer = 0;
     public Path path;
     public Vector3f baseVec;
     private MoveCreep mc;
     private DecimalFormat numFormatter = new DecimalFormat("0.0");
 
-    public RegCreepControl(EnemyState _state, AStarPathFinder pathFinder) {
+    public RegCreepControl(EnemyState _state, PathFinder pathFinder) {
         EnemyState = _state;
         this.pathFinder = pathFinder;
         this.baseVec = EnemyState.getBaseVec();
@@ -105,7 +106,7 @@ public class RegCreepControl extends AbstractControl {
     }
 
     public void removeCreep(boolean wasKilled) {
-        EnemyState.creepList.remove(spatial);
+        EnemyState.getCreepList().remove(spatial);
         if (wasKilled) {
             EnemyState.incPlrBudget(getValue());
             EnemyState.incPlrScore(getValue());

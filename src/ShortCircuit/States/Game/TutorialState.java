@@ -101,13 +101,6 @@ public class TutorialState extends AbstractAppState {
         screen.addElement(globA);
     }
 
-    /**
-     * A banner, that will display messages such as "Tower needs to be charged"
-     * and related messages.
-     */
-    private void initBanner() {
-    }
-
     public void basePopup() {
         GameState.getRootNode().getChild("Base").setMaterial(focusMaterial);
         ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base", new Vector2f(800, 800)) {
@@ -236,14 +229,14 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void focusCreeps() {
-        for (int i = 0; i < EnemyState.creepList.size(); i++) {
-            EnemyState.creepList.get(i).setMaterial(focusMaterial);
+        for (int i = 0; i < EnemyState.getCreepListSize(); i++) {
+            EnemyState.getCreep(i).setMaterial(focusMaterial);
         }
     }
 
     private void unfocusCreeps() {
-        for (int i = 0; i < EnemyState.creepList.size(); i++) {
-            EnemyState.creepList.get(i).setMaterial(assetManager.loadMaterial(getCreepOrigMat(i)));
+        for (int i = 0; i < EnemyState.getCreepListSize(); i++) {
+            EnemyState.getCreep(i).setMaterial(assetManager.loadMaterial(getCreepOrigMat(i)));
         }
     }
 

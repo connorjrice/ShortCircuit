@@ -89,7 +89,6 @@ public class FriendlyState extends AbstractAppState {
      */
     public void towerSelected(int tindex) {
         Spatial tp = towerList.get(tindex);
-        System.out.println(tp.getUserDataKeys());
         if (tp.getUserData("Type").equals("TowerUnbuilt")) {
             GraphicsState.setTowerScale(tindex, "UnbuiltSelected");
         } else {
@@ -269,7 +268,7 @@ public class FriendlyState extends AbstractAppState {
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
         GraphicsState.towerTextureEmpty(empty.getSpatial());
-        AudioState.emptySound();
+        AudioState.emptyTowerSound();
     }
     
     public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {

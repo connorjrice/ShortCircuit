@@ -231,7 +231,7 @@ public class TowerMainState extends AbstractAppState {
     }
     
     public void stopTheme() {
-        AudioState.stopTheme();
+        AudioState.stopBegTheme();
     }
     
     @Override

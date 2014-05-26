@@ -54,7 +54,6 @@ public class ShortCircuitParser implements Parser {
     }
 
     public ColorRGBA parseColorRGBA(String colors) {
-        System.out.println(colors);
         if (colors.equals("Black")) {
             return ColorRGBA.Black;
         } else if (colors.equals("DarkGrey")) {

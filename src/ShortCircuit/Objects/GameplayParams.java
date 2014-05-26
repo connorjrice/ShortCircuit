@@ -43,7 +43,6 @@ public class GameplayParams implements Savable {
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
         lp = (LevelParams) in.readSavable("lp", new LevelParams());
-        System.out.println("here"+lp.getAllowedEnemies());
         pp = (PlayerParams) in.readSavable("pp", new PlayerParams());
     }
 
