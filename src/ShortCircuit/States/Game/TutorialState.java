@@ -42,6 +42,7 @@ public class TutorialState extends AbstractAppState {
     private boolean hasGlobbed = false;
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
+    private Node rootNode;
     
     public TutorialState() {}
 
@@ -52,6 +53,7 @@ public class TutorialState extends AbstractAppState {
         this.stateManager = this.app.getStateManager();
         this.tMS = this.stateManager.getState(TowerMainState.class);
         this.guiNode = this.app.getGuiNode();
+        this.rootNode = this.app.getRootNode();
         this.GameGUI = this.stateManager.getState(GameGUI.class);
         this.GameState = stateManager.getState(GameState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
@@ -65,14 +67,14 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
         screen.setUseTextureAtlas(true, GameGUI.getAtlasString());
         screen.setUseMultiTouch(false);
         guiNode.addControl(screen);
     }
 
     private void initMaterials() {
-        focusMaterial = assetManager.loadMaterial("Materials/Circuit2/beam1.j3m");
+        focusMaterial = assetManager.loadMaterial("Materials/Circuit2/Tower1Beam.j3m");
     }
 
     @Override
@@ -85,7 +87,7 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void globPopup() {
-        Spatial glob = GameState.getWorldNode().getChild("Glob");
+        Spatial glob = rootNode.getChild("Glob");
         glob.setMaterial(focusMaterial);
         tMS.pause();
         ButtonAdapter globA = new ButtonAdapter(screen, "Glob", new Vector2f(glob.getLocalTranslation().x+200,600)) {
@@ -107,11 +109,11 @@ public class TutorialState extends AbstractAppState {
     }
 
     public void basePopup() {
-        GameState.getWorldNode().getChild("Base").setMaterial(focusMaterial);
+        GameState.getRootNode().getChild("Base").setMaterial(focusMaterial);
         ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base", new Vector2f(800, 800)) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                GameState.getWorldNode().getChild("Base")
+                rootNode.getChild("Base")
                         .setMaterial(assetManager.loadMaterial("Materials/Circuit/Base.j3m"));
                 screen.removeElement(this);
                 towerPopup();

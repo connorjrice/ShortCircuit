@@ -31,6 +31,7 @@ public class AudioState extends AbstractAppState {
     private AudioNode levelUpSound;
     private AudioNode globPop;
     private AudioNode bombsound;
+    private AudioNode endTheme;
 
     /* TowerState Nodes */
     private AudioNode emptySound;
@@ -52,6 +53,13 @@ public class AudioState extends AbstractAppState {
         themeLoop();
     }
     
+    // XXX: move this to AudioState
+    private void endTheme() {
+
+
+
+    }
+    
     /**
      * Initializes all audio nodes used in game.
      * 
@@ -69,6 +77,7 @@ public class AudioState extends AbstractAppState {
         bombsound = new AudioNode(assetManager, "Audio/bomb.wav");
         bombsound2 = new AudioNode(assetManager, "Audio/bomb.wav");
         emptySound = new AudioNode(assetManager, "Audio/emptytower.wav");
+        endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
 
     }
     
@@ -78,6 +87,7 @@ public class AudioState extends AbstractAppState {
         globPop.setVolume(.4f);
         chargeSound.setVolume(.8f);
         buildSound.setVolume(.3f);
+        endTheme.setVolume(1.0f);
     }
     
     private void setNodePositional() {
@@ -85,6 +95,8 @@ public class AudioState extends AbstractAppState {
         levelUpSound.setPositional(false);
         chargeSound.setPositional(false);
         buildSound.setPositional(false);
+        endTheme.setPositional(false);
+
     }
     
     public void emptySound() {
@@ -181,11 +193,22 @@ public class AudioState extends AbstractAppState {
     public void stopTheme() {
         theme.stop();
     }
+    
+    public void endLoop() {
+        stopTheme();
+        endTheme.setLooping(true);
+        endTheme.play();
+    }
+    
+    public void stopEnd() {
+        endTheme.stop();
+    }
 
     
     @Override
     public void cleanup() {
         super.cleanup();
         stopTheme();
+        stopEnd();
     }
 }

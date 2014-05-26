@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
- * PENDING: Implementation of upgrades for radius/damage, and creation of
+ * PENDING: Implementation of upgrades for bomb radius/damage, and creation of
  * textures/ sounds that would go along with that sort of implementation.
  *
  * @author Connor Rice

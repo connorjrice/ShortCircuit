@@ -2,22 +2,20 @@ package ScSDK.MapXML;
 
 import ShortCircuit.Objects.GraphicsParams;
 import ShortCircuit.Objects.GameplayParams;
-import ScSDK.MapXML.BuildParams;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.BloomFilter.GlowMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 
 /**
- * Generates maps for Tower game based upon XML files. Files must have .lvl.xml
- * extensions
- * TODO: Serialize world object (take rendered world and save it)
+ * Loads a world from XML data. Used to create models of the world in .j3o
+ * format
+ *
  * @author Connor Rice
  */
 public class MapGenerator {
@@ -36,21 +34,20 @@ public class MapGenerator {
         this.blockedNodes = new ArrayList<String>();
         this.doc = (Document) assetManager.loadAsset("XML/" + level);
     }
-    
+
     public BuildParams getBuildParams() {
         return new BuildParams(parseMaterialParams(), parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
     }
-    
+
     public GameplayParams getGameplayParams() {
         return new GameplayParams(parseLevelParams(), parsePlayerParams());
     }
-    
-    
+
     public GraphicsParams getGraphicsParams() {
-        return new GraphicsParams(parseMaterialParams(), parseFilterParams(), 
+        return new GraphicsParams(parseMaterialParams(), parseFilterParams(),
                 parseGeometryParams(), parseTowerTypes(), parseCreepList());
     }
-    
+
     private LevelParams parseLevelParams() {
         String levelExpression = "gameplayparams/param[@id = 'levelParams']/";
         String profiles = getElement("profile", levelExpression);
@@ -65,7 +62,7 @@ public class MapGenerator {
         parseGeomHash();
         return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, blockedNodes.toArray(new String[blockedNodes.size()]));
     }
-    
+
     private PlayerParams parsePlayerParams() {
         String playerExpression = "gameplayparams/param[@id = 'playerParams']/";
         int plrHealth = parseInt(getElement("plrHealth", playerExpression));
@@ -74,7 +71,7 @@ public class MapGenerator {
         int plrScore = parseInt(getElement("plrScore", playerExpression));
         return new PlayerParams(plrHealth, plrBudget, plrLevel, plrScore);
     }
-    
+
     private GeometryParams parseGeometryParams() {
         String geometryExpression = "gameplayparams/param[@id = 'geometryParams']/";
         Vector3f camLoc = parseVector3f(getElement("/camera/camLocation", geometryExpression));
@@ -88,37 +85,37 @@ public class MapGenerator {
         Vector3f horizontalScale = parseVector3f(getElement("/creepspawner/horizontalscale", geometryExpression));
         Vector3f verticalScale = parseVector3f(getElement("/creepspawner/verticalscale", geometryExpression));
         float beamwidth = parseFloat(getElement("/tower/beamwidth", geometryExpression));
-        return new GeometryParams(camLoc, floorScale, baseVec, baseScale, 
-                towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, 
+        return new GeometryParams(camLoc, floorScale, baseVec, baseScale,
+                towerBuiltSize, towerUnbuiltSize, towerBuiltSelected,
                 towerUnbuiltSelected, horizontalScale, verticalScale, beamwidth);
     }
-    
+
     private void parseGeomHash() {
         String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
         int numTowers = parseInt(getElement("numTowers", towerExpression));
         for (int i = 0; i < numTowers; i++) {
-            String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
+            String curTowerExpression = towerExpression + "tower[@id = '" + i + "']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
-            blockedNodes.add(towerVec.x+","+towerVec.y);
+            blockedNodes.add(towerVec.x + "," + towerVec.y);
         }
     }
-    
+
     private ArrayList<TowerParams> parseTowerList() {
         ArrayList<TowerParams> towerList = new ArrayList<TowerParams>();
         String towerExpression = "gameplayparams/param[@id = 'towerParams']/";
         float beamwidth = parseFloat(getElement("/tower/beamwidth", "gameplayparams/param[@id = 'geometryParams']/"));
         int numTowers = parseInt(getElement("numTowers", towerExpression));
         for (int i = 0; i < numTowers; i++) {
-            String curTowerExpression = towerExpression + "tower[@id = '"+i+"']/";
+            String curTowerExpression = towerExpression + "tower[@id = '" + i + "']/";
             Vector3f towerVec = parseVector3f(getElement("vec", curTowerExpression));
-            
+
             boolean starter = parseBoolean(getElement("isStarter", curTowerExpression));
             towerList.add(new TowerParams(towerVec, starter, i, beamwidth));
-            blockedNodes.add(towerVec.x+","+towerVec.y);
+            blockedNodes.add(towerVec.x + "," + towerVec.y);
         }
         return towerList;
     }
-  
+
     private MaterialParams parseMaterialParams() {
         String materialElement = "graphicsparams/param[@id = 'materialParams']/";
         String matdir = getElement("matdir", materialElement);
@@ -126,7 +123,7 @@ public class MapGenerator {
         ColorRGBA backgroundcolor = parseColorRGBA(colors);
         return new MaterialParams(backgroundcolor, matdir);
     }
-    
+
     private FilterParams parseFilterParams() {
         String filterElement = "graphicsparams/param[@id = 'filterParams']/";
         String blooms = getElement("bloom", filterElement);
@@ -142,15 +139,16 @@ public class MapGenerator {
         float bloomintensity = parseFloat(getElement("bloomintensity", filterElement));
         String glowmodes = getElement("glowmode", filterElement);
         GlowMode glowmode = parseGlowMode(glowmodes);
-        return new FilterParams(bloom, downsampling, blurscale, 
+        return new FilterParams(bloom, downsampling, blurscale,
                 exposurepower, bloomintensity, glowmode);
     }
+
     public ArrayList<CreepParams> parseCreepList() {
         String creepExpression = "enemyparams/param[@id = 'creepParams']/";
         String[] creepTypes = parseStringArray(getElement("creepTypes", creepExpression));
         ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
         for (int i = 0; i < creepTypes.length; i++) {
-            String curCreepExpression = creepExpression+creepTypes[i]+"Creep/";
+            String curCreepExpression = creepExpression + creepTypes[i] + "Creep/";
             int health = parseInt(getElement("health", curCreepExpression));
             float speed = parseFloat(getElement("speed", curCreepExpression));
             Vector3f size = parseVector3f(getElement("size", curCreepExpression));
@@ -159,26 +157,26 @@ public class MapGenerator {
         }
         return creepList;
     }
-    
+
     public ArrayList<CreepSpawnerParams> parseCreepSpawnerList() {
         String creepExpression = "enemyparams/param[@id = 'creepSpawnerParams']/";
         int numSpawners = parseInt(getElement("numSpawners", creepExpression));
         ArrayList<CreepSpawnerParams> creepSpawnerList = new ArrayList<CreepSpawnerParams>();
         for (int i = 0; i < numSpawners; i++) {
-            String curCreepSpawnerExpression = creepExpression+ "creepSpawner[@id = '"+i+"']/";
+            String curCreepSpawnerExpression = creepExpression + "creepSpawner[@id = '" + i + "']/";
             Vector3f vec = parseVector3f(getElement("vec", curCreepSpawnerExpression));
             String orientation = getElement("orientation", curCreepSpawnerExpression);
             creepSpawnerList.add(new CreepSpawnerParams(vec, orientation, i));
         }
         return creepSpawnerList;
     }
-    
+
     public String[] parseTowerTypes() {
         String towerExp = "gameplayparams/param[@id = 'towerParams']/";
         String[] types = parseStringArray(getElement("towerTypes", towerExp));
         return types;
     }
-    
+
     public String[] parseStringArray(String s) {
         return s.split(",");
     }
@@ -206,7 +204,7 @@ public class MapGenerator {
             return false;
         }
     }
-    
+
     public void parseVector3fHash(String vec, int index) {
         blockedNodes.add(vec);
     }
@@ -229,7 +227,7 @@ public class MapGenerator {
     public float parseFloat(String s) {
         return Float.parseFloat(s);
     }
-    
+
     public GlowMode parseGlowMode(String s) {
         if (s.equals("GlowMode.SceneAndObjects")) {
             return GlowMode.SceneAndObjects;
@@ -241,24 +239,23 @@ public class MapGenerator {
             return null;
         }
     }
-    
+
     public String getElement(String value, String parentNode) {
         return getValue(getExpression(value, parentNode));
     }
-    
+
     public String getExpression(String value, String parentNode) {
-        return "/level/"+parentNode + value+ "/text()";
+        return "/level/" + parentNode + value + "/text()";
     }
-    
+
     public String getValue(String expression) {
         try {
             return xpath.evaluate(expression, doc);
         } /*catch (XPathExpressionException ex) {
-            System.out.println(ex.getCause());
-            return null;
-        }*/ catch (Exception e) {
+         System.out.println(ex.getCause());
+         return null;
+         }*/ catch (Exception e) {
             return null;
         }
     }
-
 }

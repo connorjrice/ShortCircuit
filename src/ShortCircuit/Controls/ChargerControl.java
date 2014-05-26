@@ -15,9 +15,9 @@ import java.io.IOException;
 /**
  * Control for Charger NPC Type. The Charger is a player friendly NPC that will
  * charge towers. It must be purchased, and only contains 10 charges. After it
- * has charged ten towers, it disappears. TODO: Fix chargers not always charging
- * all empty towers
- *
+ * has charged ten towers, it disappears. 
+ * XXX: Charger bugs
+ * 
  * @author Connor
  */
 public class ChargerControl extends AbstractControl {

@@ -1,5 +1,6 @@
 package ShortCircuit.States.GUI;
 
+import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import ShortCircuit.States.Game.FriendlyState;
@@ -7,9 +8,9 @@ import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
@@ -81,7 +82,6 @@ public class GameGUI extends AbstractAppState {
     private Slider BloomSlider;
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
-    private AudioNode endTheme;
     private boolean end = false;
     private StartGUI StartGUI;
     private ButtonAdapter soundToggle;
@@ -99,6 +99,8 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Bomb;
     private ButtonAdapter BuildButton;
     private Window BuildWindow;
+    private AudioState AudioState;
+    private AppStateManager stateManager;
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -108,24 +110,54 @@ public class GameGUI extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
+        getResources();
+        getStates();
+        getScalingDimensions();
+        initInput();
+        setListenerParams();
+        initScreen();
+        setupGUI();
+        setCameraLocation();
+        setInitialPlrInfo();
+    }
+
+    private void getResources() {
         this.guiNode = this.app.getGuiNode();
         this.cam = this.app.getCamera();
         this.inputManager = this.app.getInputManager();
         this.assetManager = this.app.getAssetManager();
-        this.GameState = this.app.getStateManager().getState(GameState.class);
-        this.StartGUI = this.app.getStateManager().getState(StartGUI.class);
-        this.FriendlyState = this.app.getStateManager().getState(FriendlyState.class);
-        this.GraphicsState = this.app.getStateManager().getState(GraphicsState.class);
+        this.stateManager = this.app.getStateManager();
+    }
+
+    private void getStates() {
+        this.GameState = (GameState) getState(GameState.class);
+        this.StartGUI = (StartGUI) getState(StartGUI.class);
+        this.FriendlyState = (FriendlyState) getState(FriendlyState.class);
+        this.GraphicsState = (GraphicsState) getState(GraphicsState.class);
+        this.AudioState = (AudioState) getState(AudioState.class);
+    }
+
+    private AppState getState(Class c) {
+        return stateManager.getState(c);
+    }
+
+    private void getScalingDimensions() {
         width = tMS.getWidth();
         height = tMS.getHeight();
+        tenthHeight = height / 10;
+        tenthWidth = width / 10;
+        buttonSize = new Vector2f(tenthWidth * 1.75f, tenthHeight);
+        leftButtons = 10;
+        rightButtons = width - tenthWidth * 1.75f - 10;
+    }
+
+    private void initInput() {
         inputManager.addListener(actionListener, new String[]{"Touch"});
+    }
+
+    private void setListenerParams() {
         this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
         this.app.getListener().setRotation(cam.getRotation());
-        initScreen();
-        getScalingDimensions();
-        setupGUI();
-        setCameraLocation();
-        setInitialPlrInfo();
     }
 
     private void initScreen() {
@@ -134,14 +166,6 @@ public class GameGUI extends AbstractAppState {
         screen.setUseMultiTouch(false);
         screen.setGlobalUIScale(tenthHeight, tenthWidth);
         guiNode.addControl(screen);
-    }
-
-    private void getScalingDimensions() {
-        tenthHeight = height / 10;
-        tenthWidth = width / 10;
-        buttonSize = new Vector2f(tenthWidth * 1.75f, tenthHeight);
-        leftButtons = 10;
-        rightButtons = width - tenthWidth * 1.75f - 10;
     }
 
     @Override
@@ -179,11 +203,10 @@ public class GameGUI extends AbstractAppState {
             if (GameState.getPlrLevel() != internalLevel) {
                 GraphicsState.incBloomIntensity(.2f);
                 internalLevel = GameState.getPlrLevel();
-                Level.setText(Integer.toString(internalLevel));
+                Level.setText("Level: " + Integer.toString(internalLevel));
             }
             if (GameState.getFours() > 0 && !end) {
-                endTheme();
-                tMS.stopTheme();
+                AudioState.endLoop();
                 end = true;
             }
             updateFrills();
@@ -191,15 +214,6 @@ public class GameGUI extends AbstractAppState {
         } else {
             frillsTimer += tpf;
         }
-    }
-
-    // XXX: move this to AudioState
-    private void endTheme() {
-        endTheme = new AudioNode(app.getAssetManager(), "Audio/endtheme.wav");
-        endTheme.setVolume(1.0f);
-        endTheme.setPositional(false);
-        endTheme.setLooping(true);
-        endTheme.play();
     }
 
     /**
@@ -456,8 +470,6 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(BuildWindow);
         BuildWindow.hide();
     }
-    
-
 
     private void progressIndicator() {
         ProgressIndicator = new Indicator(screen, "Progress", new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {
@@ -865,9 +877,6 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(ProgressIndicator);
         screen.removeElement(Bomb);
         screen.removeElement(BuildButton);
-        if (endTheme != null) {
-            endTheme.stop();
-        }
         guiNode.removeControl(screen);
     }
 }

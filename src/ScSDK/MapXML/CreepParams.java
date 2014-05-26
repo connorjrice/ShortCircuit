@@ -9,9 +9,7 @@ import com.jme3.math.Vector3f;
 import java.io.IOException;
 
 /**
- * This class will contain the creep paramaters per level, including: Speed,
- * size, shape, health, value TODO: Implement CreepParams
- *
+ * Wrapper for information about creeps.
  * @author Connor
  */
 public class CreepParams implements Savable {

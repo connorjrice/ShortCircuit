@@ -52,6 +52,7 @@ public class GlobControl extends AbstractControl {
     }
 
     public int decGlobHealth() {
+        spatial.setLocalScale(spatial.getLocalScale().mult(.9f));
         int health = spatial.getUserData("Health");
         spatial.setUserData("Health", health - 1);
         return health - 1;

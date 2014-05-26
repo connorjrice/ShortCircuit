@@ -10,9 +10,9 @@ import com.jme3.scene.control.Control;
 /**
  * The digger enemey will slowly emerge from the ground. It is damageable from
  * the point at which it is shown on the map. It will either be popped in the
- * same style as globs, or it will be affected by bombs. TODO: Decide upon
- * method for damaging the digger enemy.
- *
+ * same style as globs, or it will be affected by bombs.
+ * 
+ * PENDING: Implement Digger
  * It will be similar to a creep spawner. It should spawn a fair ways away from
  * the base, because otherwise the creeps that come from it will be very danger-
  * ous.
