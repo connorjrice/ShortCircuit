@@ -456,6 +456,8 @@ public class GameGUI extends AbstractAppState {
         screen.addElement(BuildWindow);
         BuildWindow.hide();
     }
+    
+
 
     private void progressIndicator() {
         ProgressIndicator = new Indicator(screen, "Progress", new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {

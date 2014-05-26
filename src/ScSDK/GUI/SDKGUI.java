@@ -190,7 +190,9 @@ public class SDKGUI extends AbstractAppState {
             
                 }
                 stateManager.detach(tMS);
+                
                 MainWindow.show();
+                buildLevels();
                 screen.removeElement(this);
             }
         };

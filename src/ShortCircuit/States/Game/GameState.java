@@ -22,6 +22,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * PENDING: Implment allowedenemies TODO: Implement Digger and Ranger TODO:
  * Retool main menu
+ * 
+ * New gameplay idea: have a set number of walls you can build in the beginning,
+ * and only a few prebuilt towers. Then, you build towers (not in prelisted places)
  *
  * @author Connor Rice
  */

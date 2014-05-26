@@ -156,7 +156,7 @@ public class StartGUI extends AbstractAppState {
     private void buildLevels() {
         levelList.addListItem("Tutorial", "Tutorial.lvl.xml");
         levelList.addListItem("Level1", "Level1.lvl.xml");
-        levelList.addListItem("Level2", "Level2.lvl.xml");
+        levelList.addListItem("Level2", "NewLevel2.lvl.xml");
         levelList.addListItem("Level3", "Level3.lvl.xml");
         levelList.addListItem("PathTest", "PathTest.lvl.xml");
         levelList.addListItem("TestGameOver", "TestGameOver.lvl.xml");
