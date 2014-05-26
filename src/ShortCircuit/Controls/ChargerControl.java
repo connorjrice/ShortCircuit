@@ -41,7 +41,7 @@ public class ChargerControl extends AbstractControl {
     }
 
     private void nextLocation() {
-        if (FriendlyState.getEmptyTowers().isEmpty()) {
+        if (FriendlyState.getEmptyTowers().isEmpty() && destTower == null) {
             moveTowardsHome();
         } else {
             if (destTower == null) {
@@ -77,7 +77,7 @@ public class ChargerControl extends AbstractControl {
     }
 
     private void moveTowardsHome() {
-        if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .2) {
+        if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .4f) {
             moveamount += .0003f;
             spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(FriendlyState.getHomeVec(), moveamount));
         } else {

@@ -7,7 +7,7 @@
             <levelCap>50</levelCap>
             <levelMod>50</levelMod>
             <profile>false</profile>
-            <tutorial>true</tutorial>
+            <tutorial>false</tutorial>
             <allowedenemies>110100</allowedenemies>
         </param>
         <param id = "playerParams">

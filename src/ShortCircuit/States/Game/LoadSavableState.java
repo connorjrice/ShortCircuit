@@ -38,6 +38,7 @@ public class LoadSavableState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private GameplayParams gap;
     private GraphicsParams grp;
+    private TutorialState TutorialState;
 
     public LoadSavableState() {
     }
@@ -119,14 +120,23 @@ public class LoadSavableState extends AbstractAppState {
         if (getProfile()) {
             ProfileState ps = new ProfileState();
             stateManager.attach(ps);
+        } else {
+            updateStartGUI();
         }
         GameState.setGPBuild(gap);
         FriendlyState.setTowerList(towerList);
+        if (getTutorial()) {
+            TutorialState = new TutorialState();
+            stateManager.attach(TutorialState);
+        }
     }
-
 
     public boolean getProfile() {
         return gap.getLevelParams().getProfile();
+    }
+
+    public boolean getTutorial() {
+        return gap.getLevelParams().getTutorial();
     }
 
     private void updateStartGUI() {

@@ -68,7 +68,6 @@ public class FriendlyState extends AbstractAppState {
     private void initLists() {
         emptyTowers = new Queue<TowerControl>();
         activeChargers = new Queue<Spatial>();
-
     }
 
     public void setTowerList(ArrayList<Spatial> listIn) {

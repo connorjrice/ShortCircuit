@@ -36,15 +36,14 @@ public class Queue<T> {
     public T dequeue() {
         T element;
         if (back == front) {
-            size--;
             element = front.getElement();
             front = null;
             back = null;
         } else {
-            size--;
             element = front.getElement();
             front = front.getNeighbor();
         }
+        size--;
         return element;
     }
 
