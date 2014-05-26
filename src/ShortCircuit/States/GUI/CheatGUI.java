@@ -35,6 +35,8 @@ public class CheatGUI extends AbstractAppState {
     private ButtonAdapter SuperDeath;
     private int tenthHeight;
     private int tenthWidth;
+    private int thirWidth;
+    private int twenHeight;
 
     public CheatGUI() {}
 
@@ -75,16 +77,17 @@ public class CheatGUI extends AbstractAppState {
     private void getScalingDimensions() {
         tenthHeight = height/10;
         tenthWidth = width/10;
-        menuButtonSize = new Vector2f(tenthWidth*1.75f, tenthHeight).divide(1.5f);
+        thirWidth = width /30;
+        twenHeight = height/20;
+        menuButtonSize = new Vector2f(tenthWidth*1.5f, tenthHeight).divide(1.5f);
     }
 
     /**
      * Window for buttons that perform cheat operations. 
-     * TODO: Scaling/positioning for cheatWindow in CheatGUI.
      */
     private void cheatWindow() {
-        CheatWindow = new Window(screen, new Vector2f(400, 800),
-                new Vector2f(width / 2, height / 4));
+        CheatWindow = new Window(screen, new Vector2f(tenthWidth*2, tenthHeight*7),
+                new Vector2f(tenthWidth*5, tenthHeight*2));
         CheatWindow.setIgnoreMouse(true);
         CheatWindow.setIsMovable(false);
         screen.addElement(CheatWindow);
@@ -96,7 +99,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void millionButton() {
         MillionDollars = new ButtonAdapter(screen, "Millions",
-                new Vector2f(10, 35), menuButtonSize) {
+                new Vector2f(thirWidth, twenHeight), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -113,7 +116,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void billionButton() {
         BillionDollars = new ButtonAdapter(screen, "Billions",
-                new Vector2f(210, 35), menuButtonSize) {
+                new Vector2f(thirWidth*4, twenHeight), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -130,7 +133,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void ammoH4KZ() {
         AmmoH4KZ = new ButtonAdapter(screen, "AmmoH4KZ",
-                new Vector2f(410, 35), menuButtonSize) {
+                new Vector2f(thirWidth*7, twenHeight), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -146,7 +149,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void hackyTowers() {
         TowerHack = new ButtonAdapter(screen, "TowerHack",
-                new Vector2f(610, 35), menuButtonSize) {
+                new Vector2f(thirWidth*10, twenHeight), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -162,7 +165,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void dollaBillz() {
         DollaBillz = new ButtonAdapter(screen, "MoneyGack",
-                new Vector2f(10, 135), menuButtonSize) {
+                new Vector2f(thirWidth, twenHeight*2.33f), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -178,7 +181,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void superMedic() {
         SuperMedic = new ButtonAdapter(screen, "MuchMedic",
-                new Vector2f(210, 135), menuButtonSize) {
+                new Vector2f(thirWidth*4, twenHeight*2.33f), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {
@@ -194,7 +197,7 @@ public class CheatGUI extends AbstractAppState {
      */
     private void superDeath() {
         SuperDeath = new ButtonAdapter(screen, "MuchHurt",
-                new Vector2f(410, 135), menuButtonSize) {
+                new Vector2f(thirWidth*7, twenHeight*2.33f), menuButtonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
                     boolean toggled) {

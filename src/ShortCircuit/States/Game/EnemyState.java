@@ -25,7 +25,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * @author Connor Rice
- * TODO: Fix EnemyState random seed for profile
  */
 public class EnemyState extends AbstractAppState {
 

@@ -6,6 +6,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 /**
@@ -50,14 +52,18 @@ public class AudioState extends AbstractAppState {
         initAudioNodes();
         setNodeVolumes();
         setNodePositional();
+        setListenerParams();
         themeLoop();
     }
     
-    // XXX: move this to AudioState
-    private void endTheme() {
+    private void setListenerParams() {
+        this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
+        this.app.getListener().setRotation(app.getCamera().getRotation());
+    }
 
-
-
+    public void setAudioListenerPosition(Vector3f trans) {
+        app.getListener().setLocation(trans);
+        app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI / 2, new Vector3f(0, 0, 1)));
     }
     
     /**

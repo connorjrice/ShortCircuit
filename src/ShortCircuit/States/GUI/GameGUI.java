@@ -18,7 +18,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -26,7 +25,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.controls.lists.Slider;
@@ -45,31 +43,54 @@ public class GameGUI extends AbstractAppState {
 
     private TowerMainState tMS;
     private SimpleApplication app;
-    private Camera cam;
+    private AssetManager assetManager;
     private InputManager inputManager;
+    private AppStateManager stateManager;
+    private Camera cam;
     private GameState GameState;
-    private Button Charge;
+    private FriendlyState FriendlyState;
+    private StartGUI StartGUI;
+    private GraphicsState GraphicsState;
+    private AudioState AudioState;
     private Screen screen;
     private Node guiNode;
+    private ButtonAdapter Charge;
     private ButtonAdapter Settings;
-    public ButtonAdapter Health;
-    public ButtonAdapter Budget;
-    public ButtonAdapter Score;
-    public ButtonAdapter Level;
+    private ButtonAdapter Health;
+    private ButtonAdapter Budget;
+    private ButtonAdapter Score;
+    private ButtonAdapter Level;
     private ButtonAdapter TextColorButton;
     private ButtonAdapter BloomToggleButton;
-    public ButtonAdapter Modify;
+    private ButtonAdapter Modify;
     private ButtonAdapter Camera;
     private ButtonAdapter Menu;
     private ButtonAdapter CheatsButton;
     private ButtonAdapter CheatToggleButton;
+    private ButtonAdapter soundToggle;
+    private ButtonAdapter PurchaseButton;
+    private ButtonAdapter PurchaseChargerButton;
+    private ButtonAdapter Bomb;
+    private ButtonAdapter BuildButton;
+    private ButtonAdapter DowngradeButton;
+    private Menu internalMenu;
+    private Slider SoundSlider;
+    private Slider BloomSlider;
+    private Window BuildWindow;
+    private Window PurchaseWindow;
+    private Window SetWindow;
+    private AlertBox ObjectivePopup;
+    private Indicator ProgressIndicator;
+    private ColorRGBA color = new ColorRGBA();
     private Vector2f buttonSize = new Vector2f(200, 100);
     private boolean isFrills = true;
+    private boolean end = false;
     private float updateTimer;
     private float frillsTimer;
-    private ColorRGBA color = new ColorRGBA();
-    private int leftButtons;
+    private float leftButtons;
     private float rightButtons;
+    private float tenthHeight;
+    private float tenthWidth;
     private int height;
     private int width;
     private int internalHealth;
@@ -77,30 +98,7 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private int camlocation = 0;
-    private Menu internalMenu;
-    private Window SetWindow;
-    private Slider BloomSlider;
-    private AlertBox ObjectivePopup;
-    private Indicator ProgressIndicator;
-    private boolean end = false;
-    private StartGUI StartGUI;
-    private ButtonAdapter soundToggle;
-    private Slider SoundSlider;
-    private Window PurchaseWindow;
-    private ButtonAdapter PurchaseButton;
-    private ButtonAdapter PurchaseChargerButton;
-    private AssetManager assetManager;
     private Material oldbuttmat;
-    private FriendlyState FriendlyState;
-    private ButtonAdapter DowngradeButton;
-    private float tenthHeight;
-    private float tenthWidth;
-    private GraphicsState GraphicsState;
-    private ButtonAdapter Bomb;
-    private ButtonAdapter BuildButton;
-    private Window BuildWindow;
-    private AudioState AudioState;
-    private AppStateManager stateManager;
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -114,7 +112,6 @@ public class GameGUI extends AbstractAppState {
         getStates();
         getScalingDimensions();
         initInput();
-        setListenerParams();
         initScreen();
         setupGUI();
         setCameraLocation();
@@ -154,11 +151,26 @@ public class GameGUI extends AbstractAppState {
     private void initInput() {
         inputManager.addListener(actionListener, new String[]{"Touch"});
     }
+    /**
+     * Handles touch events for GameState.
+     */
+    private ActionListener actionListener = new ActionListener() {
+        public void onAction(String name, boolean keyPressed, float tpf) {
+            if (isEnabled()) {
+                if (keyPressed) {
+                    Vector2f click2d = inputManager.getCursorPosition();
+                    Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
+                            click2d.getX(), click2d.getY()), 0f);
 
-    private void setListenerParams() {
-        this.app.getListener().setLocation(new Vector3f(0, 0, 5f));
-        this.app.getListener().setRotation(cam.getRotation());
-    }
+                    //debugTCoords(click2d.getX(), click2d.getY());
+
+                    if (GameState.isEnabled()) {
+                        selectPlrObject(click2d, click3d);
+                    }
+                }
+            }
+        }
+    };
 
     private void initScreen() {
         screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
@@ -217,79 +229,6 @@ public class GameGUI extends AbstractAppState {
     }
 
     /**
-     * This will be the button that, after cheats are activated, shows up and
-     * lets the user use dirty cheats.
-     */
-    private void cheatsButton() {
-        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
-                    tMS.toggleCheatsWindow();
-                }
-            }
-        };
-        CheatsButton.setText("Cheats");
-        CheatsButton.setUseButtonPressedSound(true);
-        screen.addElement(CheatsButton);
-        CheatsButton.hide();
-    }
-
-    /**
-     * This button will appear in settings, as a toggle. Next to the textcolor
-     * button probably.
-     */
-    private void cheatToggleButton() {
-        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize.divide(1.5f)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                toggleCheats();
-            }
-        };
-        CheatToggleButton.setIsToggleButton(true);
-        CheatToggleButton.setText("Cheats");
-        SetWindow.addChild(CheatToggleButton);
-    }
-
-    /**
-     * This is the method for toggling the cheat menu button.
-     */
-    private void toggleCheats() {
-        if (CheatsButton.getIsVisible()) {
-            CheatsButton.hide();
-        } else {
-            CheatsButton.show();
-        }
-
-    }
-    // XXX: Move this to AudioState
-
-    public void setAudioListenerPosition(Vector3f trans) {
-        app.getListener().setLocation(trans);
-        app.getListener().setRotation(new Quaternion().fromAngleAxis(FastMath.PI / 2, new Vector3f(0, 0, 1)));
-    }
-    /**
-     * Handles touch events for GameState.
-     */
-    private ActionListener actionListener = new ActionListener() {
-        public void onAction(String name, boolean keyPressed, float tpf) {
-            if (isEnabled()) {
-                if (keyPressed) {
-                    Vector2f click2d = inputManager.getCursorPosition();
-                    Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
-                            click2d.getX(), click2d.getY()), 0f);
-
-                    //debugTCoords(click2d.getX(), click2d.getY());
-
-                    if (GameState.isEnabled()) {
-                        selectPlrObject(click2d, click3d);
-                    }
-                }
-            }
-        }
-    };
-
-    /**
      * Handles collisions. TODO: Update this process of selecting objects
      *
      * @param click2d
@@ -336,6 +275,51 @@ public class GameGUI extends AbstractAppState {
         getOldMat();
         downgradeButton();
         bombToggle();
+    }
+
+    /**
+     * Brings up Cheat Window (inside CheatGUI). Activated from Settings.
+     */
+    private void cheatsButton() {
+        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
+                    tMS.toggleCheatsWindow();
+                }
+            }
+        };
+        CheatsButton.setText("Cheats");
+        CheatsButton.setUseButtonPressedSound(true);
+        screen.addElement(CheatsButton);
+        CheatsButton.hide();
+    }
+
+    /**
+     * Toggles visibility of the cheats button.
+     */
+    private void cheatToggleButton() {
+        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize.divide(1.5f)) {
+            @Override
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                toggleCheats();
+            }
+        };
+        CheatToggleButton.setIsToggleButton(true);
+        CheatToggleButton.setText("Cheats");
+        SetWindow.addChild(CheatToggleButton);
+    }
+
+    /**
+     * This is the method for toggling the cheat menu button.
+     */
+    private void toggleCheats() {
+        if (CheatsButton.getIsVisible()) {
+            CheatsButton.hide();
+        } else {
+            CheatsButton.show();
+        }
+
     }
 
     private void objectivePopup() {

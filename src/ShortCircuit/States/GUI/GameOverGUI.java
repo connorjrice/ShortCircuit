@@ -13,6 +13,7 @@ import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 
 /**
+ * TODO: Extend this class to include high scores
  * @author Connor
  */
 public class GameOverGUI extends AbstractAppState {

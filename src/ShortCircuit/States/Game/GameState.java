@@ -19,6 +19,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * PENDING: Implment allowedenemies TODO: Implement Digger and Ranger TODO:
  * Retool main menu
+ * FIXME: Bug where gameover on a level does not let the user play level again.
  * 
  * New gameplay idea: have a set number of walls you can build in the beginning,
  * and only a few prebuilt towers. Then, you build towers (not in prelisted places)

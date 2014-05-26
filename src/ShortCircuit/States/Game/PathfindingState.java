@@ -19,8 +19,6 @@ import com.jme3.scene.shape.Sphere;
 import java.text.DecimalFormat;
 
 /**
- * TODO: Make walls, make towers "solid"
- * TODO: remove geometry for path node
  * @author Connor Rice
  */
 public class PathfindingState extends AbstractAppState {
