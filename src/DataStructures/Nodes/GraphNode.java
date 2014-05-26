@@ -1,20 +1,30 @@
 package DataStructures.Nodes;
 
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
+import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
+import java.io.IOException;
 
-public class GraphNode<T> {
+public class GraphNode implements Savable {
 
-    private Comparable element;
+    private String element;
     private int index;
     private float[] coords;
+    
+    public GraphNode() {
+        
+    }
 
-    public GraphNode(int _index, Comparable newElement) {
+    public GraphNode(int _index, String newElement) {
         index = _index;
         element = newElement;
         setCoordArray();
     }
 
-    public GraphNode(Comparable newElement) {
+    public GraphNode(String newElement) {
         index = -1;
         element = newElement;
     }
@@ -23,7 +33,7 @@ public class GraphNode<T> {
         return index;
     }
 
-    public Comparable getElement() {
+    public String getElement() {
         return element;
     }
 
@@ -43,4 +53,21 @@ public class GraphNode<T> {
     public float[] getCoordArray() {
         return coords;
     }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        InputCapsule in = im.getCapsule(this);
+        element = in.readString("element", "");
+        index = in.readInt("index", 0);
+        coords = in.readFloatArray("coords", new float[3]);
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        OutputCapsule out = ex.getCapsule(this);
+        out.write(element, "element", "");
+        out.write(index, "index", 0);
+        out.write(coords, "coords", new float[coords.length]);
+    }
+
 }

@@ -2,6 +2,7 @@ package ShortCircuit.States.Game;
 
 import DataStructures.Graph;
 import DataStructures.Queue;
+import ScSDK.IO.BuildState;
 import ShortCircuit.PathFinding.JEdgeManipulator;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -46,6 +47,11 @@ public class PathfindingState extends AbstractAppState {
     private String[] blockedNodes;
     private JEdgeManipulator edgeMani;
     private GraphicsState GraphicsState;
+    private boolean isBuild;
+    
+    public PathfindingState(boolean isBuild) {
+        this.isBuild = isBuild;
+    }
     
     public PathfindingState() {}
     
@@ -56,15 +62,26 @@ public class PathfindingState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
-        this.worldGraph = new Graph<String>(1400);
+
         this.precision = 1.0f; // works with 1.0f, .5f
         this.GameState = stateManager.getState(GameState.class);
         this.GraphicsState = stateManager.getState(GraphicsState.class);
-        this.blockedNodes = GameState.getBlockedNodes();
+
+        
         initAssets();
-        createPathNodes();
-        edgeMani = new JEdgeManipulator(worldGraph, targetNode, blockedNodes, precision);
-        addEdges();
+
+        if (!isBuild) {            
+            edgeMani = rootNode.getChild("LoadedWorld").getUserData("EdgeMani");
+            System.out.println(edgeMani);
+            this.worldGraph = edgeMani.getWorldGraph();
+        } else {
+            this.worldGraph = new Graph<String>(1400);
+            this.blockedNodes = stateManager.getState(BuildState.class).getBlockedNodes();
+            edgeMani = new JEdgeManipulator(worldGraph, targetNode, blockedNodes, precision);
+            createPathNodes();
+            addEdges();
+        }
+
         rootNode.attachChild(targetNode);
     }
     
@@ -142,6 +159,9 @@ public class PathfindingState extends AbstractAppState {
     
     private void addEdges() {
         edgeMani.addInitialEdges();
+        if (isBuild) {
+            rootNode.setUserData("EdgeMani", edgeMani);
+        }
     }
     
     private void removeEdge(String target) {

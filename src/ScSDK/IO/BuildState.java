@@ -217,6 +217,10 @@ public class BuildState extends AbstractAppState {
     public Material getMaterial(String key) {
         return (Material) matHash.get(key);
     }
+    
+    public String[] getBlockedNodes() {
+        return mg.getGameplayParams().getLevelParams().getBlockedNodes();
+    }
 
     @Override
     public void cleanup() {

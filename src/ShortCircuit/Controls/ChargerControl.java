@@ -136,8 +136,6 @@ public class ChargerControl extends AbstractControl {
         destTower = (TowerControl) in.readSavable("destTower", new TowerControl());
         isHome = in.readBoolean("isHome", false);
         moveamount = in.readFloat("moveAmount", .04f);
-
-
     }
 
     @Override
