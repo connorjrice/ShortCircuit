@@ -8,21 +8,19 @@ import com.jme3.scene.Spatial;
 
 /**
  * Factory for player controlled towers.
+ *
  * @author Connor Rice
  */
 public class TowerFactory {
+
     private BuildState bs;
-    private AssetManager assetManager;
-    
-    public TowerFactory(BuildState bs){
+
+    public TowerFactory(BuildState bs) {
         this.bs = bs;
-        this.assetManager = bs.getAssetManager();
     }
 
     public Spatial getTower(TowerParams tp) {
         Geometry tower_geom = new Geometry("Tower", bs.getUnivBox());
-
-
         tower_geom.setLocalTranslation(tp.getTowerVec());
         tower_geom.setUserData("Index", tp.getIndex());
         if (tp.getIsStarter()) {
@@ -32,11 +30,8 @@ public class TowerFactory {
             tower_geom.setUserData("Type", "TowerUnbuilt");
             tower_geom.setLocalScale(bs.getTowerUnbuiltSize());
         }
-        
-        tower_geom.setMaterial(bs.getMaterial((String)tower_geom.getUserData("Type")));
+        tower_geom.setMaterial(bs.getMaterial((String) tower_geom.getUserData("Type")));
         tower_geom.setUserData("BeamWidth", tp.getBeamWidth());
         return tower_geom;
     }
-    
-    
 }

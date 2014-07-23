@@ -1,8 +1,0 @@
-Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
-     MaterialParameters {
-        ColorMap : Textures/Neon/tower4.png
-        GlowColor : 0.4 1.0 1.0 0.9
-     }
-    AdditionalRenderState {
-    }
-}

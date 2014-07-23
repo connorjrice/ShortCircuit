@@ -1,13 +1,12 @@
 package ShortCircuit.Unimplemented;
 
-import ScSDK.IO.BuildState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.asset.AssetManager;
 import java.util.HashMap;
 
 /**
  *
- * @author Development
+ * @author Connor Rice
  */
 public class BuildMatHash implements Runnable {
     private GraphicsState gs;

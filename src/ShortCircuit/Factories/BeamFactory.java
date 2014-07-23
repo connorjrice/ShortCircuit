@@ -8,7 +8,7 @@ import com.jme3.scene.shape.Line;
 
 /**
  *
- * @author Connor
+ * @author Connor Rice
  */
 public class BeamFactory {
 

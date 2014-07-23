@@ -7,7 +7,6 @@ import ScSDK.Factories.TowerFactory;
 import ScSDK.MapXML.BuildParams;
 import ScSDK.MapXML.CreepSpawnerParams;
 import ScSDK.MapXML.GeometryParams;
-import ShortCircuit.Objects.GraphicsParams;
 import ScSDK.MapXML.MapGenerator;
 import ScSDK.MapXML.MaterialParams;
 import ScSDK.MapXML.TowerParams;
@@ -28,8 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This class will take care of actually building the levels, without adding any
- * controls.
+ * This class builds levels without any controls added for serialization.
  *
  * @author Connor Rice
  */

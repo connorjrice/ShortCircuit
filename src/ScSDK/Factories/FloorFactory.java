@@ -5,7 +5,7 @@ import com.jme3.scene.Geometry;
 
 /**
  *
- * @author Development
+ * @author Connor Rice
  */
 public class FloorFactory {
 

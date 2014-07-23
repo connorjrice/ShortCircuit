@@ -19,6 +19,11 @@ public class CreepSpawnerFactory {
         this.bs = bs;
     }
 
+    /**
+     * Returns a CreepSpawnerParams object.
+     * @param csp
+     * @return 
+     */
     public CreepSpawnerParams getSpawner(CreepSpawnerParams csp) {
         Geometry spawner_geom = new Geometry("Spawner", new Box(1, 1, 1));
         spawner_geom.setMaterial((Material)bs.getMaterial("CreepSpawner"));

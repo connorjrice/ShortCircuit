@@ -12,7 +12,7 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.scene.Node;
 
 /**
- * This is the main state for all Tower gameplay.
+ * Starts a modified version of the game for XML parsing.
  * @author Connor
  */
 public class TowerMapXML extends AbstractAppState {

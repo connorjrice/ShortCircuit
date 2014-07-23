@@ -7,8 +7,6 @@ import ShortCircuit.PathFinding.jMEHeuristic;
 import ShortCircuit.States.Game.EnemyState;
 import ShortCircuit.States.Game.GraphicsState;
 import com.jme3.asset.AssetManager;
-import com.jme3.bounding.BoundingVolume;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -22,14 +20,12 @@ public class RegCreepFactory {
 
     private GraphicsState gs;
     private EnemyState es;
-    private BoundingVolume baseBounds;
     private AssetManager assetManager;
 
     public RegCreepFactory(GraphicsState gs, EnemyState es) {
         this.gs = gs;
         this.es = es;
         this.assetManager = es.getAssetManager();
-        this.baseBounds = this.es.getBaseBounds();
     }
 
     public Spatial getCreep(Vector3f spawnpoint, CreepParams cp) {

@@ -7,7 +7,7 @@ import com.jme3.math.Vector3f;
 /**
  * Runnable for moving creeps.
  *
- * @author clarence
+ * @author Connor Rice
  */
 public class MoveCreep implements Runnable {
 

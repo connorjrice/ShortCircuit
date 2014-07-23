@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author Development
+ * @author Connor Rice
  */
 public class BuildMatHashSDK implements Runnable {
     private BuildState bs;

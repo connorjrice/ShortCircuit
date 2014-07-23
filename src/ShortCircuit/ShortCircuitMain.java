@@ -6,7 +6,7 @@ import com.jme3.system.AppSettings;
 
 /**
  * ShortCircuit: A tower defense game
- *
+ * TODO: Update atlas def files :(
  * @author Connor Rice
  */
 public class ShortCircuitMain extends SimpleApplication {

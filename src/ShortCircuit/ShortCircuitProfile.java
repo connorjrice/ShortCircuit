@@ -4,8 +4,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
 
 /**
- *
- * @author Connor
+ * Profiling main controller for Short Circuit.
+ * @author Connor Rice
  */
 public class ShortCircuitProfile extends SimpleApplication {
     private TowerMainState tms;

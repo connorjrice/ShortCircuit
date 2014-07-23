@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Development
+ * @author Connor Rice
  */
 public class BuildParams implements Savable {
 

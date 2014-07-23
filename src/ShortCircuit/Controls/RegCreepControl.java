@@ -2,7 +2,6 @@ package ShortCircuit.Controls;
 
 import DataStructures.Graph;
 import ShortCircuit.PathFinding.Path;
-import ShortCircuit.PathFinding.AStarPathFinder;
 import ShortCircuit.PathFinding.PathFinder;
 import ShortCircuit.Threading.MoveCreep;
 import ShortCircuit.States.Game.EnemyState;

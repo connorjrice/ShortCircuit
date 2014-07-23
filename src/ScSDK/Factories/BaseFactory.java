@@ -14,6 +14,13 @@ public class BaseFactory {
     public BaseFactory(BuildState bs) {
         this.bs = bs;
     }
+    
+    /**
+     * Returns a player base geometry.
+     * @param basevec - Local translation for base.
+     * @param basescale - Local scale for base.
+     * @return 
+     */
     public Geometry getBase(Vector3f basevec, Vector3f basescale) {
         Geometry base_geom = new Geometry("Base", new Box(1,1,1));
         base_geom.setMaterial(bs.getMaterial("Base"));

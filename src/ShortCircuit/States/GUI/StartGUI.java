@@ -73,9 +73,10 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void initScreen() {
-        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, "Interface/StartAtlas.png");
-        screen.setUseMultiTouch(true);
+        //screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
+        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
+        //screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
         mainWindow();
@@ -86,8 +87,10 @@ public class StartGUI extends AbstractAppState {
     }
     
     private void initScreen(String atlas) {
-        screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
-        screen.setUseTextureAtlas(true, atlas);
+        /*screen = new Screen(app, "StyleDefs/ShortCircuit/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, atlas);*/
+        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
         screen.setUseKeyboardIcons(true);
@@ -101,7 +104,7 @@ public class StartGUI extends AbstractAppState {
     
 
     private void initLevelList() {
-       levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler*.75f), new Vector2f(scaler*3, scaler*3)) {
+        levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler*.75f), new Vector2f(scaler*3f, scaler*3f)) {
             @Override
             public void onChange() {
 

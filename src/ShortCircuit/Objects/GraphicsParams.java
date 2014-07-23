@@ -58,7 +58,7 @@ public class GraphicsParams implements Savable {
         return towerTypes;
     }
 
-    public void parseCreeps() {
+    public final void parseCreeps() {
         for (CreepParams curCreep : creepList) {
             creepMap.put(curCreep.getType(), curCreep);
         }

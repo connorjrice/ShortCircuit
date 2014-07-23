@@ -1,8 +1,0 @@
-Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
-     MaterialParameters {
-        ColorMap : Textures/Circuit/tower4.jpg
-        GlowColor : 0.9 0.0 0.9 0.9
-     }
-    AdditionalRenderState {
-    }
-}

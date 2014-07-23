@@ -5,13 +5,9 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
-import com.jme3.renderer.Camera;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +28,6 @@ public class SDKGUI extends AbstractAppState {
     private Node guiNode;
     private Screen screen;
     private Window MainWindow;
-    private AssetManager assetManager;
     private AppStateManager stateManager;
     private int width;
     private int height;
@@ -41,11 +36,6 @@ public class SDKGUI extends AbstractAppState {
     private int scaler;
     private ComboBox edit;
     private ComboBox file;
-    private Camera levelCam;
-    private ViewPort viewPort;
-    private RenderManager renderManager;
-    private Camera camera;
-    private Node previewNode;
     private OSRViewPort vp;
     private ComboBox open;
     private String levelString = "";
@@ -59,14 +49,9 @@ public class SDKGUI extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.guiNode = this.app.getGuiNode();
-        this.assetManager = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.width = this.app.getContext().getSettings().getWidth();
         this.height = this.app.getContext().getSettings().getHeight(); 
-        this.viewPort = this.app.getViewPort();
-        this.camera = this.app.getCamera();
-        this.renderManager = this.app.getRenderManager();
-        this.previewNode = new Node("Preview");
         buttonSize = new Vector2f(width / 16, height / 32);
         dialogSize = new Vector2f(width / 4, height / 4);
         

@@ -109,8 +109,8 @@ public class BombControl extends AbstractControl {
                     future = null;
                 }
             }
-        } catch (Exception excpt) {
-            System.out.println("BombControl.searchForVictims()");
+        } catch (Exception ex) {
+            System.out.println("BombControl.searchForVictims(): "  + ex.getLocalizedMessage());
         }
     }
     

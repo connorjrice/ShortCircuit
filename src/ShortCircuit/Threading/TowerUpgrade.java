@@ -1,9 +1,7 @@
 package ShortCircuit.Threading;
 
 import ShortCircuit.Controls.TowerControl;
-import ScSDK.MapXML.TowerParams;
 import ShortCircuit.States.Game.FriendlyState;
-import com.jme3.scene.Spatial;
 
 /**
  * This class handles the upgrading of a tower/building of a tower

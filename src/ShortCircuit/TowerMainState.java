@@ -52,7 +52,6 @@ public class TowerMainState extends AbstractAppState {
     private String level;
     private TutorialState TutorialState;
     private PathfindingState PathfindingState;
-    private boolean isProfile = false;
     
     public TowerMainState() {
         level = "Level1.lvl.xml";

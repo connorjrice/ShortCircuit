@@ -11,7 +11,7 @@ import com.jme3.scene.Spatial;
  * prevents you from building new towers. TODO: Explosion animation/smaller glob
  * per pop
  *
- * @author Connor
+ * @author Connor Rice
  */
 public class GlobFactory {
 
