@@ -35,7 +35,7 @@ public class BombControl extends AbstractControl {
     public BombControl(float size, GraphicsState gs, AudioState as) {
         bombSize = size; // Initial size of bomb
         this.gs = gs;    // Game state
-        this.ex = gs.getEx();
+        this.ex = gs.getEx(); // ScheduledThreadExecutor
         this.as = as;
     }
     
@@ -43,14 +43,16 @@ public class BombControl extends AbstractControl {
 
     /**
      * If the gamestate is enabled, and the bomb has been alive for less than
-     * .5f, and the bombSize is smaller than 3.0f: 1. Increment bomb size
-     * (internally to bombSize variable) 2. Apply change to bomb's spatial 3.
-     * Increment bomb timer 4. If enough time has passed to check if we've
-     * collided with creeps, we do so. 4a. If not, tpf is added to the collision
-     * timer. 5. After we've collided with the creeps, we throw away the
-     * reachable we just used. (Reachable is an arraylist of spatials that is
-     * given from the callable method "callableFindVics" 6. We then search for
-     * victims, and reset the collision timer to 0.
+     * .5f, and the bombSize is smaller than 3.0f: 
+     * 1. Increment bomb size (internally to bombSize variable) 
+     * 2. Apply change to bomb's spatial
+     * 3. Increment bomb timer 
+     * 4. If enough time has passed to check if we've with creeps, we do so. 
+     *    4a. If not, tpf is added to the collision timer. 
+     * 5. After we've collided with the creeps, we throw away the reachable we 
+     *    just used. (Reachable is an arraylist of spatials that is given from 
+     *    the callable method "callableFindVics" 
+     * 6. We then search for victims, and reset the collision timer to 0.
      *
      * @param tpf
      */
@@ -109,8 +111,9 @@ public class BombControl extends AbstractControl {
                     future = null;
                 }
             }
-        } catch (Exception ex) {
-            System.out.println("BombControl.searchForVictims(): "  + ex.getLocalizedMessage());
+        } catch (Exception e) {
+            System.out.println("BombControl.searchForVictims(): "  
+                    + e.getLocalizedMessage());
         }
     }
     
@@ -119,17 +122,20 @@ public class BombControl extends AbstractControl {
      * looking for collisions, if there is a collision it is added to the list
      * reach, which is then passed into a FindBombVictims object for retrieval.
      */
-    private Callable<ArrayList<Spatial>> callableFindVics = new Callable<ArrayList<Spatial>>() {
+    private Callable<ArrayList<Spatial>> callableFindVics
+            = new Callable<ArrayList<Spatial>>() {
         public ArrayList<Spatial> call() throws Exception {
             ArrayList<Spatial> reach = new ArrayList<Spatial>();
-            ArrayList<Spatial> creepClone = gs.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
+            ArrayList<Spatial> creepClone = 
+                    gs.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
                 public ArrayList<Spatial> call() throws Exception {
                     return (ArrayList<Spatial>) gs.getCreepList().clone();
                 }
             }).get();
 
             for (int i = 0; i < creepClone.size(); i++) {
-                if (spatial.getWorldBound().intersects(creepClone.get(i).getWorldBound())) {
+                if (spatial.getWorldBound().intersects
+                        (creepClone.get(i).getWorldBound())) {
                     reach.add(creepClone.get(i));
                 }
             }
@@ -147,7 +153,8 @@ public class BombControl extends AbstractControl {
         if (reachable != null) {
             for (int i = 0; i < reachable.size(); i++) {
                 if (reachable.get(i).getControl(RegCreepControl.class) != null) {
-                    reachable.get(i).getControl(RegCreepControl.class).decCreepHealth(bombDMG);
+                    reachable.get(i).getControl(RegCreepControl.class)
+                            .decCreepHealth(bombDMG);
                 }
                 reachable.remove(i);
             }

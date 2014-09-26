@@ -32,8 +32,6 @@ public class ChargerControl extends AbstractControl {
         moveamount = .04f;
     }
 
-    public ChargerControl() {
-    }
 
     @Override
     protected void controlUpdate(float tpf) {
@@ -43,7 +41,7 @@ public class ChargerControl extends AbstractControl {
     }
 
     private void nextLocation() {
-        if (FriendlyState.getEmptyTowers().isEmpty() && destTower == null) {
+        if (FriendlyState.isAnyTowerEmpty() && destTower == null) {
             moveTowardsHome();
         } else {
             if (destTower == null) {

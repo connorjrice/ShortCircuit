@@ -267,6 +267,7 @@ public class FriendlyState extends AbstractAppState {
      */
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
+        System.out.println("Empty tower added");
         GraphicsState.towerTextureEmpty(empty.getSpatial());
         AudioState.emptyTowerSound();
     }
@@ -293,6 +294,15 @@ public class FriendlyState extends AbstractAppState {
 
     public Queue<TowerControl> getEmptyTowers() {
         return emptyTowers;
+    }
+    
+    /**
+     * Checks the emptyTowers queue to see if there are any empty towers.
+     * @return true if there is an empty tower, false if there are none.
+     */
+    public boolean isAnyTowerEmpty() {
+        System.out.println("A charger checked for towers");
+        return emptyTowers.isEmpty();
     }
 
     /**
