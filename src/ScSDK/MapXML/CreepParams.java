@@ -22,7 +22,8 @@ public class CreepParams implements Savable {
     public CreepParams() {
     }
 
-    public CreepParams(int health, float speed, Vector3f size, String type, int value) {
+    public CreepParams(int health, float speed, Vector3f size, 
+            String type, int value) {
         this.intParams = new int[] {health, value};
         this.speed = speed;
         this.size = size;

@@ -22,14 +22,17 @@ public class GeometryParams implements Savable {
     public GeometryParams() {
     }
 
-    public GeometryParams(Vector3f camLoc, Vector3f floorscale, Vector3f baseVec,
-            Vector3f baseScale, Vector3f towerBuiltSize, Vector3f towerUnbuiltSize,
-            Vector3f towerBuiltSelected, Vector3f towerUnbuiltSelected,
-            Vector3f creepSpawnerHorizontalScale, Vector3f creepSpawnerVerticalScale, float beamwidth) {
+    public GeometryParams(Vector3f camLoc, Vector3f floorscale, 
+            Vector3f baseVec, Vector3f baseScale, Vector3f towerBuiltSize, 
+            Vector3f towerUnbuiltSize, Vector3f towerBuiltSelected,
+            Vector3f towerUnbuiltSelected, Vector3f creepSpawnerHorizontalScale, 
+            Vector3f creepSpawnerVerticalScale, float beamwidth) {
         
-        this.vecParams = new ArrayList<Vector3f>(Arrays.asList(camLoc, floorscale, baseVec, baseScale,
-            towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, towerUnbuiltSelected,
-            creepSpawnerHorizontalScale, creepSpawnerVerticalScale));
+        this.vecParams = new ArrayList<Vector3f>(Arrays.asList(camLoc, 
+                floorscale, baseVec, baseScale,
+            towerBuiltSize, towerUnbuiltSize, towerBuiltSelected, 
+            towerUnbuiltSelected, creepSpawnerHorizontalScale,
+            creepSpawnerVerticalScale));
         
         this.beamwidth = beamwidth;
     }
@@ -88,6 +91,7 @@ public class GeometryParams implements Savable {
     @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule out = ex.getCapsule(this);
-        out.writeSavableArrayList(vecParams, "vecParams", new ArrayList<Vector3f>());
+        out.writeSavableArrayList(vecParams, "vecParams", 
+                new ArrayList<Vector3f>());
     }
 }

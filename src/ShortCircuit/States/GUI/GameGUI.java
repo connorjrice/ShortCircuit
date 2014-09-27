@@ -299,9 +299,11 @@ public class GameGUI extends AbstractAppState {
      * Toggles visibility of the cheats button.
      */
     private void cheatToggleButton() {
-        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle", new Vector2f(440, 100), buttonSize.divide(1.5f)) {
+        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle",
+                new Vector2f(440, 100), buttonSize.divide(1.5f)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 toggleCheats();
             }
         };
@@ -323,9 +325,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void objectivePopup() {
-        ObjectivePopup = new AlertBox(screen, "objective", new Vector2f(width / 2 - 200, height / 2 - 175), new Vector2f(400, 300)) {
+        ObjectivePopup = new AlertBox(screen, "objective",
+                new Vector2f(width / 2 - 200, height / 2 - 175), new Vector2f(400, 300)) {
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonOkPressed(MouseButtonEvent evt,
+            boolean toggled) {
                 tMS.pause();
                 screen.removeElement(ObjectivePopup);
             }
@@ -337,7 +341,9 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void purchaseWindow() {
-        PurchaseWindow = new Window(screen, "pWindow", new Vector2f(rightButtons, getHeightScale(6)), new Vector2f(300, 500));
+        PurchaseWindow = new Window(screen, "pWindow", 
+                new Vector2f(rightButtons, getHeightScale(6)),
+                new Vector2f(300, 500));
         PurchaseWindow.setIgnoreMouse(true);
         PurchaseWindow.setWindowIsMovable(false);
         PurchaseWindow.setWindowTitle("Purchasables");
@@ -348,9 +354,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void purchaseButton() {
-        PurchaseButton = new ButtonAdapter(screen, "PurchaseButton", new Vector2f(rightButtons, tenthHeight * 6), buttonSize) {
+        PurchaseButton = new ButtonAdapter(screen, "PurchaseButton",
+                new Vector2f(rightButtons, tenthHeight * 6), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible()) {
                     if (PurchaseWindow.getIsVisible()) {
                         PurchaseWindow.hideWindow();
@@ -370,9 +378,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void purchaseChargerButton() {
-        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger", new Vector2f(50, 50), buttonSize) {
+        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger",
+                new Vector2f(50, 50), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 FriendlyState.createCharger();
             }
         };
@@ -383,9 +393,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void downgradeButton() {
-        DowngradeButton = new ButtonAdapter(screen, "Downgrade", new Vector2f(50, 250), buttonSize) {
+        DowngradeButton = new ButtonAdapter(screen, "Downgrade",
+                new Vector2f(50, 250), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 // FriendlyState.downgradeTower(); TODO: Reimplement Downgrade
             }
         };
@@ -396,9 +408,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void settingsButton() {
-        Settings = new ButtonAdapter(screen, "Settings", new Vector2f(leftButtons, getHeightScale(6)), buttonSize) {
+        Settings = new ButtonAdapter(screen, "Settings",
+                new Vector2f(leftButtons, getHeightScale(6)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible()) {
                     if (SetWindow.getIsVisible()) {
                         SetWindow.hideWindow();
@@ -418,7 +432,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void settingsWindow() {
-        SetWindow = new Window(screen, getHorizontalWindowPosition(6), new Vector2f(width / 2, height / 4));
+        SetWindow = new Window(screen, getHorizontalWindowPosition(6),
+                new Vector2f(width / 2, height / 4));
         SetWindow.setIgnoreMouse(true);
         SetWindow.setIsMovable(false);
         screen.addElement(SetWindow);
@@ -426,9 +441,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void buildButton() {
-        BuildButton = new ButtonAdapter(screen, "Build", new Vector2f(leftButtons, getHeightScale(2)), buttonSize) {
+        BuildButton = new ButtonAdapter(screen, "Build",
+                new Vector2f(leftButtons, getHeightScale(2)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible()) {
                     if (BuildWindow.getIsVisible()) {
                         BuildWindow.hideWindow();
@@ -448,7 +465,8 @@ public class GameGUI extends AbstractAppState {
      * Cover up everything but menu up. *
      */
     private void buildWindow() {
-        BuildWindow = new Window(screen, getHorizontalWindowPosition(2), new Vector2f(width / 2, height / 4));
+        BuildWindow = new Window(screen, getHorizontalWindowPosition(2),
+                new Vector2f(width / 2, height / 4));
         BuildWindow.setIgnoreMouse(true);
         BuildWindow.setIsMovable(false);
         screen.addElement(BuildWindow);
@@ -456,7 +474,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void progressIndicator() {
-        ProgressIndicator = new Indicator(screen, "Progress", new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {
+        ProgressIndicator = new Indicator(screen, "Progress",
+                new Vector2f(rightButtons, 600), Indicator.Orientation.HORIZONTAL) {
             @Override
             public void onChange(float arg0, float arg1) {
             }
@@ -471,7 +490,8 @@ public class GameGUI extends AbstractAppState {
 
     public void modifyProgress() {
         float blend = ProgressIndicator.getCurrentValue() * 0.01f;
-        color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f, 0.0f, 0.2f, 0.4f), blend);
+        color.interpolate(ColorRGBA.Blue, new ColorRGBA(0.2f, 0.0f, 0.2f, 0.4f),
+                blend);
         ProgressIndicator.setIndicatorColor(color);
         //ProgressIndicator.setCurrentValue(GameState.getCurrentProgress());
     }
@@ -501,7 +521,8 @@ public class GameGUI extends AbstractAppState {
     private void internalMenu() {
         internalMenu = new Menu(screen, new Vector2f(0, 0), false) {
             @Override
-            public void onMenuItemClicked(int index, Object value, boolean isToggled) {
+            public void onMenuItemClicked(int index, Object value,
+            boolean isToggled) {
             }
         };
         internalMenu.addMenuItem("Caption", null, null);
@@ -539,9 +560,11 @@ public class GameGUI extends AbstractAppState {
 
     private void updateHealthColor() {
         if (GameState.getPlrHealth() != internalHealth) {
-            if (GameState.getPlrHealth() > 50 && Health.getFontColor() != ColorRGBA.Green) {
+            if (GameState.getPlrHealth() > 50 && Health.getFontColor()
+                    != ColorRGBA.Green) {
                 Health.setFontColor(ColorRGBA.Green);
-            } else if (GameState.getPlrHealth() <= 50 && GameState.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
+            } else if (GameState.getPlrHealth() <= 50 && 
+                    GameState.getPlrHealth() > 25 && Health.getFontColor() != ColorRGBA.Yellow) {
                 Health.setFontColor(ColorRGBA.Yellow);
             } else if (GameState.getPlrHealth() <= 25 && Health.getFontColor() != ColorRGBA.Red) {
                 Health.setFontColor(ColorRGBA.Red);
@@ -556,25 +579,32 @@ public class GameGUI extends AbstractAppState {
      */
     private void updateTowerInfo() {
         if (FriendlyState.getSelected() != -1) {
-            if (FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type").equals("TowerUnbuilt")) {
-                Modify.setText("Build: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
+            if (FriendlyState.getTowerList().get(FriendlyState.getSelected())
+                    .getUserData("Type").equals("TowerUnbuilt")) {
+                Modify.setText("Build: " + GameState.getCost(FriendlyState
+                        .getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
             } else {
-                Modify.setText("Upgrade: " + GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
+                Modify.setText("Upgrade: " + GameState.getCost(FriendlyState
+                        .getTowerList().get(FriendlyState.getSelected()).getUserData("Type")));
             }
         }
     }
 
     private void updateChargeFrill() {
-        if (GameState.getPlrBudget() >= 10 && Charge.getFontColor() != ColorRGBA.Green) {
+        if (GameState.getPlrBudget() >= 10 && Charge.getFontColor()
+                != ColorRGBA.Green) {
             Charge.setFontColor(ColorRGBA.Green);
-        } else if (GameState.getPlrBudget() < 10 && Charge.getFontColor() != ColorRGBA.Red) {
+        } else if (GameState.getPlrBudget() < 10 && Charge.getFontColor()
+                != ColorRGBA.Red) {
             Charge.setFontColor(ColorRGBA.Red);
         }
     }
 
     private void updateTowerFrills() {
         if (FriendlyState.getSelected() != -1) {
-            if (GameState.getPlrBudget() >= Integer.parseInt(GameState.getCost(FriendlyState.getTowerList().get(FriendlyState.getSelected()).getUserData("Type")))) {
+            if (GameState.getPlrBudget() >= Integer.parseInt(
+                    GameState.getCost(FriendlyState.getTowerList()
+                    .get(FriendlyState.getSelected()).getUserData("Type")))) {
                 Modify.setFontColor(ColorRGBA.Green);
             } else {
                 Modify.setFontColor(ColorRGBA.Red);
@@ -583,9 +613,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void textColorToggleButton() {
-        TextColorButton = new ButtonAdapter(screen, "TextColorToggle", new Vector2f(240, 100), buttonSize.divide(1.5f)) {
+        TextColorButton = new ButtonAdapter(screen, "TextColorToggle",
+                new Vector2f(240, 100), buttonSize.divide(1.5f)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 tMS.toggleFrills();
             }
         };
@@ -596,9 +628,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void bloomToggleButton() {
-        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle", new Vector2f(40, 100), buttonSize.divide(1.5f)) {
+        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle",
+                new Vector2f(40, 100), buttonSize.divide(1.5f)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 GraphicsState.toggleBloom();
             }
         };
@@ -609,7 +643,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void bloomLevelSlider() {
-        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70), Slider.Orientation.HORIZONTAL, true) {
+        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70),
+                Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
                 //GraphicsState.setBloomIntensity(selectedIndex);
@@ -622,9 +657,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void soundToggleButton() {
-        soundToggle = new ButtonAdapter(screen, "SoundToggle", new Vector2f(640, 100), buttonSize.divide(1.5f)) {
+        soundToggle = new ButtonAdapter(screen, "SoundToggle",
+                new Vector2f(640, 100), buttonSize.divide(1.5f)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 if (app.getListener().getVolume() == 0) {
                     app.getListener().setVolume(1f);
                 } else {
@@ -638,7 +675,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void soundSlider() {
-        SoundSlider = new Slider(screen, "SoundSlider", new Vector2f(670, 70), Slider.Orientation.HORIZONTAL, true) {
+        SoundSlider = new Slider(screen, "SoundSlider", new Vector2f(670, 70),
+                Slider.Orientation.HORIZONTAL, true) {
             @Override
             public void onChange(int selectedIndex, Object value) {
                 app.getListener().setVolume(selectedIndex);
@@ -651,9 +689,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void chargeButton() {
-        Charge = new ButtonAdapter(screen, "charge", new Vector2f(leftButtons, 10), buttonSize) {
+        Charge = new ButtonAdapter(screen, "charge",
+                new Vector2f(leftButtons, 10), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 FriendlyState.chargeTower();
             }
         };
@@ -663,9 +703,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void modifyButton() {
-        Modify = new ButtonAdapter(screen, "modify", new Vector2f(leftButtons, getHeightScale(1)), buttonSize) {
+        Modify = new ButtonAdapter(screen, "modify",
+                new Vector2f(leftButtons, getHeightScale(1)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 FriendlyState.upgradeTower();
             }
         };
@@ -677,9 +719,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void cameraButton() {
-        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(leftButtons, getHeightScale(3)), buttonSize) {
+        Camera = new ButtonAdapter(screen, "Camera", new Vector2f(leftButtons,
+                getHeightScale(3)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 doCamera();
             }
         };
@@ -704,9 +748,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void menuButton() {
-        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons, getHeightScale(8)), buttonSize) {
+        Menu = new ButtonAdapter(screen, "Menu", new Vector2f(leftButtons,
+                getHeightScale(8)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 tMS.goToMainMenu();
             }
         };
@@ -716,7 +762,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void healthButton() {
-        Health = new ButtonAdapter(screen, "health", new Vector2f(rightButtons, getHeightScale(1)), buttonSize) {
+        Health = new ButtonAdapter(screen, "health",
+                new Vector2f(rightButtons, getHeightScale(1)), buttonSize) {
         };
         Health.setText("Health");
         Health.setIgnoreMouse(true);
@@ -726,7 +773,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void budgetButton() {
-        Budget = new ButtonAdapter(screen, "Budget", new Vector2f(rightButtons, getHeightScale(2)), buttonSize) {
+        Budget = new ButtonAdapter(screen, "Budget",
+                new Vector2f(rightButtons, getHeightScale(2)), buttonSize) {
         };
         Budget.setText("Budget: ");
         Budget.setIgnoreMouse(true);
@@ -734,7 +782,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void scoreButton() {
-        Score = new ButtonAdapter(screen, "Score", new Vector2f(rightButtons, getHeightScale(3)), buttonSize) {
+        Score = new ButtonAdapter(screen, "Score",
+                new Vector2f(rightButtons, getHeightScale(3)), buttonSize) {
         };
         Score.setText("Score: ");
         Score.setIgnoreMouse(true);
@@ -742,7 +791,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void levelButton() {
-        Level = new ButtonAdapter(screen, "Level", new Vector2f(rightButtons, getHeightScale(4)), buttonSize) {
+        Level = new ButtonAdapter(screen, "Level",
+                new Vector2f(rightButtons, getHeightScale(4)), buttonSize) {
         };
         Level.setText("Level: ");
         Level.setIgnoreMouse(true);
@@ -750,9 +800,11 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void bombToggle() {
-        Bomb = new ButtonAdapter(screen, "BombToggle", new Vector2f(rightButtons, getHeightScale(7)), buttonSize) {
+        Bomb = new ButtonAdapter(screen, "BombToggle",
+                new Vector2f(rightButtons, getHeightScale(7)), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 GameState.toggleBomb();
                 if (GameState.getBombActive()) {
                     Bomb.setText("Drop Bombs");
@@ -776,7 +828,8 @@ public class GameGUI extends AbstractAppState {
 
     public void highlightButton(String buttonname) {
         Element button = screen.getElementById(buttonname);
-        button.setMaterial(assetManager.loadMaterial("Common/Materials/WhiteColor.j3m"));
+        button.setMaterial(assetManager.loadMaterial(
+                "Common/Materials/WhiteColor.j3m"));
     }
 
     public void unhighlightButton(String buttonname) {
@@ -795,7 +848,8 @@ public class GameGUI extends AbstractAppState {
     }
 
     public Vector2f getHorizontalWindowPosition(int i) {
-        return new Vector2f(tenthWidth * 2, getHeightScale(i) - tenthHeight / 2);
+        return new Vector2f(tenthWidth * 2, getHeightScale(i) -
+                tenthHeight / 2);
     }
 
     public void toggle(boolean hide) {

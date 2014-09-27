@@ -79,7 +79,8 @@ public class ChargerControl extends AbstractControl {
     private void moveTowardsHome() {
         if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .4f) {
             moveamount += .0003f;
-            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(FriendlyState.getHomeVec(), moveamount));
+            spatial.setLocalTranslation(spatial.getLocalTranslation()
+                    .interpolate(FriendlyState.getHomeVec(), moveamount));
         } else {
             moveamount = .04f;
             setIsHome(true);
@@ -133,7 +134,8 @@ public class ChargerControl extends AbstractControl {
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule in = im.getCapsule(this);
-        destTower = (TowerControl) in.readSavable("destTower", new TowerControl());
+        destTower = (TowerControl) in.readSavable("destTower", 
+                new TowerControl());
         isHome = in.readBoolean("isHome", false);
         moveamount = in.readFloat("moveAmount", .04f);
     }

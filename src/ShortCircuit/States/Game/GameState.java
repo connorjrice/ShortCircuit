@@ -22,7 +22,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * FIXME: Bug where gameover on a level does not let the user play level again.
  * 
  * New gameplay idea: have a set number of walls you can build in the beginning,
- * and only a few prebuilt towers. Then, you build towers (not in prelisted places)
+ * and only a few prebuilt towers. Then, you build towers 
+ * (not in prelisted places)
  *
  * @author Connor Rice
  */
@@ -283,7 +284,8 @@ public class GameState extends AbstractAppState {
     }
 
     public void setFormattedBaseCoords(Spatial base) {
-        formattedBaseCoords = formatRoundNumber(base.getLocalTranslation().x) + "," + formatRoundNumber(base.getLocalTranslation().y);
+        formattedBaseCoords = formatRoundNumber(base.getLocalTranslation().x) +
+                "," + formatRoundNumber(base.getLocalTranslation().y);
     }
 
     private String formatRoundNumber(Float value) {

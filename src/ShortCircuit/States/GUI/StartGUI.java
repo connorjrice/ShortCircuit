@@ -104,7 +104,9 @@ public class StartGUI extends AbstractAppState {
     
 
     private void initLevelList() {
-        levelList = new SelectList(screen, "sel", new Vector2f(scaler, scaler*.75f), new Vector2f(scaler*3f, scaler*3f)) {
+        levelList = new SelectList(screen, "sel", 
+                new Vector2f(scaler, scaler*.75f), 
+                new Vector2f(scaler*3f, scaler*3f)) {
             @Override
             public void onChange() {
 
@@ -147,7 +149,9 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void mainWindow() {
-        MainWindow = new Window(screen, new Vector2f(width / 6, height / 3 - height / 6), new Vector2f(width / 1.5f, height / 1.5f));
+        MainWindow = new Window(screen, 
+                new Vector2f(width / 6, height / 3 - height / 6),
+                new Vector2f(width / 1.5f, height / 1.5f));
         MainWindow.setIgnoreMouse(true);
         MainWindow.setWindowIsMovable(false);
         //MainWindow.setEffectZOrder(false);
@@ -166,10 +170,13 @@ public class StartGUI extends AbstractAppState {
     }
 
     private void startLevelButton() {
-        startButton = new ButtonAdapter(screen, "levelSel", new Vector2f(scaler, scaler*4), buttonSize) {
+        startButton = new ButtonAdapter(screen, "levelSel",
+                new Vector2f(scaler, scaler*4), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                String level = (String) levelList.getListItem(levelList.getSelectedIndex()).getValue();
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
+                String level = (String) levelList.getListItem(
+                        levelList.getSelectedIndex()).getValue();
                 if (level != null) {
                     onStart(level);
                 }
@@ -180,9 +187,11 @@ public class StartGUI extends AbstractAppState {
     }
     
     public void resumeLevelButton() {
-        resumeLevel = new ButtonAdapter(screen, "resume", new Vector2f(scaler*3, scaler*4), buttonSize) {
+        resumeLevel = new ButtonAdapter(screen, "resume",
+                new Vector2f(scaler*3, scaler*4), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 tMS.goToMainMenu();
             }
         };
@@ -196,9 +205,11 @@ public class StartGUI extends AbstractAppState {
 
 
     public void exitButton() {
-        ExitButton = new ButtonAdapter(screen, "exit", new Vector2f(scaler*5, scaler*4), buttonSize) {
+        ExitButton = new ButtonAdapter(screen, "exit",
+                new Vector2f(scaler*5, scaler*4), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 reallyExitDialog();
             }
         };
@@ -207,14 +218,18 @@ public class StartGUI extends AbstractAppState {
     }
 
     public void reallyExitDialog() {
-        ReallyExitPopup = new DialogBox(screen, "really exit", new Vector2f(width/2-scaler, height/2-scaler), new Vector2f(scaler*2, scaler*2)) {
+        ReallyExitPopup = new DialogBox(screen, "really exit",
+                new Vector2f(width/2-scaler, height/2-scaler),
+                new Vector2f(scaler*2, scaler*2)) {
             @Override
-            public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonCancelPressed(MouseButtonEvent evt,
+            boolean toggled) {
                 screen.removeElement(ReallyExitPopup);
             }
 
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonOkPressed(MouseButtonEvent evt,
+            boolean toggled) {
                 super.cleanup();
                 guiNode.detachAllChildren();
                 app.stop();

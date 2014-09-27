@@ -23,7 +23,8 @@ public class FilterParams implements Savable {
 
     public FilterParams(boolean _enabled, float _downsampling, float _blurscale,
             float _exposurepower, float _bloomintensity, GlowMode _glowmode) {
-        filterFloats = new float[] {_downsampling, _blurscale, _exposurepower, _bloomintensity};
+        filterFloats = new float[] {_downsampling, _blurscale, _exposurepower,
+            _bloomintensity};
         enabled = _enabled;
         glowmode = _glowmode;
     }

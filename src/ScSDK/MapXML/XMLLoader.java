@@ -18,7 +18,8 @@ public class XMLLoader implements AssetLoader {
  
     public static Document createDocFromStream(InputStream inputStream) {
         try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder();
             return builder.parse(inputStream);
         } catch (Exception ex) {
             return null;

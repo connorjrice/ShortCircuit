@@ -21,7 +21,8 @@ public class BuildParams implements Savable {
     private String[] towerTypes;
 
     public BuildParams(MaterialParams mp, GeometryParams gp,
-            ArrayList<TowerParams> towerList, ArrayList<CreepSpawnerParams> creepSpawnerList, String[] towerTypes) {
+            ArrayList<TowerParams> towerList, ArrayList
+                    <CreepSpawnerParams> creepSpawnerList, String[] towerTypes){
         this.mp = mp;
         this.gp = gp;
         this.towerList = towerList;

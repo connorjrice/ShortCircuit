@@ -35,7 +35,8 @@ public class TowerCharge implements Runnable {
             tp.getControl(TowerControl.class).addCharges();
             fs.playChargeSound();
         } else {
-            if (fs.getPlrBudget() >= chargeCost && !tp.getUserData("Type").equals("TowerUnbuilt")) {
+            if (fs.getPlrBudget() >= chargeCost && !tp.getUserData("Type")
+                    .equals("TowerUnbuilt")) {
                 fs.towerTextureCharged(tp);
                 tp.getControl(TowerControl.class).addCharges();              
                 fs.decPlrBudget(chargeCost);

@@ -77,7 +77,8 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void mainWindow() {
-        MainWindow = new Window(screen, new Vector2f(0,0), new Vector2f(width, height));
+        MainWindow = new Window(screen, new Vector2f(0,0), 
+                new Vector2f(width, height));
         MainWindow.setWindowTitle("ShortCircuit Map XML");
         MainWindow.setWindowIsMovable(false);
         MainWindow.setIsResizable(false);
@@ -86,14 +87,17 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void openDialog() {
-        DialogBox dialog = new DialogBox(screen, "alert", new Vector2f(width/4,height/3), dialogSize) {
+        DialogBox dialog = new DialogBox(screen, "alert", 
+                new Vector2f(width/4,height/3), dialogSize) {
             @Override
-            public void onButtonCancelPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonCancelPressed(MouseButtonEvent evt, 
+            boolean toggled) {
                 screen.removeElement(this);
             }
 
             @Override
-            public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonOkPressed(MouseButtonEvent evt, 
+            boolean toggled) {
                 screen.removeElement(this);
             }
 
@@ -105,7 +109,8 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void levelSelectDrop() {
-        open = new ComboBox(screen, "open", new Vector2f(scaler*2, 35), new Vector2f(scaler*3, buttonSize.y)) {
+        open = new ComboBox(screen, "open", new Vector2f(scaler*2, 35), 
+                new Vector2f(scaler*3, buttonSize.y)) {
             @Override
             public void onChange(int selectedIndex, Object value) {
                 setLevelString(value);
@@ -126,9 +131,11 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void runLevelButton() {
-        runLevel = new ButtonAdapter(screen, "run", new Vector2f(scaler *5, 35), buttonSize) {
+        runLevel = new ButtonAdapter(screen, "run", 
+                new Vector2f(scaler *5, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, 
+            boolean toggled) {
                 buildLevel();
             }
         };
@@ -150,9 +157,11 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void buildAll() {
-        buildAll = new ButtonAdapter(screen, "buildall", new Vector2f(scaler *5, 35), buttonSize) {
+        buildAll = new ButtonAdapter(screen, "buildall", 
+                new Vector2f(scaler *5, 35), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, 
+            boolean toggled) {
                 //for ( : open.get)
                 buildLevel();
             }
@@ -162,13 +171,17 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void returnButton() {
-        returnButton = new ButtonAdapter(screen, "return", new Vector2f(10, 10), buttonSize) {
+        returnButton = new ButtonAdapter(screen, "return", 
+                new Vector2f(10, 10), buttonSize) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt, 
+            boolean toggled) {
                 String userHome = System.getProperty("user.home");
                 System.out.println(userHome);
                 BinaryExporter exporter = BinaryExporter.getInstance();
-                File file = new File(userHome+"/Documents/ShortCircuit/Assets/Models/"+levelString+".j3o");
+                File file = new File(
+                        userHome+"/Documents/ShortCircuit/Assets/Models/"
+                        +levelString+".j3o");
                 try {
                     exporter.save(tMS.getRootNode(), file);
                 } catch (IOException ex) {
@@ -204,7 +217,8 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void editDrop() {
-        edit = new ComboBox(screen, "edit", new Vector2f(scaler,35), buttonSize) {
+        edit = new ComboBox(screen, "edit", new Vector2f(scaler,35),
+                buttonSize) {
             @Override
             public void onChange(int selectedIndex, Object value) {
               

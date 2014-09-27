@@ -132,10 +132,13 @@ public class EnemyState extends AbstractAppState {
      */
     private void spawnGlob() {
         int towerVictimIndex = random.nextInt(FriendlyState.getTowerList().size());
-        if (!FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).getIsGlobbed()) {
-            Vector3f towerVictimLocation = FriendlyState.getTowerList().get(towerVictimIndex).getLocalTranslation();
+        if (!FriendlyState.getTowerList().get(towerVictimIndex)
+                .getControl(TowerControl.class).getIsGlobbed()) {
+            Vector3f towerVictimLocation = FriendlyState
+                    .getTowerList().get(towerVictimIndex).getLocalTranslation();
             Spatial glob = gf.getGlob(towerVictimLocation, towerVictimIndex);
-            FriendlyState.getTowerList().get(towerVictimIndex).getControl(TowerControl.class).globTower();
+            FriendlyState.getTowerList().get(towerVictimIndex)
+                    .getControl(TowerControl.class).globTower();
             creepNode.attachChild(glob);
             globList.add(glob);
         } else {

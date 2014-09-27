@@ -42,7 +42,8 @@ public class GameOverGUI extends AbstractAppState {
     }
     
     private void initScreen() {
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        screen = new Screen(app,
+                "tonegod/gui/style/atlasdef/style_map.gui.xml");
         screen.setUseTextureAtlas(true, "tonegod/gui/style/atlasdef/atlas.png");
         screen.setUseMultiTouch(true);
         guiNode.addControl(screen);
@@ -53,7 +54,8 @@ public class GameOverGUI extends AbstractAppState {
     
     private void mainWindow() {
         GameOverWindow = new Window(screen, "gameover",
-                new Vector2f(width / 4, height / 4), new Vector2f(width / 2, height / 2));
+                new Vector2f(width / 4, height / 4), 
+                new Vector2f(width / 2, height / 2));
         GameOverWindow.setWindowTitle("Game Over");
         GameOverWindow.setWindowIsMovable(false);
         GameOverWindow.setIsResizable(false);
@@ -63,9 +65,11 @@ public class GameOverGUI extends AbstractAppState {
     }
     
         private void backToStart() {
-            startButton = new ButtonAdapter(screen, "start", new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
+            startButton = new ButtonAdapter(screen, "start",
+                    new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
                 @Override
-                public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+                public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                boolean toggled) {
                     tMS.returnToStartAfterGameOver();
                 }
             };

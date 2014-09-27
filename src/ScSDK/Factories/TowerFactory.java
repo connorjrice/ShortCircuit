@@ -30,7 +30,8 @@ public class TowerFactory {
             tower_geom.setUserData("Type", "TowerUnbuilt");
             tower_geom.setLocalScale(bs.getTowerUnbuiltSize());
         }
-        tower_geom.setMaterial(bs.getMaterial((String) tower_geom.getUserData("Type")));
+        tower_geom.setMaterial(bs.getMaterial((String) 
+                tower_geom.getUserData("Type")));
         tower_geom.setUserData("BeamWidth", tp.getBeamWidth());
         return tower_geom;
     }

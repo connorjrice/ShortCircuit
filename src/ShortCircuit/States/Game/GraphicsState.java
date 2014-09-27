@@ -194,9 +194,11 @@ public class GraphicsState extends AbstractAppState {
         return bloom;
     }
 
-    public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
+    public void makeLaserBeam(Vector3f origin, Vector3f target, 
+            String towertype, float beamwidth) {
         AudioState.beamSound(towertype, origin);
-        beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target, towertype, beamwidth));
+        beamNode.attachChild(BeamFactory.makeLaserBeam(origin, target,
+                towertype, beamwidth));
         shot = true;
     }
 
@@ -225,7 +227,8 @@ public class GraphicsState extends AbstractAppState {
     }
 
     public void towerTextureCharged(Spatial tower) {
-        tower.setMaterial(assetManager.loadMaterial(getMatLoc((String) tower.getUserData("Type"))));
+        tower.setMaterial(assetManager.loadMaterial(getMatLoc((String)
+                tower.getUserData("Type"))));
     }
 
     public void towerTextureEmpty(Spatial tower) {

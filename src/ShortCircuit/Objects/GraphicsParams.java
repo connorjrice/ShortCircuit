@@ -96,7 +96,8 @@ public class GraphicsParams implements Savable {
         fp = (FilterParams) in.readSavable("fp", new FilterParams());
         gp = (GeometryParams) in.readSavable("gp", new GeometryParams());
         towerTypes = in.readStringArray("towerTypes", new String[0]);
-        creepList = in.readSavableArrayList("creepList", new ArrayList<CreepParams>());
+        creepList = in.readSavableArrayList("creepList", 
+                new ArrayList<CreepParams>());
     }
 
     @Override
@@ -106,6 +107,7 @@ public class GraphicsParams implements Savable {
         out.write(fp, "fp", new FilterParams());
         out.write(gp, "gp", new GameplayParams());
         out.write(towerTypes, "towerTypes", new String[20]);
-        out.writeSavableArrayList(creepList, "creepList",new ArrayList<CreepParams>());
+        out.writeSavableArrayList(creepList, "creepList",
+                new ArrayList<CreepParams>());
     }
 }

@@ -22,13 +22,18 @@ public class ShortCircuitParser implements Parser {
     }
     
     public ArrayList<CreepSpawnerParams> parseCreepSpawnerList() {
-        String creepExpression = "enemyparams/param[@id = 'creepSpawnerParams']/";
+        String creepExpression =
+                "enemyparams/param[@id = 'creepSpawnerParams']/";
         int numSpawners = parseInt(getElement("numSpawners", creepExpression));
-        ArrayList<CreepSpawnerParams> creepSpawnerList = new ArrayList<CreepSpawnerParams>();
+        ArrayList<CreepSpawnerParams> creepSpawnerList = 
+                new ArrayList<CreepSpawnerParams>();
         for (int i = 0; i < numSpawners; i++) {
-            String curCreepSpawnerExpression = creepExpression+ "creepSpawner[@id = '"+i+"']/";
-            Vector3f vec = parseVector3f(getElement("vec", curCreepSpawnerExpression));
-            String orientation = getElement("orientation", curCreepSpawnerExpression);
+            String curCreepSpawnerExpression = 
+                    creepExpression+ "creepSpawner[@id = '"+i+"']/";
+            Vector3f vec = parseVector3f(getElement("vec", 
+                    curCreepSpawnerExpression));
+            String orientation = getElement("orientation", 
+                    curCreepSpawnerExpression);
             creepSpawnerList.add(new CreepSpawnerParams(vec, orientation, i));
         }
         return creepSpawnerList;
@@ -36,15 +41,18 @@ public class ShortCircuitParser implements Parser {
     
     public ArrayList<CreepParams> parseCreepList() {
         String creepExpression = "enemyparams/param[@id = 'creepParams']/";
-        String[] creepTypes = parseCreepTypes(getElement("creepTypes", creepExpression));
+        String[] creepTypes = parseCreepTypes(getElement("creepTypes",
+                creepExpression));
         ArrayList<CreepParams> creepList = new ArrayList<CreepParams>();
         for (int i = 0; i < creepTypes.length; i++) {
             String curCreepExpression = creepExpression+creepTypes[i]+"Creep/";
             int health = parseInt(getElement("health", curCreepExpression));
             float speed = parseFloat(getElement("speed", curCreepExpression));
-            Vector3f size = parseVector3f(getElement("size", curCreepExpression));
+            Vector3f size = parseVector3f(getElement("size",
+                    curCreepExpression));
             int value = parseInt(getElement("value", curCreepExpression));
-            creepList.add(new CreepParams(health, speed, size, creepTypes[i], value));
+            creepList.add(new CreepParams(health, speed, size, creepTypes[i],
+                    value));
         }
         return creepList;
     }

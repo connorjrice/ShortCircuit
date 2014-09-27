@@ -15,7 +15,8 @@ public class JEdgeManipulator implements EdgeManipulator {
     private DecimalFormat numFormatter;
     private String[] blockedNodes;
 
-    public JEdgeManipulator(Graph worldGraph, Node targetNode, String[] geomHash, float precision) {
+    public JEdgeManipulator(Graph worldGraph, Node targetNode,
+            String[] geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
         //this.rootNode = targetNode;
@@ -36,12 +37,14 @@ public class JEdgeManipulator implements EdgeManipulator {
         for (int i = 0; i < tn.length; i++) {
             startPos[i] = Float.parseFloat(tn[i]);
         }
-        for (float y = startPos[0] - precision; y < startPos[0] + precision; y += precision) {
+        for (float y = startPos[0] - precision; y < startPos[0] +
+                precision; y += precision) {
             String is = formatRoundNumber(y);
             String nodeName = is + "," + startPos[1];
             addEdge(nodeName, targetName);
         }
-        for (float x = startPos[1] - precision; x < startPos[1] + precision; x += precision) {
+        for (float x = startPos[1] - precision; x < startPos[1] +
+                precision; x += precision) {
             String is = formatRoundNumber(x);
             String nodeName = startPos[0] + "," + x;
             addEdge(nodeName, targetName);
@@ -53,7 +56,8 @@ public class JEdgeManipulator implements EdgeManipulator {
         if (!nodeName.equals(targetName)) {
             boolean possible = true;
             for (int i = 0; i < blockedNodes.length; i++) {
-                if (blockedNodes[i].equals(nodeName) || blockedNodes[i].equals(targetName)) {
+                if (blockedNodes[i].equals(nodeName) ||
+                        blockedNodes[i].equals(targetName)) {
                     possible = false;
                 }
             }

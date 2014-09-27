@@ -93,6 +93,7 @@ public class LevelParams implements Savable {
         out.write(intParams, "intParams", new int[intParams.length]);
         out.write(boolParams, "boolParams", new boolean[boolParams.length]);
         out.write(allowedenemies, "allowedenemies", allowedenemies);
-        out.write(blockedNodes, "blockedNodes", new String[blockedNodes.length]);
+        out.write(blockedNodes, "blockedNodes", 
+                new String[blockedNodes.length]);
     }
 }

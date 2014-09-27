@@ -24,7 +24,8 @@ public class TowerParams implements Savable {
     private Spatial towerSpatial;
     private float beamwidth;
     
-    public TowerParams(Vector3f vec,  boolean starter, int index, float beamwidth) {
+    public TowerParams(Vector3f vec,  boolean starter, int index, 
+            float beamwidth) {
         this.vec = vec;
         this.starter = starter;
         this.index = index;
@@ -89,7 +90,7 @@ public class TowerParams implements Savable {
     }
 
     public TowerControl getControl(Class<TowerControl> aClass) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 

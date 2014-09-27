@@ -29,8 +29,10 @@ public class RegCreepFactory {
     }
 
     public Spatial getCreep(Vector3f spawnpoint, CreepParams cp) {
-        Geometry creep_geom = new Geometry(cp.getType() + "Creep", gs.getUnivBox());
-        creep_geom.setMaterial(assetManager.loadMaterial(gs.getMatLoc(cp.getType()+"Creep")));
+        Geometry creep_geom = new Geometry(cp.getType() + "Creep",
+                gs.getUnivBox());
+        creep_geom.setMaterial(assetManager.loadMaterial(
+                gs.getMatLoc(cp.getType()+"Creep")));
         creep_geom.setLocalScale(cp.getSize());
         creep_geom.setLocalTranslation(spawnpoint);
         Spatial creep = creep_geom;
@@ -38,7 +40,8 @@ public class RegCreepFactory {
         creep.setUserData("Health", cp.getHealth());
         creep.setUserData("Value", cp.getValue());
         creep.setUserData("Speed", cp.getSpeed());
-        creep.addControl(new RegCreepControl(es, new AStarPathFinder(new jMEHeuristic(), es.getWorldGraph(), 5)));
+        creep.addControl(new RegCreepControl(es, new AStarPathFinder
+                (new jMEHeuristic(), es.getWorldGraph(), 5)));
         return creep;
     }
 }

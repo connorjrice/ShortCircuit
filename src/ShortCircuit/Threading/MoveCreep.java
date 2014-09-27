@@ -49,7 +49,8 @@ public class MoveCreep implements Runnable {
     }
 
     private void moveByNode() {
-        GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
+        GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path
+                .getNextPathNode());
         float[] nextCoords = nextGraph.getCoordArray();
         Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
         cc.getSpatial().setLocalTranslation(newLoc);
@@ -63,7 +64,8 @@ public class MoveCreep implements Runnable {
     private void setCurVec() {
         prevIndex = curIndex;
         prevLoc = curVec;
-        GraphNode currentNode = cc.getWorldGraph().getNode(cc.path.getNextPathNode());
+        GraphNode currentNode = cc.getWorldGraph().getNode(cc.path
+                .getNextPathNode());
         curVec = currentNode.getVector3f();
         curIndex = currentNode.getIndex();
 

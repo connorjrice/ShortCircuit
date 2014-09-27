@@ -132,7 +132,8 @@ public class AudioState extends AbstractAppState {
             tower4audio.setLocalTranslation(origin);
             tower4audio.playInstance();
         } else {
-            elseAudio = new AudioNode(assetManager, "Audio/" + towertype + ".wav");
+            elseAudio = new AudioNode(assetManager,
+                    "Audio/" + towertype + ".wav");
             elseAudio.setVolume(.3f);
             elseAudio.setLocalTranslation(origin);
             elseAudio.playInstance();

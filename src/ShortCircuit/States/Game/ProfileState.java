@@ -61,7 +61,8 @@ public class ProfileState extends AbstractAppState {
     
     private void profileDropBombs(float tpf) {
         if (profileBombTimer > .5) {
-            GraphicsState.dropBomb(EnemyState.getCreepList().get(0).getLocalTranslation(), .2f);
+            GraphicsState.dropBomb(EnemyState.getCreepList().get(0)
+                    .getLocalTranslation(), .2f);
             profileBombTimer = 0;
         }
         else {
@@ -72,7 +73,8 @@ public class ProfileState extends AbstractAppState {
     private void profileEmptyTowers(float tpf) {
         if (profileEmptyTimer > 10.0) {
             for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-                FriendlyState.getTowerList().get(i).getControl(TowerControl.class).charges.clear();
+                FriendlyState.getTowerList().get(i)
+                        .getControl(TowerControl.class).charges.clear();
             }
             profileEmptyTimer = 0;
         }

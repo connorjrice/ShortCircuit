@@ -55,7 +55,8 @@ public class CheatState extends AbstractAppState {
     public void badassAmmoH4KX() {
         ArrayList<Spatial> towerList = FriendlyState.getTowerList();
         for (int i = 0; i < towerList.size(); i++) {
-            TowerControl control = towerList.get(i).getControl(TowerControl.class);
+            TowerControl control = towerList.get(i)
+                    .getControl(TowerControl.class);
             for (int j = 0; i < 10; i++) {
                 control.charges.add(new Charges("Towerc"));
                 control.setBeamType("beam4");

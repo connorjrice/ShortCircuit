@@ -74,7 +74,8 @@ public class LoadSavableState extends AbstractAppState {
     }
 
     private void loadWorld() {
-        Node loadedWorld = (Node) assetManager.loadModel("Models/" + levelName + ".j3o");
+        Node loadedWorld = (Node) assetManager.loadModel("Models/" +
+                levelName + ".j3o");
         loadedWorld.setName("LoadedWorld");
         rootNode.attachChild(loadedWorld);
     }
@@ -98,7 +99,8 @@ public class LoadSavableState extends AbstractAppState {
     }
 
     private void addTower(Spatial spatial) {
-        TowerControl tc = new TowerControl(FriendlyState, spatial.getLocalTranslation());
+        TowerControl tc = new TowerControl(FriendlyState,
+                spatial.getLocalTranslation());
         spatial.addControl(tc);
         if (spatial.getUserData("Type").equals("Tower1")) {
             tc.addCharges();
@@ -109,8 +111,10 @@ public class LoadSavableState extends AbstractAppState {
     }
 
     private void setParams() {
-        grp = (GraphicsParams) rootNode.getChild("LoadedWorld").getUserData("GraphicsParams");
-        gap = (GameplayParams) rootNode.getChild("LoadedWorld").getUserData("GameplayParams");
+        grp = (GraphicsParams) rootNode.getChild("LoadedWorld")
+                .getUserData("GraphicsParams");
+        gap = (GameplayParams) rootNode.getChild("LoadedWorld")
+                .getUserData("GameplayParams");
         grp.parseCreeps();
         GraphicsState.setGraphicsParams(grp);
 

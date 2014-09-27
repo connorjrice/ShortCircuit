@@ -28,7 +28,7 @@ public class AStarPathFinder implements PathFinder {
     }
 
     public AStarPathFinder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     public Path getPath(Comparable start, Comparable end) {

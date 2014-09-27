@@ -69,9 +69,12 @@ public class RangerControl extends AbstractControl {
      * intersect, the boolean attachedToTower becomes true.
      */
     private void moveTowardsTower() {
-        if (!spatial.getWorldBound().intersects(victimTower.getSpatial().getWorldBound())) {
+        if (!spatial.getWorldBound().intersects(victimTower.getSpatial()
+                .getWorldBound())) {
             moveAmount += moveAmount;
-            spatial.setLocalTranslation(spatial.getLocalTranslation().interpolate(victimTower.getSpatial().getLocalTranslation(), moveAmount));
+            spatial.setLocalTranslation(spatial.getLocalTranslation()
+                    .interpolate(victimTower.getSpatial().getLocalTranslation(),
+                    moveAmount));
         } else {
             attachedToTower = true;
         }

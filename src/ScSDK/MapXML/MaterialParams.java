@@ -35,7 +35,8 @@ public class MaterialParams implements Savable {
     @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule in = im.getCapsule(this);
-        backgroundcolor = (ColorRGBA) in.readSavable("bgcolor", new ColorRGBA());
+        backgroundcolor = (ColorRGBA) in.readSavable("bgcolor",
+                new ColorRGBA());
         matdir = in.readString("matdir", "");
     }
 

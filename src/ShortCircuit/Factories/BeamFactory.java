@@ -22,11 +22,13 @@ public class BeamFactory {
         this.assetManager = gs.getAssetManager();
     }
 
-    public Geometry makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamWidth) {
+    public Geometry makeLaserBeam(Vector3f origin, Vector3f target,
+            String towertype, float beamWidth) {
         beaml = new Line(origin, target);
         beaml.setLineWidth(beamWidth);
         beamg = new Geometry("Beam", beaml);
-        beamg.setMaterial(assetManager.loadMaterial(gs.getMatLoc(towertype+"Beam")));
+        beamg.setMaterial(assetManager.loadMaterial(
+                gs.getMatLoc(towertype+"Beam")));
         return beamg;
     }
 }

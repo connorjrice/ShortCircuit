@@ -74,7 +74,8 @@ public class TutorialState extends AbstractAppState {
     }
 
     private void initMaterials() {
-        focusMaterial = assetManager.loadMaterial("Materials/Circuit2/Tower1Beam.j3m");
+        focusMaterial = assetManager
+                .loadMaterial("Materials/Circuit2/Tower1Beam.j3m");
     }
 
     @Override
@@ -90,9 +91,11 @@ public class TutorialState extends AbstractAppState {
         Spatial glob = rootNode.getChild("Glob");
         glob.setMaterial(focusMaterial);
         tMS.pause();
-        ButtonAdapter globA = new ButtonAdapter(screen, "Glob", new Vector2f(glob.getLocalTranslation().x+200,600)) {
+        ButtonAdapter globA = new ButtonAdapter(screen, "Glob",
+                new Vector2f(glob.getLocalTranslation().x+200,600)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 screen.removeElement(this);
                 tMS.pause();
             }
@@ -103,11 +106,13 @@ public class TutorialState extends AbstractAppState {
 
     public void basePopup() {
         GameState.getRootNode().getChild("Base").setMaterial(focusMaterial);
-        ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base", new Vector2f(800, 800)) {
+        ButtonAdapter baseA = new ButtonAdapter(screen, "Your Base",
+                new Vector2f(800, 800)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                rootNode.getChild("Base")
-                        .setMaterial(assetManager.loadMaterial("Materials/Circuit/Base.j3m"));
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
+                rootNode.getChild("Base").setMaterial(assetManager
+                        .loadMaterial("Materials/Circuit/Base.j3m"));
                 screen.removeElement(this);
                 towerPopup();
             }
@@ -120,9 +125,11 @@ public class TutorialState extends AbstractAppState {
 
     private void towerPopup() {
         focusBuiltTowers();
-        ButtonAdapter towerA = new ButtonAdapter(screen, "Your Towers", new Vector2f(700, 600)) {
+        ButtonAdapter towerA = new ButtonAdapter(screen, "Your Towers",
+                new Vector2f(700, 600)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 unfocusBuiltTowers();
                 screen.removeElement(this);
                 unbuiltTowerPopup();
@@ -137,7 +144,8 @@ public class TutorialState extends AbstractAppState {
 
     private void focusBuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+            if (!FriendlyState.getTowerList().get(i).getUserData("Type")
+                    .equals("TowerUnbuilt")) {
                 FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
@@ -145,17 +153,21 @@ public class TutorialState extends AbstractAppState {
 
     private void unfocusBuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (!FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            if (!FriendlyState.getTowerList().get(i).getUserData("Type")
+                    .equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(
+                        assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
     }
 
     private void unbuiltTowerPopup() {
         focusUnbuiltTowers();
-        ButtonAdapter unbuiltA = new ButtonAdapter(screen, "Unbuilt Towers", new Vector2f(800, 500)) {
+        ButtonAdapter unbuiltA = new ButtonAdapter(screen, "Unbuilt Towers",
+                new Vector2f(800, 500)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 unfocusUnbuiltTowers();
                 screen.removeElement(this);
                 budgetPopup();
@@ -168,7 +180,8 @@ public class TutorialState extends AbstractAppState {
 
     private void focusUnbuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
+            if (FriendlyState.getTowerList().get(i).getUserData("Type")
+                    .equals("TowerUnbuilt")) {
                 FriendlyState.getTowerList().get(i).setMaterial(focusMaterial);
             }
         }
@@ -176,8 +189,10 @@ public class TutorialState extends AbstractAppState {
 
     private void unfocusUnbuiltTowers() {
         for (int i = 0; i < FriendlyState.getTowerList().size(); i++) {
-            if (FriendlyState.getTowerList().get(i).getUserData("Type").equals("TowerUnbuilt")) {
-                FriendlyState.getTowerList().get(i).setMaterial(assetManager.loadMaterial(getTowerOrigMat(i)));
+            if (FriendlyState.getTowerList().get(i).getUserData("Type")
+                    .equals("TowerUnbuilt")) {
+                FriendlyState.getTowerList().get(i).setMaterial(
+                        assetManager.loadMaterial(getTowerOrigMat(i)));
             }
         }
 
@@ -185,9 +200,11 @@ public class TutorialState extends AbstractAppState {
 
     private void budgetPopup() {
         focusBudgetButton();
-        ButtonAdapter budgetA = new ButtonAdapter(screen, "Budget", new Vector2f(1215, 125)) {
+        ButtonAdapter budgetA = new ButtonAdapter(screen, "Budget",
+                new Vector2f(1215, 125)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 unfocusBudgetButton();
                 screen.removeElement(this);
                 creepPopup();
@@ -215,9 +232,11 @@ public class TutorialState extends AbstractAppState {
 
     private void creepPopup() {
         focusCreeps();
-        ButtonAdapter creepA = new ButtonAdapter(screen, "Creep", new Vector2f(800, 400)) {
+        ButtonAdapter creepA = new ButtonAdapter(screen, "Creep",
+                new Vector2f(800, 400)) {
             @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
+            public void onButtonMouseLeftDown(MouseButtonEvent evt,
+            boolean toggled) {
                 unfocusCreeps();
                 screen.removeElement(this);
                 start();
@@ -236,7 +255,8 @@ public class TutorialState extends AbstractAppState {
 
     private void unfocusCreeps() {
         for (int i = 0; i < EnemyState.getCreepListSize(); i++) {
-            EnemyState.getCreep(i).setMaterial(assetManager.loadMaterial(getCreepOrigMat(i)));
+            EnemyState.getCreep(i).setMaterial(assetManager.
+                    loadMaterial(getCreepOrigMat(i)));
         }
     }
 
@@ -245,12 +265,14 @@ public class TutorialState extends AbstractAppState {
     }
 
     private String getTowerOrigMat(int i) {
-        return "Materials/" + GraphicsState.getMatDir() + "/" + FriendlyState.getTowerList().get(i).getUserData("Type") + ".j3m";
+        return "Materials/" + GraphicsState.getMatDir() + "/" + FriendlyState
+                .getTowerList().get(i).getUserData("Type") + ".j3m";
     }
 
     private String getCreepOrigMat(int i) {
         String type = EnemyState.getCreepList().get(i).getUserData("Name");
-        return "Materials/" + GraphicsState.getMatDir() + "/" + type + "Creep.j3m";
+        return "Materials/" + GraphicsState.getMatDir() + "/" + type +
+                "Creep.j3m";
     }
     
     @Override
