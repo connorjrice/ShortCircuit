@@ -64,15 +64,16 @@ public class TowerUpgrade implements Runnable {
             if (tower != null) {
                 tower.setTowerType("Tower" + type);
                 tower.addCharges();
-                tower.setBuilt();
+                tower.setActive();
                 tower.getSpatial().setLocalScale(fs.getTowerBuiltSize());
                 fs.towerTextureCharged(tower.getSpatial());
             } else {
-                tower = fs.getTower(fs.getSelected()).getControl(TowerControl.class);
+                tower = fs.getTower(fs.getSelected())
+                        .getControl(TowerControl.class);
                 if (fs.getPlrBudget() >= cost) {
                     tower.setTowerType("Tower" + type);
                     tower.addCharges();
-                    tower.setBuilt();
+                    tower.setActive();
                     if (type.equals("4")) {
                         fs.incFours();
                     }
@@ -88,7 +89,4 @@ public class TowerUpgrade implements Runnable {
         tower = null;
     }
 
-    public void setManualTower(TowerControl tc) {
-        this.tower = tc;
-    }
 }

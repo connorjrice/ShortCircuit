@@ -49,6 +49,11 @@ public class FriendlyState extends AbstractAppState {
         
     }
 
+    /**
+     * Initializes FriendlyState, and calls initLists() and initRunnables().
+     * @param stateManager
+     * @param app 
+     */
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -65,16 +70,27 @@ public class FriendlyState extends AbstractAppState {
         initRunnables();
     }
 
+    /**
+     * Initializes the emptyTowers queue and the activeChargers queue.
+     */
     private void initLists() {
         emptyTowers = new Queue<TowerControl>();
         activeChargers = new Queue<Spatial>();
     }
 
+    /**
+     * Sets the internal towerList from the savable one.
+     * @param listIn 
+     */
     public void setTowerList(ArrayList<Spatial> listIn) {
         towerList = listIn;
         globbedTowers = new boolean[towerList.size()];
     }
 
+    /**
+     * Initializes the runnable objects for upgrading, charging, and downgrading
+     * towers.
+     */
     private void initRunnables() {
         tur = new TowerUpgrade(this);
         tcr = new TowerCharge(this);
@@ -83,7 +99,6 @@ public class FriendlyState extends AbstractAppState {
 
     /**
      * Modifies the size of a tower at tindex.
-     *
      * @param tindex - index of the tower to be modified. Then, sets
      * selectedTower to be tindex for other methods to access.
      */
@@ -98,8 +113,8 @@ public class FriendlyState extends AbstractAppState {
     }
 
     /**
-     * Returns towers to their normal size. Called by GameState when selecting a
-     * new tower.
+     * Returns towers to their normal size. 
+     * Called by GameState when selecting a new tower.
      */
     public void shortenTower() {
         if (selectedTower != -1) {
@@ -125,7 +140,6 @@ public class FriendlyState extends AbstractAppState {
 
     /**
      * Charging method used by player-friendly charger NPC.
-     *
      * @param index - index of tower being charged by charger.
      */
     public void chargeTower(int index) {
@@ -135,38 +149,54 @@ public class FriendlyState extends AbstractAppState {
         }
     }
 
+    /**
+     * Upgrades the tower specified by selectedTower.
+     */
     public void upgradeTower() {
         if (selectedTower != -1) {
             tur.run();
         }
     }
 
-    public void upgradeTower(TowerControl tp) {
-        tur.setManualTower(tp);
-        tur.run();
-    }
-
+    /**
+     * Downgrades the tower specified by selectedTower.
+     */
     public void downgradeTower() {
         if (selectedTower != -1) {
-            tdr.setVictim(selectedTower);
             tdr.run();
         }
     }
 
+    /**
+     * Returns a string that indicates which type the tower specified by 
+     * selectedTower is.
+     * @return String (selected tower's type)
+     */
     public String getSelectedTowerType() {
         return towerList.get(selectedTower).getUserData("Type");
     }
-    
-    
 
+    /**
+     * Takes as input a Spatial s and sets that spatial's texture to that of a
+     * charged tower.
+     * @param s Spatial, hopefully a tower, to have texture changed to charged.
+     */
     public void towerTextureCharged(Spatial s) {
         GraphicsState.towerTextureCharged(s);
     }
 
+    /**
+     * Calls AudioState to play the charged tower sound.
+     */
     public void playChargeSound() {
         AudioState.chargeSound();
     }
 
+    /**
+     * Calls AudioState to play the tower building sound at the pitch specified
+     * by the input parameter, pitch.
+     * @param pitch - the pitch at which to play the building sound.
+     */
     public void playBuildSound(float pitch) {
         AudioState.buildSound(pitch);
     }
@@ -179,14 +209,29 @@ public class FriendlyState extends AbstractAppState {
         return GraphicsState.getMatDir();
     }
 
+    /**
+     * Returns a spatial of the tower at the index specified by input parameter
+     * tindex.
+     * @param tindex - Index of tower to return
+     * @return Spatial of tower
+     */
     public Spatial getTower(int tindex) {
         return towerList.get(tindex);
     }
     
+    /**
+     * Returns towerList
+     * @return ArrayList<Spatial> towerList
+     */
     public ArrayList<Spatial> getTowerList() {
         return towerList;
     }
 
+    /**
+     * Get the Vector3f that represents the built size of towers on the current
+     * map.
+     * @return Vector3f - Tower Built Size
+     */
     public Vector3f getTowerBuiltSize() {
         return GraphicsState.getTowerBuiltSize();
     }
@@ -218,6 +263,10 @@ public class FriendlyState extends AbstractAppState {
 
     public void incFours() {
         GameState.incFours();
+    }
+    
+    public void decFours() {
+        GameState.decFours();
     }
 
     public int getPlrBudget() {
@@ -256,7 +305,8 @@ public class FriendlyState extends AbstractAppState {
         Spatial charger = new Geometry("Charger", chargerSphere);
         charger.setUserData("RemainingCharges", 10);
         charger.setUserData("Health", 100);
-        charger.setMaterial(assetManager.loadMaterial("Materials/Neon/Tower4.j3m"));
+        charger.setMaterial
+                (assetManager.loadMaterial("Materials/Neon/Tower4.j3m"));
         charger.setLocalTranslation(GraphicsState.getBaseVec().add(0, 0, 2f));
         //charger.setLocalTranslation(new Vector3f(0,0,2f));
         addNewCharger(charger);
@@ -267,31 +317,34 @@ public class FriendlyState extends AbstractAppState {
      */
     public void addEmptyTower(TowerControl empty) {
         emptyTowers.enqueue(empty);
-        System.out.println("Empty tower added");
         GraphicsState.towerTextureEmpty(empty.getSpatial());
         AudioState.emptyTowerSound();
     }
     
-    public void makeLaserBeam(Vector3f origin, Vector3f target, String towertype, float beamwidth) {
+    public void makeLaserBeam(Vector3f origin, Vector3f target, 
+            String towertype, float beamwidth) {
         GraphicsState.makeLaserBeam(origin, target, towertype, beamwidth);
     }
 
     /**
-     * Clears the list of empty towers.
+     * Clears the empty tower queue.
      */
     public void clearEmptyTowers() {
         emptyTowers.clear();
     }
 
     /**
-     * Returns the list of all active chargers as an arraylist of spatials.
-     *
-     * @return activeChargers, the list of active charger NPC's
+     * Returns the queue of active chargers.
+     * @return Queue<Spatial> activeChargers
      */
     public Queue<Spatial> getActiveChargers() {
         return activeChargers;
     }
 
+    /**
+     * Returns the queue of empty towers.
+     * @return Queue<TowerControl> emptyTowers
+     */
     public Queue<TowerControl> getEmptyTowers() {
         return emptyTowers;
     }
@@ -301,7 +354,6 @@ public class FriendlyState extends AbstractAppState {
      * @return true if there is an empty tower, false if there are none.
      */
     public boolean isAnyTowerEmpty() {
-        System.out.println("A charger checked for towers");
         return emptyTowers.isEmpty();
     }
 
@@ -312,6 +364,10 @@ public class FriendlyState extends AbstractAppState {
         activeChargers.clear();
     }
 
+    /**
+     * Returns a Vector3f of the base's location.
+     * @return vector3f of base location.
+     */
     public Vector3f getHomeVec() {
         return GraphicsState.getBaseVec().add(0f, 0f, 1f);
     }

@@ -314,6 +314,10 @@ public class GameState extends AbstractAppState {
     public GameplayParams getGameplayParams() {
         return GameplayParams;
     }
+    
+    public void decFours() {
+        fours -= 1;
+    }
 
     public void incFours() {
         fours += 1;

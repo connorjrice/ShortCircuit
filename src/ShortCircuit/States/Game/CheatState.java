@@ -120,7 +120,7 @@ public class CheatState extends AbstractAppState {
         for (int i = 0; i < towerList.size(); i++) {
             TowerControl tower = towerList.get(i).getControl(TowerControl.class);
             addBadAsstoBadAss(tower);
-            tower.setBuilt();
+            tower.setActive();
             tower.setTowerType("Tower4");
             GraphicsState.towerTextureCharged(tower.getSpatial());
         }

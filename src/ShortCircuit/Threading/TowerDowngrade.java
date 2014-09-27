@@ -7,15 +7,17 @@ import com.jme3.scene.Spatial;
 
 /**
  * This class handles the downgrading of a tower from enemy attack.
- *
+ * TODO: Finalize use of TowerDowngrade.
  * @author Connor Rice
  */
 public class TowerDowngrade implements Runnable {
-
-    private String matLoc;
+    
+    private int cost;
+    private float pitch;
     private FriendlyState fs;
     private boolean valid;
-    private int victimIndex;
+    private TowerControl tower;
+    private String type;
 
     /**
      * Constructor, takes FriendlyState class as input.
@@ -32,50 +34,57 @@ public class TowerDowngrade implements Runnable {
      */
     public void run() {
         // Determine type of upgrade/validity
-        if (victimIndex != -1) {
-            String type = fs.getTowerList().get(victimIndex).getUserData("Type");
-            if (type.equals("Tower1")) {
-                type = "Unbuilt";
-                matLoc = "Materials/" + fs.getMatDir() + "/TowerUnbuilt.j3m";
-                valid = true;
-            } else if (type.equals("Tower2")) {
-                type = "1";
-                matLoc = "Materials/" + fs.getMatDir() + "/Tower1.j3m";
-                valid = true;
-            } else if (type.equals("Tower3")) {
-                type = "2";
-                matLoc = "Materials/" + fs.getMatDir() + "/Tower2.j3m";
-                valid = true;
-            } else if (type.equals("Tower4")) {
-                type = "3";
-                matLoc = "Materials/" + fs.getMatDir() + "/Tower3.j3m";
-                valid = true;
-            }
+        if (tower == null) {
+            type = fs.getTowerList().get(fs.getSelected()).getUserData("Type");
+        } else {
+            type = tower.getTowerType();
+        }
+        if (type.equals("Tower1")) {
+            type = "Unbuilt";
+            pitch = 0.0f;
+            valid = true;
+        } else if (type.equals("Tower2")) {
+            type = "1";
+            pitch = 0.6f;
+            valid = true;
+        } else if (type.equals("Tower2")) {
+            type = "2";
+            pitch = 0.8f;
+            valid = true;
+        } else if (type.equals("Tower4")) {
+            type = "3";
+            pitch = 0.9f;
+            valid = true;
+        }
 
-            if (valid) {
-                Spatial tower = fs.getTowerList().get(victimIndex);
-                tower.setUserData("Type", "Tower" + type);
+        // Perform upgrade if valid
+        if (valid) {
+            if (tower != null) {
+                tower.setTowerType("Tower" + type);
                 if (type.equals("Unbuilt")) {
-                    tower.getControl(TowerControl.class).charges.clear();
-                    tower.getControl(TowerControl.class).setInactive();
-                    tower.setLocalScale(fs.getTowerUnbuiltSize());
+                    tower.setInactive();
+                    tower.getSpatial().setLocalScale(fs.getTowerUnbuiltSize());
                 } else {
-                    int oldnumcharges = tower.getControl(TowerControl.class).charges.size();
-                    tower.getControl(TowerControl.class).charges.clear();
-                    for (int i = 0; i < oldnumcharges; i++) {
-                        tower.getControl(TowerControl.class).addCharges();
-                    }
-                    tower.setLocalScale(fs.getTowerBuiltSize());
+                    tower.getSpatial().setLocalScale(fs.getTowerBuiltSize());                    
                 }
-                fs.towerTextureCharged(tower);
-
-                valid = false;
-                victimIndex = -1;
+                fs.towerTextureCharged(tower.getSpatial());
+            } else {
+                tower = fs.getTower(fs.getSelected())
+                        .getControl(TowerControl.class);
+                if (fs.getPlrBudget() >= cost) {
+                    tower.setTowerType("Tower" + type);
+                    if (type.equals("3")) {
+                        fs.decFours();
+                    }
+                    tower.getSpatial().setLocalScale(fs.getTowerBuiltSize());
+                    fs.towerTextureCharged(tower.getSpatial());
+                    fs.decPlrBudget(cost);
+                    fs.playBuildSound(pitch);
+                }
             }
         }
-    }
-
-    public void setVictim(int index) {
-        victimIndex = index;
+        type = "";
+        valid = false;
+        tower = null;
     }
 }

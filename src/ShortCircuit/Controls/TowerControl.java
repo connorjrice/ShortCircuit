@@ -72,9 +72,7 @@ public class TowerControl extends AbstractControl {
         FriendlyState.setTowerGlobbedStatus(getIndex(), true);
     }
 
-    public void setActive() {
-        isActive = true;
-    }
+
 
     public void unglobTower() {
         if (!spatial.getUserData("Type").equals("TowerUnbuilt")) {
@@ -100,7 +98,8 @@ public class TowerControl extends AbstractControl {
                 }
             }
         } catch (Exception excpt) {
-            System.out.println("TowerControl.searchForCreeps()" + excpt.getLocalizedMessage());
+            System.out.println("TowerControl.searchForCreeps()" + 
+                    excpt.getLocalizedMessage());
         }
     }
     /**
@@ -111,17 +110,21 @@ public class TowerControl extends AbstractControl {
      * Future goal would be to only build the relevant list of creeps in the
      * first place.
      */
-    private Callable<STC<Spatial>> callableCreepFind = new Callable<STC<Spatial>>() {
+    private Callable<STC<Spatial>> callableCreepFind = 
+            new Callable<STC<Spatial>>() {
         public STC<Spatial> call() throws Exception {
             STC<Spatial> reach = new STC<Spatial>(cc);
-            ArrayList<Spatial> creepClone = FriendlyState.getApp().enqueue(new Callable<ArrayList<Spatial>>() {
+            ArrayList<Spatial> creepClone = FriendlyState.getApp()
+                    .enqueue(new Callable<ArrayList<Spatial>>() {
                 public ArrayList<Spatial> call() throws Exception {
-                    return (ArrayList<Spatial>) FriendlyState.getCreepList().clone();
+                    return (ArrayList<Spatial>) FriendlyState.getCreepList()
+                            .clone();
                 }
             }).get();
 
             for (int i = 0; i < creepClone.size(); i++) {
-                if (creepClone.get(i).getLocalTranslation().distance(spatial.getLocalTranslation()) < 5.0f) {
+                if (creepClone.get(i).getLocalTranslation()
+                        .distance(spatial.getLocalTranslation()) < 5.0f) {
                     reach.offer(creepClone.get(i));
                 }
 
@@ -140,10 +143,12 @@ public class TowerControl extends AbstractControl {
     protected void shootCreep() {
         if (charges.get(0).getRemBeams() > 0) {
             if (reachable.peek().getControl(RegCreepControl.class) != null) {
-                FriendlyState.makeLaserBeam(spatial.getLocalTranslation(), reachable.peek().getLocalTranslation(),
+                FriendlyState.makeLaserBeam(spatial.getLocalTranslation(), 
+                        reachable.peek().getLocalTranslation(),
                         getTowerType(), getBeamWidth());
                 if (reachable.peek()
-                        .getControl(RegCreepControl.class).decCreepHealth(charges.get(0).shoot()) <= 0) {
+                        .getControl(RegCreepControl.class)
+                        .decCreepHealth(charges.get(0).shoot()) <= 0) {
                     reachable.remove();
                 }
             } else {
@@ -154,7 +159,7 @@ public class TowerControl extends AbstractControl {
         }
     }
 
-    public void setBuilt() {
+    public void setActive() {
         isActive = true;
     }
 
@@ -207,7 +212,8 @@ public class TowerControl extends AbstractControl {
 
     @Override
     public Control cloneForSpatial(Spatial spatial) {
-        TowerControl control = new TowerControl(FriendlyState, spatial.getLocalTranslation());
+        TowerControl control = new TowerControl(FriendlyState,
+                spatial.getLocalTranslation());
         control.setSpatial(spatial);
         return control;
     }
