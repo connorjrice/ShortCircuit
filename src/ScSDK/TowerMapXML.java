@@ -1,5 +1,6 @@
 package ScSDK;
 
+import ScSDK.GUI.SDKGUI;
 import ScSDK.IO.BuildState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -27,9 +28,15 @@ public class TowerMapXML extends AbstractAppState {
     private AppStateManager stateManager;
     private final String level;
     private BuildState BuildState;
+    private SDKGUI sdk;
 
     public TowerMapXML(String level) {
         this.level = level;
+    }
+    
+    public TowerMapXML(String level, SDKGUI sdk) {
+        this.level = level;
+        this.sdk = sdk;
     }
 
     @Override
@@ -46,16 +53,24 @@ public class TowerMapXML extends AbstractAppState {
     }
 
     public void attachStates() {        
-        BuildState = new BuildState(level);
+        BuildState = new BuildState(level, this);
         stateManager.attach(BuildState);
     }
     
     public Node getRootNode() {
-        return this.app.getRootNode();
+        return app.getRootNode();
+    }
+    
+    public SDKGUI getSDK() {
+        return sdk;
     }
 
     public void detachStates() {
         stateManager.detach(BuildState);
+    }
+    
+    public BuildState getBuildState() {
+        return BuildState;
     }
     
     @Override

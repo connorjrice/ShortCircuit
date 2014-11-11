@@ -10,6 +10,7 @@ import ScSDK.MapXML.GeometryParams;
 import ScSDK.MapXML.MapGenerator;
 import ScSDK.MapXML.MaterialParams;
 import ScSDK.MapXML.TowerParams;
+import ScSDK.TowerMapXML;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -50,9 +51,15 @@ public class BuildState extends AbstractAppState {
     private String levelName;
     private MapGenerator mg;
     private Camera cam;
+    private TowerMapXML tmx;
 
     public BuildState(String levelName) {
         this.levelName = levelName;
+    }
+    
+    public BuildState(String levelName, TowerMapXML tmx) {
+        this.levelName = levelName;
+        this.tmx = tmx;
     }
 
     @Override
@@ -82,7 +89,12 @@ public class BuildState extends AbstractAppState {
         buildTowers();
         buildCreepSpawners();
         embedLevelData();
-        cam.setLocation(mg.getGraphicsParams().getGeometryParams().getCamLoc());
+        cam.setLocation(getCameraLocation());
+        attachViewPort();
+    }
+    
+    public Vector3f getCameraLocation() {
+        return mg.getGraphicsParams().getGeometryParams().getCamLoc();
     }
 
     private void buildMatHash(String[] towerTypes) {
@@ -219,6 +231,15 @@ public class BuildState extends AbstractAppState {
     public Material getMaterial(String key) {
         return (Material) matHash.get(key);
     }
+    
+    public Node getRootNode() {
+        return rootNode;
+    }
+    
+    public void attachViewPort() {
+        tmx.getSDK().initViewPort(rootNode);
+    }
+            
 
     @Override
     public void cleanup() {

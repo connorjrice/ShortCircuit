@@ -7,7 +7,10 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector4f;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +20,7 @@ import tonegod.gui.controls.lists.ComboBox;
 import tonegod.gui.controls.text.TextField;
 import tonegod.gui.controls.windows.DialogBox;
 import tonegod.gui.controls.windows.Window;
+import tonegod.gui.core.OSRBridge;
 import tonegod.gui.core.Screen;
 
 /**
@@ -62,9 +66,10 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void initScreen() {
-        screen = new Screen(app, "StyleDefs/MapXML/style_map.gui.xml");
+        //screen = new Screen(app, "StyleDefs/MapXML/style_map.gui.xml");
+        screen = new Screen(app);
         guiNode.addControl(screen);
-        screen.setUseKeyboardIcons(true);
+        //screen.setUseKeyboardIcons(true);
     }
     
     private void setupGUI() {
@@ -81,8 +86,8 @@ public class SDKGUI extends AbstractAppState {
                 new Vector2f(width, height));
         MainWindow.setWindowTitle("ShortCircuit Map XML");
         MainWindow.setWindowIsMovable(false);
-        MainWindow.setIsResizable(false);
-        MainWindow.setEffectZOrder(false);
+        //MainWindow.setIsResizable(false);
+        //MainWindow.setEffectZOrder(false);
         screen.addElement(MainWindow);
     }
     
@@ -148,12 +153,12 @@ public class SDKGUI extends AbstractAppState {
     }
     
     private void buildLevel() {
-        tMS = new TowerMapXML(levelString);
+        tMS = new TowerMapXML(levelString, this);
         returnButton();
         stateManager.attach(tMS);
-        MainWindow.hide();
+        //MainWindow.hide();
 
-        //initViewPort(tMS.getRootNode());
+        //tMS.getRootNode();
     }
     
     private void buildAll() {
@@ -228,13 +233,14 @@ public class SDKGUI extends AbstractAppState {
         MainWindow.addChild(edit);
     }
     
-    private void initViewPort(Node rootNode) {
-        vp = new OSRViewPort(screen, "Preview", new Vector2f(100,100));
-        vp.setOSRBridge(rootNode, width/3, height/3);
-        
+    public void initViewPort(Node rootNode) {
+        vp = new OSRViewPort(screen, "Preview", new Vector2f(100,100), 
+                new Vector2f(640,480), new Vector4f(1,1,1,1), "Materials/clear.png");
+        vp.setOSRBridge(rootNode, 400, 400);
+        vp.setCameraDistance(tMS.getBuildState().getCameraLocation().z);
+        screen.addElement(vp);
     }
     
-
     private void xmlTextField() {
        
     }
