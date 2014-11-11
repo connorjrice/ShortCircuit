@@ -16,7 +16,6 @@ import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
@@ -98,7 +97,7 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private int camlocation = 0;
-    private Material oldbuttmat;
+
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -823,7 +822,6 @@ public class GameGUI extends AbstractAppState {
 
     public void getOldMat() {
         Element button = screen.getElementById("Budget");
-        oldbuttmat = button.getMaterial();
     }
 
     public void highlightButton(String buttonname) {

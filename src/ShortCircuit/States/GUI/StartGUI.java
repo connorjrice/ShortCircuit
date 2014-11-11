@@ -109,7 +109,6 @@ public class StartGUI extends AbstractAppState {
     }
 
     public void onStart(String level) {
-
         if (firstLoad) {
             showLoading();
             tMS = new TowerMainState(level);
