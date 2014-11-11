@@ -1,14 +1,12 @@
 package ShortCircuit.States.GUI;
 
 import ScSDK.MapXML.FileLoader;
-import ShortCircuit.ShortCircuitMain;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
@@ -46,15 +44,9 @@ public class StartGUI extends AbstractAppState {
     private boolean firstLoad = true;
     private TowerMainState tMS;
     private float scaler;
-    private FlyByCamera flyCam;
     private SelectList levelList;
-    private ShortCircuitMain scm;
     private ButtonAdapter resumeLevel;
-
-    public StartGUI(ShortCircuitMain scm) {
-        this.scm = scm;
-    }
-
+    
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);

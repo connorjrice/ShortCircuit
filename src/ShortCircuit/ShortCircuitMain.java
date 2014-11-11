@@ -44,7 +44,7 @@ public class ShortCircuitMain extends SimpleApplication {
     }
     
     public void startGUI() {
-        sgui = new StartGUI(this);
+        sgui = new StartGUI();
         stateManager.attach(sgui);
     }
   
