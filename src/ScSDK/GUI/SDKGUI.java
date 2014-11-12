@@ -156,7 +156,7 @@ public class SDKGUI extends AbstractAppState {
         tMS = new TowerMapXML(levelString, this);
         returnButton();
         stateManager.attach(tMS);
-        //MainWindow.hide();
+        MainWindow.hide();
 
         //tMS.getRootNode();
     }
@@ -182,7 +182,6 @@ public class SDKGUI extends AbstractAppState {
             public void onButtonMouseLeftDown(MouseButtonEvent evt, 
             boolean toggled) {
                 String userHome = System.getProperty("user.home");
-                System.out.println(userHome);
                 BinaryExporter exporter = BinaryExporter.getInstance();
                 File file = new File(
                         userHome+"/Documents/ShortCircuit/Assets/Models/"
@@ -234,11 +233,10 @@ public class SDKGUI extends AbstractAppState {
     }
     
     public void initViewPort(Node rootNode) {
-        vp = new OSRViewPort(screen, "Preview", new Vector2f(100,100), 
+       /* vp = new OSRViewPort(screen, "Preview", new Vector2f(100,100), 
                 new Vector2f(640,480), new Vector4f(1,1,1,1), "Materials/clear.png");
         vp.setOSRBridge(rootNode, 400, 400);
-        vp.setCameraDistance(tMS.getBuildState().getCameraLocation().z);
-        screen.addElement(vp);
+        vp.setCameraDistance(tMS.getBuildState().getCameraLocation().z); */
     }
     
     private void xmlTextField() {
