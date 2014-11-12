@@ -4,7 +4,8 @@ import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.GUI.Game.CheatGUI;
 import ShortCircuit.States.Game.CheatState;
 import ShortCircuit.States.GUI.Game.GameGUI;
-import ShortCircuit.States.GUI.Game.SettingsWindow;
+import ShortCircuit.States.GUI.Game.PurchaseWindowState;
+import ShortCircuit.States.GUI.Game.SettingsWindowState;
 import ShortCircuit.States.GUI.GameOverGUI;
 import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GraphicsState;
@@ -53,7 +54,8 @@ public class TowerMainState extends AbstractAppState {
     private String level;
     private TutorialState TutorialState;
     private PathfindingState PathfindingState;
-    private SettingsWindow SettingsWindow;
+    private SettingsWindowState SettingsWindowState;
+    private PurchaseWindowState PurchaseWindowState;
     
     public TowerMainState() {
         level = "Level1.lvl.xml";
@@ -85,7 +87,8 @@ public class TowerMainState extends AbstractAppState {
         isPauseAllowed = true; 
         
         GameGUI = new GameGUI(this);
-        SettingsWindow = new SettingsWindow(this);
+        SettingsWindowState = new SettingsWindowState(this);
+        PurchaseWindowState = new PurchaseWindowState(this);
         GameOverGUI = new GameOverGUI(this);
         
         AudioState = new AudioState();
@@ -100,8 +103,6 @@ public class TowerMainState extends AbstractAppState {
         FriendlyState = new FriendlyState();
         FriendlyState = new FriendlyState();
         PathfindingState = new PathfindingState();
-        
-
 
         stateManager.attach(AudioState);
         stateManager.attach(GameState);
@@ -111,7 +112,8 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(CheatState);
         stateManager.attach(LoadingState);
         stateManager.attach(GameGUI);
-        stateManager.attach(SettingsWindow);
+        stateManager.attach(SettingsWindowState);
+        stateManager.attach(PurchaseWindowState);
         stateManager.attach(CheatGUI);
         stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
@@ -122,6 +124,8 @@ public class TowerMainState extends AbstractAppState {
      */
     public void detachStates() {
         stateManager.detach(GameGUI);
+        stateManager.detach(SettingsWindowState);
+        stateManager.detach(PurchaseWindowState);
         stateManager.detach(GameState);
         stateManager.detach(FriendlyState);
         stateManager.detach(EnemyState);
@@ -240,6 +244,8 @@ public class TowerMainState extends AbstractAppState {
     @Override
     public void stateDetached(AppStateManager asm) {
         asm.detach(GameGUI);
+        asm.detach(SettingsWindowState);
+        asm.detach(PurchaseWindowState);
         asm.detach(GameState);
         asm.detach(PathfindingState);
         asm.detach(FriendlyState);

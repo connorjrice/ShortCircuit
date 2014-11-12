@@ -6,6 +6,7 @@ import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.GraphicsState;
+import ShortCircuit.States.GUI.Game.SettingsWindowState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -54,7 +55,6 @@ public class GameGUI extends AbstractAppState {
     private Screen screen;
     private Node guiNode;
     private ButtonAdapter Charge;
-
     private ButtonAdapter Health;
     private ButtonAdapter Budget;
     private ButtonAdapter Score;
@@ -89,7 +89,9 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private int camlocation = 0;
-    private SettingsWindow SettingsWindow;
+    private SettingsWindowState SettingsWindowState;
+    private PurchaseWindowState PurchaseWindowState;
+    
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -120,7 +122,8 @@ public class GameGUI extends AbstractAppState {
     private void getStates() {
         this.GameState = (GameState) getState(GameState.class);
         this.StartGUI = (StartGUI) getState(StartGUI.class);
-        this.SettingsWindow = (SettingsWindow) getState(SettingsWindow.class);
+        this.SettingsWindowState = (SettingsWindowState) getState(SettingsWindowState.class);
+        this.PurchaseWindowState = (PurchaseWindowState) getState(PurchaseWindowState.class);
         this.FriendlyState = (FriendlyState) getState(FriendlyState.class);
         this.GraphicsState = (GraphicsState) getState(GraphicsState.class);
         this.AudioState = (AudioState) getState(AudioState.class);
@@ -681,10 +684,12 @@ public class GameGUI extends AbstractAppState {
     public void toggle(boolean hide) {
         if (hide) {
             hide();
-            SettingsWindow.hide();
+            SettingsWindowState.hide();
+            PurchaseWindowState.hide();
         } else {
             show();
-            SettingsWindow.show();
+            SettingsWindowState.show();
+            PurchaseWindowState.hide();
         }
     }
     

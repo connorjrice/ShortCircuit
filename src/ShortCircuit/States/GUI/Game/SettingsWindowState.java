@@ -2,8 +2,6 @@ package ShortCircuit.States.GUI.Game;
 
 import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.AudioState;
-import ShortCircuit.States.Game.FriendlyState;
-import ShortCircuit.States.Game.GameState;
 import ShortCircuit.States.Game.GraphicsState;
 import ShortCircuit.TowerMainState;
 import com.jme3.app.Application;
@@ -21,7 +19,7 @@ import tonegod.gui.core.Screen;
  *
  * @author Connor
  */
-public class SettingsWindow extends AbstractAppState {
+public class SettingsWindowState extends AbstractAppState {
     private SimpleApplication app;
     private Slider SoundSlider;
     private Slider BloomSlider;
@@ -34,14 +32,12 @@ public class SettingsWindow extends AbstractAppState {
     private Window SetWindow;
     private Screen screen;
     private GameGUI gameGUI;
-    private GameState GameState;
-    private FriendlyState FriendlyState;
     private StartGUI StartGUI;
     private GraphicsState GraphicsState;
     private AudioState AudioState;
     private TowerMainState tMS;
     
-    public SettingsWindow(TowerMainState _tMS) {
+    public SettingsWindowState(TowerMainState _tMS) {
         this.tMS = _tMS;
     }
     
@@ -50,9 +46,7 @@ public class SettingsWindow extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         this.gameGUI = (GameGUI) stateManager.getState(GameGUI.class);
-        this.GameState = (GameState) stateManager.getState(GameState.class);
         this.StartGUI = (StartGUI) stateManager.getState(StartGUI.class);
-        this.FriendlyState = (FriendlyState) stateManager.getState(FriendlyState.class);
         this.GraphicsState = (GraphicsState) stateManager.getState(GraphicsState.class);
         this.AudioState = (AudioState) stateManager.getState(AudioState.class);
         this.screen = this.gameGUI.getScreen();
