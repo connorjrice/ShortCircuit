@@ -21,15 +21,13 @@ import java.io.IOException;
 public class ChargerControl extends AbstractControl {
 
     private FriendlyState FriendlyState;
-    private static final float MOVE_INC = .0003f;
-    private static final float MOVE_AMT = .04f;
     private TowerControl destTower;
     private boolean isHome;
     private float moveamount;
 
     public ChargerControl(FriendlyState _fs) {
         FriendlyState = _fs;
-        moveamount = MOVE_AMT;
+        moveamount = .04f;
     }
 
 
@@ -72,17 +70,17 @@ public class ChargerControl extends AbstractControl {
     private void chargeTower() {
         FriendlyState.chargeTower(getTowerIndex());
         decRemCharges();
-        moveamount = MOVE_AMT;
+        moveamount = .04f;
         destTower = null;
     }
 
     private void moveTowardsHome() {
         if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .4f) {
-            moveamount += MOVE_INC;
+            moveamount += .0003f;
             spatial.setLocalTranslation(spatial.getLocalTranslation()
                     .interpolate(FriendlyState.getHomeVec(), moveamount));
         } else {
-            moveamount = MOVE_AMT;
+            moveamount = .04f;
             setIsHome(true);
         }
     }
@@ -137,7 +135,7 @@ public class ChargerControl extends AbstractControl {
         destTower = (TowerControl) in.readSavable("destTower", 
                 new TowerControl());
         isHome = in.readBoolean("isHome", false);
-        moveamount = in.readFloat("moveAmount", MOVE_AMT);
+        moveamount = in.readFloat("moveAmount", .04f);
     }
 
     @Override
