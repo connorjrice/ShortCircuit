@@ -36,7 +36,8 @@ public class MapGenerator {
     }
 
     public BuildParams getBuildParams() {
-        return new BuildParams(parseMaterialParams(), parseGeometryParams(), parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
+        return new BuildParams(parseMaterialParams(), parseGeometryParams(),
+                parseTowerList(), parseCreepSpawnerList(), parseTowerTypes());
     }
 
     public GameplayParams getGameplayParams() {
@@ -60,7 +61,9 @@ public class MapGenerator {
         boolean profile = parseBoolean(profiles);
         boolean tutorial = parseBoolean(tutorials);
         parseGeomHash();
-        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile, tutorial, allowedenemies, blockedNodes.toArray(new String[blockedNodes.size()]));
+        return new LevelParams(numCreeps, creepMod, levelCap, levelMod, profile,
+                tutorial, allowedenemies, blockedNodes.toArray
+                (new String[blockedNodes.size()]));
     }
 
     private PlayerParams parsePlayerParams() {

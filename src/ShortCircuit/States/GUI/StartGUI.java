@@ -46,6 +46,7 @@ public class StartGUI extends AbstractAppState {
     private float scaler;
     private SelectList levelList;
     private ButtonAdapter resumeLevel;
+    private static final float FONT_SIZE = 48.0f;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -98,13 +99,14 @@ public class StartGUI extends AbstractAppState {
         levelList = new SelectList(screen, "sel", 
                 new Vector2f(scaler, scaler*.75f), 
                 new Vector2f(scaler*3f, scaler*3f)) {
-            @Override
-            public void onChange() {
-
-            }
-        };
-       buildLevels();
-       MainWindow.addChild(levelList);
+                    @Override
+                    public void onChange() {
+                        
+                    }
+                };
+        levelList.setFontSize(FONT_SIZE);
+        buildLevels();
+        MainWindow.addChild(levelList);
     }
 
     public void onStart(String level) {
@@ -174,6 +176,7 @@ public class StartGUI extends AbstractAppState {
             }
         };
         startButton.setText("Start");
+        startButton.setFontSize(FONT_SIZE);
         MainWindow.addChild(startButton);
     }
     
@@ -205,6 +208,7 @@ public class StartGUI extends AbstractAppState {
             }
         };
         ExitButton.setText("Exit");
+        ExitButton.setFontSize(FONT_SIZE);
         MainWindow.addChild(ExitButton);
     }
 
