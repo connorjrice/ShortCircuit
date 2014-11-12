@@ -3,7 +3,6 @@ package ShortCircuit.Threading;
 
 import ShortCircuit.Controls.TowerControl;
 import ShortCircuit.States.Game.FriendlyState;
-import com.jme3.scene.Spatial;
 
 /**
  * This class handles the downgrading of a tower from enemy attack.

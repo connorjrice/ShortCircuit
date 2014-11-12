@@ -143,9 +143,9 @@ public class GameState extends AbstractAppState {
         if (target.getName().equals("Tower")) {
             FriendlyState.shortenTower();
             int towerIndex = target.getUserData("Index");
-            if (globCheck(towerIndex)) { // If the tower isn't 
-            } else {                                    //  globbed, we
-                FriendlyState.towerSelected(towerIndex);  //   select the tower.
+            if (globCheck(towerIndex)) { 
+            } else {                     
+                FriendlyState.towerSelected(towerIndex);
             }
         } else if (target.getName().equals("Glob")) {
             popGlob(trans, target.getControl(GlobControl.class));

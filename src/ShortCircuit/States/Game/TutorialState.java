@@ -1,7 +1,7 @@
 package ShortCircuit.States.Game;
 
 import ShortCircuit.TowerMainState;
-import ShortCircuit.States.GUI.GameGUI;
+import ShortCircuit.States.GUI.Game.GameGUI;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

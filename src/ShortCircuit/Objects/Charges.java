@@ -43,10 +43,6 @@ public class Charges implements Savable {
 
     }
 
-    public Charges() {
-
-    }
-
     public int shoot() {
         remBeams -= 1;
         return damage;

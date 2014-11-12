@@ -11,7 +11,7 @@ import com.jme3.scene.Spatial;
  */
 public class TowerCharge implements Runnable {
 
-    private int chargeCost = 10;
+    private static final int CHARGE_COST = 10;
     private FriendlyState fs;
     private Spatial tp;
     private boolean free;
@@ -35,11 +35,11 @@ public class TowerCharge implements Runnable {
             tp.getControl(TowerControl.class).addCharges();
             fs.playChargeSound();
         } else {
-            if (fs.getPlrBudget() >= chargeCost && !tp.getUserData("Type")
+            if (fs.getPlrBudget() >= CHARGE_COST && !tp.getUserData("Type")
                     .equals("TowerUnbuilt")) {
                 fs.towerTextureCharged(tp);
                 tp.getControl(TowerControl.class).addCharges();              
-                fs.decPlrBudget(chargeCost);
+                fs.decPlrBudget(CHARGE_COST);
                 fs.playChargeSound();
 
             }

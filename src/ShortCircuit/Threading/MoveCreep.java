@@ -6,7 +6,6 @@ import com.jme3.math.Vector3f;
 
 /**
  * Runnable for moving creeps.
- *
  * @author Connor Rice
  */
 public class MoveCreep implements Runnable {
@@ -46,14 +45,6 @@ public class MoveCreep implements Runnable {
                 moveInNode();
             }
         }
-    }
-
-    private void moveByNode() {
-        GraphNode nextGraph = cc.getWorldGraph().getNode(cc.path
-                .getNextPathNode());
-        float[] nextCoords = nextGraph.getCoordArray();
-        Vector3f newLoc = new Vector3f(nextCoords[0], nextCoords[1], 0.1f);
-        cc.getSpatial().setLocalTranslation(newLoc);
     }
 
     private void getNextPath() {
@@ -107,9 +98,3 @@ public class MoveCreep implements Runnable {
         return dist < 0.05f;
     }
 }
-          /*  if (!cc.path.getEndReached()) {
-                getIsNodeEnd();
-                moveInNode();
-            } else {
-                getNextPath();
-            } */

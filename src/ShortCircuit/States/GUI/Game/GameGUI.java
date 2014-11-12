@@ -1,5 +1,6 @@
-package ShortCircuit.States.GUI;
+package ShortCircuit.States.GUI.Game;
 
+import ShortCircuit.States.GUI.StartGUI;
 import ShortCircuit.States.Game.AudioState;
 import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
@@ -26,7 +27,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
-import tonegod.gui.controls.lists.Slider;
 import tonegod.gui.controls.menuing.Menu;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.controls.windows.Window;
@@ -54,30 +54,22 @@ public class GameGUI extends AbstractAppState {
     private Screen screen;
     private Node guiNode;
     private ButtonAdapter Charge;
-    private ButtonAdapter Settings;
+
     private ButtonAdapter Health;
     private ButtonAdapter Budget;
     private ButtonAdapter Score;
     private ButtonAdapter Level;
-    private ButtonAdapter TextColorButton;
-    private ButtonAdapter BloomToggleButton;
     private ButtonAdapter Modify;
     private ButtonAdapter Camera;
     private ButtonAdapter Menu;
-    private ButtonAdapter CheatsButton;
-    private ButtonAdapter CheatToggleButton;
-    private ButtonAdapter soundToggle;
     private ButtonAdapter PurchaseButton;
     private ButtonAdapter PurchaseChargerButton;
     private ButtonAdapter Bomb;
     private ButtonAdapter BuildButton;
     private ButtonAdapter DowngradeButton;
     private Menu internalMenu;
-    private Slider SoundSlider;
-    private Slider BloomSlider;
     private Window BuildWindow;
     private Window PurchaseWindow;
-    private Window SetWindow;
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
     private ColorRGBA color = new ColorRGBA();
@@ -97,6 +89,7 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private int camlocation = 0;
+    private SettingsWindow SettingsWindow;
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -127,6 +120,7 @@ public class GameGUI extends AbstractAppState {
     private void getStates() {
         this.GameState = (GameState) getState(GameState.class);
         this.StartGUI = (StartGUI) getState(StartGUI.class);
+        this.SettingsWindow = (SettingsWindow) getState(SettingsWindow.class);
         this.FriendlyState = (FriendlyState) getState(FriendlyState.class);
         this.GraphicsState = (GraphicsState) getState(GraphicsState.class);
         this.AudioState = (AudioState) getState(AudioState.class);
@@ -244,26 +238,18 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void setupGUI() {
-        settingsWindow();
-        cheatToggleButton();
+
         internalMenu();
         progressIndicator();
         chargeButton();
         modifyButton();
         buildButton();
         cameraButton();
-        settingsButton();
         healthButton();
         budgetButton();
         scoreButton();
         levelButton();
         menuButton();
-        textColorToggleButton();
-        bloomToggleButton();
-        bloomLevelSlider();
-        cheatsButton();
-        soundToggleButton();
-        soundSlider();
         purchaseButton();
         purchaseWindow();
         buildWindow();
@@ -272,53 +258,7 @@ public class GameGUI extends AbstractAppState {
         bombToggle();
     }
 
-    /**
-     * Brings up Cheat Window (inside CheatGUI). Activated from Settings.
-     */
-    private void cheatsButton() {
-        CheatsButton = new ButtonAdapter(screen, "Cheats",
-                new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
-                if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
-                    tMS.toggleCheatsWindow();
-                }
-            }
-        };
-        CheatsButton.setText("Cheats");
-        CheatsButton.setUseButtonPressedSound(true);
-        screen.addElement(CheatsButton);
-        CheatsButton.hide();
-    }
 
-    /**
-     * Toggles visibility of the cheats button.
-     */
-    private void cheatToggleButton() {
-        CheatToggleButton = new ButtonAdapter(screen, "CheatToggle",
-                new Vector2f(440, 100), buttonSize.divide(1.5f)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                toggleCheats();
-            }
-        };
-        CheatToggleButton.setIsToggleButton(true);
-        CheatToggleButton.setText("Cheats");
-        SetWindow.addChild(CheatToggleButton);
-    }
-
-    /**
-     * This is the method for toggling the cheat menu button.
-     */
-    private void toggleCheats() {
-        if (CheatsButton.getIsVisible()) {
-            CheatsButton.hide();
-        } else {
-            CheatsButton.show();
-        }
-
-    }
 
     private void objectivePopup() {
         ObjectivePopup = new AlertBox(screen, "objective",
@@ -403,38 +343,7 @@ public class GameGUI extends AbstractAppState {
         PurchaseWindow.addChild(DowngradeButton);
     }
 
-    private void settingsButton() {
-        Settings = new ButtonAdapter(screen, "Settings",
-                new Vector2f(leftButtons, getHeightScale(6)), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                if (!StartGUI.MainWindow.getIsVisible()) {
-                    if (SetWindow.getIsVisible()) {
-                        SetWindow.hideWindow();
-                        Menu.setIgnoreMouse(false);
-                        tMS.pause();
-                    } else {
-                        SetWindow.showWindow();
-                        Menu.setIgnoreMouse(true);
-                        tMS.pause();
-                    }
-                }
-            }
-        };
-        Settings.setText("Settings");
-        Settings.setUseButtonPressedSound(true);
-        screen.addElement(Settings);
-    }
 
-    private void settingsWindow() {
-        SetWindow = new Window(screen, getHorizontalWindowPosition(6),
-                new Vector2f(width / 2, height / 4));
-        SetWindow.setIgnoreMouse(true);
-        SetWindow.setIsMovable(false);
-        screen.addElement(SetWindow);
-        SetWindow.hide();
-    }
 
     private void buildButton() {
         BuildButton = new ButtonAdapter(screen, "Build",
@@ -495,6 +404,28 @@ public class GameGUI extends AbstractAppState {
     private void updateText() {
         updatePlrInfo();
         updateTowerInfo();
+    }
+    
+    private void updateChargeFrill() {
+        if (GameState.getPlrBudget() >= 10 && Charge.getFontColor()
+                != ColorRGBA.Green) {
+            Charge.setFontColor(ColorRGBA.Green);
+        } else if (GameState.getPlrBudget() < 10 && Charge.getFontColor()
+                != ColorRGBA.Red) {
+            Charge.setFontColor(ColorRGBA.Red);
+        }
+    }
+
+    private void updateTowerFrills() {
+        if (FriendlyState.getSelected() != -1) {
+            if (GameState.getPlrBudget() >= Integer.parseInt(
+                    GameState.getCost(FriendlyState.getTowerList()
+                    .get(FriendlyState.getSelected()).getUserData("Type")))) {
+                Modify.setFontColor(ColorRGBA.Green);
+            } else {
+                Modify.setFontColor(ColorRGBA.Red);
+            }
+        }
     }
 
     private void updateFrills() {
@@ -586,103 +517,7 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-    private void updateChargeFrill() {
-        if (GameState.getPlrBudget() >= 10 && Charge.getFontColor()
-                != ColorRGBA.Green) {
-            Charge.setFontColor(ColorRGBA.Green);
-        } else if (GameState.getPlrBudget() < 10 && Charge.getFontColor()
-                != ColorRGBA.Red) {
-            Charge.setFontColor(ColorRGBA.Red);
-        }
-    }
 
-    private void updateTowerFrills() {
-        if (FriendlyState.getSelected() != -1) {
-            if (GameState.getPlrBudget() >= Integer.parseInt(
-                    GameState.getCost(FriendlyState.getTowerList()
-                    .get(FriendlyState.getSelected()).getUserData("Type")))) {
-                Modify.setFontColor(ColorRGBA.Green);
-            } else {
-                Modify.setFontColor(ColorRGBA.Red);
-            }
-        }
-    }
-
-    private void textColorToggleButton() {
-        TextColorButton = new ButtonAdapter(screen, "TextColorToggle",
-                new Vector2f(240, 100), buttonSize.divide(1.5f)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                tMS.toggleFrills();
-            }
-        };
-        TextColorButton.setIsToggleButton(true);
-        TextColorButton.setText("Disable Text Colors");
-        SetWindow.addChild(TextColorButton);
-
-    }
-
-    private void bloomToggleButton() {
-        BloomToggleButton = new ButtonAdapter(screen, "BloomToggle",
-                new Vector2f(40, 100), buttonSize.divide(1.5f)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                GraphicsState.toggleBloom();
-            }
-        };
-        BloomToggleButton.setIsToggleButton(true);
-        BloomToggleButton.setText("Disable bloom");
-        SetWindow.addChild(BloomToggleButton);
-
-    }
-
-    private void bloomLevelSlider() {
-        BloomSlider = new Slider(screen, "BloomSlider", new Vector2f(60, 70),
-                Slider.Orientation.HORIZONTAL, true) {
-            @Override
-            public void onChange(int selectedIndex, Object value) {
-                //GraphicsState.setBloomIntensity(selectedIndex);
-            }
-        };
-        BloomSlider.setStepFloatRange(0.0f, 20.0f, 1.0f);
-        BloomSlider.setSelectedByValue(2.0f);
-        SetWindow.addChild(BloomSlider);
-
-    }
-
-    private void soundToggleButton() {
-        soundToggle = new ButtonAdapter(screen, "SoundToggle",
-                new Vector2f(640, 100), buttonSize.divide(1.5f)) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                if (app.getListener().getVolume() == 0) {
-                    app.getListener().setVolume(1f);
-                } else {
-                    app.getListener().setVolume(0f);
-                }
-            }
-        };
-        soundToggle.setText("Toggle Sound");
-        SetWindow.addChild(soundToggle);
-
-    }
-
-    private void soundSlider() {
-        SoundSlider = new Slider(screen, "SoundSlider", new Vector2f(670, 70),
-                Slider.Orientation.HORIZONTAL, true) {
-            @Override
-            public void onChange(int selectedIndex, Object value) {
-                app.getListener().setVolume(selectedIndex);
-            }
-        };
-        SoundSlider.setStepFloatRange(0.0f, 1.0f, .1f);
-        app.getListener().setVolume(1.0f);
-        SetWindow.addChild(SoundSlider);
-
-    }
 
     private void chargeButton() {
         Charge = new ButtonAdapter(screen, "charge",
@@ -846,9 +681,31 @@ public class GameGUI extends AbstractAppState {
     public void toggle(boolean hide) {
         if (hide) {
             hide();
+            SettingsWindow.hide();
         } else {
             show();
+            SettingsWindow.show();
         }
+    }
+    
+    public Screen getScreen() {
+        return screen;
+    }
+    
+    public float getLeftButtons() {
+        return leftButtons;
+    }
+    
+    public ButtonAdapter getMenu() {
+        return Menu;
+    }
+    
+    public int getHeight() {
+        return height;
+    }
+    
+    public int getWidth() {
+        return width;
     }
 
     public void hide() {
@@ -860,14 +717,16 @@ public class GameGUI extends AbstractAppState {
         Menu.hide();
         Modify.hide();
         Score.hide();
-        Settings.hide();
-        CheatsButton.hide();
         PurchaseButton.hide();
         PurchaseWindow.hide();
         ProgressIndicator.hide();
         Bomb.hide();
         BuildButton.hide();
         BuildWindow.hide();
+    }
+    
+    public Vector2f getButtonSize() {
+        return buttonSize;
     }
 
     public void show() {
@@ -879,7 +738,6 @@ public class GameGUI extends AbstractAppState {
         Menu.show();
         Modify.show();
         Score.show();
-        Settings.show();
         PurchaseButton.show();
         ProgressIndicator.show();
         Bomb.show();
@@ -899,8 +757,6 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Menu);
         screen.removeElement(Modify);
         screen.removeElement(Score);
-        screen.removeElement(Settings);
-        screen.removeElement(CheatsButton);
         screen.removeElement(PurchaseButton);
         screen.removeElement(PurchaseWindow);
         screen.removeElement(ProgressIndicator);

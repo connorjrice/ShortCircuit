@@ -24,7 +24,7 @@ public class BombControl extends AbstractControl {
     private float bombTimer = 0f;
     private float collideTimer = 0f;
     private float bombSize;
-    private int bombDMG = 200;
+    private static final int BOMB_DMG = 200;
     private ArrayList<Spatial> reachable;
     private Future future;
     private GraphicsState gs;
@@ -154,7 +154,7 @@ public class BombControl extends AbstractControl {
             for (int i = 0; i < reachable.size(); i++) {
                 if (reachable.get(i).getControl(RegCreepControl.class) != null) {
                     reachable.get(i).getControl(RegCreepControl.class)
-                            .decCreepHealth(bombDMG);
+                            .decCreepHealth(BOMB_DMG);
                 }
                 reachable.remove(i);
             }
