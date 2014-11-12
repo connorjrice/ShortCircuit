@@ -12,8 +12,6 @@ import com.jme3.scene.shape.Line;
  */
 public class BeamFactory {
 
-    private Line beaml;
-    private Geometry beamg;
     private GraphicsState gs;
     private AssetManager assetManager;
 
@@ -24,9 +22,9 @@ public class BeamFactory {
 
     public Geometry makeLaserBeam(Vector3f origin, Vector3f target,
             String towertype, float beamWidth) {
-        beaml = new Line(origin, target);
+        Line beaml = new Line(origin, target);
         beaml.setLineWidth(beamWidth);
-        beamg = new Geometry("Beam", beaml);
+        Geometry beamg = new Geometry("Beam", beaml);
         beamg.setMaterial(assetManager.loadMaterial(
                 gs.getMatLoc(towertype+"Beam")));
         return beamg;

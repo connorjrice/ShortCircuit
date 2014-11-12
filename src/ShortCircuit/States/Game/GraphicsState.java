@@ -267,7 +267,6 @@ public class GraphicsState extends AbstractAppState {
         bomb_geom.setMaterial(assetManager.loadMaterial(getMatLoc("Bomb")));
         bomb_geom.setLocalScale(initialSize);
         bomb_geom.setLocalTranslation(translation);
-
         bomb_geom.addControl(new BombControl(initialSize, this, AudioState));
         rootNode.attachChild(bomb_geom);
     }

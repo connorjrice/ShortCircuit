@@ -7,10 +7,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector4f;
-import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +17,6 @@ import tonegod.gui.controls.lists.ComboBox;
 import tonegod.gui.controls.text.TextField;
 import tonegod.gui.controls.windows.DialogBox;
 import tonegod.gui.controls.windows.Window;
-import tonegod.gui.core.OSRBridge;
 import tonegod.gui.core.Screen;
 
 /**

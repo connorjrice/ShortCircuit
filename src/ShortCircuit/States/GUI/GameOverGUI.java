@@ -64,20 +64,21 @@ public class GameOverGUI extends AbstractAppState {
         screen.addElement(GameOverWindow);
     }
     
-        private void backToStart() {
-            startButton = new ButtonAdapter(screen, "start",
-                    new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
-                @Override
-                public void onButtonMouseLeftDown(MouseButtonEvent evt,
-                boolean toggled) {
-                    tMS.returnToStartAfterGameOver();
-                }
-            };
-            startButton.setText("Too bad.");
-            startButton.setFont("Interface/Fonts/DejaVuSans.fnt");
-            screen.addElement(startButton);
+    private void backToStart() {
+        startButton = new ButtonAdapter(screen, "start",
+                new Vector2f(width / 4 + 300, height / 2 + 100), buttonSize) {
+                    @Override
+                    public void onButtonMouseLeftDown(MouseButtonEvent evt,
+                    boolean toggled) {
+                        tMS.returnToStartAfterGameOver();
+                    }
+                };
+        startButton.setText("Too bad.");
+        startButton.setFont("Interface/Fonts/DejaVuSans.fnt");
+        screen.addElement(startButton);
     }
-        @Override
+    
+    @Override
     public void stateDetached(AppStateManager stateManager) {
         screen.removeElement(GameOverWindow);
         screen.removeElement(startButton);

@@ -10,12 +10,13 @@ import com.jme3.scene.control.Control;
 /**
  * This creep will come down from the ceiling and try to destroy one of your
  * towers if you don't get it first
- *
  * @author Connor
  */
 public class GlobControl extends AbstractControl {
 
     private EnemyState cs;
+    private static final int BUDGET_VALUE = 10;
+    private static final float GEOM_DESCALE = .9f;
 
     public GlobControl(EnemyState _cs) {
         cs = _cs;
@@ -26,8 +27,8 @@ public class GlobControl extends AbstractControl {
     }
 
     public void remove() {
-        cs.incPlrBudget(10);
-        cs.incPlrScore(10);
+        cs.incPlrBudget(BUDGET_VALUE);
+        cs.incPlrScore(BUDGET_VALUE);
         unglobTower();
         cs.getCreepNode().detachChild(spatial);
         cs.getGlobList().remove(spatial);
@@ -53,7 +54,7 @@ public class GlobControl extends AbstractControl {
     }
 
     public int decGlobHealth() {
-        spatial.setLocalScale(spatial.getLocalScale().mult(.9f));
+        spatial.setLocalScale(spatial.getLocalScale().mult(GEOM_DESCALE));
         int health = spatial.getUserData("Health");
         spatial.setUserData("Health", health - 1);
         return health - 1;

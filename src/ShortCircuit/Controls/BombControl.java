@@ -162,14 +162,14 @@ public class BombControl extends AbstractControl {
     }
 
     @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
-    }
-
-    @Override
     public Control cloneForSpatial(Spatial spatial) {
         BombControl control = new BombControl(.1f, gs, as);
         control.setSpatial(spatial);
         return control;
+    }
+
+    @Override
+    protected void controlRender(RenderManager rm, ViewPort vp) {
     }
 
 

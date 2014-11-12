@@ -134,7 +134,6 @@ public class FriendlyState extends AbstractAppState {
         if (getSelected() != -1) {
             tcr.setTower(towerList.get(getSelected()), false);
             tcr.run();
-
         }
     }
 
@@ -252,7 +251,6 @@ public class FriendlyState extends AbstractAppState {
         return globbedTowers[index];
     }
     
-
     /**
      * These are methods that are needed by factories to access GameState, Not
      * Used internally.
@@ -308,7 +306,6 @@ public class FriendlyState extends AbstractAppState {
         charger.setMaterial
                 (assetManager.loadMaterial("Materials/Neon/Tower4.j3m"));
         charger.setLocalTranslation(GraphicsState.getBaseVec().add(0, 0, 2f));
-        //charger.setLocalTranslation(new Vector3f(0,0,2f));
         addNewCharger(charger);
     }
 

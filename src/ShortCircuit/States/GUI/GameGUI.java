@@ -16,7 +16,6 @@ import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
@@ -98,7 +97,6 @@ public class GameGUI extends AbstractAppState {
     private int internalScore;
     private int internalLevel;
     private int camlocation = 0;
-    private Material oldbuttmat;
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -151,6 +149,7 @@ public class GameGUI extends AbstractAppState {
     private void initInput() {
         inputManager.addListener(actionListener, new String[]{"Touch"});
     }
+    
     /**
      * Handles touch events for GameState.
      */
@@ -161,9 +160,6 @@ public class GameGUI extends AbstractAppState {
                     Vector2f click2d = inputManager.getCursorPosition();
                     Vector3f click3d = cam.getWorldCoordinates(new Vector2f(
                             click2d.getX(), click2d.getY()), 0f);
-
-                    //debugTCoords(click2d.getX(), click2d.getY());
-
                     if (GameState.isEnabled()) {
                         selectPlrObject(click2d, click3d);
                     }
@@ -272,7 +268,6 @@ public class GameGUI extends AbstractAppState {
         purchaseWindow();
         buildWindow();
         purchaseChargerButton();
-        getOldMat();
         downgradeButton();
         bombToggle();
     }
@@ -281,7 +276,8 @@ public class GameGUI extends AbstractAppState {
      * Brings up Cheat Window (inside CheatGUI). Activated from Settings.
      */
     private void cheatsButton() {
-        CheatsButton = new ButtonAdapter(screen, "Cheats", new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
+        CheatsButton = new ButtonAdapter(screen, "Cheats",
+                new Vector2f(leftButtons, getHeightScale(7)), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean toggled) {
                 if (!StartGUI.MainWindow.getIsVisible() && !SetWindow.getIsVisible()) {
@@ -819,11 +815,6 @@ public class GameGUI extends AbstractAppState {
 
     public void setCameraLocation() {
         cam.setLocation(GraphicsState.getCamLocation());
-    }
-
-    public void getOldMat() {
-        Element button = screen.getElementById("Budget");
-        oldbuttmat = button.getMaterial();
     }
 
     public void highlightButton(String buttonname) {

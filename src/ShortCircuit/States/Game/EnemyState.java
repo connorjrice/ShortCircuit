@@ -49,7 +49,6 @@ public class EnemyState extends AbstractAppState {
     private int nextspawner;
     private int nextrandom;
 
-    //private ArrayList<Spatial> diggerList;
     public EnemyState() {
     }
 

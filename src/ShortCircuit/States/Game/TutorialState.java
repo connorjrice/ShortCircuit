@@ -136,7 +136,8 @@ public class TutorialState extends AbstractAppState {
             }
         };
         towerA.setDimensions(500, 100);
-        towerA.setText("These are your towers. They protect your base from creeps, and need to be charged from time to time.");
+        towerA.setText("These are your towers. They protect your base from "
+                + "creeps, and need to be charged occasionally");
         towerA.setTextWrap(LineWrapMode.Word);
         towerA.setTextAlign(BitmapFont.Align.Center);
         screen.addElement(towerA);
@@ -174,7 +175,8 @@ public class TutorialState extends AbstractAppState {
             }
         };
         unbuiltA.setDimensions(500,100);
-        unbuiltA.setText("These are towers that have not been built yet. You may build them for 100 credits.");
+        unbuiltA.setText("These are towers that have not been built yet."
+                + " You may build them for 100 credits.");
         screen.addElement(unbuiltA);
     }
 

@@ -23,11 +23,8 @@ public class ShortCircuitMain extends SimpleApplication {
         sets.setVSync(true);
         sets.setFrameRate(60);
         sets.setTitle("ShortCircuit");
-        app.setSettings(sets);
-        app.setShowSettings(true);
-        
+        app.setShowSettings(false);        
         sets.setSettingsDialogImage("Interface/loading.jpg");
-        sets.setFrameRate(60);
         app.setSettings(sets);
         app.start();
     }

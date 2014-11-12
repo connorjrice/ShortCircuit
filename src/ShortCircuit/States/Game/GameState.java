@@ -98,7 +98,6 @@ public class GameState extends AbstractAppState {
         return rootNode;
     }
 
-
     /**
      * Increments level. Called by update loop when conditions are met.
      */
@@ -306,7 +305,6 @@ public class GameState extends AbstractAppState {
 
     /**
      * TODO: Progress indication
-     *
      * @return
      */
     public float getCurrentProgress() {

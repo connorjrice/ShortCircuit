@@ -59,7 +59,7 @@ public class StartGUI extends AbstractAppState {
         height = this.app.getContext().getSettings().getHeight();
         width = this.app.getContext().getSettings().getWidth();
         buttonSize = new Vector2f(width / 8, height / 8);
-        scaler = width / 13;
+        scaler = width / 15;
 
         initScreen();
     }
@@ -93,7 +93,6 @@ public class StartGUI extends AbstractAppState {
         initLevelList();
         resumeLevelButton();
     }
-    
 
     private void initLevelList() {
         levelList = new SelectList(screen, "sel", 
@@ -198,7 +197,7 @@ public class StartGUI extends AbstractAppState {
 
     public void exitButton() {
         ExitButton = new ButtonAdapter(screen, "exit",
-                new Vector2f(scaler*5, scaler*4), buttonSize) {
+                new Vector2f(scaler*7, scaler*4), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
             boolean toggled) {
@@ -261,7 +260,6 @@ public class StartGUI extends AbstractAppState {
         initScreen(newAtlas);
         forceHide();
     }
-
 
     @Override
     public void cleanup() {

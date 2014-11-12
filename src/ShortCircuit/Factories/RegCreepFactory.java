@@ -29,13 +29,12 @@ public class RegCreepFactory {
     }
 
     public Spatial getCreep(Vector3f spawnpoint, CreepParams cp) {
-        Geometry creep_geom = new Geometry(cp.getType() + "Creep",
+        Spatial creep = new Geometry(cp.getType() + "Creep",
                 gs.getUnivBox());
-        creep_geom.setMaterial(assetManager.loadMaterial(
+        creep.setMaterial(assetManager.loadMaterial(
                 gs.getMatLoc(cp.getType()+"Creep")));
-        creep_geom.setLocalScale(cp.getSize());
-        creep_geom.setLocalTranslation(spawnpoint);
-        Spatial creep = creep_geom;
+        creep.setLocalScale(cp.getSize());
+        creep.setLocalTranslation(spawnpoint);
         creep.setUserData("Name", cp.getType());
         creep.setUserData("Health", cp.getHealth());
         creep.setUserData("Value", cp.getValue());

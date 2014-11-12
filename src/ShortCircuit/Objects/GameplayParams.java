@@ -20,7 +20,6 @@ public class GameplayParams implements Savable {
 
     private LevelParams lp;
     private PlayerParams pp;
-    public String hello;
     
     public GameplayParams() {
 

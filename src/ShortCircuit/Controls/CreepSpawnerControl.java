@@ -21,9 +21,6 @@ public class CreepSpawnerControl extends AbstractControl {
         EnemyState = _cstate;
     }
 
-    public CreepSpawnerControl() {
-    }
-
     /**
      * Decides if this spawner will spawn a creep based on getNextSpawner(). If
      * the index of the spawner is matched with getNextSpawner(), then it spawns

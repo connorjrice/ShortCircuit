@@ -16,20 +16,20 @@ import java.io.IOException;
  * Control for Charger NPC Type. The Charger is a player friendly NPC that will
  * charge towers. It must be purchased, and only contains 10 charges. After it
  * has charged ten towers, it disappears. 
- * XXX: Charger bugs
- * 
  * @author Connor
  */
 public class ChargerControl extends AbstractControl {
 
     private FriendlyState FriendlyState;
+    private static final float MOVE_INC = .0003f;
+    private static final float MOVE_AMT = .04f;
     private TowerControl destTower;
     private boolean isHome;
     private float moveamount;
 
     public ChargerControl(FriendlyState _fs) {
         FriendlyState = _fs;
-        moveamount = .04f;
+        moveamount = MOVE_AMT;
     }
 
 
@@ -72,17 +72,17 @@ public class ChargerControl extends AbstractControl {
     private void chargeTower() {
         FriendlyState.chargeTower(getTowerIndex());
         decRemCharges();
-        moveamount = .04f;
+        moveamount = MOVE_AMT;
         destTower = null;
     }
 
     private void moveTowardsHome() {
         if (spatial.getWorldBound().distanceTo(FriendlyState.getHomeVec()) > .4f) {
-            moveamount += .0003f;
+            moveamount += MOVE_INC;
             spatial.setLocalTranslation(spatial.getLocalTranslation()
                     .interpolate(FriendlyState.getHomeVec(), moveamount));
         } else {
-            moveamount = .04f;
+            moveamount = MOVE_AMT;
             setIsHome(true);
         }
     }
@@ -137,7 +137,7 @@ public class ChargerControl extends AbstractControl {
         destTower = (TowerControl) in.readSavable("destTower", 
                 new TowerControl());
         isHome = in.readBoolean("isHome", false);
-        moveamount = in.readFloat("moveAmount", .04f);
+        moveamount = in.readFloat("moveAmount", MOVE_AMT);
     }
 
     @Override

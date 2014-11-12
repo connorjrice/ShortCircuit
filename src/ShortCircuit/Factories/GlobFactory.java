@@ -22,11 +22,10 @@ public class GlobFactory {
     }
 
     public Spatial getGlob(Vector3f location, int index) {
-        Geometry creep_geom = new Geometry("Glob", cs.getGlobSphere());
-        creep_geom.setMaterial(cs.getAssetManager().loadMaterial(
+        Spatial glob = new Geometry("Glob", cs.getGlobSphere());
+        glob.setMaterial(cs.getAssetManager().loadMaterial(
                 "Materials/" + cs.getMatDir() + "/GiantCreep.j3m"));
-        creep_geom.setLocalTranslation(location);
-        Spatial glob = creep_geom;
+        glob.setLocalTranslation(location);
         glob.setUserData("Name", "glob");
         glob.setUserData("Health", 5);
         glob.setUserData("TowerIndex", index);
