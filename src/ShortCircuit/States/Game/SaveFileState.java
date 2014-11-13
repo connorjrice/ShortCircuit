@@ -6,6 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import java.io.File;
 
 /**
  *
@@ -31,7 +32,7 @@ public class SaveFileState extends AbstractAppState {
     }
     
     public void loadFile() {
-        
+        File saveFile = new File("save.txt");
     }
     
     public void saveFile() {

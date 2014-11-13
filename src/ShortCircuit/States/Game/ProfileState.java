@@ -34,7 +34,6 @@ public class ProfileState extends AbstractAppState {
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.FriendlyState = this.stateManager.getState(FriendlyState.class);
         this.EnemyState = this.stateManager.getState(EnemyState.class);
-
     }
     
     @Override
@@ -106,6 +105,6 @@ public class ProfileState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-
     }
+    
 }

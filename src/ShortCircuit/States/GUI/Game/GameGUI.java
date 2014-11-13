@@ -61,14 +61,13 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Modify;
     private ButtonAdapter Camera;
     private ButtonAdapter Menu;
-    private ButtonAdapter PurchaseButton;
-    private ButtonAdapter PurchaseChargerButton;
+
     private ButtonAdapter Bomb;
     private ButtonAdapter BuildButton;
-    private ButtonAdapter DowngradeButton;
+
     private Menu internalMenu;
     private Window BuildWindow;
-    private Window PurchaseWindow;
+
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
     private ColorRGBA color = new ColorRGBA();
@@ -250,11 +249,7 @@ public class GameGUI extends AbstractAppState {
         scoreButton();
         levelButton();
         menuButton();
-        purchaseButton();
-        purchaseWindow();
         buildWindow();
-        purchaseChargerButton();
-        downgradeButton();
         bombToggle();
     }
 
@@ -272,73 +267,6 @@ public class GameGUI extends AbstractAppState {
         ObjectivePopup.setText("Objective");
         ObjectivePopup.setMsg("Objective: Build 4 purple towers.");
         screen.addElement(ObjectivePopup);
-    }
-
-    private void purchaseWindow() {
-        PurchaseWindow = new Window(screen, "pWindow", 
-                new Vector2f(rightButtons, getHeightScale(6)),
-                new Vector2f(300, 500));
-        PurchaseWindow.setIgnoreMouse(true);
-        PurchaseWindow.setWindowIsMovable(false);
-        PurchaseWindow.setWindowTitle("Purchasables");
-        PurchaseWindow.setTextAlign(BitmapFont.Align.Center);
-        screen.addElement(PurchaseWindow);
-
-        PurchaseWindow.hide();
-    }
-
-    private void purchaseButton() {
-        PurchaseButton = new ButtonAdapter(screen, "PurchaseButton",
-                new Vector2f(rightButtons, tenthHeight * 6), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                if (!StartGUI.MainWindow.getIsVisible()) {
-                    if (PurchaseWindow.getIsVisible()) {
-                        PurchaseWindow.hideWindow();
-                        PurchaseChargerButton.hide();
-                        Menu.setIgnoreMouse(false);
-                    } else {
-                        PurchaseWindow.showWindow();
-                        PurchaseChargerButton.show();
-                        Menu.setIgnoreMouse(true);
-                    }
-                }
-            }
-        };
-        PurchaseButton.setText("Purchase");
-        PurchaseButton.setUseButtonPressedSound(true);
-        screen.addElement(PurchaseButton);
-    }
-
-    private void purchaseChargerButton() {
-        PurchaseChargerButton = new ButtonAdapter(screen, "PurchaseCharger",
-                new Vector2f(50, 50), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
-                FriendlyState.createCharger();
-            }
-        };
-        PurchaseChargerButton.setZOrder(1.0f);
-        PurchaseChargerButton.setText("Charger (100)");
-        PurchaseChargerButton.setUseButtonPressedSound(true);
-        PurchaseWindow.addChild(PurchaseChargerButton);
-    }
-
-    private void downgradeButton() {
-        DowngradeButton = new ButtonAdapter(screen, "Downgrade",
-                new Vector2f(50, 250), buttonSize) {
-            @Override
-            public void onButtonMouseLeftDown(MouseButtonEvent evt,
-            boolean toggled) {
- //               FriendlyState.downgradeTower(); TODO: Reimplement Downgrade
-            }
-        };
-        DowngradeButton.setZOrder(1.0f);
-        DowngradeButton.setText("Downgrade");
-        DowngradeButton.setUseButtonPressedSound(true);
-        PurchaseWindow.addChild(DowngradeButton);
     }
 
 
@@ -691,6 +619,14 @@ public class GameGUI extends AbstractAppState {
         return leftButtons;
     }
     
+    public float getRightButtons() {
+        return rightButtons;
+    }
+    
+    public float getTenthHeight() {
+        return tenthHeight;
+    }
+    
     public ButtonAdapter getMenu() {
         return Menu;
     }
@@ -712,8 +648,6 @@ public class GameGUI extends AbstractAppState {
         Menu.hide();
         Modify.hide();
         Score.hide();
-        PurchaseButton.hide();
-        PurchaseWindow.hide();
         ProgressIndicator.hide();
         Bomb.hide();
         BuildButton.hide();
@@ -723,6 +657,8 @@ public class GameGUI extends AbstractAppState {
     public Vector2f getButtonSize() {
         return buttonSize;
     }
+    
+    
 
     public void show() {
         Budget.show();
@@ -733,7 +669,6 @@ public class GameGUI extends AbstractAppState {
         Menu.show();
         Modify.show();
         Score.show();
-        PurchaseButton.show();
         ProgressIndicator.show();
         Bomb.show();
         BuildButton.show();
@@ -752,8 +687,6 @@ public class GameGUI extends AbstractAppState {
         screen.removeElement(Menu);
         screen.removeElement(Modify);
         screen.removeElement(Score);
-        screen.removeElement(PurchaseButton);
-        screen.removeElement(PurchaseWindow);
         screen.removeElement(ProgressIndicator);
         screen.removeElement(Bomb);
         screen.removeElement(BuildButton);
