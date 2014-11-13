@@ -61,13 +61,10 @@ public class GameGUI extends AbstractAppState {
     private ButtonAdapter Modify;
     private ButtonAdapter Camera;
     private ButtonAdapter Menu;
-
     private ButtonAdapter Bomb;
     private ButtonAdapter BuildButton;
-
     private Menu internalMenu;
     private Window BuildWindow;
-
     private AlertBox ObjectivePopup;
     private Indicator ProgressIndicator;
     private ColorRGBA color = new ColorRGBA();
@@ -657,8 +654,6 @@ public class GameGUI extends AbstractAppState {
     public Vector2f getButtonSize() {
         return buttonSize;
     }
-    
-    
 
     public void show() {
         Budget.show();

@@ -81,6 +81,7 @@ public class AStarPathFinder implements PathFinder {
         neverReturnNodes.clear();
         neverLong = 0;
     }
+    
     /*
      * Replace contains and neverReturnNodes
      */

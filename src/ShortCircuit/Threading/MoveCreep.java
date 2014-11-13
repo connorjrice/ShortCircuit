@@ -57,7 +57,7 @@ public class MoveCreep implements Runnable {
         prevLoc = curVec;
         GraphNode currentNode = cc.getWorldGraph().getNode(cc.path
                 .getNextPathNode());
-        curVec = currentNode.getVector3f();
+        curVec = getVector3f(currentNode.getElement());
         curIndex = currentNode.getIndex();
 
         resetMoveAmount();
@@ -82,6 +82,11 @@ public class MoveCreep implements Runnable {
             cc.getSpatial().setLocalTranslation(curVec);
             setCurVec();
         }
+    }
+    
+    public Vector3f getVector3f(Comparable element) {
+        String[] strArr = ((String) element).split(",");
+        return new Vector3f(Float.parseFloat(strArr[0]), Float.parseFloat(strArr[1]), 0.1f);
     }
 
     private void incMoveAmount() {

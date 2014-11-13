@@ -1,7 +1,5 @@
 package ShortCircuit.PathFinding;
 
-
-import DataStructures.Nodes.GraphNode;
 import java.util.ArrayList;
 
 /**
@@ -26,14 +24,13 @@ public class Path implements Comparable{
     }
     
     public int getLastNode() {
-        return pathIndicies.get(pathIndicies.size()-1); // ASKMATTHEW: More efficient to keep internal tracker?
+        return pathIndicies.get(pathIndicies.size()-1);
     }
     
     public void addNode(int newNode) {
         pathIndicies.add(newNode);
     }
     
-    // ASKMATTHEW: can we do a (possibly threaded) this every time we addNode?
     public void updateCost(float estCost) {
         cost = pathIndicies.size() + estCost;
     }

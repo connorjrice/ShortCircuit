@@ -19,7 +19,6 @@ public class JEdgeManipulator implements EdgeManipulator {
             String[] geomHash, float precision) {
         this.worldGraph = worldGraph;
         this.precision = precision;
-        //this.rootNode = targetNode;
         this.numFormatter = new DecimalFormat("0.0");
         this.blockedNodes = geomHash;
     }

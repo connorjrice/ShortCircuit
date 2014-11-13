@@ -1,4 +1,4 @@
-package DataStructures.Nodes;
+package DataStructures;
 
 /**
  * @author Connor Rice

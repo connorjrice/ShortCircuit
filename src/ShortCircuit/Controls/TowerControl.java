@@ -1,7 +1,7 @@
 package ShortCircuit.Controls;
 
 import DataStructures.STC;
-import DataStructures.Nodes.STCCreepCompare;
+import DataStructures.STCCreepCompare;
 import ShortCircuit.Objects.Charges;
 import ShortCircuit.States.Game.FriendlyState;
 import com.jme3.math.Vector3f;

@@ -1,6 +1,5 @@
 package DataStructures;
 
-import DataStructures.Nodes.STCNode;
 import com.jme3.scene.Spatial;
 import java.util.Comparator;
 
@@ -50,13 +49,16 @@ public class STC<E extends Spatial> {
                 root.getBottom().setBottom(newNode);
                 size += 1;
             } else {
-                if (creepComp.compare(root.getElement(), newNode.getElement()) == 1) {
+                if (creepComp.compare(root.getElement(),
+                        newNode.getElement()) == 1) {
                     newNode.setBottom(root);
                     root = newNode;
-                } else if (creepComp.compare(root.getBottom().getElement(), newNode.getElement()) == 1) {
+                } else if (creepComp.compare(root.getBottom().getElement(),
+                        newNode.getElement()) == 1) {
                     newNode.setBottom(root.getBottom());
                     root.setBottom(newNode);
-                } else if (creepComp.compare(root.getBottom().getBottom().getElement(), newNode.getElement()) == 1) {
+                } else if (creepComp.compare(root.getBottom().getBottom()
+                        .getElement(), newNode.getElement()) == 1) {
                     root.getBottom().setBottom(newNode);
                 }
             }
