@@ -1,4 +1,4 @@
-package DataStructures;
+package ShortCircuit.Objects;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;

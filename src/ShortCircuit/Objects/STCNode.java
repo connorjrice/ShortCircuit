@@ -1,4 +1,4 @@
-package DataStructures;
+package ShortCircuit.Objects;
 
 /**
  * @author Connor Rice
