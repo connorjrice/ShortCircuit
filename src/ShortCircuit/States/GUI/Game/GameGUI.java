@@ -6,7 +6,6 @@ import ShortCircuit.States.Game.GameState;
 import ShortCircuit.TowerMainState;
 import ShortCircuit.States.Game.FriendlyState;
 import ShortCircuit.States.Game.GraphicsState;
-import ShortCircuit.States.GUI.Game.SettingsWindowState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -91,7 +90,6 @@ public class GameGUI extends AbstractAppState {
     private int camlocation = 0;
     private SettingsWindowState SettingsWindowState;
     private PurchaseWindowState PurchaseWindowState;
-    
 
     public GameGUI(TowerMainState _tMS) {
         this.tMS = _tMS;
@@ -241,7 +239,6 @@ public class GameGUI extends AbstractAppState {
     }
 
     private void setupGUI() {
-
         internalMenu();
         progressIndicator();
         chargeButton();
@@ -260,8 +257,6 @@ public class GameGUI extends AbstractAppState {
         downgradeButton();
         bombToggle();
     }
-
-
 
     private void objectivePopup() {
         ObjectivePopup = new AlertBox(screen, "objective",
@@ -337,7 +332,7 @@ public class GameGUI extends AbstractAppState {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
             boolean toggled) {
-                // FriendlyState.downgradeTower(); TODO: Reimplement Downgrade
+ //               FriendlyState.downgradeTower(); TODO: Reimplement Downgrade
             }
         };
         DowngradeButton.setZOrder(1.0f);
@@ -520,8 +515,6 @@ public class GameGUI extends AbstractAppState {
         }
     }
 
-
-
     private void chargeButton() {
         Charge = new ButtonAdapter(screen, "charge",
                 new Vector2f(leftButtons, 10), buttonSize) {
@@ -533,7 +526,6 @@ public class GameGUI extends AbstractAppState {
         };
         Charge.setText("Charge: 10");
         screen.addElement(Charge);
-
     }
 
     private void modifyButton() {
@@ -549,7 +541,6 @@ public class GameGUI extends AbstractAppState {
         Modify.setText("Modify");
         Modify.setUseButtonPressedSound(true);
         screen.addElement(Modify);
-
     }
 
     private void cameraButton() {
@@ -564,7 +555,6 @@ public class GameGUI extends AbstractAppState {
         Camera.setText("Camera");
         Camera.setUseButtonPressedSound(true);
         screen.addElement(Camera);
-
     }
 
     private void doCamera() {

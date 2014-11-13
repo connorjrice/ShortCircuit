@@ -246,7 +246,6 @@ public class EnemyState extends AbstractAppState {
     public void goToNextSpawner() {
         if (creepSpawnerList.size() > 1) {
             if (nextspawner < creepSpawnerList.size() - 1) {
-
                 nextspawner += 1;
             } else {
                 nextspawner = 0;

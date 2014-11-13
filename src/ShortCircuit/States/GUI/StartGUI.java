@@ -61,7 +61,6 @@ public class StartGUI extends AbstractAppState {
         width = this.app.getContext().getSettings().getWidth();
         buttonSize = new Vector2f(width / 8, height / 8);
         scaler = width / 15;
-
         initScreen();
     }
 
