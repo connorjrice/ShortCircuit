@@ -1,4 +1,4 @@
-package ShortCircuit.Objects;
+package DataStructures;
 
 import com.jme3.scene.Spatial;
 import java.util.Comparator;
