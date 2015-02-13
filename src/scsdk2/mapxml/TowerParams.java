@@ -1,4 +1,4 @@
-package scsdk.mapxml;
+package scsdk2.mapxml;
 
 import sc.controls.TowerControl;
 import com.jme3.export.InputCapsule;

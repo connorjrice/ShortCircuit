@@ -1,6 +1,6 @@
 package sdsdk.gui;
 
-import scsdk.TowerMapXML;
+import scsdk2.TowerMapXML;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -11,6 +11,10 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.lang.NullPointerException;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.OSRViewPort;
 import tonegod.gui.controls.lists.ComboBox;
@@ -42,6 +46,8 @@ public class SDKGUI extends AbstractAppState {
     private ButtonAdapter runLevel;
     private ButtonAdapter returnButton;
     private TowerMapXML tMS;
+    private ArrayList<TowerMapXML> levels;
+    private ArrayList<String> levelStrings;
     private ButtonAdapter buildAll;
     
     @Override
@@ -52,6 +58,8 @@ public class SDKGUI extends AbstractAppState {
         this.stateManager = this.app.getStateManager();
         this.width = this.app.getContext().getSettings().getWidth();
         this.height = this.app.getContext().getSettings().getHeight(); 
+        this.levels = new ArrayList();
+        this.levelStrings = new ArrayList();
         buttonSize = new Vector2f(width / 16, height / 32);
         dialogSize = new Vector2f(width / 4, height / 4);
         
@@ -75,6 +83,7 @@ public class SDKGUI extends AbstractAppState {
         levelSelectDrop();
         xmlTextField();
         runLevelButton();
+        buildAllButton();
     }
     
     private void mainWindow() {
@@ -152,22 +161,52 @@ public class SDKGUI extends AbstractAppState {
         tMS = new TowerMapXML(levelString, this);
         returnButton();
         stateManager.attach(tMS);
-        MainWindow.hide();
-
-        //tMS.getRootNode();
     }
     
-    private void buildAll() {
+    private void buildQuick() {
+        levels.add(new TowerMapXML(levelString, this));
+        levelStrings.add(levelString);
+        stateManager.attach(levels.get(levels.size()-1));
+    }
+    
+    private void buildAllLevels() {
+        File[] levelXMLfiles = new File("assets/XML/").listFiles();
+        for (File file : levelXMLfiles){
+            if (file.isFile()) {
+                levelString = file.getName();
+                buildQuick();
+            }
+        }
+        saveLevels();
+    }
+    
+    private void saveLevels() {
+        for (TowerMapXML t : levels) {
+            String userHome = System.getProperty("user.home");
+            BinaryExporter exporter = BinaryExporter.getInstance();
+            File file = new File(
+                    userHome+"/Documents/ShortCircuit/Assets/Models/"
+                    +levelStrings.get(levels.indexOf(t))+".j3o");
+            try {
+                exporter.save(t.getRootNode(), file);
+            } catch (Exception e) {
+                System.out.println("nope");
+            }
+            stateManager.detach(t);
+        }
+
+    }
+
+    private void buildAllButton() {
         buildAll = new ButtonAdapter(screen, "buildall", 
-                new Vector2f(scaler *5, 35), buttonSize) {
+                new Vector2f(scaler *6, 35), buttonSize) {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt, 
             boolean toggled) {
-                //for ( : open.get)
-                buildLevel();
+                buildAllLevels();
             }
         };
-        buildAll.setText("Run...");
+        buildAll.setText("Build");
         MainWindow.addChild(buildAll);
     }
     

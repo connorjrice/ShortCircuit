@@ -1,4 +1,4 @@
-package scsdk.mapxml;
+package scsdk2.mapxml;
 
 import sc.objects.GraphicsParams;
 import sc.objects.GameplayParams;

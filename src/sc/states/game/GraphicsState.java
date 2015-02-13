@@ -2,10 +2,10 @@ package sc.states.game;
 
 import sc.controls.BombControl;
 import sc.factories.BeamFactory;
-import scsdk.mapxml.FilterParams;
-import scsdk.mapxml.GeometryParams;
-import scsdk.mapxml.MaterialParams;
-import scsdk.mapxml.TowerParams;
+import scsdk2.mapxml.FilterParams;
+import scsdk2.mapxml.GeometryParams;
+import scsdk2.mapxml.MaterialParams;
+import scsdk2.mapxml.TowerParams;
 import sc.objects.GraphicsParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

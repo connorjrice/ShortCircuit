@@ -1,4 +1,4 @@
-package scsdk.mapxml;
+package scsdk2.mapxml;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;

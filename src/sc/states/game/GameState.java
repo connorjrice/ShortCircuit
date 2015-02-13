@@ -2,8 +2,8 @@ package sc.states.game;
 
 import sc.states.gui.StartGUI;
 import sc.controls.GlobControl;
-import scsdk.mapxml.LevelParams;
-import scsdk.mapxml.PlayerParams;
+import scsdk2.mapxml.LevelParams;
+import scsdk2.mapxml.PlayerParams;
 import sc.objects.GameplayParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

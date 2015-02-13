@@ -1,7 +1,7 @@
 package sc.objects;
 
-import scsdk.mapxml.LevelParams;
-import scsdk.mapxml.PlayerParams;
+import scsdk2.mapxml.LevelParams;
+import scsdk2.mapxml.PlayerParams;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;

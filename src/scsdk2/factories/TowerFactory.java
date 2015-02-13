@@ -1,7 +1,7 @@
-package scsdk.factories;
+package scsdk2.factories;
 
 import sdsdk.io.BuildState;
-import scsdk.mapxml.TowerParams;
+import scsdk2.mapxml.TowerParams;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;

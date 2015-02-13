@@ -1,16 +1,16 @@
 package sdsdk.io;
 
-import scsdk.factories.BaseFactory;
-import scsdk.factories.CreepSpawnerFactory;
-import scsdk.factories.FloorFactory;
-import scsdk.factories.TowerFactory;
-import scsdk.mapxml.BuildParams;
-import scsdk.mapxml.CreepSpawnerParams;
-import scsdk.mapxml.GeometryParams;
-import scsdk.mapxml.MapGenerator;
-import scsdk.mapxml.MaterialParams;
-import scsdk.mapxml.TowerParams;
-import scsdk.TowerMapXML;
+import scsdk2.factories.BaseFactory;
+import scsdk2.factories.CreepSpawnerFactory;
+import scsdk2.factories.FloorFactory;
+import scsdk2.factories.TowerFactory;
+import scsdk2.mapxml.BuildParams;
+import scsdk2.mapxml.CreepSpawnerParams;
+import scsdk2.mapxml.GeometryParams;
+import scsdk2.mapxml.MapGenerator;
+import scsdk2.mapxml.MaterialParams;
+import scsdk2.mapxml.TowerParams;
+import scsdk2.TowerMapXML;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

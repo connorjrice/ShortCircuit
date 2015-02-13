@@ -1,7 +1,7 @@
 package sc.factories;
 
 import sc.controls.RegCreepControl;
-import scsdk.mapxml.CreepParams;
+import scsdk2.mapxml.CreepParams;
 import sc.pathfinding.AStarPathFinder;
 import sc.pathfinding.jMEHeuristic;
 import sc.states.game.EnemyState;

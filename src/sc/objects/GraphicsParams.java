@@ -1,9 +1,9 @@
 package sc.objects;
 
-import scsdk.mapxml.CreepParams;
-import scsdk.mapxml.FilterParams;
-import scsdk.mapxml.GeometryParams;
-import scsdk.mapxml.MaterialParams;
+import scsdk2.mapxml.CreepParams;
+import scsdk2.mapxml.FilterParams;
+import scsdk2.mapxml.GeometryParams;
+import scsdk2.mapxml.MaterialParams;
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;

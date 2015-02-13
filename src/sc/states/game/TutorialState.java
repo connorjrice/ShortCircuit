@@ -14,6 +14,8 @@ import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.ArrayList;
+import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Screen;
 
@@ -43,6 +45,7 @@ public class TutorialState extends AbstractAppState {
     private AppStateManager stateManager;
     private GraphicsState GraphicsState;
     private Node rootNode;
+    private ArrayList<Button> buttons;
     
     public TutorialState() {}
 
@@ -60,6 +63,7 @@ public class TutorialState extends AbstractAppState {
         this.EnemyState = this.stateManager.getState(EnemyState.class);
         this.GraphicsState = this.stateManager.getState(GraphicsState.class);
         this.assetManager = this.app.getAssetManager();
+        this.buttons = new ArrayList();
         initScreen();
         initMaterials();
         tMS.pause();
@@ -96,12 +100,14 @@ public class TutorialState extends AbstractAppState {
             @Override
             public void onButtonMouseLeftDown(MouseButtonEvent evt,
             boolean toggled) {
+                buttons.remove(this);
                 screen.removeElement(this);
                 tMS.pause();
             }
         };
         globA.setText("This is a glob.");
         screen.addElement(globA);
+        buttons.add(globA);
     }
 
     public void basePopup() {
@@ -114,6 +120,7 @@ public class TutorialState extends AbstractAppState {
                 rootNode.getChild("Base").setMaterial(assetManager
                         .loadMaterial("Materials/Circuit/Base.j3m"));
                 screen.removeElement(this);
+                buttons.remove(this);
                 towerPopup();
             }
 
@@ -132,6 +139,7 @@ public class TutorialState extends AbstractAppState {
             boolean toggled) {
                 unfocusBuiltTowers();
                 screen.removeElement(this);
+                buttons.remove(this);
                 unbuiltTowerPopup();
             }
         };
@@ -172,6 +180,7 @@ public class TutorialState extends AbstractAppState {
                 unfocusUnbuiltTowers();
                 screen.removeElement(this);
                 budgetPopup();
+                buttons.remove(this);
             }
         };
         unbuiltA.setDimensions(500,100);
@@ -209,6 +218,7 @@ public class TutorialState extends AbstractAppState {
             boolean toggled) {
                 unfocusBudgetButton();
                 screen.removeElement(this);
+                buttons.remove(this);
                 creepPopup();
             }
         };
@@ -241,6 +251,7 @@ public class TutorialState extends AbstractAppState {
             boolean toggled) {
                 unfocusCreeps();
                 screen.removeElement(this);
+                buttons.remove(this);
                 start();
             }
         };
@@ -280,6 +291,9 @@ public class TutorialState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+        for (Button b : buttons) {
+            screen.removeElement(b);
+        }
         guiNode.removeControl(screen);
     }
 }

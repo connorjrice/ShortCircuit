@@ -1,4 +1,4 @@
-package scsdk.mapxml;
+package scsdk2.mapxml;
 
 import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;

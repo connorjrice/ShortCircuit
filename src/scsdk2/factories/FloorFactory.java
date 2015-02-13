@@ -1,4 +1,4 @@
-package scsdk.factories;
+package scsdk2.factories;
 
 import sdsdk.io.BuildState;
 import com.jme3.scene.Geometry;

@@ -1,7 +1,7 @@
-package scsdk.factories;
+package scsdk2.factories;
 
 import sdsdk.io.BuildState;
-import scsdk.mapxml.CreepSpawnerParams;
+import scsdk2.mapxml.CreepSpawnerParams;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;

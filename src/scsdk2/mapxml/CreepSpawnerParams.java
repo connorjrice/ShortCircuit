@@ -1,4 +1,4 @@
-package scsdk.mapxml;
+package scsdk2.mapxml;
 
 import sc.controls.CreepSpawnerControl;
 import com.jme3.export.InputCapsule;

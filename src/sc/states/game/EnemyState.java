@@ -4,7 +4,7 @@ import sc.controls.TowerControl;
 import DataStructures.Graph;
 import sc.factories.RegCreepFactory;
 import sc.factories.GlobFactory;
-import scsdk.mapxml.CreepParams;
+import scsdk2.mapxml.CreepParams;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

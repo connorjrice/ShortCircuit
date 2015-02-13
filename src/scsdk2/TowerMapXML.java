@@ -1,4 +1,4 @@
-package scsdk;
+package scsdk2;
 
 import sdsdk.gui.SDKGUI;
 import sdsdk.io.BuildState;
