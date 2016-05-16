@@ -1,6 +1,6 @@
 package sc.pathfinding;
 
-import DataStructures.Graph;
+import datastructures.Graph;
 import com.jme3.scene.Node;
 import java.text.DecimalFormat;
 
@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
  *
  * @author Connor Rice
  */
-public class JEdgeManipulator implements EdgeManipulator {
+public class JEdgeManipulator<T> implements EdgeManipulator {
 
     private Graph worldGraph;
     private final float precision;
@@ -23,6 +23,7 @@ public class JEdgeManipulator implements EdgeManipulator {
         this.blockedNodes = geomHash;
     }
 
+    @Override
     public void addInitialEdges() {
         String[] elements = worldGraph.getElementStrings();
         for (String s : elements) {
@@ -61,7 +62,8 @@ public class JEdgeManipulator implements EdgeManipulator {
                 }
             }
             if (possible) {
-                worldGraph.addEdge(targetName, nodeName);
+                // I'm not sure if adding a weight of 1 is correct
+                worldGraph.addEdge(targetName, nodeName, 1);
             }
         }
 

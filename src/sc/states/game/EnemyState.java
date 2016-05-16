@@ -1,7 +1,7 @@
 package sc.states.game;
 
 import sc.controls.TowerControl;
-import DataStructures.Graph;
+import datastructures.Graph;
 import sc.factories.RegCreepFactory;
 import sc.factories.GlobFactory;
 import scsdk2.mapxml.CreepParams;

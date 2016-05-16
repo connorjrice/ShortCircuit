@@ -1,6 +1,6 @@
 package sc.pathfinding;
 
-import DataStructures.Nodes.GraphNode;
+import datastructures.nodes.GraphNode;
 
 
 /**
@@ -15,6 +15,7 @@ public class jMEHeuristic implements Heuristic {
         
     }
 
+    @Override
     public float compareTo(GraphNode n) {
         float[] curCoords = n.getCoordArray();
         float distx = Math.abs(endPosition[0] - curCoords[0]);
@@ -22,6 +23,7 @@ public class jMEHeuristic implements Heuristic {
         return distx + disty;
     }
 
+    @Override
     public void setEndPosition(Object compPos) {
         String posString = (String) compPos;
         String[] endString = posString.split(",");

@@ -1,6 +1,6 @@
 package sc.controls;
 
-import DataStructures.Graph;
+import datastructures.Graph;
 import sc.pathfinding.Path;
 import sc.pathfinding.PathFinder;
 import sc.threading.MoveCreep;
@@ -23,12 +23,12 @@ public class RegCreepControl extends AbstractControl {
 
     protected EnemyState EnemyState;
     protected int creepNum;
-    public PathFinder pathFinder;
+    private PathFinder pathFinder;
     private float updateTimer = 0;
-    public Path path;
-    public Vector3f baseVec;
+    private Path path;
+    private Vector3f baseVec;
     private MoveCreep mc;
-    private DecimalFormat numFormatter = new DecimalFormat("0.0");
+    private final DecimalFormat numFormatter = new DecimalFormat("0.0");
 
     public RegCreepControl(EnemyState _state, PathFinder pathFinder) {
         EnemyState = _state;
@@ -52,6 +52,8 @@ public class RegCreepControl extends AbstractControl {
             }
         }
     }
+    
+    
 
     public Graph getWorldGraph() {
         return EnemyState.getWorldGraph();
@@ -116,6 +118,22 @@ public class RegCreepControl extends AbstractControl {
         spatial.removeControl(this);
         mc = null;
         pathFinder = null;
+    }
+    
+    public Vector3f getBaseVector() {
+        return baseVec;
+    }
+    
+    public Path getPath() {
+        return path;
+    }
+    
+    public void setPath(Path p) {
+        this.path = p;
+    }
+    
+    public PathFinder getPathFinder() {
+        return pathFinder;
     }
 
     @Override

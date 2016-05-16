@@ -73,7 +73,7 @@ public class RangerControl extends AbstractControl {
                 .getWorldBound())) {
             moveAmount += moveAmount;
             spatial.setLocalTranslation(spatial.getLocalTranslation()
-                    .interpolate(victimTower.getSpatial().getLocalTranslation(),
+                    .interpolateLocal(victimTower.getSpatial().getLocalTranslation(),
                     moveAmount));
         } else {
             attachedToTower = true;

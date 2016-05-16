@@ -1,6 +1,6 @@
 package sc.pathfinding;
 
-import DataStructures.Nodes.GraphNode;
+import datastructures.nodes.GraphNode;
 
 /**
  * ASKMATTHEW: Generic primitive types

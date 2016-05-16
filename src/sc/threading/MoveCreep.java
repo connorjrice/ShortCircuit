@@ -1,7 +1,7 @@
 package sc.threading;
 
 import sc.controls.RegCreepControl;
-import DataStructures.Nodes.GraphNode;
+import datastructures.nodes.GraphNode;
 import com.jme3.math.Vector3f;
 
 /**
@@ -21,19 +21,20 @@ public class MoveCreep implements Runnable {
 
     public MoveCreep(RegCreepControl cc) {
         this.cc = cc;
-        this.baseVec = cc.baseVec;
+        this.baseVec = cc.getBaseVector();
         this.baseCoords = baseVec.x+","+baseVec.y;
         this.moveAmount = 0.1f;
     }
 
+    @Override
     public void run() {
-        if (cc.path == null) {
+        if (cc.getPath() == null) {
             getNextPath();
         }
         if (cc.getSpatial().getLocalTranslation().distance(baseVec) < 1.0f) {
             cc.removeCreep(false);
         } else {
-            if (!cc.path.getEndReached()) {
+            if (!cc.getPath().getEndReached()) {
                 if (!getNodeEnd()) {
                     moveInNode();
                 } else {
@@ -48,14 +49,14 @@ public class MoveCreep implements Runnable {
     }
 
     private void getNextPath() {
-        cc.path = cc.pathFinder.getPath(cc.getFormattedCoords(), baseCoords);
+        cc.setPath(cc.getPathFinder().getPath(cc.getFormattedCoords(), baseCoords));
         setCurVec();
     }
 
     private void setCurVec() {
         prevIndex = curIndex;
         prevLoc = curVec;
-        GraphNode currentNode = cc.getWorldGraph().getNode(cc.path
+        GraphNode currentNode = cc.getWorldGraph().getNode(cc.getPath()
                 .getNextPathNode());
         curVec = getVector3f(currentNode.getElement());
         curIndex = currentNode.getIndex();
@@ -65,13 +66,13 @@ public class MoveCreep implements Runnable {
 
     private void moveInNode() {
         cc.getSpatial().setLocalTranslation(cc.getCreepLocation().
-                interpolate(curVec, moveAmount));
+                interpolateLocal(curVec, moveAmount));
         incMoveAmount();
     }
 
     private void latchOnNode() {
         if (prevLoc != null) {
-            if (cc.getWorldGraph().isEdge(curIndex, prevIndex)) {
+            if (cc.getWorldGraph().isEdge(curIndex, prevIndex) > 0) {
                 cc.getSpatial().setLocalTranslation(curVec);
                 setCurVec();
             } else {

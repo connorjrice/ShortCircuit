@@ -1,7 +1,7 @@
 package sc.pathfinding;
 
-import DataStructures.Graph;
-import DataStructures.MinHeap;
+import datastructures.Graph;
+import datastructures.MinHeap;
 import java.util.ArrayList;
 
 /**
@@ -13,8 +13,8 @@ public class AStarPathFinder implements PathFinder {
     private int maxNodeSize;
     private Heuristic Heuristic;
     private Graph Graph;
-    private ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
-    private MinHeap<Path> frontier = new MinHeap<Path>();
+    private final ArrayList<Integer> neverReturnNodes = new ArrayList<Integer>();
+    private final MinHeap<Path> frontier = new MinHeap<Path>();
     private int numRecursions;
     private int maxRecursions = 50;
     private long neverLong;

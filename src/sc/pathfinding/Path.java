@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Path implements Comparable{
     
-    private ArrayList<Integer> pathIndicies;
+    private final ArrayList<Integer> pathIndicies;
     private float cost;
     private int curIndex;
     private boolean marked;

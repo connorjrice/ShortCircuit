@@ -2,7 +2,7 @@ package sc.states.game;
 
 import sc.controls.ChargerControl;
 import sc.controls.TowerControl;
-import DataStructures.Queue;
+import datastructures.Queue;
 import sc.threading.TowerCharge;
 import sc.threading.TowerDowngrade;
 import sc.threading.TowerUpgrade;
@@ -313,7 +313,7 @@ public class FriendlyState extends AbstractAppState {
      * Adds an empty tower to the list of towers that need to be charged.
      */
     public void addEmptyTower(TowerControl empty) {
-        emptyTowers.enqueue(empty);
+        emptyTowers.push(empty);
         GraphicsState.towerTextureEmpty(empty.getSpatial());
         AudioState.emptyTowerSound();
     }
@@ -377,7 +377,7 @@ public class FriendlyState extends AbstractAppState {
      */
     private void addNewCharger(Spatial charger) {
         charger.addControl(new ChargerControl(this));
-        activeChargers.enqueue(charger);
+        activeChargers.push(charger);
         rootNode.attachChild(charger);
     }
 

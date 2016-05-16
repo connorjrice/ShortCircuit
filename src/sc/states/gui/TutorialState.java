@@ -1,4 +1,4 @@
-package sc.states.game;
+package sc.states.gui;
 
 import sc.TowerMainState;
 import sc.states.gui.game.GameGUI;
@@ -15,6 +15,10 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
+import sc.states.game.EnemyState;
+import sc.states.game.FriendlyState;
+import sc.states.game.GameState;
+import sc.states.game.GraphicsState;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Screen;

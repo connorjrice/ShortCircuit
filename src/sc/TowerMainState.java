@@ -14,7 +14,7 @@ import sc.states.game.GameState;
 import sc.states.game.FriendlyState;
 import sc.states.game.LoadSavableState;
 import sc.states.game.PathfindingState;
-import sc.states.game.TutorialState;
+import sc.states.gui.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;

@@ -1,6 +1,6 @@
 package sc.states.game;
 
-import DataStructures.Graph;
+import datastructures.Graph;
 import sc.pathfinding.EdgeManipulator;
 import sc.pathfinding.JEdgeManipulator;
 import com.jme3.app.Application;
@@ -53,7 +53,7 @@ public class PathfindingState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.rootNode = this.app.getRootNode();
         this.floor = this.rootNode.getChild("Floor");
-        this.worldGraph = new Graph<String>(1400);
+        this.worldGraph = new Graph<>(1400);
         this.precision = 1.0f; // works with 1.0f, .5f
         this.GameState = stateManager.getState(GameState.class);
         this.blockedNodes = GameState.getBlockedNodes();
