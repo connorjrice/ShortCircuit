@@ -1,12 +1,7 @@
 package sc;
 
-import sc.states.gui.StartGUI;
-import sc.states.gui.game.CheatGUI;
+
 import sc.states.game.CheatState;
-import sc.states.gui.game.GameGUI;
-import sc.states.gui.game.PurchaseWindowState;
-import sc.states.gui.game.SettingsWindowState;
-import sc.states.gui.GameOverGUI;
 import sc.states.game.AudioState;
 import sc.states.game.GraphicsState;
 import sc.states.game.EnemyState;
@@ -14,7 +9,6 @@ import sc.states.game.GameState;
 import sc.states.game.FriendlyState;
 import sc.states.game.LoadSavableState;
 import sc.states.game.PathfindingState;
-import sc.states.gui.TutorialState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -23,6 +17,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.controls.Trigger;
+import sc.states.gui.game.StartGUI;
 
 /**
  * This is the main state for all Tower gameplay.
@@ -37,9 +32,9 @@ public class TowerMainState extends AbstractAppState {
     private LoadSavableState LoadingState;
     private CheatState CheatState;
     private AudioState AudioState;
-    private GameGUI GameGUI;
-    private GameOverGUI GameOverGUI;
-    private CheatGUI CheatGUI;
+   // private GameGUI GameGUI;
+   // private GameOverGUI GameOverGUI;
+   // private CheatGUI CheatGUI;
     private boolean isPaused = false;
     private boolean isPauseAllowed = true;
     public int width;
@@ -52,10 +47,10 @@ public class TowerMainState extends AbstractAppState {
     private AppStateManager stateManager;
     private StartGUI StartGUI;
     private String level;
-    private TutorialState TutorialState;
+    //private TutorialState TutorialState;
     private PathfindingState PathfindingState;
-    private SettingsWindowState SettingsWindowState;
-    private PurchaseWindowState PurchaseWindowState;
+    //private SettingsWindowState SettingsWindowState;
+    //private PurchaseWindowState PurchaseWindowState;
     
     public TowerMainState() {
         level = "Level1.lvl.xml";
@@ -86,16 +81,16 @@ public class TowerMainState extends AbstractAppState {
         isPaused = false;
         isPauseAllowed = true; 
         
-        GameGUI = new GameGUI(this);
+        /*GameGUI = new GameGUI(this);
         SettingsWindowState = new SettingsWindowState(this);
         PurchaseWindowState = new PurchaseWindowState(this);
-        GameOverGUI = new GameOverGUI(this);
+        GameOverGUI = new GameOverGUI(this);*/
         
         AudioState = new AudioState();
         LoadingState = new LoadSavableState(level);
         
         CheatState = new CheatState();
-        CheatGUI = new CheatGUI();
+        //CheatGUI = new CheatGUI();
 
         GameState = new GameState();
         GraphicsState = new GraphicsState();
@@ -111,10 +106,10 @@ public class TowerMainState extends AbstractAppState {
         stateManager.attach(GraphicsState);
         stateManager.attach(CheatState);
         stateManager.attach(LoadingState);
-        stateManager.attach(GameGUI);
+       /* stateManager.attach(GameGUI);
         stateManager.attach(SettingsWindowState);
         stateManager.attach(PurchaseWindowState);
-        stateManager.attach(CheatGUI);
+        stateManager.attach(CheatGUI);*/
         stateManager.attach(FriendlyState);
         stateManager.attach(PathfindingState);
     }
@@ -123,39 +118,39 @@ public class TowerMainState extends AbstractAppState {
      * Detaches all tower states.
      */
     public void detachStates() {
-        stateManager.detach(GameGUI);
-        stateManager.detach(SettingsWindowState);
-        stateManager.detach(PurchaseWindowState);
+        //stateManager.detach(GameGUI);
+        //stateManager.detach(SettingsWindowState);
+        //stateManager.detach(PurchaseWindowState);
         stateManager.detach(GameState);
         stateManager.detach(FriendlyState);
         stateManager.detach(EnemyState);
         stateManager.detach(GraphicsState);
         stateManager.detach(LoadingState);
         stateManager.detach(CheatState);
-        stateManager.detach(CheatGUI);
+        //stateManager.detach(CheatGUI);
         stateManager.detach(FriendlyState);
-        stateManager.detach(TutorialState);
+        //stateManager.detach(TutorialState);
         stateManager.detach(AudioState);
         stateManager.detach(PathfindingState);
     }
-    
+  
     /**
      * Returns to the start menu.
      * Currently used by GameOver state, the "Too Bad" button.
-     */
+     
     public void returnToStartAfterGameOver() {
         detachStates();
         stateManager.detach(GameOverGUI);
         stateManager.attach(StartGUI);
         StartGUI.toggle();
-    }
+    } */
 
     /**
      * Toggles the window for the cheats.
-     */
+     
     public void toggleCheatsWindow() {
         CheatGUI.toggleCheatWindow();
-    }
+    } */
 
     /**
      * Pauses the game.
@@ -174,7 +169,7 @@ public class TowerMainState extends AbstractAppState {
 
     /**
      * Ends game and detaches the states so they cannot be retrieved.
-     */
+     
     public void gameover() {
         if (!LoadingState.getProfile()) {
             isPauseAllowed = false;
@@ -186,7 +181,7 @@ public class TowerMainState extends AbstractAppState {
             app.stop();
             System.exit(0);
         }
-    }
+    } */
 
     /**
      * These are the states that are disabled on pause.
@@ -213,13 +208,13 @@ public class TowerMainState extends AbstractAppState {
     }
 
     public boolean isStartWindowShown() {
-        return StartGUI.mainWindowShown();
+        return StartGUI.isMainWindowShown();
     }
-
+    /*
     public void goToMainMenu() {
         pause();
         GameGUI.toggle(StartGUI.toggle());
-    }
+    }*/
 
     public int getWidth() {
         return width;
@@ -232,10 +227,10 @@ public class TowerMainState extends AbstractAppState {
     public boolean isPaused() {
         return isPaused;
     }
-
+    /*
     public void toggleFrills() {
         GameGUI.toggleFrills();
-    }
+    }*/
     
     public void stopTheme() {
         AudioState.stopBegTheme();
@@ -243,9 +238,9 @@ public class TowerMainState extends AbstractAppState {
     
     @Override
     public void stateDetached(AppStateManager asm) {
-        asm.detach(GameGUI);
-        asm.detach(SettingsWindowState);
-        asm.detach(PurchaseWindowState);
+      //  asm.detach(GameGUI);
+     //   asm.detach(SettingsWindowState);
+     //   asm.detach(PurchaseWindowState);
         asm.detach(GameState);
         asm.detach(PathfindingState);
         asm.detach(FriendlyState);
@@ -253,7 +248,7 @@ public class TowerMainState extends AbstractAppState {
         asm.detach(GraphicsState);
         asm.detach(LoadingState);
         asm.detach(CheatState);
-        asm.detach(CheatGUI);
+      //  asm.detach(CheatGUI);
         asm.detach(FriendlyState);
         asm.detach(AudioState);
         inputManager.clearMappings();

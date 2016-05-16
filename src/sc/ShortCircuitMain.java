@@ -1,8 +1,8 @@
 package sc;
 
-import sc.states.gui.StartGUI;
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
+import sc.states.gui.game.StartGUI;
 
 /**
  * ShortCircuit: A tower defense game

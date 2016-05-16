@@ -1,6 +1,5 @@
 package scsdk2;
 
-import sdsdk.gui.SDKGUI;
 import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
@@ -34,6 +33,6 @@ public class ScSDKMain extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         flyCam.setDragToRotate(true);
-        stateManager.attach(new SDKGUI());
+        //stateManager.attach(new SDKGUI());
     }
 }

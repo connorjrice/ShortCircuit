@@ -1,11 +1,10 @@
 package sc.states.game;
 
-import sc.states.gui.TutorialState;
 import sc.controls.CreepSpawnerControl;
 import sc.controls.TowerControl;
 import sc.objects.GameplayParams;
 import sc.objects.GraphicsParams;
-import sc.states.gui.StartGUI;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -15,6 +14,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
+import sc.states.gui.game.StartGUI;
 
 /**
  * LoadingState calls the appropriate methods in its sibling states to create a
@@ -39,7 +39,7 @@ public class LoadSavableState extends AbstractAppState {
     private FriendlyState FriendlyState;
     private GameplayParams gap;
     private GraphicsParams grp;
-    private TutorialState TutorialState;
+  //  private TutorialState TutorialState;
 
     public LoadSavableState() {
     }
@@ -130,10 +130,10 @@ public class LoadSavableState extends AbstractAppState {
         }
         GameState.setGPBuild(gap);
         FriendlyState.setTowerList(towerList);
-        if (getTutorial()) {
+       /* if (getTutorial()) {
             TutorialState = new TutorialState();
             stateManager.attach(TutorialState);
-        }
+        }*/
     }
 
     public boolean getProfile() {
@@ -145,8 +145,8 @@ public class LoadSavableState extends AbstractAppState {
     }
 
     private void updateStartGUI() {
-        StartGUI.hideloading();
-        StartGUI.updateAtlas(GameState.getAtlas());
+      /*  StartGUI.hideloading();
+        StartGUI.updateAtlas(GameState.getAtlas()); */
     }
 
     @Override

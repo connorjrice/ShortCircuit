@@ -90,7 +90,7 @@ public class BuildState extends AbstractAppState {
         buildCreepSpawners();
         embedLevelData();
         cam.setLocation(getCameraLocation());
-        attachViewPort();
+        //attachViewPort();
     }
     
     public Vector3f getCameraLocation() {
@@ -235,10 +235,10 @@ public class BuildState extends AbstractAppState {
     public Node getRootNode() {
         return rootNode;
     }
-    
+    /*
     public void attachViewPort() {
         tmx.getSDK().initViewPort(rootNode);
-    }
+    }*/
             
 
     @Override

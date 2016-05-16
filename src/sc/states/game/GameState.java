@@ -1,6 +1,5 @@
 package sc.states.game;
 
-import sc.states.gui.StartGUI;
 import sc.controls.GlobControl;
 import scsdk2.mapxml.LevelParams;
 import scsdk2.mapxml.PlayerParams;
@@ -15,6 +14,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.text.DecimalFormat;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import sc.states.gui.game.StartGUI;
 
 /**
  * PENDING: Implment allowedenemies TODO: Implement Digger and Ranger TODO:
@@ -75,7 +75,7 @@ public class GameState extends AbstractAppState {
         this.lp = gp.getLevelParams();
         this.pp = gp.getPlayerParams();
         if (StartGUI != null) {
-            StartGUI.hideloading();
+            StartGUI.hideLoadingScreen();
         }
     }
 
