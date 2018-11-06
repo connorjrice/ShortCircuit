@@ -1,6 +1,6 @@
-package datastructures;
+package DataStructures;
 
-import datastructures.nodes.StackNode;
+import DataStructures.Nodes.StackNode;
 
 public class Stack<T> {
 
@@ -13,7 +13,7 @@ public class Stack<T> {
     }
 
     public void push(T newTopElement) {
-        StackNode<T> newTopNode = new StackNode<>(newTopElement);
+        StackNode<T> newTopNode = new StackNode<T>(newTopElement);
         if (top == null) {
             top = newTopNode;
         } else {

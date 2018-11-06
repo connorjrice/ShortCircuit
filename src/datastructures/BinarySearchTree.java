@@ -1,8 +1,11 @@
-package datastructures;
+package DataStructures;
 
-import datastructures.nodes.TreeNode;
+import DataStructures.Nodes.TreeNode;
 
 /**
+ * Binary Search Tree implementation. Adapted from Cay Horstmann's Big Java
+ * (Early Objects)
+ *
  * @author Connor Rice
  */
 public class BinarySearchTree<T extends Comparable> {
@@ -12,7 +15,7 @@ public class BinarySearchTree<T extends Comparable> {
     public BinarySearchTree() {
         root = null;
     }
-    
+
     public void add(Comparable obj) {
         TreeNode<T> newNode = new TreeNode<T>();
         newNode.setData(obj);
@@ -25,6 +28,7 @@ public class BinarySearchTree<T extends Comparable> {
 
     /**
      * Returns true if the input object is contained within the tree.
+     *
      * @param obj
      * @return
      */
@@ -106,23 +110,6 @@ public class BinarySearchTree<T extends Comparable> {
         }
     }
 
-    public TreeNode getRoot() {
-        return root;
-    }
-    
-    public int getMaxDepth() {
-        return depthHelper(root);
-    }
-    
-    private int depthHelper(TreeNode node) {
-        if (node == null) {
-            return 0;
-        } else {
-            return Math.max(depthHelper(node.getLeftChild()), 
-                    depthHelper(node.getRightChild())) + 1;
-        }
-    }
-    
     public void print() {
         if (root != null) {
             root.printNodes();

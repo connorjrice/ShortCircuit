@@ -1,4 +1,4 @@
-package datastructures.nodes;
+package DataStructures.Nodes;
 
 public class StackNode<T> {
 

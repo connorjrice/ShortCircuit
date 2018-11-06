@@ -1,6 +1,6 @@
-package datastructures;
+package DataStructures;
 
-import datastructures.nodes.QueueNode;
+import DataStructures.Nodes.QueueNode;
 
 public class Queue<T> {
 
@@ -19,8 +19,8 @@ public class Queue<T> {
         size = 0;
     }
 
-    public void push(T newElement) {
-        QueueNode<T> queueIn = new QueueNode<>(newElement);
+    public void enqueue(T newElement) {
+        QueueNode<T> queueIn = new QueueNode<T>(newElement);
         if (front == null) {
             front = queueIn;
             back = queueIn;
@@ -33,7 +33,7 @@ public class Queue<T> {
 
     }
 
-    public T pop() {
+    public T dequeue() {
         T element;
         if (back == front) {
             element = front.getElement();

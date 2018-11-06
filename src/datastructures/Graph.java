@@ -1,38 +1,32 @@
-package datastructures;
+package DataStructures;
 
-import datastructures.nodes.GraphNode;
+import DataStructures.Nodes.GraphNode;
 import java.util.HashMap;
 
 /**
- * Implementation of a weighted Graph data structure
+ * Implementation of an Unweighted Graph datastructure with A* Pathfinding.
+ *
  * @author Connor Rice
  * @param <T>
  */
 public class Graph<T extends Comparable> {
 
-    private int[][] edges;
+    private boolean[][] edges;
     private GraphNode[] nodes;
-    private final HashMap nodeHash;
+    private HashMap nodeHash;
     private int maxSize;
     private int currentSize;
 
     public Graph(int maxSize) {
         this.maxSize = maxSize;
         this.currentSize = 0;
-        this.edges = new int[maxSize][maxSize];
+        this.edges = new boolean[maxSize][maxSize];
         this.nodes = new GraphNode[maxSize];
         this.nodeHash = new HashMap(maxSize);
     }
-    
-    public void createNodes() {
-        for (int i = 0; i < maxSize; i++) {
-            nodes[i] = new GraphNode(i,i);
-            currentSize++;
-        }
-    }
 
     public void addNode(Comparable element) { // set in condition for if last
-        GraphNode<T> newNode = new GraphNode<>(currentSize, element);
+        GraphNode<T> newNode = new GraphNode<T>(currentSize, element);
         if (currentSize < maxSize - 1) {
             nodes[currentSize] = newNode;
             nodeHash.put(element, newNode);
@@ -58,96 +52,65 @@ public class Graph<T extends Comparable> {
         return (GraphNode) nodeHash.get(element);
     }
 
-    public void addEdge(Comparable firstElement, Comparable secondElement, int w) {
-        addEdge(getNode(firstElement), getNode(secondElement), w);
+    public void addEdge(Comparable firstElement, Comparable secondElement) {
+        addEdge(getNode(firstElement), getNode(secondElement));
     }
 
-    public void addEdge(GraphNode<T> firstNode, GraphNode<T> secondNode, int w) {
+    public void addEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
         if (firstNode != null && secondNode != null && firstNode.getIndex() != secondNode.getIndex()) {
-            edges[firstNode.getIndex()][secondNode.getIndex()] = w;
-            //System.out.println(edges[firstNode.getIndex()][secondNode.getIndex()]);
+            edges[firstNode.getIndex()][secondNode.getIndex()] = true;
+            edges[secondNode.getIndex()][firstNode.getIndex()] = true;
         }
     }
 
     public void removeEdges(GraphNode<T> doomedNode) {
         int doomedIndex = doomedNode.getIndex();
         for (int i = 0; i < edges.length; i++) {
-            edges[doomedIndex][i] = 0;
+            edges[doomedIndex][i] = false;
         }
     }
 
     public void removeEdge(GraphNode<T> firstNode, GraphNode<T> secondNode) {
         if (firstNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
             if (secondNode.getIndex() >= 0 && firstNode.getIndex() < currentSize) {
-                edges[firstNode.getIndex()][secondNode.getIndex()] = 0;
-                edges[secondNode.getIndex()][firstNode.getIndex()] = 0;
+                edges[firstNode.getIndex()][secondNode.getIndex()] = false;
+                edges[secondNode.getIndex()][firstNode.getIndex()] = false;
             }
         }
+
     }
 
-    public int[][] getEdges() {
-        return edges;
-    }
-    
-    public int isEdge(int i, int j) {
+    public boolean isEdge(int i, int j) {
         return edges[i][j];
     }
 
     public int[] getNeighbors(int index) {
-        int[] neighbors = new int[3];
+        int[] neighbors = new int[9];
         int arrayIndex = 0;
         for (int i = 0; i < currentSize; i++) {
-            if (edges[index][i] > 0) {
+            if (edges[index][i]) {
                 neighbors[arrayIndex] = i;
                 arrayIndex++;
             }
         }
         return neighbors;
     }
-    
-    
 
     /**
      * * Breadth and Depth Traversals **
      */
-    
-    /**
-     * Perform a breadth-first search and return the boolean[] of visited nodes.
-     * @return 
-     */
-    public boolean[] getTraversal() {
-        Queue<GraphNode> queue = new Queue<>();
-        boolean[] seen = new boolean[currentSize];
-        queue.push(nodes[0]);
-        while (!queue.isEmpty()) {
-            GraphNode node = queue.pop();
-            for (int i = 0; i < currentSize; i++) {
-                if (edges[node.getIndex()][i] >= 0 && !seen[i]) {
-                    seen[i] = true;
-                    queue.push(nodes[i]);
-                }
-            }            
-        }
-        return seen;        
-    }
-    
-    /**
-     * Returns a graphnode that contains element.
-     * @param element
-     * @return 
-     */
     public GraphNode<T> breadthFirstTraversal(Comparable element) {
-        return breadthFirstTraversal(new GraphNode<>(element));
+        return breadthFirstTraversal(new GraphNode<T>(element));
     }
 
     public GraphNode<T> breadthFirstTraversal(GraphNode<T> snode) {
-        Queue<GraphNode> queue = new Queue<>();
-        boolean[] seen = new boolean[currentSize];
-        queue.push(nodes[0]);
+        Queue<GraphNode> queue = new Queue<GraphNode>();
+        boolean[] marked = new boolean[currentSize];
+        queue.enqueue(nodes[0]);
         while (!queue.isEmpty()) {
-            GraphNode node = queue.pop();
-            if (!seen[node.getIndex()]) {
-                seen[node.getIndex()] = true;
+            GraphNode node = queue.dequeue();
+            if (!marked[node.getIndex()]) {
+                marked[node.getIndex()] = true;
             }
             if (node.getElement().equals(snode.getElement())) {
                 return node;
@@ -155,18 +118,18 @@ public class Graph<T extends Comparable> {
             int[] neighbors = getNeighbors(node.getIndex());
             int arrayIndex = 0;
             while (neighbors[arrayIndex] != 0) {
-                queue.push(getNode(neighbors[arrayIndex]));
+                queue.enqueue(getNode(neighbors[arrayIndex]));
             }
         }
         return null;
     }
 
     public GraphNode<T> depthFirstTraversal(Comparable element) {
-        return depthFirstTraversal(new GraphNode<>(element));
+        return depthFirstTraversal(new GraphNode<T>(element));
     }
 
     public GraphNode<T> depthFirstTraversal(GraphNode<T> snode) {
-        Stack<GraphNode> stack = new Stack<>();
+        Stack<GraphNode> stack = new Stack<GraphNode>();
         boolean[] marked = new boolean[currentSize];
         stack.push(nodes[0]);
         while (!stack.isEmpty()) {
@@ -216,15 +179,14 @@ public class Graph<T extends Comparable> {
         return newNodes;
     }
 
-    private int[][] doubleEdges() {
-        int[][] newEdges = new int[maxSize][maxSize];
+    private boolean[][] doubleEdges() {
+        boolean[][] newEdges = new boolean[maxSize][maxSize];
         int i = 0;
         int j = 0;
-        for (int[] e : edges) {
-            
+        for (boolean[] curbool : edges) {
             i++;
-            for (int e2 : e) {
-                newEdges[i][j] = e2;
+            for (boolean bool : curbool) {
+                newEdges[i][j] = bool;
                 j++;
             }
             j = 0;
